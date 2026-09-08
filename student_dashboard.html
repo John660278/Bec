@@ -693,6 +693,41 @@
       `<div class="empty-state"><p style="color:var(--danger)">${msg}</p></div>`;
   }
 
+  // ─── PROMPTPAY PAYLOAD GENERATOR ───
+  function generatePromptPayPayload(id, amount) {
+    const f = (tag, val) => {
+      val = val.toString();
+      return tag + ('00' + val.length).slice(-2) + val;
+    };
+    let targetId = id.replace(/\\D/g, '');
+    let isPhone = targetId.length === 10;
+    if (isPhone) targetId = '0066' + targetId.substring(1);
+    
+    const aid = f('00', 'A000000677010111');
+    const biller = isPhone ? f('01', targetId) : f('02', targetId);
+    const merchantInfo = f('29', aid + biller);
+    const amountStr = amount ? f('54', Number(amount).toFixed(2)) : '';
+    
+    const payload = [
+      f('00', '01'),
+      f('01', amount ? '12' : '11'),
+      merchantInfo,
+      f('58', 'TH'),
+      f('53', '764'),
+      amountStr,
+      '6304'
+    ].join('');
+    
+    let crc = 0xFFFF;
+    for (let i = 0; i < payload.length; i++) {
+      crc ^= payload.charCodeAt(i) << 8;
+      for (let j = 0; j < 8; j++) {
+        crc = (crc & 0x8000) ? (crc << 1) ^ 0x1021 : crc << 1;
+      }
+    }
+    return payload + (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
+  }
+
   // ─── MODAL ───
   function openModal(eventId, title, totalAmount, penalty) {
     currentPayment = { eventId, title, totalAmount, penalty };
@@ -711,14 +746,12 @@
     const qrDiv = document.getElementById('qrcode');
     qrDiv.innerHTML = '';
     try {
-      const payload = window.promptpayQr
-        ? window.promptpayQr(PROMPTPAY_ID, { amount: totalAmount })
-        : null;
-      if (payload) {
+      if (PROMPTPAY_ID && PROMPTPAY_ID !== "0000000000") {
+        const payload = generatePromptPayPayload(PROMPTPAY_ID, totalAmount);
         new QRCode(qrDiv, { text: payload, width: 180, height: 180, colorDark: '#000', colorLight: '#fff' });
         document.getElementById('qrLabel').textContent = `PromptPay · ฿${Number(totalAmount).toLocaleString('th-TH')}`;
       } else {
-        qrDiv.innerHTML = '<div style="width:180px;height:180px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:#999">QR ไม่พร้อมใช้งาน</div>';
+        qrDiv.innerHTML = '<div style="width:180px;height:180px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:#999;text-align:center;">ยังไม่ได้ตั้งค่า<br>PromptPay ID</div>';
       }
     } catch(e) { console.error(e); }
 
