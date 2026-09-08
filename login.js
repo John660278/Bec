@@ -13,17 +13,23 @@ async function handleCredentialResponse(response) {
     try {
         const sheetData = await verifyEmailWithGoogleSheets(userEmail);
 
-        if (sheetData && sheetData.isFound) {
+        if (sheetData && sheetData.success) {
             sessionStorage.setItem('loggedInUser', JSON.stringify({
                 email: userEmail,
                 name: userName,
                 picture: userPicture,
-                ...sheetData.extraData 
+                role: sheetData.user.role,
+                studentId: sheetData.user.studentId
             }));
 
-            window.location.href = 'dashboard.html';
+            // Role-based Routing
+            if (sheetData.user.role === 'Admin' || userEmail === 'wanchanachaiu68@nu.ac.th') { // Hardcoded fallback for Admin
+                window.location.href = 'admin_dashboard.html';
+            } else {
+                window.location.href = 'student_dashboard.html';
+            }
         } else {
-            showError(`Error: ไม่พบ Email (${userEmail}) ในระบบ กรุณาติดต่อผู้ดูแลระบบ`);
+            showError(`Error: ไม่พบ Email (${userEmail}) ในระบบ หรือ ${sheetData?.message}`);
         }
     } catch (error) {
         console.error("เกิดข้อผิดพลาดในการตรวจสอบข้อมูล:", error);
@@ -38,31 +44,16 @@ async function verifyEmailWithGoogleSheets(email) {
     console.log("กำลังส่ง API ไปเช็ค Email ใน Google Sheets:", email);
     
     // =================================================================
-    // 🔴 งานของคุณ: นำ URL ของ Web App ที่ได้จาก Google Apps Script มาวางตรงนี้
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyUUKEYNzF0tcylkI1Xo6h8n5BFcdZzqSB4OxwnLZeKKSvhamgOCifc7mj5W7GhN9jb4A/exec"; 
+    // URL ของ Web App ที่ได้จาก Google Apps Script
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMnLEpGSYmdqeQTgU5s4vtVTRKhhAC594wcF-wycBuJqy4tB-XOxi6xAsP6TXPUuy4ew/exec"; 
     // =================================================================
-
-    // ถ้ายังไม่ได้ใส่ URL ขอให้ใช้ Mock เดิมไปก่อนเพื่อป้องกันเว็บพัง
-    if (SCRIPT_URL === "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
-        console.warn("⚠️ ยังไม่ได้ใส่ URL ของ Google Apps Script ระบบกำลังใช้ข้อมูลจำลอง");
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                const allowedEmails = ['admin@example.com', 'test@example.com'];
-                if (allowedEmails.includes(email) || email.endsWith('@gmail.com')) {
-                    resolve({ isFound: true, extraData: { role: 'User' } });
-                } else {
-                    resolve({ isFound: false });
-                }
-            }, 800);
-        });
-    }
 
     // --- โค้ดสำหรับยิง API ของจริง ---
     try {
-        const response = await fetch(`${SCRIPT_URL}?email=${email}`);
+        // อัปเดตให้รองรับ ?action=checkUser
+        const response = await fetch(`${SCRIPT_URL}?action=checkUser&email=${email}`);
         const result = await response.json();
         
-        // result จาก Google Apps Script จะหน้าตาเหมือนกับ { isFound: true, extraData: {...} }
         return result;
     } catch (error) {
         console.error("Fetch API Error:", error);

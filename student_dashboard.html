@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <!-- Tailwind CSS (CDN for simplicity) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- PromptPay QR Library -->
+    <script src="https://unpkg.com/promptpay-qr@3.2.0/lib/promptpay-qr.js"></script>
+    <!-- QRCode.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <nav class="bg-white shadow px-6 py-4 flex justify-between items-center">
+        <div class="text-xl font-bold text-blue-600">💸 Student Dashboard</div>
+        <div class="flex items-center gap-4">
+            <span id="navName" class="font-medium">กำลังโหลด...</span>
+            <button onclick="logout()" class="text-red-500 hover:text-red-700">ออกจากระบบ</button>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto mt-8 p-4">
+        <!-- Profile -->
+        <div class="bg-blue-600 text-white rounded-lg p-6 flex items-center gap-6 shadow-lg mb-8">
+            <img id="profilePic" class="w-20 h-20 rounded-full border-4 border-white" src="" alt="Profile">
+            <div>
+                <h2 id="displayName" class="text-2xl font-bold">กำลังโหลด...</h2>
+                <p id="displayStudentId">รหัสนิสิต: -</p>
+                <p id="displayEmail">Email: -</p>
+            </div>
+        </div>
+
+        <h3 class="text-xl font-bold mb-4">รายการที่ต้องชำระ</h3>
+        <div id="paymentsContainer" class="grid gap-4">
+            <!-- Payment Cards will be injected here -->
+            <p class="text-gray-500">กำลังโหลดข้อมูล...</p>
+        </div>
+    </main>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+        <div class="bg-white rounded-lg w-full max-w-md p-6 relative">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-black">✖</button>
+            <h3 class="text-xl font-bold mb-2">ชำระเงิน</h3>
+            <p id="modalEventTitle" class="text-gray-600 mb-4"></p>
+            
+            <div class="bg-gray-100 rounded p-4 text-center mb-4">
+                <div id="qrcode" class="flex justify-center mb-2"></div>
+                <p class="text-lg font-bold text-blue-600">ยอดชำระ: <span id="modalAmount"></span> บาท</p>
+                <p class="text-sm text-red-500" id="modalPenalty"></p>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">แนบสลิปการโอนเงิน</label>
+                <input type="file" id="slipInput" accept="image/*" class="w-full border rounded p-2">
+            </div>
+
+            <button id="submitSlipBtn" onclick="submitSlip()" class="w-full bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700">ยืนยันการชำระเงิน</button>
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMnLEpGSYmdqeQTgU5s4vtVTRKhhAC594wcF-wycBuJqy4tB-XOxi6xAsP6TXPUuy4ew/exec"; 
+        const PROMPTPAY_ID = "0000000000"; // TODO: ใส่เบอร์โทรหรือเลขบัตรประชาชน PromptPay ของเหรัญญิก
+
+        let currentUser = null;
+        let currentPaymentEvent = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const userDataString = sessionStorage.getItem('loggedInUser');
+            if (!userDataString) {
+                window.location.href = 'index.html';
+                return;
+            }
+            currentUser = JSON.parse(userDataString);
+
+            // Verify Role
+            if (currentUser.role === 'Admin') {
+                window.location.href = 'admin_dashboard.html';
+                return;
+            }
+
+            document.getElementById('profilePic').src = currentUser.picture || 'https://via.placeholder.com/80';
+            document.getElementById('navName').textContent = currentUser.name || '';
+            document.getElementById('displayName').textContent = currentUser.name || '';
+            document.getElementById('displayStudentId').textContent = `รหัสนิสิต: ${currentUser.studentId || '-'}`;
+            document.getElementById('displayEmail').textContent = `Email: ${currentUser.email}`;
+
+            fetchPayments();
+        });
+
+        async function fetchPayments() {
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getStudentPayments&email=${currentUser.email}`);
+                const data = await res.json();
+                
+                const container = document.getElementById('paymentsContainer');
+                container.innerHTML = '';
+
+                if (data.success && data.events.length > 0) {
+                    data.events.forEach(ev => {
+                        container.innerHTML += `
+                            <div class="bg-white p-4 rounded shadow border flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold">${ev.title}</h4>
+                                    <p class="text-sm text-gray-500">กำหนดชำระ: ${new Date(ev.dueDate).toLocaleDateString('th-TH')}</p>
+                                    <p class="text-sm">ยอดเงิน: ${ev.baseAmount} บาท ${ev.penalty > 0 ? `<span class="text-red-500">(ค่าปรับ +${ev.penalty} บาท)</span>` : ''}</p>
+                                </div>
+                                <div>
+                                    ${ev.status === 'Unpaid' ? 
+                                        `<button onclick="openPaymentModal('${ev.eventId}', '${ev.title}', ${ev.totalAmount}, ${ev.penalty})" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">ชำระเงิน</button>` : 
+                                     ev.status === 'Pending' ? 
+                                        `<span class="text-yellow-600 font-bold">รอตรวจสอบ</span>` : 
+                                        `<span class="text-green-600 font-bold">ชำระแล้ว</span>`
+                                    }
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    container.innerHTML = '<p class="text-gray-500">ไม่มีรายการที่ต้องชำระ</p>';
+                }
+            } catch (err) {
+                console.error(err);
+                document.getElementById('paymentsContainer').innerHTML = '<p class="text-red-500">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
+            }
+        }
+
+        function openPaymentModal(eventId, title, totalAmount, penalty) {
+            currentPaymentEvent = { eventId, title, totalAmount, penalty };
+            document.getElementById('modalEventTitle').textContent = title;
+            document.getElementById('modalAmount').textContent = totalAmount;
+            
+            if (penalty > 0) {
+                document.getElementById('modalPenalty').textContent = `*รวมค่าปรับล่าช้า ${penalty} บาท`;
+            } else {
+                document.getElementById('modalPenalty').textContent = '';
+            }
+
+            // Generate PromptPay QR
+            const qrCodeDiv = document.getElementById('qrcode');
+            qrCodeDiv.innerHTML = '';
+            
+            // promptpay-qr library generate payload
+            const payload = promptpayQr(PROMPTPAY_ID, { amount: totalAmount });
+            new QRCode(qrCodeDiv, {
+                text: payload,
+                width: 200,
+                height: 200
+            });
+
+            document.getElementById('paymentModal').classList.remove('hidden');
+            document.getElementById('paymentModal').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('paymentModal').classList.add('hidden');
+            document.getElementById('paymentModal').classList.remove('flex');
+            document.getElementById('slipInput').value = '';
+        }
+
+        async function submitSlip() {
+            const fileInput = document.getElementById('slipInput');
+            if (fileInput.files.length === 0) {
+                alert('กรุณาแนบสลิปการโอนเงิน');
+                return;
+            }
+
+            const btn = document.getElementById('submitSlipBtn');
+            btn.textContent = 'กำลังอัปโหลด...';
+            btn.disabled = true;
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onloadend = async function() {
+                const base64Data = reader.result;
+
+                const payload = {
+                    action: 'uploadSlip',
+                    payload: {
+                        eventId: currentPaymentEvent.eventId,
+                        email: currentUser.email,
+                        studentId: currentUser.studentId,
+                        amount: currentPaymentEvent.totalAmount,
+                        penalty: currentPaymentEvent.penalty,
+                        base64Image: base64Data
+                    }
+                };
+
+                try {
+                    const res = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+                    
+                    if (data.success) {
+                        alert('ส่งสลิปเรียบร้อยแล้ว รอการตรวจสอบ');
+                        closeModal();
+                        fetchPayments(); // Refresh
+                    } else {
+                        alert('เกิดข้อผิดพลาด: ' + data.message);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('อัปโหลดไม่สำเร็จ');
+                } finally {
+                    btn.textContent = 'ยืนยันการชำระเงิน';
+                    btn.disabled = false;
+                }
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        function logout() {
+            sessionStorage.removeItem('loggedInUser');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
