@@ -23,7 +23,7 @@ async function handleCredentialResponse(response) {
             }));
 
             // Role-based Routing
-            if (sheetData.user.role === 'Admin' || userEmail === 'wanchanachaiu68@nu.ac.th') { // Hardcoded fallback for Admin
+            if (sheetData.user.role === 'Admin') { 
                 window.location.href = 'admin_dashboard.html';
             } else {
                 window.location.href = 'student_dashboard.html';
