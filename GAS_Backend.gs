@@ -12,7 +12,7 @@ function setupDatabase() {
     'Payment_Events': ['Event_ID', 'Title', 'Base_Amount', 'Due_Date', 'Created_At'],
     'User_Payments': ['Payment_ID', 'Event_ID', 'User_Email', 'Paid_Amount', 'Penalty_Fee', 'Status', 'Slip_Url', 'Paid_At'],
     'Expenses': ['Expense_ID', 'Title', 'Amount', 'Date', 'Receipt_Url', 'Added_By'],
-    'Incomes': ['Income_ID', 'Source', 'Amount', 'Date', 'Added_By'],
+    'Incomes': ['Income_ID', 'Source', 'Amount', 'Date', 'Receipt_Url', 'Added_By'],
     'Student_Matrix': ['Student_ID', 'Name', 'Email']
   };
 
@@ -93,9 +93,14 @@ function getEvents() {
 }
 
 function getAllPayments() {
-  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-  const pData = ss.getSheetByName('User_Payments').getDataRange().getValues();
-  const eData = ss.getSheetByName('Payment_Events').getDataRange().getValues();
+  // Load user names for email lookup
+  const usersData = ss.getSheetByName('Users').getDataRange().getValues();
+  const emailToName = {};
+  for (let i = 1; i < usersData.length; i++) {
+    const email = usersData[i][0];
+    const name = usersData[i][2];
+    emailToName[email] = name;
+  }
   
   const eventMap = {};
   for (let i = 1; i < eData.length; i++) {
@@ -109,6 +114,7 @@ function getAllPayments() {
       eventId: pData[i][1],
       eventTitle: eventMap[pData[i][1]] || pData[i][1],
       email: pData[i][2],
+      name: emailToName[pData[i][2]] || '-',
       paidAmount: pData[i][3],
       penalty: pData[i][4],
       status: pData[i][5],
@@ -213,8 +219,23 @@ function approvePayment(payload) {
   return { success: true };
 }
 
+function uploadFinanceImage(base64Image, prefix) {
+  const folder = DriveApp.getFolderById(FOLDER_ID);
+  const contentType = base64Image.substring(5, base64Image.indexOf(';'));
+  const base64Data = base64Image.split(',')[1];
+  const blob = Utilities.newBlob(Utilities.base64Decode(base64Data), contentType, `${prefix}_${new Date().getTime()}.jpg`);
+  const file = folder.createFile(blob);
+  file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  return file.getUrl();
+}
+
 function addExpense(payload) {
-  const { title, amount, date, receiptUrl } = payload;
+  const { title, amount, date, base64Image } = payload;
+  let receiptUrl = '';
+  if (base64Image) {
+    receiptUrl = uploadFinanceImage(base64Image, 'EXP');
+  }
+  
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const expenseId = 'EXP_' + new Date().getTime();
   ss.getSheetByName('Expenses').appendRow([expenseId, title, amount, date, receiptUrl, 'Admin']);
@@ -222,10 +243,15 @@ function addExpense(payload) {
 }
 
 function addIncome(payload) {
-  const { source, amount, date } = payload;
+  const { source, amount, date, base64Image } = payload;
+  let receiptUrl = '';
+  if (base64Image) {
+    receiptUrl = uploadFinanceImage(base64Image, 'INC');
+  }
+  
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const incomeId = 'INC_' + new Date().getTime();
-  ss.getSheetByName('Incomes').appendRow([incomeId, source, amount, date, 'Admin']);
+  ss.getSheetByName('Incomes').appendRow([incomeId, source, amount, date, receiptUrl, 'Admin']);
   return { success: true };
 }
 
@@ -241,7 +267,8 @@ function getPublicDashboard() {
   const incomes = [];
   for (let i = 1; i < incomesData.length; i++) {
     totalIncome += Number(incomesData[i][2]) || 0;
-    incomes.push({ source: incomesData[i][1], amount: incomesData[i][2], date: incomesData[i][3] });
+    // index 4 is Receipt_Url now
+    incomes.push({ source: incomesData[i][1], amount: incomesData[i][2], date: incomesData[i][3], receiptUrl: incomesData[i][4] });
   }
 
   // 2. Calculate Expenses

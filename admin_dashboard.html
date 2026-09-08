@@ -648,32 +648,217 @@
         <button class="filter-tab" id="tabIncome" onclick="switchFinance('income')">รายรับ</button>
       </div>
 
-      <!-- Expense -->
-      <div id="financeExpense">
-        <div class="form-card">
-          <div class="form-card-title">บันทึกรายจ่าย</div>
-          <div class="form-grid">
-            <div class="form-group full"><label>รายการ</label><input type="text" id="expTitle" placeholder="เช่น ค่าของว่างประชุม" /></div>
-            <div class="form-group"><label>จำนวน (฿)</label><input type="number" id="expAmount" placeholder="0" /></div>
-            <div class="form-group"><label>วันที่</label><input type="date" id="expDate" /></div>
-            <div class="form-group full"><label>URL ใบเสร็จ (ถ้ามี)</label><input type="text" id="expReceipt" placeholder="https://..." /></div>
-          </div>
-          <button class="btn btn-primary" onclick="handleAddExpense()">บันทึกรายจ่าย</button>
-        </div>
-      </div>
+<!-- Expense Form Updated -->
+<div class="form-card" id="expenseForm">
+  <div class="form-card-title">บันทึกรายจ่าย</div>
+  <div class="form-grid">
+    <div class="form-group full">
+      <label>รายการ</label>
+      <input type="text" id="expTitle" placeholder="เช่น ค่าของว่างประชุม" />
+    </div>
+    <div class="form-group">
+      <label>จำนวน (฿)</label>
+      <input type="number" id="expAmount" placeholder="0" />
+    </div>
+    <div class="form-group">
+      <label>วันที่</label>
+      <input type="date" id="expDate" />
+    </div>
+    <div class="form-group full">
+      <label>ใบเสร็จ (รูปภาพ)</label>
+      <input type="file" id="expReceiptFile" accept="image/*" />
+    </div>
+  </div>
+  <button class="btn btn-primary" onclick="handleAddExpense()">บันทึกรายจ่าย</button>
+</div>
 
-      <!-- Income -->
-      <div id="financeIncome" style="display:none">
-        <div class="form-card">
-          <div class="form-card-title">บันทึกรายรับ</div>
-          <div class="form-grid">
-            <div class="form-group full"><label>แหล่งที่มา</label><input type="text" id="incSource" placeholder="เช่น สปอนเซอร์ พี่บัณฑิต" /></div>
-            <div class="form-group"><label>จำนวน (฿)</label><input type="number" id="incAmount" placeholder="0" /></div>
-            <div class="form-group"><label>วันที่</label><input type="date" id="incDate" /></div>
-          </div>
-          <button class="btn btn-primary" onclick="handleAddIncome()">บันทึกรายรับ</button>
-        </div>
-      </div>
+<!-- Income Form Updated -->
+<div class="form-card" id="incomeForm" style="display:none">
+  <div class="form-card-title">บันทึกรายรับ</div>
+  <div class="form-grid">
+    <div class="form-group full">
+      <label>แหล่งที่มา</label>
+      <input type="text" id="incSource" placeholder="เช่น สปอนเซอร์ พี่บัณฑิต" />
+    </div>
+    <div class="form-group">
+      <label>จำนวน (฿)</label>
+      <input type="number" id="incAmount" placeholder="0" />
+    </div>
+    <div class="form-group">
+      <label>วันที่</label>
+      <input type="date" id="incDate" />
+    </div>
+    <div class="form-group full">
+      <label>ใบเสร็จ (รูปภาพ)</label>
+      <input type="file" id="incReceiptFile" accept="image/*" />
+    </div>
+  </div>
+  <button class="btn btn-primary" onclick="handleAddIncome()">บันทึกรายรับ</button>
+</div>
+
+<!-- Finance Lists -->
+<div id="financeLists" style="margin-top:2rem; display:none;">
+  <div id="expenseList" class="section">
+    <div class="section-title">รายการใช้จ่าย</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>รายการ</th><th>จำนวน (฿)</th><th>วันที่</th><th>ใบเสร็จ</th></tr>
+        </thead>
+        <tbody id="expenseBody"><tr><td colspan="4"><div class="skeleton" style="width:80%"></div></td></tr></tbody>
+      </table>
+    </div>
+  </div>
+  <div id="incomeList" class="section" style="margin-top:1.5rem;">
+    <div class="section-title">รายการรับเงิน</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>แหล่งที่มา</th><th>จำนวน (฿)</th><th>วันที่</th><th>ใบเสร็จ</th></tr>
+        </thead>
+        <tbody id="incomeBody"><tr><td colspan="4"><div class="skeleton" style="width:80%"></div></td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Switch between expense/income tabs
+  function switchFinance(view) {
+    document.getElementById('expenseForm').style.display = view === 'expense' ? 'block' : 'none';
+    document.getElementById('incomeForm').style.display = view === 'income' ? 'block' : 'none';
+    document.getElementById('financeLists').style.display = 'block';
+    fetchFinanceData(view);
+  }
+
+  // Fetch and render expenses/incomes using public dashboard endpoint
+  async function fetchFinanceData(type) {
+    try {
+      const res = await fetch(`${SCRIPT_URL}?action=getPublicDashboard`);
+      const data = await res.json();
+      if (!data.success) throw new Error('fetch fail');
+      if (type === 'expense') {
+        const tbody = document.getElementById('expenseBody');
+        if (data.expenses.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><p>ไม่มีรายการใช้จ่าย</p></div></td></tr>`;
+        } else {
+          tbody.innerHTML = data.expenses.map(exp => `
+            <tr>
+              <td>${exp.title}</td>
+              <td>${Number(exp.amount).toLocaleString()}</td>
+              <td>${new Date(exp.date).toLocaleDateString('th-TH')}</td>
+              <td>${exp.receiptUrl ? `<a href="${exp.receiptUrl}" target="_blank" style="color:var(--accent);text-decoration:underline">ดู</a>` : '-'} </td>
+            </tr>
+          `).join('');
+        }
+      } else if (type === 'income') {
+        const tbody = document.getElementById('incomeBody');
+        if (data.incomes.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><p>ไม่มีรายการรับเงิน</p></div></td></tr>`;
+        } else {
+          tbody.innerHTML = data.incomes.map(inc => `
+            <tr>
+              <td>${inc.source}</td>
+              <td>${Number(inc.amount).toLocaleString()}</td>
+              <td>${new Date(inc.date).toLocaleDateString('th-TH')}</td>
+              <td>${inc.receiptUrl ? `<a href="${inc.receiptUrl}" target="_blank" style="color:var(--accent);text-decoration:underline">ดู</a>` : '-'} </td>
+            </tr>
+          `).join('');
+        }
+      }
+    } catch (e) {
+      const body = type === 'expense' ? document.getElementById('expenseBody') : document.getElementById('incomeBody');
+      body.innerHTML = `<tr><td colspan="4"><div class="empty-state"><p style="color:var(--danger)">โหลดข้อมูลล้มเหลว</p></div></td></tr>`;
+    }
+  }
+
+  // Helper to convert file to base64
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = err => reject(err);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function handleAddExpense() {
+    const title = document.getElementById('expTitle').value.trim();
+    const amount = document.getElementById('expAmount').value;
+    const date = document.getElementById('expDate').value;
+    const fileInput = document.getElementById('expReceiptFile');
+    let base64Image = '';
+    if (fileInput.files.length) {
+      base64Image = await fileToBase64(fileInput.files[0]);
+    }
+    if (!title || !amount || !date) {
+      alert('กรุณากรอกข้อมูลครบ');
+      return;
+    }
+    const btn = event.target;
+    btn.disabled = true;
+    try {
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'addExpense', payload: { title, amount, date, base64Image } })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('บันทึกรายจ่ายสำเร็จ');
+        // reset fields
+        document.getElementById('expTitle').value = '';
+        document.getElementById('expAmount').value = '';
+        document.getElementById('expDate').value = '';
+        fileInput.value = '';
+        fetchFinanceData('expense');
+      } else {
+        alert('บันทึกล้มเหลว: ' + data.message);
+      }
+    } catch (e) {
+      alert('ข้อผิดพลาดในการบันทึก');
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  async function handleAddIncome() {
+    const source = document.getElementById('incSource').value.trim();
+    const amount = document.getElementById('incAmount').value;
+    const date = document.getElementById('incDate').value;
+    const fileInput = document.getElementById('incReceiptFile');
+    let base64Image = '';
+    if (fileInput.files.length) {
+      base64Image = await fileToBase64(fileInput.files[0]);
+    }
+    if (!source || !amount || !date) {
+      alert('กรุณากรอกข้อมูลครบ');
+      return;
+    }
+    const btn = event.target;
+    btn.disabled = true;
+    try {
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'addIncome', payload: { source, amount, date, base64Image } })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('บันทึกรายรับสำเร็จ');
+        document.getElementById('incSource').value = '';
+        document.getElementById('incAmount').value = '';
+        document.getElementById('incDate').value = '';
+        fileInput.value = '';
+        fetchFinanceData('income');
+      } else {
+        alert('บันทึกล้มเหลว: ' + data.message);
+      }
+    } catch (e) {
+      alert('ข้อผิดพลาดในการบันทึก');
+    } finally {
+      btn.disabled = false;
+    }
+  }
+</script>
     </div>
 
   </main>
@@ -814,12 +999,12 @@
       } else {
         tbody.innerHTML = recent.map(p => `
           <tr>
-            <td>${formatDate(p.paidAt)}</td>
-            <td style="color:var(--muted);font-size:0.75rem">${p.email}</td>
+                        <td>${formatDate(p.paidAt)}</td>
+            <td style="color:var(--muted);font-size:0.75rem">${p.name}</td>
             <td>${p.eventId}</td>
             <td>${Number(p.paidAmount).toLocaleString()}</td>
             <td>${Number(p.penalty || 0).toLocaleString()}</td>
-            <td><button class="btn btn-primary btn-sm" onclick="approve('${p.paymentId}','${p.eventTitle}','${p.email}',${p.paidAmount})">อนุมัติ</button></td>
+            <td>${p.slipUrl ? '<a href="' + p.slipUrl + '" target="_blank">ดู</a>' : ''}</td>
           </tr>
         `).join('');
       }
