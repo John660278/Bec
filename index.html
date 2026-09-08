@@ -19,6 +19,10 @@
             }
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -35,8 +39,8 @@
             align-items: flex-start;
             justify-content: center;
             position: relative;
-            padding: 2rem;
-            padding-top: 100px;
+            padding: 1rem;
+            padding-top: 60px;
         }
 
         .perspective-wrapper {
@@ -54,35 +58,36 @@
             text-align: center;
             will-change: transform;
             z-index: 10;
+            padding: 0 1rem;
         }
 
         h1 {
-            font-size: 2.25rem;
+            font-size: 1.25rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
         }
 
         .highlight-text {
-            font-size: 4.5rem;
+            font-size: 2.5rem;
             font-weight: 800;
             color: #2563eb;
             line-height: 1;
             display: block;
-            margin-bottom: 2rem;
+            margin-bottom: 1.25rem;
         }
 
-        /* Card Animation Styles (หน้าจอไอแพด) */
+        /* Card Animation Styles */
         .animated-card {
             max-width: 1024px;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
             margin-left: auto;
             margin-right: auto;
-            height: 45rem;
+            height: 32rem;
             width: 100%;
-            border: 4px solid #6C6C6C;
-            padding: 1.25rem;
+            border: 3px solid #6C6C6C;
+            padding: 0.75rem;
             background-color: #222222;
-            border-radius: 30px;
+            border-radius: 20px;
             box-shadow: 0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003;
             transform-origin: top center;
             will-change: transform;
@@ -94,7 +99,7 @@
             height: 100%;
             width: 100%;
             overflow: hidden;
-            border-radius: 1rem;
+            border-radius: 0.75rem;
             background-color: #18181b;
             position: relative;
             display: flex;
@@ -102,7 +107,7 @@
             justify-content: center;
         }
 
-        /* รูปภาพพื้นหลังของไอแพด */
+        /* รูปภาพพื้นหลัง */
         .card-inner img {
             position: absolute;
             top: 0;
@@ -115,33 +120,36 @@
             filter: brightness(0.6) blur(2px);
         }
 
-        /* กล่อง Login (ลอยอยู่ตรงกลางจอ) */
+        /* กล่อง Login */
         .login-box {
             position: relative;
             z-index: 10;
             background-color: rgba(255, 255, 255, 0.95);
-            padding: 2.5rem 3rem;
-            border-radius: 1.5rem;
+            padding: 1.5rem 1.75rem;
+            border-radius: 1.25rem;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
             align-items: center;
             color: #1f2937;
             backdrop-filter: blur(10px);
+            width: 90%;
+            max-width: 340px;
         }
 
         .login-box h2 {
             margin-top: 0;
-            margin-bottom: 0.5rem;
-            font-size: 1.8rem;
+            margin-bottom: 0.35rem;
+            font-size: 1.4rem;
             font-weight: 700;
         }
 
         .login-box p.subtitle {
             margin-top: 0;
-            margin-bottom: 2rem;
+            margin-bottom: 1.25rem;
             color: #6b7280;
-            font-size: 1rem;
+            font-size: 0.875rem;
+            text-align: center;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -155,6 +163,45 @@
             }
         }
 
+        /* Desktop - ขยายขึ้นเต็มๆ */
+        @media (min-width: 768px) {
+            .scroll-container {
+                padding-top: 100px;
+                padding: 2rem;
+                padding-top: 100px;
+            }
+            h1 {
+                font-size: 2.25rem;
+            }
+            .highlight-text {
+                font-size: 4.5rem;
+                margin-bottom: 2rem;
+            }
+            .animated-card {
+                height: 45rem;
+                border-width: 4px;
+                border-radius: 30px;
+                padding: 1.25rem;
+                margin-top: 1rem;
+            }
+            .card-inner {
+                border-radius: 1rem;
+            }
+            .login-box {
+                padding: 2.5rem 3rem;
+                border-radius: 1.5rem;
+                width: auto;
+                max-width: none;
+            }
+            .login-box h2 {
+                font-size: 1.8rem;
+            }
+            .login-box p.subtitle {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+        }
+
         .error-message {
             color: #ef4444;
             margin-top: 1rem;
@@ -163,6 +210,7 @@
             font-weight: 500;
             text-align: center;
         }
+
     </style>
 </head>
 <body>
