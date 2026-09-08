@@ -1,225 +1,729 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
-    <!-- Tailwind CSS (CDN for simplicity) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- PromptPay QR Library -->
-    <script src="https://unpkg.com/promptpay-qr@3.2.0/lib/promptpay-qr.js"></script>
-    <!-- QRCode.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — BEC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/promptpay-qr@3.2.0/lib/promptpay-qr.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0a0a0a;
+      --surface:  #111111;
+      --surface2: #161616;
+      --border:   #1e1e1e;
+      --border2:  #2a2a2a;
+      --text:     #f0f0f0;
+      --muted:    #6b6b6b;
+      --muted2:   #444;
+      --accent:   #ffffff;
+      --danger:   #ef4444;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ─── NAV ─── */
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.5rem;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+    }
+    .nav-logo span {
+      font-size: 0.65rem;
+      font-weight: 400;
+      color: var(--muted);
+      margin-left: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .nav-avatar {
+      width: 30px; height: 30px;
+      background: var(--border2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 600;
+      color: var(--text);
+      overflow: hidden;
+    }
+    .nav-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .nav-name {
+      font-size: 0.78rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+    .nav-logout {
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); display: flex; padding: 4px;
+      border-radius: 4px; transition: color 120ms;
+    }
+    .nav-logout:hover { color: var(--danger); }
+
+    /* ─── HERO ─── */
+    .hero {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .hero-left { display: flex; align-items: center; gap: 1rem; }
+    .hero-avatar {
+      width: 56px; height: 56px;
+      background: var(--border2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: var(--muted);
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .hero-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-name { font-size: 1.05rem; font-weight: 600; color: var(--accent); }
+    .hero-meta { font-size: 0.73rem; color: var(--muted); margin-top: 0.2rem; }
+
+    .hero-right { text-align: right; flex-shrink: 0; }
+    .hero-stat-num {
+      font-size: 1.6rem;
+      font-weight: 300;
+      color: var(--accent);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .hero-stat-label {
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-top: 0.25rem;
+    }
+
+    /* ─── TABS ─── */
+    .tabs-bar {
+      display: flex;
+      gap: 4px;
+      padding: 1rem 2rem 0;
+    }
+    .tab-pill {
+      padding: 0.3rem 0.85rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border2);
+      background: transparent;
+      color: var(--muted);
+      font-family: inherit;
+      transition: all 120ms;
+    }
+    .tab-pill.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+    /* ─── CONTENT ─── */
+    .content {
+      padding: 1.25rem 2rem 2rem;
+    }
+
+    /* ─── PAYMENT ITEM ─── */
+    .payment-list { display: flex; flex-direction: column; gap: 1px; }
+
+    .payment-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      transition: background 120ms;
+      margin-bottom: 6px;
+    }
+    .payment-item:hover { background: var(--surface2); }
+
+    .payment-left { flex: 1; min-width: 0; }
+    .payment-title {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .payment-due {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 0.15rem;
+    }
+    .payment-penalty {
+      font-size: 0.7rem;
+      color: var(--danger);
+      margin-top: 0.2rem;
+    }
+
+    .payment-mid {
+      text-align: right;
+      min-width: 90px;
+    }
+    .payment-amount {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+    }
+    .payment-base-label {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
+
+    .payment-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.4rem;
+      min-width: 100px;
+    }
+
+    /* ─── BADGE ─── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 0.68rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .badge-unpaid  { border: 1px solid var(--border2); color: var(--muted); }
+    .badge-pending { border: 1px solid var(--muted2);  color: var(--muted2); }
+    .badge-paid    { border: 1px solid var(--muted2);  color: var(--text); }
+
+    /* ─── BUTTON ─── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.38rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 120ms;
+      border: none;
+      font-family: inherit;
+    }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-primary { background: var(--accent); color: #000; }
+    .btn-primary:hover:not(:disabled) { opacity: 0.85; }
+    .btn-sm { padding: 0.28rem 0.65rem; font-size: 0.72rem; }
+
+    /* ─── EMPTY STATE ─── */
+    .empty-state {
+      text-align: center;
+      padding: 3.5rem 1rem;
+      color: var(--muted);
+    }
+    .empty-state p { font-size: 0.82rem; }
+    .empty-state small { font-size: 0.72rem; color: var(--muted2); display: block; margin-top: 0.35rem; }
+
+    /* ─── SKELETON ─── */
+    @keyframes shimmer {
+      0% { background-position: -400px 0; }
+      100% { background-position: 400px 0; }
+    }
+    .skeleton {
+      background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
+      background-size: 800px 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 4px;
+      height: 14px;
+    }
+
+    .skeleton-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    /* ─── MODAL ─── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 180ms;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: auto; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      width: 100%;
+      max-width: 400px;
+      padding: 1.5rem;
+      position: relative;
+      transform: translateY(12px);
+      transition: transform 180ms;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    .modal-close {
+      position: absolute;
+      top: 0.75rem; right: 0.85rem;
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 1.1rem;
+      transition: color 120ms;
+    }
+    .modal-close:hover { color: var(--text); }
+
+    .modal-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 0.2rem;
+    }
+    .modal-amount {
+      font-size: 1.5rem;
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+      margin-bottom: 0.2rem;
+    }
+    .modal-penalty {
+      font-size: 0.72rem;
+      color: var(--danger);
+      margin-bottom: 1rem;
+    }
+
+    .modal-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1rem 0;
+    }
+
+    /* QR area */
+    .qr-section { text-align: center; }
+    .qr-box {
+      display: inline-block;
+      background: #fff;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+    }
+    .qr-label { font-size: 0.7rem; color: var(--muted); }
+
+    /* File upload */
+    .upload-area {
+      border: 1.5px dashed var(--border2);
+      border-radius: 6px;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 150ms;
+      margin-bottom: 0.75rem;
+      position: relative;
+    }
+    .upload-area:hover { border-color: var(--muted2); }
+    .upload-area input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .upload-icon { color: var(--muted); margin-bottom: 0.35rem; }
+    .upload-text { font-size: 0.78rem; color: var(--muted); }
+    .upload-filename { font-size: 0.75rem; color: var(--text); margin-top: 0.4rem; font-weight: 500; }
+
+    .btn-full { width: 100%; justify-content: center; padding: 0.6rem 1rem; font-size: 0.82rem; }
+
+    /* Success state */
+    .success-state {
+      text-align: center;
+      padding: 1.5rem 0;
+      display: none;
+    }
+    .success-state svg { color: #4ade80; margin-bottom: 0.5rem; }
+    .success-state p { font-size: 0.82rem; color: var(--text); }
+    .success-state small { font-size: 0.72rem; color: var(--muted); }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 640px) {
+      .hero { padding: 1rem 1.25rem; flex-direction: column; align-items: flex-start; }
+      .hero-right { text-align: left; }
+      .tabs-bar { padding: 0.75rem 1.25rem 0; }
+      .content { padding: 1rem 1.25rem 5rem; }
+      .payment-item { flex-wrap: wrap; gap: 0.75rem; }
+      .payment-mid { text-align: left; }
+      .payment-right { flex-direction: row; align-items: center; min-width: unset; width: 100%; justify-content: space-between; }
+      .topnav { padding: 0 1.25rem; }
+      .nav-name { display: none; }
+      .modal-overlay { align-items: flex-end; padding: 0; }
+      .modal { border-radius: 10px 10px 0 0; max-width: 100%; }
+    }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body>
 
-    <nav class="bg-white shadow px-6 py-4 flex justify-between items-center">
-        <div class="text-xl font-bold text-blue-600">💸 Student Dashboard</div>
-        <div class="flex items-center gap-4">
-            <span id="navName" class="font-medium">กำลังโหลด...</span>
-            <button onclick="logout()" class="text-red-500 hover:text-red-700">ออกจากระบบ</button>
+<!-- NAV -->
+<nav class="topnav">
+  <div class="nav-logo">BEC <span>ระบบการเงินสาขา</span></div>
+  <div class="nav-right">
+    <div class="nav-avatar" id="navAvatar"></div>
+    <span class="nav-name" id="navName"></span>
+    <button class="nav-logout" onclick="logout()" title="ออกจากระบบ">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-avatar" id="heroAvatar"></div>
+    <div>
+      <div class="hero-name" id="heroName">กำลังโหลด...</div>
+      <div class="hero-meta" id="heroBio">—</div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stat-num" id="heroUnpaidCount">—</div>
+    <div class="hero-stat-label">รายการค้างชำระ</div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-bar">
+  <button class="tab-pill active" onclick="filterItems('all',this)">ทั้งหมด</button>
+  <button class="tab-pill" onclick="filterItems('Unpaid',this)">ค้างชำระ</button>
+  <button class="tab-pill" onclick="filterItems('Pending',this)">รอตรวจสอบ</button>
+  <button class="tab-pill" onclick="filterItems('Paid',this)">ชำระแล้ว</button>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+  <div class="payment-list" id="paymentList">
+    <!-- skeleton -->
+    <div class="skeleton-card">
+      <div class="skeleton" style="width:55%;height:16px"></div>
+      <div class="skeleton" style="width:35%"></div>
+    </div>
+    <div class="skeleton-card">
+      <div class="skeleton" style="width:65%;height:16px"></div>
+      <div class="skeleton" style="width:30%"></div>
+    </div>
+    <div class="skeleton-card">
+      <div class="skeleton" style="width:50%;height:16px"></div>
+      <div class="skeleton" style="width:40%"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+
+    <!-- main content -->
+    <div id="modalContent">
+      <div class="modal-title" id="modalTitle">—</div>
+      <div class="modal-amount" id="modalAmount">฿0</div>
+      <div class="modal-penalty" id="modalPenalty" style="display:none"></div>
+
+      <hr class="modal-divider" />
+
+      <div class="qr-section">
+        <div class="qr-box">
+          <div id="qrcode"></div>
         </div>
-    </nav>
+        <div class="qr-label" id="qrLabel">PromptPay</div>
+      </div>
 
-    <main class="max-w-4xl mx-auto mt-8 p-4">
-        <!-- Profile -->
-        <div class="bg-blue-600 text-white rounded-lg p-6 flex items-center gap-6 shadow-lg mb-8">
-            <img id="profilePic" class="w-20 h-20 rounded-full border-4 border-white" src="" alt="Profile">
-            <div>
-                <h2 id="displayName" class="text-2xl font-bold">กำลังโหลด...</h2>
-                <p id="displayStudentId">รหัสนิสิต: -</p>
-                <p id="displayEmail">Email: -</p>
-            </div>
+      <hr class="modal-divider" />
+
+      <div class="upload-area" id="uploadArea">
+        <input type="file" id="slipInput" accept="image/*" onchange="onFileSelect(this)" />
+        <div class="upload-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         </div>
+        <div class="upload-text">แตะเพื่อแนบรูปสลิป</div>
+        <div class="upload-filename" id="uploadFilename"></div>
+      </div>
 
-        <h3 class="text-xl font-bold mb-4">รายการที่ต้องชำระ</h3>
-        <div id="paymentsContainer" class="grid gap-4">
-            <!-- Payment Cards will be injected here -->
-            <p class="text-gray-500">กำลังโหลดข้อมูล...</p>
-        </div>
-    </main>
-
-    <!-- Payment Modal -->
-    <div id="paymentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
-        <div class="bg-white rounded-lg w-full max-w-md p-6 relative">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-black">✖</button>
-            <h3 class="text-xl font-bold mb-2">ชำระเงิน</h3>
-            <p id="modalEventTitle" class="text-gray-600 mb-4"></p>
-            
-            <div class="bg-gray-100 rounded p-4 text-center mb-4">
-                <div id="qrcode" class="flex justify-center mb-2"></div>
-                <p class="text-lg font-bold text-blue-600">ยอดชำระ: <span id="modalAmount"></span> บาท</p>
-                <p class="text-sm text-red-500" id="modalPenalty"></p>
-            </div>
-
-            <div class="mb-4">
-                <label class="block text-sm font-medium mb-1">แนบสลิปการโอนเงิน</label>
-                <input type="file" id="slipInput" accept="image/*" class="w-full border rounded p-2">
-            </div>
-
-            <button id="submitSlipBtn" onclick="submitSlip()" class="w-full bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700">ยืนยันการชำระเงิน</button>
-        </div>
+      <button class="btn btn-primary btn-full" id="submitBtn" onclick="submitSlip()">ยืนยันการชำระเงิน</button>
     </div>
 
-    <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMnLEpGSYmdqeQTgU5s4vtVTRKhhAC594wcF-wycBuJqy4tB-XOxi6xAsP6TXPUuy4ew/exec"; 
-        const PROMPTPAY_ID = "0000000000"; // TODO: ใส่เบอร์โทรหรือเลขบัตรประชาชน PromptPay ของเหรัญญิก
+    <!-- success -->
+    <div class="success-state" id="successState">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <p>ส่งสลิปเรียบร้อยแล้ว</p>
+      <small>รอเจ้าหน้าที่ตรวจสอบ 1–2 วันทำการ</small>
+    </div>
+  </div>
+</div>
 
-        let currentUser = null;
-        let currentPaymentEvent = null;
+<script>
+  const SCRIPT_URL    = "https://script.google.com/macros/s/AKfycbwMnLEpGSYmdqeQTgU5s4vtVTRKhhAC594wcF-wycBuJqy4tB-XOxi6xAsP6TXPUuy4ew/exec";
+  const PROMPTPAY_ID  = "0000000000"; // ← เปลี่ยนเป็นเบอร์/เลขบัตรเหรัญญิก
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const userDataString = sessionStorage.getItem('loggedInUser');
-            if (!userDataString) {
-                window.location.href = 'index.html';
-                return;
+  let currentUser = null;
+  let allEvents   = [];
+  let currentPayment = null;
+
+  // ─── INIT ───
+  document.addEventListener('DOMContentLoaded', () => {
+    const raw = sessionStorage.getItem('loggedInUser');
+    if (!raw) { location.href = 'index.html'; return; }
+    currentUser = JSON.parse(raw);
+
+    if (currentUser.role === 'Admin') {
+      location.href = 'admin_dashboard.html'; return;
+    }
+
+    // Fill nav & hero
+    const initial = (currentUser.name || 'U')[0].toUpperCase();
+    const pic = currentUser.picture || '';
+
+    const navAv = document.getElementById('navAvatar');
+    navAv.innerHTML = pic ? `<img src="${pic}" alt="">` : initial;
+    document.getElementById('navName').textContent = currentUser.name || '';
+
+    const heroAv = document.getElementById('heroAvatar');
+    heroAv.innerHTML = pic ? `<img src="${pic}" alt="">` : `<span style="font-size:1.4rem;color:var(--muted)">${initial}</span>`;
+    document.getElementById('heroName').textContent = currentUser.name || '—';
+    document.getElementById('heroBio').textContent =
+      `${currentUser.studentId ? currentUser.studentId + '  ·  ' : ''}${currentUser.email}`;
+
+    fetchPayments();
+  });
+
+  // ─── FETCH ───
+  async function fetchPayments() {
+    try {
+      const res  = await fetch(`${SCRIPT_URL}?action=getStudentPayments&email=${currentUser.email}`);
+      const data = await res.json();
+
+      if (data.success) {
+        allEvents = data.events || [];
+        const unpaid = allEvents.filter(e => e.status === 'Unpaid').length;
+        document.getElementById('heroUnpaidCount').textContent = unpaid;
+        renderList(allEvents);
+      } else {
+        showError('ไม่สามารถโหลดข้อมูลได้');
+      }
+    } catch (e) {
+      showError('เชื่อมต่อล้มเหลว — ลองใหม่อีกครั้ง');
+    }
+  }
+
+  function renderList(items) {
+    const container = document.getElementById('paymentList');
+    if (!items.length) {
+      container.innerHTML = `<div class="empty-state"><p>ไม่มีรายการชำระเงิน</p><small>เมื่อแอดมินสร้างรอบใหม่ จะปรากฏที่นี่</small></div>`;
+      return;
+    }
+
+    container.innerHTML = items.map(ev => {
+      const isUnpaid  = ev.status === 'Unpaid';
+      const isPending = ev.status === 'Pending';
+      const isPaid    = ev.status === 'Paid';
+
+      const badgeClass = isUnpaid ? 'badge-unpaid' : isPending ? 'badge-pending' : 'badge-paid';
+      const badgeText  = isUnpaid ? 'ค้างชำระ' : isPending ? 'รอตรวจสอบ' : 'ชำระแล้ว';
+      const dueStr     = new Date(ev.dueDate).toLocaleDateString('th-TH', { day:'2-digit', month:'short', year:'2-digit' });
+
+      return `
+        <div class="payment-item">
+          <div class="payment-left">
+            <div class="payment-title">${ev.title}</div>
+            <div class="payment-due">ครบกำหนด ${dueStr}</div>
+            ${ev.penalty > 0 ? `<div class="payment-penalty">ค่าปรับ +${ev.penalty}฿ (เกินกำหนด)</div>` : ''}
+          </div>
+          <div class="payment-mid">
+            <div class="payment-amount">${Number(ev.totalAmount).toLocaleString('th-TH')}฿</div>
+            ${ev.penalty > 0 ? `<div class="payment-base-label">ยอดหลัก ${Number(ev.baseAmount).toLocaleString()}฿</div>` : ''}
+          </div>
+          <div class="payment-right">
+            <span class="badge ${badgeClass}">${badgeText}</span>
+            ${isUnpaid ? `<button class="btn btn-primary btn-sm" onclick="openModal('${ev.eventId}','${ev.title}',${ev.totalAmount},${ev.penalty})">ชำระเงิน</button>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function filterItems(status, el) {
+    document.querySelectorAll('.tab-pill').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    const list = status === 'all' ? allEvents : allEvents.filter(e => e.status === status);
+    renderList(list);
+  }
+
+  function showError(msg) {
+    document.getElementById('paymentList').innerHTML =
+      `<div class="empty-state"><p style="color:var(--danger)">${msg}</p></div>`;
+  }
+
+  // ─── MODAL ───
+  function openModal(eventId, title, totalAmount, penalty) {
+    currentPayment = { eventId, title, totalAmount, penalty };
+    document.getElementById('modalTitle').textContent  = title;
+    document.getElementById('modalAmount').textContent = `฿${Number(totalAmount).toLocaleString('th-TH')}`;
+
+    const penEl = document.getElementById('modalPenalty');
+    if (penalty > 0) {
+      penEl.textContent = `รวมค่าปรับล่าช้า ฿${penalty}`;
+      penEl.style.display = 'block';
+    } else {
+      penEl.style.display = 'none';
+    }
+
+    // QR
+    const qrDiv = document.getElementById('qrcode');
+    qrDiv.innerHTML = '';
+    try {
+      const payload = window.promptpayQr
+        ? window.promptpayQr(PROMPTPAY_ID, { amount: totalAmount })
+        : null;
+      if (payload) {
+        new QRCode(qrDiv, { text: payload, width: 180, height: 180, colorDark: '#000', colorLight: '#fff' });
+        document.getElementById('qrLabel').textContent = `PromptPay · ฿${Number(totalAmount).toLocaleString('th-TH')}`;
+      } else {
+        qrDiv.innerHTML = '<div style="width:180px;height:180px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:#999">QR ไม่พร้อมใช้งาน</div>';
+      }
+    } catch(e) { console.error(e); }
+
+    // Reset upload & success
+    document.getElementById('uploadFilename').textContent = '';
+    document.getElementById('slipInput').value = '';
+    document.getElementById('modalContent').style.display = 'block';
+    document.getElementById('successState').style.display = 'none';
+    document.getElementById('submitBtn').disabled = false;
+    document.getElementById('submitBtn').textContent = 'ยืนยันการชำระเงิน';
+
+    document.getElementById('paymentModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('paymentModal').classList.remove('open');
+    document.body.style.overflow = '';
+    currentPayment = null;
+  }
+
+  function onFileSelect(input) {
+    const file = input.files[0];
+    if (file) {
+      document.getElementById('uploadFilename').textContent = file.name;
+    }
+  }
+
+  // ─── SUBMIT SLIP ───
+  async function submitSlip() {
+    const fileInput = document.getElementById('slipInput');
+    if (!fileInput.files.length) {
+      alert('กรุณาแนบรูปสลิปก่อน');
+      return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin .8s linear infinite"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" opacity=".3"/><path d="M21 12a9 9 0 00-9-9"/></svg> กำลังอัปโหลด...`;
+
+    const file   = fileInput.files[0];
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      try {
+        const res  = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'uploadSlip',
+            payload: {
+              eventId:     currentPayment.eventId,
+              email:       currentUser.email,
+              studentId:   currentUser.studentId,
+              amount:      currentPayment.totalAmount,
+              penalty:     currentPayment.penalty,
+              base64Image: reader.result
             }
-            currentUser = JSON.parse(userDataString);
-
-            // Verify Role
-            if (currentUser.role === 'Admin') {
-                window.location.href = 'admin_dashboard.html';
-                return;
-            }
-
-            document.getElementById('profilePic').src = currentUser.picture || 'https://via.placeholder.com/80';
-            document.getElementById('navName').textContent = currentUser.name || '';
-            document.getElementById('displayName').textContent = currentUser.name || '';
-            document.getElementById('displayStudentId').textContent = `รหัสนิสิต: ${currentUser.studentId || '-'}`;
-            document.getElementById('displayEmail').textContent = `Email: ${currentUser.email}`;
-
-            fetchPayments();
+          })
         });
-
-        async function fetchPayments() {
-            try {
-                const res = await fetch(`${SCRIPT_URL}?action=getStudentPayments&email=${currentUser.email}`);
-                const data = await res.json();
-                
-                const container = document.getElementById('paymentsContainer');
-                container.innerHTML = '';
-
-                if (data.success && data.events.length > 0) {
-                    data.events.forEach(ev => {
-                        container.innerHTML += `
-                            <div class="bg-white p-4 rounded shadow border flex justify-between items-center">
-                                <div>
-                                    <h4 class="font-bold">${ev.title}</h4>
-                                    <p class="text-sm text-gray-500">กำหนดชำระ: ${new Date(ev.dueDate).toLocaleDateString('th-TH')}</p>
-                                    <p class="text-sm">ยอดเงิน: ${ev.baseAmount} บาท ${ev.penalty > 0 ? `<span class="text-red-500">(ค่าปรับ +${ev.penalty} บาท)</span>` : ''}</p>
-                                </div>
-                                <div>
-                                    ${ev.status === 'Unpaid' ? 
-                                        `<button onclick="openPaymentModal('${ev.eventId}', '${ev.title}', ${ev.totalAmount}, ${ev.penalty})" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">ชำระเงิน</button>` : 
-                                     ev.status === 'Pending' ? 
-                                        `<span class="text-yellow-600 font-bold">รอตรวจสอบ</span>` : 
-                                        `<span class="text-green-600 font-bold">ชำระแล้ว</span>`
-                                    }
-                                </div>
-                            </div>
-                        `;
-                    });
-                } else {
-                    container.innerHTML = '<p class="text-gray-500">ไม่มีรายการที่ต้องชำระ</p>';
-                }
-            } catch (err) {
-                console.error(err);
-                document.getElementById('paymentsContainer').innerHTML = '<p class="text-red-500">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
-            }
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('modalContent').style.display = 'none';
+          document.getElementById('successState').style.display = 'block';
+          fetchPayments(); // refresh list in background
+        } else {
+          alert('เกิดข้อผิดพลาด: ' + data.message);
+          btn.disabled = false;
+          btn.textContent = 'ยืนยันการชำระเงิน';
         }
+      } catch (e) {
+        alert('อัปโหลดไม่สำเร็จ กรุณาลองใหม่');
+        btn.disabled = false;
+        btn.textContent = 'ยืนยันการชำระเงิน';
+      }
+    };
+    reader.readAsDataURL(file);
+  }
 
-        function openPaymentModal(eventId, title, totalAmount, penalty) {
-            currentPaymentEvent = { eventId, title, totalAmount, penalty };
-            document.getElementById('modalEventTitle').textContent = title;
-            document.getElementById('modalAmount').textContent = totalAmount;
-            
-            if (penalty > 0) {
-                document.getElementById('modalPenalty').textContent = `*รวมค่าปรับล่าช้า ${penalty} บาท`;
-            } else {
-                document.getElementById('modalPenalty').textContent = '';
-            }
+  function logout() {
+    sessionStorage.removeItem('loggedInUser');
+    location.href = 'index.html';
+  }
 
-            // Generate PromptPay QR
-            const qrCodeDiv = document.getElementById('qrcode');
-            qrCodeDiv.innerHTML = '';
-            
-            // promptpay-qr library generate payload
-            const payload = promptpayQr(PROMPTPAY_ID, { amount: totalAmount });
-            new QRCode(qrCodeDiv, {
-                text: payload,
-                width: 200,
-                height: 200
-            });
+  // close modal on overlay click
+  document.getElementById('paymentModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+</script>
 
-            document.getElementById('paymentModal').classList.remove('hidden');
-            document.getElementById('paymentModal').classList.add('flex');
-        }
+<style>
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
 
-        function closeModal() {
-            document.getElementById('paymentModal').classList.add('hidden');
-            document.getElementById('paymentModal').classList.remove('flex');
-            document.getElementById('slipInput').value = '';
-        }
-
-        async function submitSlip() {
-            const fileInput = document.getElementById('slipInput');
-            if (fileInput.files.length === 0) {
-                alert('กรุณาแนบสลิปการโอนเงิน');
-                return;
-            }
-
-            const btn = document.getElementById('submitSlipBtn');
-            btn.textContent = 'กำลังอัปโหลด...';
-            btn.disabled = true;
-
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            
-            reader.onloadend = async function() {
-                const base64Data = reader.result;
-
-                const payload = {
-                    action: 'uploadSlip',
-                    payload: {
-                        eventId: currentPaymentEvent.eventId,
-                        email: currentUser.email,
-                        studentId: currentUser.studentId,
-                        amount: currentPaymentEvent.totalAmount,
-                        penalty: currentPaymentEvent.penalty,
-                        base64Image: base64Data
-                    }
-                };
-
-                try {
-                    const res = await fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        body: JSON.stringify(payload)
-                    });
-                    const data = await res.json();
-                    
-                    if (data.success) {
-                        alert('ส่งสลิปเรียบร้อยแล้ว รอการตรวจสอบ');
-                        closeModal();
-                        fetchPayments(); // Refresh
-                    } else {
-                        alert('เกิดข้อผิดพลาด: ' + data.message);
-                    }
-                } catch (err) {
-                    console.error(err);
-                    alert('อัปโหลดไม่สำเร็จ');
-                } finally {
-                    btn.textContent = 'ยืนยันการชำระเงิน';
-                    btn.disabled = false;
-                }
-            };
-            
-            reader.readAsDataURL(file);
-        }
-
-        function logout() {
-            sessionStorage.removeItem('loggedInUser');
-            window.location.href = 'index.html';
-        }
-    </script>
 </body>
 </html>

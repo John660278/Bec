@@ -1,159 +1,922 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 text-gray-800">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — BEC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <nav class="bg-white shadow px-6 py-4 flex justify-between items-center">
-        <div class="text-xl font-bold text-red-600">🛡️ Admin Dashboard</div>
-        <div class="flex items-center gap-4">
-            <span id="navName" class="font-medium">กำลังโหลด...</span>
-            <button onclick="logout()" class="text-red-500 hover:text-red-700">ออกจากระบบ</button>
-        </div>
+    :root {
+      --bg:       #0a0a0a;
+      --surface:  #111111;
+      --surface2: #161616;
+      --border:   #1e1e1e;
+      --border2:  #2a2a2a;
+      --text:     #f0f0f0;
+      --muted:    #6b6b6b;
+      --muted2:   #444;
+      --accent:   #ffffff;
+      --danger:   #ef4444;
+      --sidebar:  240px;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      overflow: hidden;
+    }
+
+    /* ─── LAYOUT ─── */
+    .shell {
+      display: flex;
+      height: 100vh;
+    }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar {
+      width: var(--sidebar);
+      min-width: var(--sidebar);
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .sidebar-logo {
+      padding: 1.5rem 1.25rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-logo .logo-text {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+    }
+    .sidebar-logo .logo-sub {
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      margin-top: 0.15rem;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 0.75rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow-y: auto;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 400;
+      transition: background 120ms, color 120ms;
+      user-select: none;
+      border: 1px solid transparent;
+    }
+    .nav-item:hover { background: var(--surface2); color: var(--text); }
+    .nav-item.active { background: var(--border); color: var(--accent); }
+    .nav-item svg { flex-shrink: 0; opacity: 0.7; }
+    .nav-item.active svg { opacity: 1; }
+
+    .sidebar-user {
+      padding: 0.9rem 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+    .user-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .user-avatar {
+      width: 30px; height: 30px;
+      background: var(--border2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 600; color: var(--text);
+      flex-shrink: 0;
+    }
+    .user-info { flex: 1; min-width: 0; }
+    .user-name { font-size: 0.78rem; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .user-email { font-size: 0.68rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .logout-btn {
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); padding: 4px; border-radius: 4px;
+      display: flex; transition: color 120ms;
+    }
+    .logout-btn:hover { color: var(--danger); }
+
+    /* ─── MAIN ─── */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 2rem;
+    }
+
+    /* ─── PAGE HEADER ─── */
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+    .page-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: -0.01em;
+    }
+    .page-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+
+    /* ─── VIEWS ─── */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ─── STAT CARDS ─── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: var(--surface);
+      padding: 1.25rem 1.5rem;
+    }
+    .stat-num {
+      font-size: 1.75rem;
+      font-weight: 300;
+      color: var(--accent);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* ─── SECTION TITLE ─── */
+    .section-title {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+
+    /* ─── TABLE ─── */
+    .table-wrap {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    thead tr {
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      padding: 0.6rem 1rem;
+      text-align: left;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: var(--surface);
+    }
+    td {
+      padding: 0.75rem 1rem;
+      font-size: 0.82rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: var(--surface2); }
+
+    /* ─── STATUS BADGE ─── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+    .badge-pending { border: 1px solid var(--border2); color: var(--muted); }
+    .badge-paid    { border: 1px solid var(--muted2); color: var(--text); }
+
+    /* ─── BUTTONS ─── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 120ms, background 120ms;
+      border: none;
+      font-family: inherit;
+    }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-primary { background: var(--accent); color: #000; }
+    .btn-primary:hover:not(:disabled) { opacity: 0.88; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border2);
+    }
+    .btn-ghost:hover { color: var(--text); border-color: var(--muted2); }
+    .btn-sm { padding: 0.28rem 0.65rem; font-size: 0.72rem; }
+
+    /* ─── FILTER TABS ─── */
+    .filter-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 1rem;
+    }
+    .filter-tab {
+      padding: 0.3rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border2);
+      background: transparent;
+      color: var(--muted);
+      font-family: inherit;
+      transition: all 120ms;
+    }
+    .filter-tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+    /* ─── FORM ─── */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+    .form-group.full { grid-column: 1/-1; }
+    label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    input, select, textarea {
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      padding: 0.55rem 0.75rem;
+      font-size: 0.82rem;
+      color: var(--text);
+      font-family: inherit;
+      outline: none;
+      transition: border-color 120ms;
+      width: 100%;
+    }
+    input:focus, select:focus { border-color: var(--muted2); }
+    input::placeholder { color: var(--muted2); }
+
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-card-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+    }
+
+    /* ─── SKELETON ─── */
+    @keyframes shimmer {
+      0% { background-position: -400px 0; }
+      100% { background-position: 400px 0; }
+    }
+    .skeleton {
+      background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
+      background-size: 800px 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 4px;
+      height: 14px;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ─── EMPTY STATE ─── */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--muted);
+    }
+    .empty-state svg { opacity: 0.3; margin-bottom: 0.75rem; }
+    .empty-state p { font-size: 0.82rem; }
+
+    /* ─── TOAST ─── */
+    #toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.82rem;
+      color: var(--text);
+      z-index: 999;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 200ms;
+      pointer-events: none;
+      max-width: 280px;
+    }
+    #toast.show { opacity: 1; transform: translateY(0); }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 768px) {
+      html, body { overflow: auto; }
+      .shell { flex-direction: column; height: auto; min-height: 100vh; }
+      .sidebar { display: none; }
+      .main { padding: 1rem; padding-bottom: 5rem; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      td, th { padding: 0.6rem 0.75rem; }
+
+      /* Bottom nav mobile */
+      .mobile-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        background: var(--surface);
+        border-top: 1px solid var(--border);
+        z-index: 100;
+      }
+      .mobile-nav-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        padding: 0.6rem 0.25rem;
+        cursor: pointer;
+        color: var(--muted);
+        font-size: 0.6rem;
+        font-weight: 500;
+        transition: color 120ms;
+        border: none;
+        background: none;
+        font-family: inherit;
+      }
+      .mobile-nav-item.active { color: var(--accent); }
+      .mobile-nav-item svg { opacity: 0.7; }
+      .mobile-nav-item.active svg { opacity: 1; }
+    }
+    @media (min-width: 769px) {
+      .mobile-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="shell">
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-text">BEC</div>
+      <div class="logo-sub">Admin Panel</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-item active" data-view="overview" onclick="switchView('overview',this)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        ภาพรวม
+      </div>
+      <div class="nav-item" data-view="events" onclick="switchView('events',this)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        รอบเก็บเงิน
+      </div>
+      <div class="nav-item" data-view="payments" onclick="switchView('payments',this)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        ตรวจสอบสลิป
+      </div>
+      <div class="nav-item" data-view="finance" onclick="switchView('finance',this)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        รายรับ / รายจ่าย
+      </div>
     </nav>
 
-    <main class="max-w-6xl mx-auto mt-8 p-4 grid grid-cols-1 md:grid-cols-2 gap-8">
-        
-        <!-- Left Column: Create Event -->
+    <div class="sidebar-user">
+      <div class="user-row">
+        <div class="user-avatar" id="sidebarAvatar">A</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebarName">กำลังโหลด</div>
+          <div class="user-email" id="sidebarEmail">—</div>
+        </div>
+        <button class="logout-btn" onclick="logout()" title="ออกจากระบบ">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <main class="main">
+
+    <!-- VIEW: OVERVIEW -->
+    <div class="view active" id="view-overview">
+      <div class="page-header">
         <div>
-            <div class="bg-white rounded-lg shadow p-6 mb-8">
-                <h3 class="text-xl font-bold mb-4">สร้างรอบเก็บเงินใหม่</h3>
-                <form id="createEventForm" onsubmit="handleCreateEvent(event)">
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium mb-1">ชื่อรายการ (เช่น ค่าเสื้อสาขา)</label>
-                        <input type="text" id="eventTitle" required class="w-full border rounded p-2">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium mb-1">จำนวนเงิน (บาท)</label>
-                        <input type="number" id="eventAmount" required class="w-full border rounded p-2">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium mb-1">วันครบกำหนด (Due Date)</label>
-                        <input type="date" id="eventDueDate" required class="w-full border rounded p-2">
-                    </div>
-                    <button type="submit" id="btnCreateEvent" class="w-full bg-red-600 text-white py-2 rounded font-bold hover:bg-red-700">สร้างรอบเก็บเงิน</button>
-                </form>
-            </div>
-            
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-xl font-bold mb-4">จัดการรายรับ - รายจ่าย</h3>
-                <p class="text-gray-500 text-sm mb-4">รอการเชื่อมต่อ API เพิ่มเติมสำหรับส่วนนี้</p>
-                <button onclick="alert('กำลังพัฒนาส่วนบันทึกรายจ่าย')" class="w-full bg-gray-200 text-gray-700 py-2 rounded font-bold hover:bg-gray-300 mb-2">บันทึกรายจ่ายเหรัญญิก</button>
-                <button onclick="alert('กำลังพัฒนาส่วนบันทึกรายรับสปอนเซอร์')" class="w-full bg-gray-200 text-gray-700 py-2 rounded font-bold hover:bg-gray-300">บันทึกเงินสปอนเซอร์</button>
-            </div>
+          <div class="page-title">ภาพรวม</div>
+          <div class="page-sub">สรุปสถานะการเงินทั้งหมดของสาขา</div>
         </div>
+        <button class="btn btn-primary" onclick="switchView('events', document.querySelector('[data-view=events]'))">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          สร้างรอบใหม่
+        </button>
+      </div>
 
-        <!-- Right Column: Approvals -->
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-xl font-bold mb-4">ตรวจสอบสลิปการโอนเงิน (Pending)</h3>
-            <div id="pendingList" class="grid gap-4">
-                <p class="text-gray-500">รอการเชื่อมต่อ API โหลดรายการ...</p>
-                <!-- ปลายเปิดสำหรับให้ GAS ดึงรายการที่มี Status = Pending มาแสดง -->
-                <!-- Mock Layout: -->
-                <!--
-                <div class="border p-4 rounded flex justify-between items-center">
-                    <div>
-                        <p class="font-bold">ค่าเสื้อสาขา - รหัส 6601xxxx</p>
-                        <p class="text-sm">ยอดโอน: 500 บาท</p>
-                        <a href="#" target="_blank" class="text-blue-500 text-sm underline">ดูรูปสลิป</a>
-                    </div>
-                    <button class="bg-green-600 text-white px-4 py-2 rounded">อนุมัติ</button>
-                </div>
-                -->
-            </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-num" id="statTotalEvents">—</div>
+          <div class="stat-label">รอบเก็บเงินทั้งหมด</div>
         </div>
-        
-    </main>
+        <div class="stat-card">
+          <div class="stat-num" id="statPaid">—</div>
+          <div class="stat-label">ชำระแล้ว</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statPending">—</div>
+          <div class="stat-label">รอตรวจสอบ</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statTotal">—</div>
+          <div class="stat-label">ยอดรวมที่ได้รับ (฿)</div>
+        </div>
+      </div>
 
-    <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMnLEpGSYmdqeQTgU5s4vtVTRKhhAC594wcF-wycBuJqy4tB-XOxi6xAsP6TXPUuy4ew/exec"; 
+      <div class="section-title">สลิปรอตรวจสอบล่าสุด</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>วันที่</th>
+              <th>อีเมลนิสิต</th>
+              <th>รอบการชำระ</th>
+              <th>ยอด (฿)</th>
+              <th>ค่าปรับ (฿)</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="overviewPendingBody">
+            <tr><td colspan="6"><div class="skeleton" style="width:80%"></div><div class="skeleton" style="width:60%"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const userDataString = sessionStorage.getItem('loggedInUser');
-            if (!userDataString) {
-                window.location.href = 'index.html';
-                return;
-            }
-            const user = JSON.parse(userDataString);
-            
-            if (user.role !== 'Admin' && user.email !== 'wanchanachaiu68@nu.ac.th') {
-                alert('คุณไม่มีสิทธิ์เข้าถึงหน้านี้');
-                window.location.href = 'student_dashboard.html';
-                return;
-            }
+    <!-- VIEW: EVENTS -->
+    <div class="view" id="view-events">
+      <div class="page-header">
+        <div>
+          <div class="page-title">รอบเก็บเงิน</div>
+          <div class="page-sub">สร้างและจัดการรอบการชำระเงิน</div>
+        </div>
+      </div>
 
-            document.getElementById('navName').textContent = user.name || 'Admin';
-        });
+      <div class="form-card">
+        <div class="form-card-title">สร้างรอบเก็บเงินใหม่</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>ชื่อรายการ</label>
+            <input type="text" id="evTitle" placeholder="เช่น ค่าเสื้อสาขา รุ่น 69" />
+          </div>
+          <div class="form-group">
+            <label>จำนวนเงิน (บาท)</label>
+            <input type="number" id="evAmount" placeholder="500" />
+          </div>
+          <div class="form-group">
+            <label>วันครบกำหนด</label>
+            <input type="date" id="evDueDate" />
+          </div>
+        </div>
+        <button class="btn btn-primary" id="btnCreateEvent" onclick="handleCreateEvent()">สร้างรอบเก็บเงิน</button>
+      </div>
 
-        async function handleCreateEvent(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btnCreateEvent');
-            btn.textContent = 'กำลังสร้าง...';
-            btn.disabled = true;
+      <div class="section-title">รอบเก็บเงินที่มีอยู่</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ชื่อรายการ</th>
+              <th>จำนวนเงิน (฿)</th>
+              <th>วันครบกำหนด</th>
+              <th>วันที่สร้าง</th>
+            </tr>
+          </thead>
+          <tbody id="eventsTableBody">
+            <tr><td colspan="4"><div class="skeleton" style="width:70%"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-            const payload = {
-                action: 'createEvent',
-                payload: {
-                    title: document.getElementById('eventTitle').value,
-                    baseAmount: document.getElementById('eventAmount').value,
-                    dueDate: document.getElementById('eventDueDate').value
-                }
-            };
+    <!-- VIEW: PAYMENTS -->
+    <div class="view" id="view-payments">
+      <div class="page-header">
+        <div>
+          <div class="page-title">ตรวจสอบสลิป</div>
+          <div class="page-sub">รายการชำระเงินทั้งหมดของนิสิต</div>
+        </div>
+        <button class="btn btn-ghost" onclick="fetchPaymentsData()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+          รีเฟรช
+        </button>
+      </div>
 
-            try {
-                const res = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-                
-                if (data.success) {
-                    alert('สร้างรอบเก็บเงินและเพิ่มคอลัมน์ใน Matrix เรียบร้อยแล้ว!');
-                    document.getElementById('createEventForm').reset();
-                } else {
-                    alert('Error: ' + data.message);
-                }
-            } catch (err) {
-                console.error(err);
-                alert('เชื่อมต่อระบบล้มเหลว');
-            } finally {
-                btn.textContent = 'สร้างรอบเก็บเงิน';
-                btn.disabled = false;
-            }
-        }
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="filterPayments('all',this)">ทั้งหมด</button>
+        <button class="filter-tab" onclick="filterPayments('Pending',this)">รอตรวจสอบ</button>
+        <button class="filter-tab" onclick="filterPayments('Paid',this)">ชำระแล้ว</button>
+      </div>
 
-        // ฟังก์ชัน Approve จำลองรอการเชื่อมต่อ API เต็มรูปแบบ
-        async function approvePayment(paymentId, eventTitle, email, totalAmount) {
-            if(!confirm('ยืนยันการอนุมัติยอดนี้?')) return;
-            
-            const payload = {
-                action: 'approvePayment',
-                payload: { paymentId, eventTitle, email, totalAmount }
-            };
+      <div class="table-wrap" style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th>อีเมล</th>
+              <th>รอบการชำระ</th>
+              <th>ยอด (฿)</th>
+              <th>ค่าปรับ (฿)</th>
+              <th>สถานะ</th>
+              <th>วันที่</th>
+              <th>สลิป</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="paymentsTableBody">
+            <tr><td colspan="8"><div class="skeleton" style="width:80%"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-            try {
-                const res = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-                if(data.success) {
-                    alert('อนุมัติสำเร็จ ข้อมูลอัปเดตลง Matrix แล้ว');
-                    // Refresh List
-                }
-            } catch(e) {
-                console.error(e);
-            }
-        }
+    <!-- VIEW: FINANCE -->
+    <div class="view" id="view-finance">
+      <div class="page-header">
+        <div>
+          <div class="page-title">รายรับ / รายจ่าย</div>
+          <div class="page-sub">บันทึกรายรับจากสปอนเซอร์และรายจ่ายของสาขา</div>
+        </div>
+      </div>
 
-        function logout() {
-            sessionStorage.removeItem('loggedInUser');
-            window.location.href = 'index.html';
-        }
-    </script>
+      <div class="filter-tabs" style="margin-bottom:1.5rem">
+        <button class="filter-tab active" id="tabExpense" onclick="switchFinance('expense')">รายจ่าย</button>
+        <button class="filter-tab" id="tabIncome" onclick="switchFinance('income')">รายรับ</button>
+      </div>
+
+      <!-- Expense -->
+      <div id="financeExpense">
+        <div class="form-card">
+          <div class="form-card-title">บันทึกรายจ่าย</div>
+          <div class="form-grid">
+            <div class="form-group full"><label>รายการ</label><input type="text" id="expTitle" placeholder="เช่น ค่าของว่างประชุม" /></div>
+            <div class="form-group"><label>จำนวน (฿)</label><input type="number" id="expAmount" placeholder="0" /></div>
+            <div class="form-group"><label>วันที่</label><input type="date" id="expDate" /></div>
+            <div class="form-group full"><label>URL ใบเสร็จ (ถ้ามี)</label><input type="text" id="expReceipt" placeholder="https://..." /></div>
+          </div>
+          <button class="btn btn-primary" onclick="handleAddExpense()">บันทึกรายจ่าย</button>
+        </div>
+      </div>
+
+      <!-- Income -->
+      <div id="financeIncome" style="display:none">
+        <div class="form-card">
+          <div class="form-card-title">บันทึกรายรับ</div>
+          <div class="form-grid">
+            <div class="form-group full"><label>แหล่งที่มา</label><input type="text" id="incSource" placeholder="เช่น สปอนเซอร์ พี่บัณฑิต" /></div>
+            <div class="form-group"><label>จำนวน (฿)</label><input type="number" id="incAmount" placeholder="0" /></div>
+            <div class="form-group"><label>วันที่</label><input type="date" id="incDate" /></div>
+          </div>
+          <button class="btn btn-primary" onclick="handleAddIncome()">บันทึกรายรับ</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div><!-- /shell -->
+
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-nav">
+  <button class="mobile-nav-item active" data-view="overview" onclick="switchView('overview',this)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    ภาพรวม
+  </button>
+  <button class="mobile-nav-item" data-view="events" onclick="switchView('events',this)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    รอบเงิน
+  </button>
+  <button class="mobile-nav-item" data-view="payments" onclick="switchView('payments',this)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+    สลิป
+  </button>
+  <button class="mobile-nav-item" data-view="finance" onclick="switchView('finance',this)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+    การเงิน
+  </button>
+</nav>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMnLEpGSYmdqeQTgU5s4vtVTRKhhAC594wcF-wycBuJqy4tB-XOxi6xAsP6TXPUuy4ew/exec";
+
+  let currentUser = null;
+  let allPayments = [];
+
+  // ─── INIT ───
+  document.addEventListener('DOMContentLoaded', () => {
+    const raw = sessionStorage.getItem('loggedInUser');
+    if (!raw) { location.href = 'index.html'; return; }
+    currentUser = JSON.parse(raw);
+
+    if (currentUser.role !== 'Admin') {
+      location.href = 'student_dashboard.html'; return;
+    }
+
+    const initial = (currentUser.name || currentUser.email || 'A')[0].toUpperCase();
+    document.getElementById('sidebarAvatar').textContent = initial;
+    document.getElementById('sidebarName').textContent = currentUser.name || 'Admin';
+    document.getElementById('sidebarEmail').textContent = currentUser.email || '';
+
+    loadOverview();
+  });
+
+  // ─── NAVIGATION ───
+  function switchView(viewId, el) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + viewId).classList.add('active');
+
+    document.querySelectorAll('.nav-item, .mobile-nav-item').forEach(n => n.classList.remove('active'));
+    if (el) el.classList.add('active');
+    // sync both sidebar + mobile
+    document.querySelectorAll(`[data-view="${viewId}"]`).forEach(n => n.classList.add('active'));
+
+    if (viewId === 'overview') loadOverview();
+    if (viewId === 'events') fetchEventsData();
+    if (viewId === 'payments') fetchPaymentsData();
+  }
+
+  // ─── TOAST ───
+  function showToast(msg, dur = 2800) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), dur);
+  }
+
+  // ─── OVERVIEW ───
+  async function loadOverview() {
+    try {
+      const [evRes, payRes] = await Promise.all([
+        fetch(`${SCRIPT_URL}?action=getEvents`),
+        fetch(`${SCRIPT_URL}?action=getAllPayments`)
+      ]);
+      const evData  = await evRes.json().catch(() => ({ success: false }));
+      const payData = await payRes.json().catch(() => ({ success: false }));
+
+      const events   = evData.success  ? evData.events   : [];
+      const payments = payData.success ? payData.payments : [];
+
+      document.getElementById('statTotalEvents').textContent = events.length;
+      const paid    = payments.filter(p => p.status === 'Paid');
+      const pending = payments.filter(p => p.status === 'Pending');
+      document.getElementById('statPaid').textContent    = paid.length;
+      document.getElementById('statPending').textContent = pending.length;
+      const total = paid.reduce((s, p) => s + Number(p.paidAmount || 0), 0);
+      document.getElementById('statTotal').textContent   = total.toLocaleString('th-TH');
+
+      const tbody = document.getElementById('overviewPendingBody');
+      const recent = pending.slice(0, 5);
+      if (recent.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><p>ไม่มีสลิปรอตรวจสอบ</p></div></td></tr>`;
+      } else {
+        tbody.innerHTML = recent.map(p => `
+          <tr>
+            <td>${formatDate(p.paidAt)}</td>
+            <td style="color:var(--muted);font-size:0.75rem">${p.email}</td>
+            <td>${p.eventId}</td>
+            <td>${Number(p.paidAmount).toLocaleString()}</td>
+            <td>${Number(p.penalty || 0).toLocaleString()}</td>
+            <td><button class="btn btn-primary btn-sm" onclick="approve('${p.paymentId}','${p.eventTitle}','${p.email}',${p.paidAmount})">อนุมัติ</button></td>
+          </tr>
+        `).join('');
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  // ─── EVENTS ───
+  async function fetchEventsData() {
+    const tbody = document.getElementById('eventsTableBody');
+    tbody.innerHTML = `<tr><td colspan="4"><div class="skeleton"></div></td></tr>`;
+    try {
+      const res  = await fetch(`${SCRIPT_URL}?action=getEvents`);
+      const data = await res.json();
+      if (data.success && data.events.length > 0) {
+        tbody.innerHTML = data.events.map(ev => `
+          <tr>
+            <td>${ev.title}</td>
+            <td>${Number(ev.baseAmount).toLocaleString()}</td>
+            <td>${formatDate(ev.dueDate)}</td>
+            <td style="color:var(--muted);font-size:0.75rem">${formatDate(ev.createdAt)}</td>
+          </tr>
+        `).join('');
+      } else {
+        tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><p>ยังไม่มีรอบเก็บเงิน</p></div></td></tr>`;
+      }
+    } catch(e) {
+      tbody.innerHTML = `<tr><td colspan="4" style="color:var(--danger);font-size:0.78rem">เชื่อมต่อไม่ได้</td></tr>`;
+    }
+  }
+
+  async function handleCreateEvent() {
+    const title   = document.getElementById('evTitle').value.trim();
+    const amount  = document.getElementById('evAmount').value.trim();
+    const dueDate = document.getElementById('evDueDate').value;
+    if (!title || !amount || !dueDate) { showToast('กรุณากรอกข้อมูลให้ครบ'); return; }
+
+    const btn = document.getElementById('btnCreateEvent');
+    btn.disabled = true; btn.textContent = 'กำลังสร้าง...';
+
+    try {
+      const res  = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'createEvent', payload: { title, baseAmount: amount, dueDate } })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('✓ สร้างรอบเก็บเงินเรียบร้อย');
+        document.getElementById('evTitle').value = '';
+        document.getElementById('evAmount').value = '';
+        document.getElementById('evDueDate').value = '';
+        fetchEventsData();
+      } else {
+        showToast('Error: ' + data.message);
+      }
+    } catch(e) { showToast('เชื่อมต่อล้มเหลว'); }
+    finally { btn.disabled = false; btn.textContent = 'สร้างรอบเก็บเงิน'; }
+  }
+
+  // ─── PAYMENTS ───
+  async function fetchPaymentsData() {
+    const tbody = document.getElementById('paymentsTableBody');
+    tbody.innerHTML = `<tr><td colspan="8"><div class="skeleton"></div></td></tr>`;
+    try {
+      const res  = await fetch(`${SCRIPT_URL}?action=getAllPayments`);
+      const data = await res.json();
+      allPayments = data.success ? data.payments : [];
+      renderPaymentsTable(allPayments);
+    } catch(e) {
+      tbody.innerHTML = `<tr><td colspan="8" style="color:var(--danger)">เชื่อมต่อล้มเหลว</td></tr>`;
+    }
+  }
+
+  function renderPaymentsTable(list) {
+    const tbody = document.getElementById('paymentsTableBody');
+    if (list.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><p>ไม่มีรายการ</p></div></td></tr>`;
+      return;
+    }
+    tbody.innerHTML = list.map(p => `
+      <tr>
+        <td style="font-size:0.75rem;color:var(--muted)">${p.email}</td>
+        <td>${p.eventId}</td>
+        <td>${Number(p.paidAmount).toLocaleString()}</td>
+        <td>${Number(p.penalty || 0).toLocaleString()}</td>
+        <td><span class="badge badge-${p.status === 'Paid' ? 'paid' : 'pending'}">${p.status === 'Paid' ? 'ชำระแล้ว' : 'รอตรวจสอบ'}</span></td>
+        <td style="font-size:0.75rem;color:var(--muted)">${formatDate(p.paidAt)}</td>
+        <td>${p.slipUrl ? `<a href="${p.slipUrl}" target="_blank" style="color:var(--muted);font-size:0.75rem;text-decoration:underline">ดูสลิป</a>` : '—'}</td>
+        <td>${p.status === 'Pending' ? `<button class="btn btn-primary btn-sm" onclick="approve('${p.paymentId}','${p.eventTitle}','${p.email}',${p.paidAmount})">อนุมัติ</button>` : ''}</td>
+      </tr>
+    `).join('');
+  }
+
+  function filterPayments(status, el) {
+    document.querySelectorAll('#view-payments .filter-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    const list = status === 'all' ? allPayments : allPayments.filter(p => p.status === status);
+    renderPaymentsTable(list);
+  }
+
+  async function approve(paymentId, eventTitle, email, totalAmount) {
+    if (!confirm('ยืนยันการอนุมัติยอดนี้?')) return;
+    try {
+      const res  = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'approvePayment', payload: { paymentId, eventTitle, email, totalAmount } })
+      });
+      const data = await res.json();
+      if (data.success) { showToast('✓ อนุมัติเรียบร้อย'); fetchPaymentsData(); loadOverview(); }
+      else showToast('Error: ' + data.message);
+    } catch(e) { showToast('เชื่อมต่อล้มเหลว'); }
+  }
+
+  // ─── FINANCE ───
+  function switchFinance(tab) {
+    const isExp = tab === 'expense';
+    document.getElementById('financeExpense').style.display = isExp ? 'block' : 'none';
+    document.getElementById('financeIncome').style.display  = isExp ? 'none' : 'block';
+    document.getElementById('tabExpense').classList.toggle('active', isExp);
+    document.getElementById('tabIncome').classList.toggle('active', !isExp);
+  }
+
+  async function handleAddExpense() {
+    const payload = {
+      title: document.getElementById('expTitle').value.trim(),
+      amount: document.getElementById('expAmount').value.trim(),
+      date: document.getElementById('expDate').value,
+      receiptUrl: document.getElementById('expReceipt').value.trim()
+    };
+    if (!payload.title || !payload.amount || !payload.date) { showToast('กรุณากรอกข้อมูลให้ครบ'); return; }
+    try {
+      const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'addExpense', payload }) });
+      const data = await res.json();
+      if (data.success) { showToast('✓ บันทึกรายจ่ายแล้ว'); }
+      else showToast('Error: ' + (data.message || 'ไม่สำเร็จ'));
+    } catch(e) { showToast('เชื่อมต่อล้มเหลว'); }
+  }
+
+  async function handleAddIncome() {
+    const payload = {
+      source: document.getElementById('incSource').value.trim(),
+      amount: document.getElementById('incAmount').value.trim(),
+      date: document.getElementById('incDate').value
+    };
+    if (!payload.source || !payload.amount || !payload.date) { showToast('กรุณากรอกข้อมูลให้ครบ'); return; }
+    try {
+      const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'addIncome', payload }) });
+      const data = await res.json();
+      if (data.success) { showToast('✓ บันทึกรายรับแล้ว'); }
+      else showToast('Error: ' + (data.message || 'ไม่สำเร็จ'));
+    } catch(e) { showToast('เชื่อมต่อล้มเหลว'); }
+  }
+
+  // ─── UTILS ───
+  function formatDate(val) {
+    if (!val) return '—';
+    const d = new Date(val);
+    if (isNaN(d)) return val;
+    return d.toLocaleDateString('th-TH', { day:'2-digit', month:'short', year:'2-digit' });
+  }
+
+  function logout() {
+    sessionStorage.removeItem('loggedInUser');
+    location.href = 'index.html';
+  }
+</script>
 </body>
 </html>
