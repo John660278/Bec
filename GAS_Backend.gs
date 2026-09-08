@@ -93,33 +93,36 @@ function getEvents() {
 }
 
 function getAllPayments() {
-  // Load user names for email lookup
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const pData = ss.getSheetByName('User_Payments').getDataRange().getValues();
+  const eData = ss.getSheetByName('Payment_Events').getDataRange().getValues();
+
+  // Build email → name lookup from Users sheet
   const usersData = ss.getSheetByName('Users').getDataRange().getValues();
   const emailToName = {};
   for (let i = 1; i < usersData.length; i++) {
-    const email = usersData[i][0];
-    const name = usersData[i][2];
-    emailToName[email] = name;
+    emailToName[usersData[i][0]] = usersData[i][2];
   }
-  
+
+  // Build eventId → title lookup
   const eventMap = {};
   for (let i = 1; i < eData.length; i++) {
     eventMap[eData[i][0]] = eData[i][1];
   }
-  
+
   const payments = [];
   for (let i = 1; i < pData.length; i++) {
     payments.push({
       paymentId: pData[i][0],
-      eventId: pData[i][1],
+      eventId:   pData[i][1],
       eventTitle: eventMap[pData[i][1]] || pData[i][1],
-      email: pData[i][2],
-      name: emailToName[pData[i][2]] || '-',
+      email:      pData[i][2],
+      name:       emailToName[pData[i][2]] || '-',
       paidAmount: pData[i][3],
-      penalty: pData[i][4],
-      status: pData[i][5],
-      slipUrl: pData[i][6],
-      paidAt: pData[i][7]
+      penalty:    pData[i][4],
+      status:     pData[i][5],
+      slipUrl:    pData[i][6],
+      paidAt:     pData[i][7]
     });
   }
   return { success: true, payments: payments.reverse() };
