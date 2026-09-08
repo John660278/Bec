@@ -1,13 +1,3 @@
-/**
- * Student Branch Automated Financial System - Backend API
- * 
- * วิธีติดตั้ง:
- * 1. นำโค้ดนี้ไปวางใน Google Apps Script (ทับของเดิม)
- * 2. กรอก SPREADSHEET_ID และ FOLDER_ID ของคุณ
- * 3. เลือกฟังก์ชัน `setupDatabase` แล้วกด "Run" เพื่อสร้างตารางอัตโนมัติ
- * 4. กด Deploy -> New Deployment -> Type: Web App -> Execute as: Me -> Who has access: Anyone
- */
-
 const SPREADSHEET_ID = '144X6SSyt7IqxQ3EZlJ2N7jfSs7jjd_6Cc8GP5hBbGXg'; // ID ของ Google Sheets
 const FOLDER_ID = '1W_38Yt9YCe5ZQfUZQv46FHbT1AzrT-ii'; // ID ของ Folder ใน Google Drive
 
