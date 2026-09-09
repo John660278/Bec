@@ -818,7 +818,7 @@
       const data = await res.json();
       if (data.success) {
         // Render headers
-        tHead.innerHTML = data.matrixHeaders.map(h => `<th>${h}</th>`).join('');
+        tHead.innerHTML = data.matrixHeaders.map((h, i) => `<th style="text-align:${i > 1 ? 'center' : 'left'}">${h}</th>`).join('');
         // Render rows
         if (data.matrixRows.length === 0) {
           tBody.innerHTML = `<tr><td colspan="${data.matrixHeaders.length}"><div class="empty-state"><p>ยังไม่มีข้อมูลนิสิต</p></div></td></tr>`;
@@ -829,11 +829,11 @@
                 let val = row[h] || '-';
                 if (i > 1) {
                   if (val === 'Pending' || val === 'รอตรวจสอบ') {
-                    return `<td style="color:#d48806;font-weight:600">รอตรวจสอบ</td>`;
+                    return `<td style="color:#d48806;font-weight:600;text-align:center">รอตรวจสอบ</td>`;
                   } else if (val === '-' || val === '') {
-                    return `<td style="color:#d32f2f;font-weight:600;text-shadow:0 0 8px rgba(211,47,47,0.5)">ค้างชำระ</td>`;
+                    return `<td style="color:#d32f2f;font-weight:600;text-shadow:0 0 8px rgba(211,47,47,0.5);text-align:center">ค้างชำระ</td>`;
                   } else if (!isNaN(val)) {
-                    return `<td style="color:#2e7d32;font-weight:600">฿${Number(val).toLocaleString()}</td>`;
+                    return `<td style="color:#2e7d32;font-weight:600;text-align:center">฿${Number(val).toLocaleString()}</td>`;
                   }
                 }
                 return `<td>${val}</td>`;
