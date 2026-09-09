@@ -620,9 +620,9 @@
                     let val = row[h] || '-';
                     if (i > 1) {
                       if (val === 'Pending' || val === 'รอตรวจสอบ') {
-                        return `<td style="padding:0.75rem; white-space:nowrap"><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#fff3cd;color:#856404;font-size:0.7rem;font-weight:600">รอตรวจสอบ</span></td>`;
+                        return `<td style="padding:0.75rem; white-space:nowrap; color:#d48806; font-weight:600">รอตรวจสอบ</td>`;
                       } else if (val === '-' || val === '') {
-                        return `<td style="padding:0.75rem; white-space:nowrap"><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#ffe5e5;color:#d32f2f;font-size:0.7rem;font-weight:600;box-shadow: 0 0 5px rgba(211,47,47,0.4)">ค้างชำระ</span></td>`;
+                        return `<td style="padding:0.75rem; white-space:nowrap; color:#d32f2f; font-weight:600; text-shadow:0 0 8px rgba(211,47,47,0.5)">ค้างชำระ</td>`;
                       } else if (!isNaN(val)) {
                         return `<td style="padding:0.75rem; white-space:nowrap; color:#2e7d32; font-weight:600">฿${Number(val).toLocaleString()}</td>`;
                       }
