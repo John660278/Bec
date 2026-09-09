@@ -520,7 +520,6 @@
       </div>
 
       <div style="margin-top:2rem">
-        <div class="section-title">สถานะการเงินสาขา (แบบจำลองหน้านิสิต)</div>
         <div id="overviewPublicBoard"></div>
       </div>
     </div>
@@ -960,12 +959,6 @@
       </div>`;
 
     let html = `
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.5rem;text-align:center;margin-bottom:1.5rem">
-        <div style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em">ยอดเงินคงเหลือสาขา</div>
-        <div style="font-size:2.5rem;font-weight:300;color:var(--accent);margin:0.5rem 0">฿${fmt(data.totalBalance)}</div>
-        <div style="font-size:0.7rem;color:var(--muted)">รายรับ ฿${fmt(data.totalIncome)} &nbsp;•&nbsp; รายจ่าย ฿${fmt(data.totalExpense)}</div>
-      </div>
-
       <div style="display:flex;gap:0.5rem;margin-bottom:1.25rem">
         <button id="adminPbTab-finance" onclick="switchAdminPbTab('finance')"
           style="flex:1;padding:0.55rem;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:#888;font-size:0.78rem;font-weight:600;cursor:pointer;border-bottom:2px solid var(--accent)">
