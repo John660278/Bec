@@ -796,6 +796,10 @@
     if (viewId === 'events') fetchEventsData();
     if (viewId === 'payments') fetchPaymentsData();
     if (viewId === 'matrix' && !matrixFetched) fetchMatrixData();
+    if (viewId === 'finance') {
+      document.getElementById('financeLists').style.display = 'block';
+      fetchFinanceData('expense');
+    }
   }
 
   // ─── TOAST ───
@@ -833,7 +837,7 @@
                   } else if (val === '-' || val === '') {
                     return `<td style="color:#d32f2f;font-weight:600;text-shadow:0 0 8px rgba(211,47,47,0.5);text-align:center">ค้างชำระ</td>`;
                   } else if (!isNaN(val)) {
-                    return `<td style="color:#2e7d32;font-weight:600;text-align:center">฿${Number(val).toLocaleString()}</td>`;
+                    return `<td style="color:#2e7d32;font-weight:600;text-align:center">฿${Number(val).toLocaleString("th-TH",{minimumFractionDigits:0,maximumFractionDigits:2})}</td>`;
                   }
                 }
                 return `<td>${val}</td>`;
@@ -880,8 +884,8 @@
                         <td>${formatDate(p.paidAt)}</td>
             <td style="color:var(--muted);font-size:0.75rem">${p.name}</td>
             <td>${p.eventId}</td>
-            <td>${Number(p.paidAmount).toLocaleString()}</td>
-            <td>${Number(p.penalty || 0).toLocaleString()}</td>
+            <td>${Number(p.paidAmount).toLocaleString("th-TH",{minimumFractionDigits:0,maximumFractionDigits:2})}</td>
+            <td>${Number(p.penalty||0).toLocaleString("th-TH",{minimumFractionDigits:0,maximumFractionDigits:2})}</td>
            
           </tr>
         `).join('');
@@ -902,7 +906,7 @@
         tbody.innerHTML = data.events.map(ev => `
           <tr>
             <td>${ev.title}</td>
-            <td>${Number(ev.baseAmount).toLocaleString()}</td>
+            <td>${Number(ev.baseAmount).toLocaleString("th-TH",{minimumFractionDigits:0,maximumFractionDigits:2})}</td>
             <td>${formatDate(ev.dueDate)}</td>
             <td style="color:var(--muted);font-size:0.75rem">${formatDate(ev.createdAt)}</td>
           </tr>
@@ -967,8 +971,8 @@
       <tr>
         <td style="font-size:0.75rem;color:var(--muted)">${p.name}</td>
         <td>${p.eventId}</td>
-        <td>${Number(p.paidAmount).toLocaleString()}</td>
-        <td>${Number(p.penalty || 0).toLocaleString()}</td>
+        <td>${Number(p.paidAmount).toLocaleString("th-TH",{minimumFractionDigits:0,maximumFractionDigits:2})}</td>
+        <td>${Number(p.penalty||0).toLocaleString("th-TH",{minimumFractionDigits:0,maximumFractionDigits:2})}</td>
         <td><span class="badge badge-${p.status === 'Paid' ? 'paid' : 'pending'}">${p.status === 'Paid' ? 'ชำระแล้ว' : 'รอตรวจสอบ'}</span></td>
         <td style="font-size:0.75rem;color:var(--muted)">${formatDate(p.paidAt)}</td>
         <td>${p.slipUrl ? `<a href="${p.slipUrl}" target="_blank" style="color:var(--muted);font-size:0.75rem;text-decoration:underline">ดูสลิป</a>` : '—'}</td>
@@ -1046,7 +1050,7 @@
           tbody.innerHTML = data.expenses.map(exp => `
             <tr>
               <td>${exp.title}</td>
-              <td>${Number(exp.amount).toLocaleString()}</td>
+              <td>฿${Number(exp.amount).toLocaleString('th-TH', {minimumFractionDigits:0, maximumFractionDigits:2})}</td>
               <td>${new Date(exp.date).toLocaleDateString('th-TH')}</td>
               <td>${exp.receiptUrl ? `<a href="${exp.receiptUrl}" target="_blank" style="color:var(--accent);text-decoration:underline">ดู</a>` : '—'}</td>
             </tr>`).join('');
@@ -1059,7 +1063,7 @@
           tbody.innerHTML = data.incomes.map(inc => `
             <tr>
               <td>${inc.source}</td>
-              <td>${Number(inc.amount).toLocaleString()}</td>
+              <td>฿${Number(inc.amount).toLocaleString('th-TH', {minimumFractionDigits:0, maximumFractionDigits:2})}</td>
               <td>${new Date(inc.date).toLocaleDateString('th-TH')}</td>
               <td>${inc.receiptUrl ? `<a href="${inc.receiptUrl}" target="_blank" style="color:var(--accent);text-decoration:underline">ดู</a>` : '—'}</td>
             </tr>`).join('');
