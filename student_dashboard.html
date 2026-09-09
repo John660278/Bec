@@ -479,7 +479,8 @@
 
       <div class="qr-section">
         <div class="qr-box" style="background:#fff;border-radius:12px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:10px;">
-          <img src="./assets/bank_qr.png" alt="QR ธนาคาร" style="width:200px;height:200px;object-fit:contain;display:block;" />
+          <div id="qrcode"></div>
+          <div style="font-size:0.7rem;color:#888;" id="qrLabel">PromptPay · กำลังโหลด...</div>
           <div style="display:flex;align-items:center;gap:8px;background:#f5f5f5;border-radius:8px;padding:8px 12px;">
             <span style="font-size:0.85rem;font-weight:600;color:#333;letter-spacing:0.04em;" id="bankAccountDisplay">235-1-83876-3</span>
             <button onclick="copyBankAccount()" style="background:#1a73e8;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:0.75rem;cursor:pointer;font-weight:600;">คัดลอก</button>
@@ -513,7 +514,8 @@
 
 <script>
   const SCRIPT_URL    = "https://script.google.com/macros/s/AKfycbwMnLEpGSYmdqeQTgU5s4vtVTRKhhAC594wcF-wycBuJqy4tB-XOxi6xAsP6TXPUuy4ew/exec";
-  const BANK_ACCOUNT = "235-1-83876-3"; // เลขบัญชีธนาคาร KBANK
+  const PROMPTPAY_ID  = "004999246368459"; // พร้อมเพย์ (เลขบัตรประชาชน/องค์กร)
+  const BANK_ACCOUNT  = "235-1-83876-3";   // เลขบัญชี KBANK
 
   let currentUser = null;
   let allEvents   = [];
@@ -703,15 +705,22 @@
       val = val.toString();
       return tag + ('00' + val.length).slice(-2) + val;
     };
-    let targetId = id.replace(/\\D/g, '');
+
+    // ลบอักขระพิเศษ เหลือแต่ตัวเลข
+    let targetId = id.replace(/\D/g, '');
+
+    // กำหนด tag: 01 = เบอร์โทร, 02 = เลขบัตร/นิติบุคคล
     let isPhone = targetId.length === 10;
-    if (isPhone) targetId = '0066' + targetId.substring(1);
-    
+    if (isPhone) {
+      targetId = '0066' + targetId.substring(1); // แปลงเบอร์ไทยเป็น +66
+    }
+    // 13 หรือ 15 หลัก → tag 02 (เลขบัตรประชาชน/นิติบุคคล)
+
     const aid = f('00', 'A000000677010111');
     const biller = isPhone ? f('01', targetId) : f('02', targetId);
     const merchantInfo = f('29', aid + biller);
     const amountStr = amount ? f('54', Number(amount).toFixed(2)) : '';
-    
+
     const payload = [
       f('00', '01'),
       f('01', amount ? '12' : '11'),
@@ -721,7 +730,7 @@
       amountStr,
       '6304'
     ].join('');
-    
+
     let crc = 0xFFFF;
     for (let i = 0; i < payload.length; i++) {
       crc ^= payload.charCodeAt(i) << 8;
@@ -744,6 +753,18 @@
       penEl.style.display = 'block';
     } else {
       penEl.style.display = 'none';
+    }
+
+    // ── สร้าง QR PromptPay ล็อคจำนวนเงิน ──
+    const qrDiv = document.getElementById('qrcode');
+    qrDiv.innerHTML = '';
+    try {
+      const payload = generatePromptPayPayload(PROMPTPAY_ID, totalAmount);
+      new QRCode(qrDiv, { text: payload, width: 200, height: 200, colorDark: '#000', colorLight: '#fff' });
+      document.getElementById('qrLabel').textContent = `PromptPay · ฿${Number(totalAmount).toLocaleString('th-TH')}`;
+    } catch(e) {
+      console.error(e);
+      qrDiv.innerHTML = '<div style="width:200px;height:200px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:#999;">QR ไม่พร้อมใช้งาน</div>';
     }
 
     // Reset upload & success
