@@ -712,27 +712,7 @@
         <button class="btn btn-primary" id="incSubmitBtn" onclick="handleAddIncome(this)">บันทึกรายรับ</button>
       </div>
 
-      <!-- Finance Lists -->
-      <div id="financeLists" style="margin-top:2rem;display:none">
-        <div id="expenseList" class="section">
-          <div class="section-title">รายการใช้จ่าย</div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>รายการ</th><th>จำนวน (฿)</th><th>วันที่</th><th>ใบเสร็จ</th></tr></thead>
-              <tbody id="expenseBody"><tr><td colspan="4"><div class="skeleton" style="width:80%"></div></td></tr></tbody>
-            </table>
-          </div>
-        </div>
-        <div id="incomeList" class="section" style="margin-top:1.5rem">
-          <div class="section-title">รายการรับเงิน</div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>แหล่งที่มา</th><th>จำนวน (฿)</th><th>วันที่</th><th>ใบเสร็จ</th></tr></thead>
-              <tbody id="incomeBody"><tr><td colspan="4"><div class="skeleton" style="width:80%"></div></td></tr></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+
     </div><!-- /view-finance -->
 
   </main>
@@ -1081,10 +1061,8 @@
     const isExp = tab === 'expense';
     document.getElementById('expenseForm').style.display = isExp ? 'block' : 'none';
     document.getElementById('incomeForm').style.display  = isExp ? 'none'  : 'block';
-    document.getElementById('financeLists').style.display = 'block';
     document.querySelectorAll('#view-finance .filter-tab').forEach(t => t.classList.remove('active'));
     if (el) el.classList.add('active');
-    fetchFinanceData();
   }
 
   // Show image preview when file selected
@@ -1111,45 +1089,7 @@
     });
   }
 
-  // Fetch and render expenses/incomes
-  async function fetchFinanceData() {
-    try {
-      const res = await fetch(`${SCRIPT_URL}?action=getPublicDashboard`);
-      const data = await res.json();
-      if (!data.success) throw new Error('fetch fail');
-      
-      // Render Expenses
-      const eBody = document.getElementById('expenseBody');
-      if (!data.expenses || data.expenses.length === 0) {
-        eBody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><p>ไม่มีรายการใช้จ่าย</p></div></td></tr>`;
-      } else {
-        eBody.innerHTML = data.expenses.map(exp => `
-          <tr>
-            <td>${exp.title}</td>
-            <td>฿${Number(exp.amount).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
-            <td>${new Date(exp.date).toLocaleDateString('th-TH')}</td>
-            <td>${exp.receiptUrl ? `<a href="${exp.receiptUrl}" target="_blank" style="color:var(--accent);text-decoration:underline">ดู</a>` : '—'}</td>
-          </tr>`).join('');
-      }
 
-      // Render Incomes
-      const iBody = document.getElementById('incomeBody');
-      if (!data.incomes || data.incomes.length === 0) {
-        iBody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><p>ไม่มีรายการรับเงิน</p></div></td></tr>`;
-      } else {
-        iBody.innerHTML = data.incomes.map(inc => `
-          <tr>
-            <td>${inc.source}</td>
-            <td>฿${Number(inc.amount).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
-            <td>${new Date(inc.date).toLocaleDateString('th-TH')}</td>
-            <td>${inc.receiptUrl ? `<a href="${inc.receiptUrl}" target="_blank" style="color:var(--accent);text-decoration:underline">ดู</a>` : '—'}</td>
-          </tr>`).join('');
-      }
-    } catch (e) {
-      document.getElementById('expenseBody').innerHTML = `<tr><td colspan="4"><div class="empty-state"><p style="color:var(--danger)">โหลดข้อมูลล้มเหลว</p></div></td></tr>`;
-      document.getElementById('incomeBody').innerHTML  = `<tr><td colspan="4"><div class="empty-state"><p style="color:var(--danger)">โหลดข้อมูลล้มเหลว</p></div></td></tr>`;
-    }
-  }
 
   async function handleAddExpense(btn) {
     const title     = document.getElementById('expTitle').value.trim();
@@ -1173,7 +1113,7 @@
         if (fileInput) fileInput.value = '';
         document.getElementById('expFileName').textContent = '';
         document.getElementById('expPreview').style.display = 'none';
-        fetchFinanceData();
+        loadOverview(); // Refresh overview instead since lists are now there
       } else { showToast('Error: ' + (data.message || 'ไม่สำเร็จ')); }
     } catch(e) { showToast('เชื่อมต่อล้มเหลว'); }
     finally { if (btn) { btn.disabled = false; btn.textContent = 'บันทึกรายจ่าย'; } }
@@ -1201,7 +1141,7 @@
         if (fileInput) fileInput.value = '';
         document.getElementById('incFileName').textContent = '';
         document.getElementById('incPreview').style.display = 'none';
-        fetchFinanceData();
+        loadOverview(); // Refresh overview instead since lists are now there
       } else { showToast('Error: ' + (data.message || 'ไม่สำเร็จ')); }
     } catch(e) { showToast('เชื่อมต่อล้มเหลว'); }
     finally { if (btn) { btn.disabled = false; btn.textContent = 'บันทึกรายรับ'; } }
