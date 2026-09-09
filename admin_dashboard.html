@@ -496,7 +496,7 @@
         </div>
         <div class="stat-card">
           <div class="stat-num" id="statTotal">—</div>
-          <div class="stat-label">ยอดรวมที่ได้รับ (฿)</div>
+          <div class="stat-label">ยอดเงินคงเหลือสาขา (฿)</div>
         </div>
       </div>
 
@@ -856,12 +856,14 @@
   // ─── OVERVIEW ───
   async function loadOverview() {
     try {
-      const [evRes, payRes] = await Promise.all([
+      const [evRes, payRes, pubRes] = await Promise.all([
         fetch(`${SCRIPT_URL}?action=getEvents`),
-        fetch(`${SCRIPT_URL}?action=getAllPayments`)
+        fetch(`${SCRIPT_URL}?action=getAllPayments`),
+        fetch(`${SCRIPT_URL}?action=getPublicDashboard`)
       ]);
       const evData  = await evRes.json().catch(() => ({ success: false }));
       const payData = await payRes.json().catch(() => ({ success: false }));
+      const pubData = await pubRes.json().catch(() => ({ success: false }));
 
       const events   = evData.success  ? evData.events   : [];
       const payments = payData.success ? payData.payments : [];
@@ -871,8 +873,10 @@
       const pending = payments.filter(p => p.status === 'Pending');
       document.getElementById('statPaid').textContent    = paid.length;
       document.getElementById('statPending').textContent = pending.length;
-      const total = paid.reduce((s, p) => s + Number(p.paidAmount || 0), 0);
-      document.getElementById('statTotal').textContent   = total.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+
+      // ใช้ยอดคงเหลือจาก getPublicDashboard เหมือนหน้านิสิต
+      const balance = pubData.success ? pubData.totalBalance : paid.reduce((s, p) => s + Number(p.paidAmount || 0), 0);
+      document.getElementById('statTotal').textContent = balance.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
 
       const tbody = document.getElementById('overviewPendingBody');
       const recent = pending.slice(0, 5);
