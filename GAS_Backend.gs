@@ -186,7 +186,7 @@ function getStudentPayments(email) {
     let penalty = 0;
     if (status === 'Unpaid' && currentDate > dueDate) {
       const diffDays = Math.floor(Math.abs(currentDate - dueDate) / (1000 * 60 * 60 * 24));
-      penalty = Math.floor(diffDays / 7) * 1; 
+      penalty = diffDays * 1; // ปรับวันละ 1 บาท
     }
     
     pendingEvents.push({ eventId, title, baseAmount, dueDate: dueDate.toISOString(), status, penalty, totalAmount: baseAmount + penalty });
