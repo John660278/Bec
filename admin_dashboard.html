@@ -959,40 +959,16 @@
       </div>`;
 
     let html = `
-      <div style="display:flex;gap:0.5rem;margin-bottom:1.25rem">
-        <button id="adminPbTab-finance" onclick="switchAdminPbTab('finance')"
-          style="flex:1;padding:0.55rem;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:#888;font-size:0.78rem;font-weight:600;cursor:pointer;border-bottom:2px solid var(--accent)">
-          รายการใช้จ่ายเงินสาขา
-        </button>
-        <button id="adminPbTab-matrix" onclick="switchAdminPbTab('matrix')"
-          style="flex:1;padding:0.55rem;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:#888;font-size:0.78rem;font-weight:600;cursor:pointer">
-          สถานะการชำระเงินของนิสิต
-        </button>
-      </div>
-
+      <div class="section-title" style="margin-bottom:1rem">รายการใช้จ่ายเงินสาขา</div>
       <div id="adminPbPanel-finance">
         <div style="font-size:0.8rem;font-weight:600;color:#2e7d32;margin-bottom:0.5rem">รายรับ</div>
         ${incomeRows}
         <div style="font-size:0.8rem;font-weight:600;color:var(--danger);margin:1rem 0 0.5rem">รายจ่าย</div>
         ${expenseRows}
       </div>
-
-      <div id="adminPbPanel-matrix" style="display:none">
-        ${matrixHtml}
-      </div>
     `;
     document.getElementById('overviewPublicBoard').innerHTML = html;
   }
-
-  window.switchAdminPbTab = function(tab) {
-    const isFinance = tab === 'finance';
-    document.getElementById('adminPbPanel-finance').style.display = isFinance ? 'block' : 'none';
-    document.getElementById('adminPbPanel-matrix').style.display  = isFinance ? 'none'  : 'block';
-    document.getElementById('adminPbTab-finance').style.borderBottom = isFinance ? '2px solid var(--accent)' : '1.5px solid var(--border)';
-    document.getElementById('adminPbTab-finance').style.background   = isFinance ? 'var(--surface)' : 'transparent';
-    document.getElementById('adminPbTab-matrix').style.borderBottom  = isFinance ? '1.5px solid var(--border)' : '2px solid var(--accent)';
-    document.getElementById('adminPbTab-matrix').style.background    = isFinance ? 'transparent' : 'var(--surface)';
-  };
 
   // ─── EVENTS ───
   async function fetchEventsData() {
