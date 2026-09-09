@@ -642,11 +642,11 @@
       <!-- Sub-tabs -->
       <div style="display:flex;gap:0.5rem;margin-bottom:1.25rem">
         <button id="pbTab-finance" onclick="switchPbTab('finance')"
-          style="flex:1;padding:0.55rem;border-radius:8px;border:1.5px solid var(--accent);background:var(--accent);color:#fff;font-size:0.78rem;font-weight:600;cursor:pointer">
+          style="flex:1;padding:0.55rem;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:#888;font-size:0.78rem;font-weight:600;cursor:pointer;border-bottom:2px solid var(--accent)">
           รายการใช้จ่ายเงินสาขา
         </button>
         <button id="pbTab-matrix" onclick="switchPbTab('matrix')"
-          style="flex:1;padding:0.55rem;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--text);font-size:0.78rem;font-weight:600;cursor:pointer">
+          style="flex:1;padding:0.55rem;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:#888;font-size:0.78rem;font-weight:600;cursor:pointer">
           สถานะการชำระเงินของนิสิต
         </button>
       </div>
@@ -671,12 +671,14 @@
     const isFinance = tab === 'finance';
     document.getElementById('pbPanel-finance').style.display = isFinance ? 'block' : 'none';
     document.getElementById('pbPanel-matrix').style.display  = isFinance ? 'none'  : 'block';
-    document.getElementById('pbTab-finance').style.background = isFinance ? 'var(--accent)' : 'transparent';
-    document.getElementById('pbTab-finance').style.color      = isFinance ? '#fff' : 'var(--text)';
-    document.getElementById('pbTab-finance').style.borderColor= isFinance ? 'var(--accent)' : 'var(--border)';
-    document.getElementById('pbTab-matrix').style.background  = isFinance ? 'transparent' : 'var(--accent)';
-    document.getElementById('pbTab-matrix').style.color       = isFinance ? 'var(--text)' : '#fff';
-    document.getElementById('pbTab-matrix').style.borderColor = isFinance ? 'var(--border)' : 'var(--accent)';
+    // active = underline accent, inactive = no underline
+    document.getElementById('pbTab-finance').style.borderBottom = isFinance ? '2px solid var(--accent)' : '1.5px solid var(--border)';
+    document.getElementById('pbTab-finance').style.background   = isFinance ? 'var(--surface)' : 'transparent';
+    document.getElementById('pbTab-matrix').style.borderBottom  = isFinance ? '1.5px solid var(--border)' : '2px solid var(--accent)';
+    document.getElementById('pbTab-matrix').style.background    = isFinance ? 'transparent' : 'var(--surface)';
+    // text always gray
+    document.getElementById('pbTab-finance').style.color = '#888';
+    document.getElementById('pbTab-matrix').style.color  = '#888';
   }
 
   // ─── FETCH ───
