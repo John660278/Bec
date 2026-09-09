@@ -506,7 +506,7 @@
           <thead>
             <tr>
               <th>วันที่</th>
-              <th>อีเมลนิสิต</th>
+              <th>ชื่อ-นามสกุล</th>
               <th>รอบการชำระ</th>
               <th>ยอด (฿)</th>
               <th>ค่าปรับ (฿)</th>
@@ -589,7 +589,7 @@
         <table>
           <thead>
             <tr>
-              <th>อีเมล</th>
+              <th>ชื่อ-นามสกุล</th>
               <th>รอบการชำระ</th>
               <th>ยอด (฿)</th>
               <th>ค่าปรับ (฿)</th>
@@ -957,7 +957,7 @@
     }
     tbody.innerHTML = list.map(p => `
       <tr>
-        <td style="font-size:0.75rem;color:var(--muted)">${p.email}</td>
+        <td style="font-size:0.75rem;color:var(--muted)">${p.name}</td>
         <td>${p.eventId}</td>
         <td>${Number(p.paidAmount).toLocaleString()}</td>
         <td>${Number(p.penalty || 0).toLocaleString()}</td>
