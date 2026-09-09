@@ -618,8 +618,15 @@
                 <tr style="border-bottom:1px solid var(--border)">
                   ${data.matrixHeaders.map((h, i) => {
                     let val = row[h] || '-';
-                    // If it's a payment column (index > 1) and has a number, format it
-                    if (i > 1 && !isNaN(val) && val !== '-') val = '฿' + Number(val).toLocaleString();
+                    if (i > 1) {
+                      if (val === 'Pending' || val === 'รอตรวจสอบ') {
+                        return `<td style="padding:0.75rem; white-space:nowrap"><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#fff3cd;color:#856404;font-size:0.7rem;font-weight:600">รอตรวจสอบ</span></td>`;
+                      } else if (val === '-' || val === '') {
+                        return `<td style="padding:0.75rem; white-space:nowrap"><span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#ffe5e5;color:#d32f2f;font-size:0.7rem;font-weight:600;box-shadow: 0 0 5px rgba(211,47,47,0.4)">ค้างชำระ</span></td>`;
+                      } else if (!isNaN(val)) {
+                        return `<td style="padding:0.75rem; white-space:nowrap; color:#2e7d32; font-weight:600">฿${Number(val).toLocaleString()}</td>`;
+                      }
+                    }
                     return `<td style="padding:0.75rem; color:var(--text); white-space:nowrap">${val}</td>`;
                   }).join('')}
                 </tr>

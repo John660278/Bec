@@ -157,6 +157,30 @@ function uploadSlip(payload) {
   const paymentId = 'PAY_' + new Date().getTime();
   ss.getSheetByName('User_Payments').appendRow([paymentId, eventId, email, amount, penalty, 'Pending', fileUrl, new Date()]);
   
+  // -- อัปเดตสถานะในตาราง Matrix ว่า "รอตรวจสอบ" --
+  try {
+    const eventsData = ss.getSheetByName('Payment_Events').getDataRange().getValues();
+    let eventTitle = '';
+    for(let i = 1; i < eventsData.length; i++) {
+      if(eventsData[i][0] === eventId) { eventTitle = eventsData[i][1]; break; }
+    }
+    if (eventTitle) {
+      const matrixSheet = ss.getSheetByName('Student_Matrix');
+      const mData = matrixSheet.getDataRange().getValues();
+      const headers = mData[0];
+      let eventColIndex = headers.indexOf(eventTitle);
+      if (eventColIndex !== -1) {
+        for (let i = 1; i < mData.length; i++) {
+          if (mData[i][2] === email) { // Col 3 is Email
+            // ให้ลงคำว่า Pending ไปก่อน เมื่อแอดมินกดอนุมัติจะเปลี่ยนเป็นตัวเลขยอดเงิน
+            matrixSheet.getRange(i + 1, eventColIndex + 1).setValue('Pending');
+            break;
+          }
+        }
+      }
+    }
+  } catch(e) {}
+  
   return { success: true, paymentId: paymentId, slipUrl: fileUrl };
 }
 
