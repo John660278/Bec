@@ -872,7 +872,7 @@
       document.getElementById('statPaid').textContent    = paid.length;
       document.getElementById('statPending').textContent = pending.length;
       const total = paid.reduce((s, p) => s + Number(p.paidAmount || 0), 0);
-      document.getElementById('statTotal').textContent   = total.toLocaleString('th-TH');
+      document.getElementById('statTotal').textContent   = total.toLocaleString('th-TH', {minimumFractionDigits:0, maximumFractionDigits:2});
 
       const tbody = document.getElementById('overviewPendingBody');
       const recent = pending.slice(0, 5);
