@@ -334,6 +334,17 @@ function getPublicDashboard() {
     matrixRows.push(rowObj);
   }
 
+  // Filter out Email and Total columns
+  const isExcludedCol = (h) => h === 'Email' || h.includes('ยอดเงินรวม') || h.includes('รวมที่เก็บได้');
+
+  const filteredMatrixRows = matrixRows.map(row => {
+    const newRow = {};
+    for (let key in row) {
+      if (!isExcludedCol(key)) newRow[key] = row[key];
+    }
+    return newRow;
+  });
+
   return {
     success: true,
     totalBalance: totalBalance,
@@ -341,7 +352,7 @@ function getPublicDashboard() {
     totalExpense: totalExpense,
     incomes: incomes.reverse(),
     expenses: expenses.reverse(),
-    matrixHeaders: matrixHeaders.filter(h => h !== 'Email'),
-    matrixRows: matrixRows
+    matrixHeaders: matrixHeaders.filter(h => !isExcludedCol(h)),
+    matrixRows: filteredMatrixRows
   };
 }
