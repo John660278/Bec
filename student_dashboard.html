@@ -739,30 +739,23 @@
   // ─── FETCH PUBLIC BOARD (Firebase) ───
   async function fetchPublicBoard() {
     try {
-      // ดึงทุกอย่างพร้อมกันจาก Firebase ทั้งหมด (ไม่มี GAS แล้ว = เร็วมาก)
-      const [incSnap, expSnap, paySnap, matrixSnap] = await Promise.all([
-        db.collection('incomes').orderBy('timestamp', 'desc').get(),
-        db.collection('expenses').orderBy('timestamp', 'desc').get(),
-        db.collection('payments').where('status', '==', 'Paid').get(),
+      // ดึงสถิติรวมจาก system_stats/overview (1 Read) และรายการล่าสุด
+      const [statsDoc, incSnap, expSnap, matrixSnap] = await Promise.all([
+        db.collection('system_stats').doc('overview').get(),
+        db.collection('incomes').orderBy('timestamp', 'desc').limit(20).get().catch(() => db.collection('incomes').limit(20).get()),
+        db.collection('expenses').orderBy('timestamp', 'desc').limit(20).get().catch(() => db.collection('expenses').limit(20).get()),
         db.collection('student_matrix').doc('current').get()
       ]);
+
+      const stats = statsDoc.exists ? statsDoc.data() : {};
+      const totalBalance = stats.totalBalance != null ? stats.totalBalance : 0;
+      const totalIncome  = stats.totalIncome != null ? (stats.totalIncome + (stats.totalPaidPayments || 0)) : 0;
+      const totalExpense = stats.totalExpense != null ? stats.totalExpense : 0;
 
       const incomes = [];
       incSnap.forEach(doc => incomes.push(doc.data()));
       const expenses = [];
       expSnap.forEach(doc => expenses.push(doc.data()));
-
-      let totalIncome = incomes.reduce((s,i) => s + Number(i.amount||0), 0);
-      let totalExpense = expenses.reduce((s,e) => s + Number(e.amount||0), 0);
-
-      // เพิ่มยอดเงินจากการเก็บเงินนิสิตที่ชำระแล้ว
-      let totalPayments = 0;
-      paySnap.forEach(doc => {
-        totalPayments += Number(doc.data().paidAmount) || 0;
-      });
-      totalIncome += totalPayments;
-
-      let totalBalance = totalIncome - totalExpense;
 
       // Matrix จาก Firebase แทน GAS
       let matrixHeaders = [];
