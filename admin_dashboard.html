@@ -829,42 +829,47 @@
     const tBody = document.getElementById('matrixBody');
     const tHead = document.getElementById('matrixHeaders');
     tBody.innerHTML = `<tr><td><div class="skeleton"></div></td></tr>`;
-    
+
     try {
-      const res = await fetch(`${SCRIPT_URL}?action=getPublicDashboard`);
-      const data = await res.json();
-      if (data.success) {
-        // Render headers
-        tHead.innerHTML = data.matrixHeaders.map((h, i) => `<th style="text-align:${i > 1 ? 'center' : 'left'}">${h}</th>`).join('');
-        // Render rows
-        if (data.matrixRows.length === 0) {
-          tBody.innerHTML = `<tr><td colspan="${data.matrixHeaders.length}"><div class="empty-state"><p>ยังไม่มีข้อมูลนิสิต</p></div></td></tr>`;
+      const snap = await db.collection('student_matrix').doc('current').get();
+      if (snap.exists) {
+        const mx = snap.data();
+        let headers = mx.headers || [];
+        let rows    = mx.rows    || [];
+
+        // ซ่อนคอลัมน์ Email และสรุปยอด
+        const hide = h => h === 'Email' || h.includes('ยอดเงินรวม') || h.includes('รวมที่เก็บได้');
+        headers = headers.filter(h => !hide(h));
+        rows    = rows.map(row => { const r={}; for(let k in row){ if(!hide(k)) r[k]=row[k]; } return r; });
+
+        tHead.innerHTML = headers.map((h,i) =>
+          `<th style="text-align:${i>1?'center':'left'}">${h}</th>`).join('');
+
+        if (rows.length === 0) {
+          tBody.innerHTML = `<tr><td colspan="${headers.length}"><div class="empty-state"><p>ยังไม่มีข้อมูลนิสิต</p></div></td></tr>`;
         } else {
-          tBody.innerHTML = data.matrixRows.map(row => `
+          tBody.innerHTML = rows.map(row => `
             <tr>
-              ${data.matrixHeaders.map((h, i) => {
+              ${headers.map((h,i) => {
                 let val = row[h] || '-';
                 if (i > 1) {
-                  if (val === 'Pending' || val === 'รอตรวจสอบ') {
-                    return `<td style="color:#d48806;font-weight:600;text-align:center">รอตรวจสอบ</td>`;
-                  } else if (val === '-' || val === '') {
-                    return `<td style="color:#d32f2f;font-weight:600;text-shadow:0 0 8px rgba(211,47,47,0.5);text-align:center">ค้างชำระ</td>`;
-                  } else if (!isNaN(val)) {
-                    return `<td style="color:#2e7d32;font-weight:600;text-align:center">฿${Number(val).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>`;
-                  }
+                  if (val==='Pending'||val==='รอตรวจสอบ') return `<td style="color:#d48806;font-weight:600;text-align:center">รอตรวจสอบ</td>`;
+                  if (val==='-'||val==='')                return `<td style="color:#d32f2f;font-weight:600;text-shadow:0 0 8px rgba(211,47,47,0.5);text-align:center">ค้างชำระ</td>`;
+                  if (!isNaN(val))                         return `<td style="color:#2e7d32;font-weight:600;text-align:center">฿${Number(val).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>`;
                 }
                 return `<td>${val}</td>`;
               }).join('')}
-            </tr>
-          `).join('');
+            </tr>`).join('');
         }
       } else {
-        tBody.innerHTML = `<tr><td><div class="empty-state"><p style="color:var(--danger)">ไม่สามารถโหลดข้อมูลได้</p></div></td></tr>`;
+        tBody.innerHTML = `<tr><td><div class="empty-state"><p>ไม่พบข้อมูล</p></div></td></tr>`;
       }
     } catch (e) {
+      console.error(e);
       tBody.innerHTML = `<tr><td><div class="empty-state"><p style="color:var(--danger)">เชื่อมต่อล้มเหลว</p></div></td></tr>`;
     }
   }
+
 
   // ─── OVERVIEW ───
   async function loadOverview() {
@@ -1059,18 +1064,17 @@
       btn.disabled = false; btn.textContent = 'สร้างรอบเก็บเงิน';
     }
   }
-  }
 
   // ─── PAYMENTS ───
   async function fetchPaymentsData() {
     const tbody = document.getElementById('paymentsTableBody');
     tbody.innerHTML = `<tr><td colspan="8"><div class="skeleton"></div></td></tr>`;
     try {
-      const res  = await fetch(`${SCRIPT_URL}?action=getAllPayments`);
-      const data = await res.json();
-      allPayments = data.success ? data.payments : [];
+      const snap = await db.collection('payments').orderBy('paidAt', 'desc').get();
+      allPayments = snap.docs.map(d => d.data());
       renderPaymentsTable(allPayments);
     } catch(e) {
+      console.error(e);
       tbody.innerHTML = `<tr><td colspan="8" style="color:var(--danger)">เชื่อมต่อล้มเหลว</td></tr>`;
     }
   }
@@ -1105,28 +1109,26 @@
   async function approve(paymentId, eventTitle, email, totalAmount) {
     if (!confirm('ยืนยันการอนุมัติยอดนี้?')) return;
     try {
-      // 1. อัปเดตสถานะใน Firebase Firestore ก่อน (หน้านิสิตจะได้อัปเดตทันที)
+      // อัปเดตสถานะใน Firebase Firestore เท่านั้น
       const paySnap = await db.collection('payments')
         .where('paymentId', '==', paymentId)
         .limit(1).get();
-      
-      if (!paySnap.empty) {
-        await paySnap.docs[0].ref.update({ status: 'Paid' });
+
+      if (paySnap.empty) {
+        showToast('ไม่พบข้อมูลการชำระเงินนี้');
+        return;
       }
 
-      // 2. อัปเดต Student_Matrix ใน Google Sheet (ผ่าน GAS เหมือนเดิม)
-      const res = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify({ action: 'approvePayment', payload: { paymentId, eventTitle, email, totalAmount } })
-      });
-      const data = await res.json();
-      if (data.success) { showToast('✓ อนุมัติเรียบร้อย'); fetchPaymentsData(); loadOverview(); }
-      else showToast('Error: ' + data.message);
-    } catch(e) { 
+      await paySnap.docs[0].ref.update({ status: 'Paid' });
+      showToast('✓ อนุมัติเรียบร้อย');
+      fetchPaymentsData();
+      loadOverview();
+    } catch(e) {
       console.error(e);
-      showToast('เชื่อมต่อล้มเหลว'); 
+      showToast('เชื่อมต่อล้มเหลว');
     }
   }
+
 
   // ─── FINANCE ───
   function switchFinance(tab, el) {

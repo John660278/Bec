@@ -581,21 +581,7 @@
     }
   }
 
-  // ─── FETCH PUBLIC DATA ───
-  async function fetchPublicBoard() {
-    try {
-      const res = await fetch(`${SCRIPT_URL}?action=getPublicDashboard`);
-      const data = await res.json();
-      if (data.success) {
-        publicDataFetched = true;
-        renderPublicBoard(data);
-      } else {
-        document.getElementById('publicBoardContent').innerHTML = `<div class="empty-state"><p style="color:var(--danger)">ไม่สามารถโหลดข้อมูลสาขาได้</p></div>`;
-      }
-    } catch (e) {
-      document.getElementById('publicBoardContent').innerHTML = `<div class="empty-state"><p style="color:var(--danger)">เชื่อมต่อล้มเหลว</p></div>`;
-    }
-  }
+
 
   function renderPublicBoard(data) {
     const fmt = (n) => Number(n).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});
