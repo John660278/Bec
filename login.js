@@ -12,6 +12,12 @@ async function handleFirebaseLogin() {
     
     try {
         const provider = new firebase.auth.GoogleAuthProvider();
+        
+        // บังคับให้ผู้ใช้เลือกบัญชีใหม่ทุกครั้ง (แก้ปัญหาคนอื่นล็อกอินค้างไว้)
+        provider.setCustomParameters({
+            prompt: 'select_account'
+        });
+
         const result = await firebase.auth().signInWithPopup(provider);
         const user = result.user;
         
