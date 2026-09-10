@@ -198,11 +198,13 @@
     .table-wrap {
       border: 1px solid var(--border);
       border-radius: 8px;
-      overflow: hidden;
+      overflow-x: auto;   /* scroll แนวนอนได้บนมือถือ */
+      -webkit-overflow-scrolling: touch;
     }
     table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 600px; /* บังคับให้ตารางกว้างพอ ไม่ถูกบีบ */
     }
     thead tr {
       border-bottom: 1px solid var(--border);
@@ -216,6 +218,7 @@
       letter-spacing: 0.05em;
       text-transform: uppercase;
       background: var(--surface);
+      white-space: nowrap; /* ห้ามตัดบรรทัด header */
     }
     td {
       padding: 0.75rem 1rem;
@@ -223,6 +226,7 @@
       border-bottom: 1px solid var(--border);
       background: var(--bg);
       color: var(--text);
+      white-space: nowrap; /* ห้ามตัดบรรทัด cell */
     }
     tbody tr:last-child td { border-bottom: none; }
     tbody tr:hover td { background: var(--surface2); }
@@ -889,14 +893,14 @@
       const incomes = [];
 
       try {
-        const expSnap = await db.collection('expenses').orderBy('date', 'desc').limit(50).get();
+        const expSnap = await db.collection('expenses').orderBy('date', 'desc').get();
         expSnap.forEach(doc => {
           const d = doc.data();
           expenses.push({ id: doc.id, ...d });
           totalExpense += Number(d.amount) || 0;
         });
 
-        const incSnap = await db.collection('incomes').orderBy('date', 'desc').limit(50).get();
+        const incSnap = await db.collection('incomes').orderBy('date', 'desc').get();
         incSnap.forEach(doc => {
           const d = doc.data();
           incomes.push({ id: doc.id, ...d });
@@ -905,6 +909,10 @@
       } catch(err) {
         console.error("Firestore fetch error:", err);
       }
+
+      // Add paid payments to total income
+      const totalPayments = paid.reduce((sum, p) => sum + (Number(p.paidAmount) || 0), 0);
+      totalIncome += totalPayments;
 
       const balance = totalIncome - totalExpense;
       document.getElementById('statTotal').textContent = balance.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
@@ -926,7 +934,7 @@
       }
 
       // Render Public Board Mirror using Firebase data
-      renderAdminPublicBoard({ expenses, incomes });
+      renderAdminPublicBoard({ expenses, incomes, matrixHeaders: [], matrixRows: [] });
     } catch (e) {
       console.error(e);
     }

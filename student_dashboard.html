@@ -754,9 +754,10 @@
   // ─── FETCH PUBLIC BOARD (Firebase) ───
   async function fetchPublicBoard() {
     try {
-      const [incSnap, expSnap, matrixRes] = await Promise.all([
-        db.collection('incomes').orderBy('timestamp', 'desc').limit(50).get(),
-        db.collection('expenses').orderBy('timestamp', 'desc').limit(50).get(),
+      const [incSnap, expSnap, paySnap, matrixRes] = await Promise.all([
+        db.collection('incomes').orderBy('timestamp', 'desc').get(),
+        db.collection('expenses').orderBy('timestamp', 'desc').get(),
+        db.collection('payments').where('status', '==', 'Paid').get(),
         fetch(`${SCRIPT_URL}?action=getPublicDashboard`)
       ]);
 
@@ -770,6 +771,14 @@
 
       let totalIncome = incomes.reduce((s,i) => s + Number(i.amount||0), 0);
       let totalExpense = expenses.reduce((s,e) => s + Number(e.amount||0), 0);
+      
+      // เพิ่มยอดเงินจากการเก็บเงินนิสิตที่ชำระแล้ว
+      let totalPayments = 0;
+      paySnap.forEach(doc => {
+        totalPayments += Number(doc.data().paidAmount) || 0;
+      });
+      totalIncome += totalPayments;
+
       let totalBalance = totalIncome - totalExpense;
 
       publicDataFetched = true;
