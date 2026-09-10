@@ -1,77 +1,71 @@
-/**
- * ฟังก์ชันนี้จะถูกเรียกอัตโนมัติเมื่อผู้ใช้ Login ผ่าน Google สำเร็จ
- * @param {Object} response - ข้อมูลที่ได้กลับมาจาก Google (มี JWT Token)
- */
-async function handleCredentialResponse(response) {
-    const userData = decodeJwtResponse(response.credential);
-    const userEmail = userData.email;
-    const userName = userData.name;
-    const userPicture = userData.picture;
+// รอให้โหลด DOM เสร็จแล้วค่อยผูก Event
+document.addEventListener('DOMContentLoaded', () => {
+    const loginBtn = document.getElementById('firebaseGoogleLoginBtn');
+    if(loginBtn) {
+        loginBtn.addEventListener('click', handleFirebaseLogin);
+    }
+});
 
-    console.log("ล็อกอินด้วย Email:", userEmail);
-
+async function handleFirebaseLogin() {
+    const loadingHint = document.getElementById('loadingHint');
+    if (loadingHint) loadingHint.style.display = 'flex';
+    
     try {
-        const sheetData = await verifyEmailWithGoogleSheets(userEmail);
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const result = await firebase.auth().signInWithPopup(provider);
+        const user = result.user;
+        
+        console.log("ล็อกอินด้วย Email:", user.email);
+
+        // นำ Email ไปเช็คกับระบบเดิม (Google Sheets) ว่าเป็น Admin หรือ Student
+        const sheetData = await verifyEmailWithFirebase(user.email);
 
         if (sheetData && sheetData.success) {
             sessionStorage.setItem('loggedInUser', JSON.stringify({
-                email: userEmail,
-                name: userName,
-                picture: userPicture,
+                email: user.email,
+                name: user.displayName,
+                picture: user.photoURL,
                 role: sheetData.user.role,
                 studentId: sheetData.user.studentId
             }));
 
-            // Role-based Routing
+            // พาไปยังหน้า Dashboard
             if (sheetData.user.role === 'Admin') { 
                 window.location.href = 'admin_dashboard.html';
             } else {
                 window.location.href = 'student_dashboard.html';
             }
         } else {
-            showError(`Error: ไม่พบ Email (${userEmail}) ในระบบ หรือ ${sheetData?.message}`);
+            // ถ้าไม่เจอใน Sheet ให้ล็อคเอาท์ออกจาก Firebase ด้วย
+            await firebase.auth().signOut();
+            showError(`Error: ไม่พบ Email (${user.email}) ในระบบ`);
+            if (loadingHint) loadingHint.style.display = 'none';
         }
     } catch (error) {
-        console.error("เกิดข้อผิดพลาดในการตรวจสอบข้อมูล:", error);
-        showError("ระบบขัดข้อง ไม่สามารถตรวจสอบข้อมูลได้ในขณะนี้");
+        console.error("Firebase Login Error:", error);
+        showError("เกิดข้อผิดพลาดในการล็อกอิน: " + error.message);
+        if (loadingHint) loadingHint.style.display = 'none';
     }
 }
 
 /**
- * เชื่อมต่อและตรวจสอบ Email กับ Google Sheets ผ่าน Google Apps Script
+ * ฟังก์ชันตรวจสอบ User จาก Firestore
  */
-async function verifyEmailWithGoogleSheets(email) {
-    console.log("กำลังส่ง API ไปเช็ค Email ใน Google Sheets:", email);
+async function verifyEmailWithFirebase(email) {
+  try {
+    // ดึงข้อมูล User จาก Firebase แทน Google Sheet
+    const userDoc = await db.collection('users').where('email', '==', email).limit(1).get();
     
-    // =================================================================
-    // URL ของ Web App ที่ได้จาก Google Apps Script
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMnLEpGSYmdqeQTgU5s4vtVTRKhhAC594wcF-wycBuJqy4tB-XOxi6xAsP6TXPUuy4ew/exec"; 
-    // =================================================================
-
-    // --- โค้ดสำหรับยิง API ของจริง ---
-    try {
-        // อัปเดตให้รองรับ ?action=checkUser
-        const response = await fetch(`${SCRIPT_URL}?action=checkUser&email=${email}`);
-        const result = await response.json();
-        
-        return result;
-    } catch (error) {
-        console.error("Fetch API Error:", error);
-        throw error;
+    if (!userDoc.empty) {
+      const data = userDoc.docs[0].data();
+      return { success: true, user: data };
+    } else {
+      return { success: false, message: 'ไม่มีอีเมลนี้ในระบบ' };
     }
-}
-
-/**
- * ฟังก์ชันตัวช่วยสำหรับถอดรหัส JWT (JSON Web Token)
- */
-function decodeJwtResponse(token) {
-    let base64Url = token.split('.')[1];
-    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    let jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-
-    return JSON.parse(jsonPayload);
+  } catch (error) {
+    console.error("Error checking user:", error);
+    return { success: false, message: error.message };
+  }
 }
 
 /**

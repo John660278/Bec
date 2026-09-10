@@ -741,7 +741,32 @@
 <!-- Toast -->
 <div id="toast"></div>
 
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
 <script>
+  // ==========================================
+  // firebase
+  // ==========================================
+  const firebaseConfig = {
+  apiKey: "AIzaSyA1Zuhs25HvceVZYpErBuqzhrrTZfN1Z0k",
+  authDomain: "bec-admin-80e83.firebaseapp.com",
+  projectId: "bec-admin-80e83",
+  storageBucket: "bec-admin-80e83.firebasestorage.app",
+  messagingSenderId: "1089372941715",
+  appId: "1:1089372941715:web:880b6f08cdaded6b804c66"
+};
+  
+  // เรียกใช้งาน Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  const storage = firebase.storage();
+  // ==========================================
+
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMnLEpGSYmdqeQTgU5s4vtVTRKhhAC594wcF-wycBuJqy4tB-XOxi6xAsP6TXPUuy4ew/exec";
 
   let currentUser = null;
@@ -840,14 +865,13 @@
   // ─── OVERVIEW ───
   async function loadOverview() {
     try {
-      const [evRes, payRes, pubRes] = await Promise.all([
+      // 1. Fetch Events & Payments from old Google Script
+      const [evRes, payRes] = await Promise.all([
         fetch(`${SCRIPT_URL}?action=getEvents`),
-        fetch(`${SCRIPT_URL}?action=getAllPayments`),
-        fetch(`${SCRIPT_URL}?action=getPublicDashboard`)
+        fetch(`${SCRIPT_URL}?action=getAllPayments`)
       ]);
       const evData  = await evRes.json().catch(() => ({ success: false }));
       const payData = await payRes.json().catch(() => ({ success: false }));
-      const pubData = await pubRes.json().catch(() => ({ success: false }));
 
       const events   = evData.success  ? evData.events   : [];
       const payments = payData.success ? payData.payments : [];
@@ -858,8 +882,31 @@
       document.getElementById('statPaid').textContent    = paid.length;
       document.getElementById('statPending').textContent = pending.length;
 
-      // ใช้ยอดคงเหลือจาก getPublicDashboard เหมือนหน้านิสิต
-      const balance = pubData.success ? pubData.totalBalance : paid.reduce((s, p) => s + Number(p.paidAmount || 0), 0);
+      // 2. Fetch Finance (Expenses/Incomes) from Firebase Firestore
+      let totalExpense = 0;
+      let totalIncome = 0;
+      const expenses = [];
+      const incomes = [];
+
+      try {
+        const expSnap = await db.collection('expenses').orderBy('date', 'desc').limit(50).get();
+        expSnap.forEach(doc => {
+          const d = doc.data();
+          expenses.push({ id: doc.id, ...d });
+          totalExpense += Number(d.amount) || 0;
+        });
+
+        const incSnap = await db.collection('incomes').orderBy('date', 'desc').limit(50).get();
+        incSnap.forEach(doc => {
+          const d = doc.data();
+          incomes.push({ id: doc.id, ...d });
+          totalIncome += Number(d.amount) || 0;
+        });
+      } catch(err) {
+        console.error("Firestore fetch error:", err);
+      }
+
+      const balance = totalIncome - totalExpense;
       document.getElementById('statTotal').textContent = balance.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
 
       const tbody = document.getElementById('overviewPendingBody');
@@ -869,20 +916,17 @@
       } else {
         tbody.innerHTML = recent.map(p => `
           <tr>
-                        <td>${formatDate(p.paidAt)}</td>
+            <td>${formatDate(p.paidAt)}</td>
             <td style="color:var(--muted);font-size:0.75rem">${p.name}</td>
             <td>${p.eventId}</td>
             <td>${Number(p.paidAmount).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
             <td>${Number(p.penalty||0).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
-           
           </tr>
         `).join('');
       }
 
-      // Render Public Board Mirror
-      if (pubData.success) {
-        renderAdminPublicBoard(pubData);
-      }
+      // Render Public Board Mirror using Firebase data
+      renderAdminPublicBoard({ expenses, incomes });
     } catch (e) {
       console.error(e);
     }
@@ -1046,14 +1090,27 @@
   async function approve(paymentId, eventTitle, email, totalAmount) {
     if (!confirm('ยืนยันการอนุมัติยอดนี้?')) return;
     try {
-      const res  = await fetch(SCRIPT_URL, {
+      // 1. อัปเดตสถานะใน Firebase Firestore ก่อน (หน้านิสิตจะได้อัปเดตทันที)
+      const paySnap = await db.collection('payments')
+        .where('paymentId', '==', paymentId)
+        .limit(1).get();
+      
+      if (!paySnap.empty) {
+        await paySnap.docs[0].ref.update({ status: 'Paid' });
+      }
+
+      // 2. อัปเดต Student_Matrix ใน Google Sheet (ผ่าน GAS เหมือนเดิม)
+      const res = await fetch(SCRIPT_URL, {
         method: 'POST',
         body: JSON.stringify({ action: 'approvePayment', payload: { paymentId, eventTitle, email, totalAmount } })
       });
       const data = await res.json();
       if (data.success) { showToast('✓ อนุมัติเรียบร้อย'); fetchPaymentsData(); loadOverview(); }
       else showToast('Error: ' + data.message);
-    } catch(e) { showToast('เชื่อมต่อล้มเหลว'); }
+    } catch(e) { 
+      console.error(e);
+      showToast('เชื่อมต่อล้มเหลว'); 
+    }
   }
 
   // ─── FINANCE ───
@@ -1096,26 +1153,47 @@
     const amount    = document.getElementById('expAmount').value.trim();
     const date      = document.getElementById('expDate').value;
     const fileInput = document.getElementById('expReceiptFile');
+    
     if (!title || !amount || !date) { showToast('กรุณากรอกข้อมูลให้ครบ'); return; }
-    let base64Image = '';
-    if (fileInput && fileInput.files.length) {
-      base64Image = await fileToBase64(fileInput.files[0]);
-    }
+    
     if (btn) { btn.disabled = true; btn.textContent = 'กำลังบันทึก...'; }
     try {
-      const res  = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'addExpense', payload: { title, amount, date, base64Image } }) });
-      const data = await res.json();
-      if (data.success) {
-        showToast('✓ บันทึกรายจ่ายแล้ว');
-        document.getElementById('expTitle').value  = '';
-        document.getElementById('expAmount').value = '';
-        document.getElementById('expDate').value   = '';
-        if (fileInput) fileInput.value = '';
-        document.getElementById('expFileName').textContent = '';
-        document.getElementById('expPreview').style.display = 'none';
-        loadOverview(); // Refresh overview instead since lists are now there
-      } else { showToast('Error: ' + (data.message || 'ไม่สำเร็จ')); }
-    } catch(e) { showToast('เชื่อมต่อล้มเหลว'); }
+      let receiptUrl = '';
+      if (fileInput && fileInput.files.length) {
+        const base64Image = await fileToBase64(fileInput.files[0]);
+        const uploadRes = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'uploadImageOnly', payload: { base64Image, prefix: 'EXP' } })
+        });
+        const uploadData = await uploadRes.json();
+        if (uploadData.success) {
+          receiptUrl = uploadData.url;
+        } else {
+          throw new Error('อัปโหลดรูปไม่สำเร็จ: ' + uploadData.message);
+        }
+      }
+
+      await db.collection('expenses').add({
+        title: title,
+        amount: Number(amount),
+        date: date,
+        receiptUrl: receiptUrl,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      showToast('✓ บันทึกรายจ่ายแล้ว');
+      document.getElementById('expTitle').value  = '';
+      document.getElementById('expAmount').value = '';
+      document.getElementById('expDate').value   = '';
+      if (fileInput) fileInput.value = '';
+      document.getElementById('expFileName').textContent = '';
+      document.getElementById('expPreview').style.display = 'none';
+      loadOverview();
+    } catch(e) {
+      console.error(e);
+      alert("Error: " + e.message);
+      showToast('เชื่อมต่อล้มเหลว หรือ ไม่ได้รับอนุญาต');
+    }
     finally { if (btn) { btn.disabled = false; btn.textContent = 'บันทึกรายจ่าย'; } }
   }
 
@@ -1124,26 +1202,49 @@
     const amount    = document.getElementById('incAmount').value.trim();
     const date      = document.getElementById('incDate').value;
     const fileInput = document.getElementById('incReceiptFile');
+    
     if (!source || !amount || !date) { showToast('กรุณากรอกข้อมูลให้ครบ'); return; }
-    let base64Image = '';
-    if (fileInput && fileInput.files.length) {
-      base64Image = await fileToBase64(fileInput.files[0]);
-    }
+    
     if (btn) { btn.disabled = true; btn.textContent = 'กำลังบันทึก...'; }
     try {
-      const res  = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'addIncome', payload: { source, amount, date, base64Image } }) });
-      const data = await res.json();
-      if (data.success) {
-        showToast('✓ บันทึกรายรับแล้ว');
-        document.getElementById('incSource').value = '';
-        document.getElementById('incAmount').value = '';
-        document.getElementById('incDate').value   = '';
-        if (fileInput) fileInput.value = '';
-        document.getElementById('incFileName').textContent = '';
-        document.getElementById('incPreview').style.display = 'none';
-        loadOverview(); // Refresh overview instead since lists are now there
-      } else { showToast('Error: ' + (data.message || 'ไม่สำเร็จ')); }
-    } catch(e) { showToast('เชื่อมต่อล้มเหลว'); }
+      let receiptUrl = '';
+      if (fileInput && fileInput.files.length) {
+        // ใช้ fileToBase64 เดิมที่มีอยู่
+        const base64Image = await fileToBase64(fileInput.files[0]);
+        // อัปโหลดเข้า Google Drive ผ่าน Apps Script
+        const uploadRes = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'uploadImageOnly', payload: { base64Image, prefix: 'INC' } })
+        });
+        const uploadData = await uploadRes.json();
+        if (uploadData.success) {
+          receiptUrl = uploadData.url;
+        } else {
+          throw new Error('อัปโหลดรูปไม่สำเร็จ: ' + uploadData.message);
+        }
+      }
+
+      await db.collection('incomes').add({
+        source: source,
+        amount: Number(amount),
+        date: date,
+        receiptUrl: receiptUrl,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      showToast('✓ บันทึกรายรับแล้ว');
+      document.getElementById('incSource').value = '';
+      document.getElementById('incAmount').value = '';
+      document.getElementById('incDate').value   = '';
+      if (fileInput) fileInput.value = '';
+      document.getElementById('incFileName').textContent = '';
+      document.getElementById('incPreview').style.display = 'none';
+      loadOverview();
+    } catch(e) {
+      console.error(e);
+      alert("Error: " + e.message);
+      showToast('เชื่อมต่อล้มเหลว หรือ ไม่ได้รับอนุญาต');
+    }
     finally { if (btn) { btn.disabled = false; btn.textContent = 'บันทึกรายรับ'; } }
   }
 

@@ -40,6 +40,8 @@ function doGet(e) {
     if (action === 'getEvents') return respond(getEvents());
     if (action === 'getAllPayments') return respond(getAllPayments());
     if (action === 'getPublicDashboard') return respond(getPublicDashboard());
+    if (action === 'getAllUsers') return respond(getAllUsers());
+    if (action === 'getStudentMatrix') return respond(getStudentMatrix());
     return respond({ success: false, message: 'Invalid action' });
   } catch (error) {
     return respond({ success: false, message: error.message });
@@ -56,6 +58,7 @@ function doPost(e) {
     if (action === 'approvePayment') return respond(approvePayment(data.payload));
     if (action === 'addExpense') return respond(addExpense(data.payload));
     if (action === 'addIncome') return respond(addIncome(data.payload));
+    if (action === 'uploadImageOnly') return respond(uploadImageOnly(data.payload));
     return respond({ success: false, message: 'Invalid action' });
   } catch (error) {
     return respond({ success: false, message: error.message });
@@ -80,6 +83,18 @@ function checkUser(email) {
     }
   }
   return { success: false, message: 'User not found' };
+}
+
+function getAllUsers() {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const data = ss.getSheetByName('Users').getDataRange().getValues();
+  const users = [];
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][0]) {
+      users.push({ email: data[i][0], studentId: data[i][1], name: data[i][2], role: data[i][3] });
+    }
+  }
+  return { success: true, users };
 }
 
 function getEvents() {
@@ -256,6 +271,13 @@ function uploadFinanceImage(base64Image, prefix) {
   return file.getUrl();
 }
 
+function uploadImageOnly(payload) {
+  const { base64Image, prefix } = payload;
+  if (!base64Image) return { success: false, message: 'No image provided' };
+  const url = uploadFinanceImage(base64Image, prefix || 'FILE');
+  return { success: true, url: url };
+}
+
 function addExpense(payload) {
   const { title, amount, date, base64Image } = payload;
   let receiptUrl = '';
@@ -355,4 +377,20 @@ function getPublicDashboard() {
     matrixHeaders: matrixHeaders.filter(h => !isExcludedCol(h)),
     matrixRows: filteredMatrixRows
   };
+}
+
+function getStudentMatrix() {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const matrixData = ss.getSheetByName('Student_Matrix').getDataRange().getValues();
+  if (matrixData.length < 2) return { success: true, headers: [], rows: [] };
+  const headers = matrixData[0];
+  const rows = [];
+  for (let i = 1; i < matrixData.length; i++) {
+    const rowObj = {};
+    for (let j = 0; j < headers.length; j++) {
+      rowObj[headers[j]] = matrixData[i][j] !== undefined ? String(matrixData[i][j]) : '';
+    }
+    rows.push(rowObj);
+  }
+  return { success: true, headers, rows };
 }

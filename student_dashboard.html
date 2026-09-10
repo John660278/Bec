@@ -512,7 +512,26 @@
   </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
 <script>
+  // ==========================================
+  // โค้ด firebaseConfig 
+  // ==========================================
+ const firebaseConfig = {
+  apiKey: "AIzaSyA1Zuhs25HvceVZYpErBuqzhrrTZfN1Z0k",
+  authDomain: "bec-admin-80e83.firebaseapp.com",
+  projectId: "bec-admin-80e83",
+  storageBucket: "bec-admin-80e83.firebasestorage.app",
+  messagingSenderId: "1089372941715",
+  appId: "1:1089372941715:web:880b6f08cdaded6b804c66"
+};
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  // ==========================================
+
   const SCRIPT_URL    = "https://script.google.com/macros/s/AKfycbwMnLEpGSYmdqeQTgU5s4vtVTRKhhAC594wcF-wycBuJqy4tB-XOxi6xAsP6TXPUuy4ew/exec";
   const PROMPTPAY_ID  = "004999246368459"; // พร้อมเพย์ (เลขบัตรประชาชน/องค์กร)
   const BANK_ACCOUNT  = "235-1-83876-3";   // เลขบัญชี KBANK
@@ -681,24 +700,91 @@
     document.getElementById('pbTab-matrix').style.color  = '#888';
   }
 
-  // ─── FETCH ───
+  // ─── FETCH (Firebase) ───
   async function fetchPayments() {
     try {
-      const res  = await fetch(`${SCRIPT_URL}?action=getStudentPayments&email=${currentUser.email}`);
-      const data = await res.json();
+      // ดึงอีเวนต์ทั้งหมดจาก Firebase
+      const evSnap = await db.collection('events').get();
+      const events = [];
+      evSnap.forEach(doc => events.push(doc.data()));
 
-      if (data.success) {
-        allEvents = data.events || [];
-        const unpaid = allEvents.filter(e => e.status === 'Unpaid').length;
-        document.getElementById('heroUnpaidCount').textContent = unpaid;
-        renderList(allEvents);
-      } else {
-        showError('ไม่สามารถโหลดข้อมูลได้');
-      }
+      // ดึงประวัติการจ่ายของนิสิตคนนี้จาก Firebase
+      const paySnap = await db.collection('payments')
+        .where('email', '==', currentUser.email)
+        .get();
+      const payMap = {};
+      paySnap.forEach(doc => {
+        const d = doc.data();
+        payMap[d.eventId] = d;
+      });
+
+      const currentDate = new Date();
+      allEvents = events.map(ev => {
+        const payRecord = payMap[ev.eventId];
+        const dueDate = new Date(ev.dueDate);
+        let status = 'Unpaid';
+        if (payRecord) status = payRecord.status;
+
+        let penalty = 0;
+        if (status === 'Unpaid' && currentDate > dueDate) {
+          const diffDays = Math.floor(Math.abs(currentDate - dueDate) / (1000 * 60 * 60 * 24));
+          penalty = diffDays * 1;
+        }
+
+        return {
+          eventId: ev.eventId,
+          title: ev.title,
+          baseAmount: Number(ev.baseAmount),
+          dueDate: ev.dueDate,
+          status,
+          penalty,
+          totalAmount: Number(ev.baseAmount) + penalty
+        };
+      }).sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate));
+
+      const unpaid = allEvents.filter(e => e.status === 'Unpaid').length;
+      document.getElementById('heroUnpaidCount').textContent = unpaid;
+      renderList(allEvents);
     } catch (e) {
+      console.error(e);
       showError('เชื่อมต่อล้มเหลว — ลองใหม่อีกครั้ง');
     }
   }
+
+  // ─── FETCH PUBLIC BOARD (Firebase) ───
+  async function fetchPublicBoard() {
+    try {
+      const [incSnap, expSnap, matrixRes] = await Promise.all([
+        db.collection('incomes').orderBy('timestamp', 'desc').limit(50).get(),
+        db.collection('expenses').orderBy('timestamp', 'desc').limit(50).get(),
+        fetch(`${SCRIPT_URL}?action=getPublicDashboard`)
+      ]);
+
+      const incomes = [];
+      incSnap.forEach(doc => incomes.push(doc.data()));
+      const expenses = [];
+      expSnap.forEach(doc => expenses.push(doc.data()));
+
+      // matrixRows ยังคงดึงจาก GAS เพราะยังใช้ Sheet เป็นฐานข้อมูลนิสิต
+      const matrixData = await matrixRes.json().catch(() => ({ success: false }));
+
+      let totalIncome = incomes.reduce((s,i) => s + Number(i.amount||0), 0);
+      let totalExpense = expenses.reduce((s,e) => s + Number(e.amount||0), 0);
+      let totalBalance = totalIncome - totalExpense;
+
+      publicDataFetched = true;
+      renderPublicBoard({
+        incomes, expenses, totalIncome, totalExpense, totalBalance,
+        matrixHeaders: matrixData.success ? matrixData.matrixHeaders : [],
+        matrixRows: matrixData.success ? matrixData.matrixRows : []
+      });
+    } catch (e) {
+      console.error(e);
+      document.getElementById('publicBoardContent').innerHTML =
+        `<div class="empty-state"><p style="color:var(--danger)">เชื่อมต่อล้มเหลว</p></div>`;
+    }
+  }
+
 
   function renderList(items) {
     const container = document.getElementById('paymentList');
@@ -862,41 +948,52 @@
     btn.disabled = true;
     btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin .8s linear infinite"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" opacity=".3"/><path d="M21 12a9 9 0 00-9-9"/></svg> กำลังอัปโหลด...`;
 
-    const file   = fileInput.files[0];
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      try {
-        const res  = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify({
-            action: 'uploadSlip',
-            payload: {
-              eventId:     currentPayment.eventId,
-              email:       currentUser.email,
-              studentId:   currentUser.studentId,
-              amount:      currentPayment.totalAmount,
-              penalty:     currentPayment.penalty,
-              base64Image: reader.result
-            }
-          })
-        });
-        const data = await res.json();
-        if (data.success) {
-          document.getElementById('modalContent').style.display = 'none';
-          document.getElementById('successState').style.display = 'block';
-          fetchPayments(); // refresh list in background
-        } else {
-          alert('เกิดข้อผิดพลาด: ' + data.message);
-          btn.disabled = false;
-          btn.textContent = 'ยืนยันการชำระเงิน';
-        }
-      } catch (e) {
-        alert('อัปโหลดไม่สำเร็จ กรุณาลองใหม่');
-        btn.disabled = false;
-        btn.textContent = 'ยืนยันการชำระเงิน';
-      }
-    };
-    reader.readAsDataURL(file);
+    try {
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+      const base64Image = await new Promise((resolve, reject) => {
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+      // 1. อัปโหลดรูปไปเก็บที่ Google Drive ผ่าน GAS
+      const uploadRes = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'uploadImageOnly',
+          payload: { base64Image, prefix: 'SLIP' }
+        })
+      });
+      const uploadData = await uploadRes.json();
+      if (!uploadData.success) throw new Error('อัปโหลดรูปไม่สำเร็จ');
+
+      const slipUrl = uploadData.url;
+      const paymentId = 'PAY_' + currentUser.email.replace(/[^a-zA-Z0-9]/g,'_') + '_' + currentPayment.eventId + '_' + Date.now();
+
+      // 2. บันทึกข้อมูลลง Firebase Firestore
+      await db.collection('payments').doc(paymentId).set({
+        paymentId,
+        eventId:    currentPayment.eventId,
+        email:      currentUser.email,
+        name:       currentUser.name || '',
+        studentId:  currentUser.studentId || '',
+        paidAmount: currentPayment.totalAmount,
+        penalty:    currentPayment.penalty,
+        status:     'Pending',
+        slipUrl:    slipUrl,
+        paidAt:     new Date().toISOString()
+      });
+
+      document.getElementById('modalContent').style.display = 'none';
+      document.getElementById('successState').style.display = 'block';
+      fetchPayments(); // refresh list
+    } catch (e) {
+      console.error(e);
+      alert('อัปโหลดไม่สำเร็จ: ' + e.message);
+      btn.disabled = false;
+      btn.textContent = 'ยืนยันการชำระเงิน';
+    }
   }
 
   function logout() {
