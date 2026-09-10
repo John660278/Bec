@@ -566,6 +566,7 @@
       `${currentUser.studentId ? currentUser.studentId + '  ·  ' : ''}${currentUser.email}`;
 
     fetchPayments();
+    fetchPublicBoard(); // โหลดพร้อมกันตั้งแต่ต้น ไม่รอให้กดเมนูก่อน
   });
 
   // ─── SWITCH MAIN VIEW ───
@@ -576,9 +577,7 @@
     document.getElementById('view-my-payments').style.display = view === 'my-payments' ? 'block' : 'none';
     document.getElementById('view-public-board').style.display = view === 'public-board' ? 'block' : 'none';
 
-    if (view === 'public-board' && !publicDataFetched) {
-      fetchPublicBoard();
-    }
+    // ไม่ต้องเช็ค publicDataFetched อีกต่อไป เพราะโหลดไปแล้วตอน init
   }
 
 
