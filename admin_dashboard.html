@@ -24,19 +24,20 @@
     }
 
     html, body {
-      height: 100%;
+      min-height: 100%;
       background: var(--bg);
       color: var(--text);
       font-family: 'Inter', system-ui, sans-serif;
       font-size: 14px;
       line-height: 1.5;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
     /* ─── LAYOUT ─── */
     .shell {
       display: flex;
-      height: 100vh;
+      min-height: 100vh;
     }
 
     /* ─── SIDEBAR ─── */
@@ -48,6 +49,8 @@
       display: flex;
       flex-direction: column;
       height: 100vh;
+      position: sticky;
+      top: 0;
       overflow: hidden;
     }
 
@@ -126,8 +129,9 @@
     /* ─── MAIN ─── */
     .main {
       flex: 1;
-      overflow-y: auto;
+      min-width: 0;
       padding: 2rem;
+      padding-bottom: 6rem;
     }
 
     /* ─── PAGE HEADER ─── */
@@ -809,10 +813,6 @@
     if (viewId === 'events') fetchEventsData();
     if (viewId === 'payments') fetchPaymentsData();
     if (viewId === 'matrix' && !matrixFetched) fetchMatrixData();
-    if (viewId === 'finance') {
-      document.getElementById('financeLists').style.display = 'block';
-      fetchFinanceData();
-    }
   }
 
   // ─── TOAST ───
@@ -949,7 +949,7 @@
           <div style="display:flex;justify-content:space-between;padding:0.75rem;border-bottom:1px solid var(--border);font-size:0.8rem">
             <div>
               <div style="color:var(--text)">${e.source}</div>
-              <div style="color:var(--muted);font-size:0.7rem;margin-top:2px">${new Date(e.date).toLocaleDateString('th-TH')}${e.receiptUrl ? ` • <a href="${e.receiptUrl}" target="_blank" style="color:var(--muted);text-decoration:underline">ดูหลักฐาน</a>` : ''}</div>
+              <div style="color:var(--muted);font-size:0.7rem;margin-top:2px">${new Date(e.date).toLocaleDateString('th-TH')}${e.receiptUrl ? ` • <a href="${e.receiptUrl}" target="_blank" style="color:var(--muted);text-decoration:underline">ดูใบเสร็จ</a>` : ''}</div>
             </div>
             <div style="color:#2e7d32;font-weight:600">+฿${fmt(e.amount)}</div>
           </div>`).join('')

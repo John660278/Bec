@@ -591,7 +591,7 @@
           <div style="display:flex;justify-content:space-between;padding:0.75rem;border-bottom:1px solid var(--border);font-size:0.8rem">
             <div>
               <div style="color:var(--text)">${e.source}</div>
-              <div style="color:var(--muted);font-size:0.7rem;margin-top:2px">${new Date(e.date).toLocaleDateString('th-TH')}${e.receiptUrl ? ` • <a href="${e.receiptUrl}" target="_blank" style="color:var(--muted);text-decoration:underline">ดูหลักฐาน</a>` : ''}</div>
+              <div style="color:var(--muted);font-size:0.7rem;margin-top:2px">${new Date(e.date).toLocaleDateString('th-TH')}${e.receiptUrl ? ` • <a href="${e.receiptUrl}" target="_blank" style="color:var(--muted);text-decoration:underline">ดูใบเสร็จ</a>` : ''}</div>
             </div>
             <div style="color:#2e7d32;font-weight:600">+฿${fmt(e.amount)}</div>
           </div>`).join('')
