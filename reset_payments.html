@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Reset Payments</title>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <style>
+    body { font-family: ui-sans-serif, system-ui, sans-serif; padding: 2rem; background: #f0f2f5; }
+    .card { background: white; padding: 2rem; border-radius: 12px; max-width: 650px; margin: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; }
+    h2 { margin-top: 0; color: #dc2626; }
+    .warning { background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; color: #dc2626; font-size: 0.9rem; }
+    button { padding: 12px 28px; font-size: 15px; font-weight: bold; background: #dc2626; color: white; border: none; border-radius: 8px; cursor: pointer; }
+    button:hover { background: #b91c1c; }
+    button:disabled { background: #94a3b8; cursor: not-allowed; }
+    #log { margin-top: 1.5rem; padding: 1rem; background: #1e293b; color: #10b981; border-radius: 8px; font-family: monospace; font-size: 13px; max-height: 400px; overflow-y: auto; text-align: left; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>🔄 รีเซ็ต Payments</h2>
+    <div class="warning">
+      ⚠️ จะลบข้อมูล payments ทั้งหมดใน Firebase แล้วดึงข้อมูลใหม่จาก Google Sheet
+    </div>
+    <button id="startBtn" onclick="startReset()">🗑️ ลบทั้งหมด แล้วดึงใหม่</button>
+    <div id="log">รอคำสั่ง...</div>
+  </div>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyA1Zuhs25HvceVZYpErBuqzhrrTZfN1Z0k",
+    authDomain: "bec-admin-80e83.firebaseapp.com",
+    projectId: "bec-admin-80e83",
+    storageBucket: "bec-admin-80e83.firebasestorage.app",
+    messagingSenderId: "1089372941715",
+    appId: "1:1089372941715:web:880b6f08cdaded6b804c66"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMnLEpGSYmdqeQTgU5s4vtVTRKhhAC594wcF-wycBuJqy4tB-XOxi6xAsP6TXPUuy4ew/exec";
+
+  function logMsg(msg, color) {
+    const logDiv = document.getElementById('log');
+    logDiv.innerHTML += '<div style="color:' + (color||'#10b981') + '">' + msg + '</div>';
+    logDiv.scrollTop = logDiv.scrollHeight;
+  }
+
+  async function startReset() {
+    if (!confirm('ยืนยัน: ลบ payments ทั้งหมดใน Firebase แล้วดึงใหม่จาก Google Sheet?')) return;
+
+    document.getElementById('startBtn').disabled = true;
+    document.getElementById('log').innerHTML = '';
+
+    // STEP 1: ลบทั้งหมดใน Firebase
+    logMsg('🗑️ กำลังลบ payments ทั้งหมดใน Firebase...');
+    const snap = await db.collection('payments').get();
+    logMsg('พบ ' + snap.size + ' รายการ กำลังลบ...', '#f59e0b');
+
+    let deleted = 0;
+    for (const doc of snap.docs) {
+      await doc.ref.delete();
+      deleted++;
+    }
+    logMsg('✅ ลบเรียบร้อย ' + deleted + ' รายการ');
+
+    // STEP 2: ดึงข้อมูลใหม่จาก Google Sheet
+    logMsg('📥 กำลังดึงข้อมูลใหม่จาก Google Sheet...');
+    const res = await fetch(SCRIPT_URL + '?action=getAllPayments');
+    const data = await res.json();
+
+    if (!data.success || !data.payments) {
+      logMsg('❌ ดึงข้อมูลไม่สำเร็จ: ' + (data.message || 'unknown error'), '#ef4444');
+      document.getElementById('startBtn').disabled = false;
+      return;
+    }
+
+    logMsg('พบ ' + data.payments.length + ' รายการใน Google Sheet', '#60a5fa');
+
+    // STEP 3: เขียนข้อมูลใหม่ลง Firebase
+    logMsg('💾 กำลังบันทึกลง Firebase...');
+    let count = 0;
+    for (const item of data.payments) {
+      if (!item.paymentId) continue;
+      await db.collection('payments').doc(item.paymentId).set({
+        paymentId: item.paymentId,
+        eventId: item.eventId,
+        email: item.email,
+        name: item.name,
+        studentId: String(item.studentId || ''),
+        paidAmount: Number(item.paidAmount),
+        penalty: Number(item.penalty || 0),
+        status: item.status,
+        slipUrl: item.slipUrl || '',
+        paidAt: item.paidAt,
+        isMigrated: true
+      });
+      count++;
+    }
+
+    logMsg('🎉 เสร็จสมบูรณ์! บันทึกใหม่ ' + count + ' รายการ', '#10b981');
+    alert('รีเซ็ต Payments เรียบร้อยแล้วครับ!');
+    document.getElementById('startBtn').disabled = false;
+  }
+</script>
+</body>
+</html>

@@ -754,11 +754,12 @@
   // ─── FETCH PUBLIC BOARD (Firebase) ───
   async function fetchPublicBoard() {
     try {
-      const [incSnap, expSnap, paySnap, matrixRes] = await Promise.all([
+      // ดึงทุกอย่างพร้อมกันจาก Firebase ทั้งหมด (ไม่มี GAS แล้ว = เร็วมาก)
+      const [incSnap, expSnap, paySnap, matrixSnap] = await Promise.all([
         db.collection('incomes').orderBy('timestamp', 'desc').get(),
         db.collection('expenses').orderBy('timestamp', 'desc').get(),
         db.collection('payments').where('status', '==', 'Paid').get(),
-        fetch(`${SCRIPT_URL}?action=getPublicDashboard`)
+        db.collection('student_matrix').doc('current').get()
       ]);
 
       const incomes = [];
@@ -766,12 +767,9 @@
       const expenses = [];
       expSnap.forEach(doc => expenses.push(doc.data()));
 
-      // matrixRows ยังคงดึงจาก GAS เพราะยังใช้ Sheet เป็นฐานข้อมูลนิสิต
-      const matrixData = await matrixRes.json().catch(() => ({ success: false }));
-
       let totalIncome = incomes.reduce((s,i) => s + Number(i.amount||0), 0);
       let totalExpense = expenses.reduce((s,e) => s + Number(e.amount||0), 0);
-      
+
       // เพิ่มยอดเงินจากการเก็บเงินนิสิตที่ชำระแล้ว
       let totalPayments = 0;
       paySnap.forEach(doc => {
@@ -781,12 +779,25 @@
 
       let totalBalance = totalIncome - totalExpense;
 
+      // Matrix จาก Firebase แทน GAS
+      let matrixHeaders = [];
+      let matrixRows = [];
+      if (matrixSnap.exists) {
+        const mx = matrixSnap.data();
+        matrixHeaders = mx.headers || [];
+        matrixRows = mx.rows || [];
+        // กรองคอลัมน์ที่ไม่ต้องการออก
+        const exclude = (h) => h === 'Email' || h.includes('ยอดเงินรวม') || h.includes('รวมที่เก็บได้');
+        matrixHeaders = matrixHeaders.filter(h => !exclude(h));
+        matrixRows = matrixRows.map(row => {
+          const newRow = {};
+          for (let k in row) { if (!exclude(k)) newRow[k] = row[k]; }
+          return newRow;
+        });
+      }
+
       publicDataFetched = true;
-      renderPublicBoard({
-        incomes, expenses, totalIncome, totalExpense, totalBalance,
-        matrixHeaders: matrixData.success ? matrixData.matrixHeaders : [],
-        matrixRows: matrixData.success ? matrixData.matrixRows : []
-      });
+      renderPublicBoard({ incomes, expenses, totalIncome, totalExpense, totalBalance, matrixHeaders, matrixRows });
     } catch (e) {
       console.error(e);
       document.getElementById('publicBoardContent').innerHTML =
