@@ -1007,21 +1007,23 @@
     const tbody = document.getElementById('eventsTableBody');
     tbody.innerHTML = `<tr><td colspan="4"><div class="skeleton"></div></td></tr>`;
     try {
-      const res  = await fetch(`${SCRIPT_URL}?action=getEvents`);
-      const data = await res.json();
-      if (data.success && data.events.length > 0) {
-        tbody.innerHTML = data.events.map(ev => `
+      const snap = await db.collection('events').orderBy('createdAt', 'desc').get();
+      if (!snap.empty) {
+        tbody.innerHTML = snap.docs.map(doc => {
+          const ev = doc.data();
+          return `
           <tr>
             <td>${ev.title}</td>
             <td>${Number(ev.baseAmount).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
             <td>${formatDate(ev.dueDate)}</td>
             <td style="color:var(--muted);font-size:0.75rem">${formatDate(ev.createdAt)}</td>
-          </tr>
-        `).join('');
+          </tr>`;
+        }).join('');
       } else {
         tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><p>ยังไม่มีรอบเก็บเงิน</p></div></td></tr>`;
       }
     } catch(e) {
+      console.error(e);
       tbody.innerHTML = `<tr><td colspan="4" style="color:var(--danger);font-size:0.78rem">เชื่อมต่อไม่ได้</td></tr>`;
     }
   }
@@ -1036,22 +1038,31 @@
     btn.disabled = true; btn.textContent = 'กำลังสร้าง...';
 
     try {
-      const res  = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify({ action: 'createEvent', payload: { title, baseAmount: amount, dueDate } })
+      const eventId = 'EVT_' + Date.now();
+      const createdAt = new Date().toISOString();
+      const dueDateISO = new Date(dueDate).toISOString();
+
+      // บันทึกลง Firebase Firestore โดยตรง
+      await db.collection('events').doc(eventId).set({
+        eventId,
+        title,
+        baseAmount: Number(amount),
+        dueDate: dueDateISO,
+        createdAt
       });
-      const data = await res.json();
-      if (data.success) {
-        showToast('✓ สร้างรอบเก็บเงินเรียบร้อย');
-        document.getElementById('evTitle').value = '';
-        document.getElementById('evAmount').value = '';
-        document.getElementById('evDueDate').value = '';
-        fetchEventsData();
-      } else {
-        showToast('Error: ' + data.message);
-      }
-    } catch(e) { showToast('เชื่อมต่อล้มเหลว'); }
-    finally { btn.disabled = false; btn.textContent = 'สร้างรอบเก็บเงิน'; }
+
+      showToast('✓ สร้างรอบเก็บเงินเรียบร้อย');
+      document.getElementById('evTitle').value = '';
+      document.getElementById('evAmount').value = '';
+      document.getElementById('evDueDate').value = '';
+      fetchEventsData();
+    } catch(e) {
+      console.error(e);
+      showToast('เชื่อมต่อล้มเหลว: ' + e.message);
+    } finally {
+      btn.disabled = false; btn.textContent = 'สร้างรอบเก็บเงิน';
+    }
+  }
   }
 
   // ─── PAYMENTS ───
