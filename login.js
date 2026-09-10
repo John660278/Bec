@@ -1,8 +1,21 @@
 // รอให้โหลด DOM เสร็จแล้วค่อยผูก Event
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const loginBtn = document.getElementById('firebaseGoogleLoginBtn');
     if(loginBtn) {
         loginBtn.addEventListener('click', handleFirebaseLogin);
+    }
+
+    // ตรวจสอบผลการล็อกอินกรณีที่เบราว์เซอร์เด้งกลับมาจาก Redirect
+    try {
+        const result = await firebase.auth().getRedirectResult();
+        if (result && result.user) {
+            const loadingHint = document.getElementById('loadingHint');
+            if (loadingHint) loadingHint.style.display = 'flex';
+            await processLoginUser(result.user);
+        }
+    } catch (err) {
+        console.error("Redirect login error:", err);
+        showError("เข้าสู่ระบบไม่สำเร็จ: " + (err.message || 'โปรดลองใหม่อีกครั้ง'));
     }
 });
 
@@ -10,46 +23,60 @@ async function handleFirebaseLogin() {
     const loadingHint = document.getElementById('loadingHint');
     if (loadingHint) loadingHint.style.display = 'flex';
     
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({
+        prompt: 'select_account'
+    });
+
     try {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        
-        // บังคับให้ผู้ใช้เลือกบัญชีใหม่ทุกครั้ง (แก้ปัญหาคนอื่นล็อกอินค้างไว้)
-        provider.setCustomParameters({
-            prompt: 'select_account'
-        });
-
         const result = await firebase.auth().signInWithPopup(provider);
-        const user = result.user;
-        
-        console.log("ล็อกอินด้วย Email:", user.email);
-
-        // นำ Email ไปเช็คกับระบบเดิม (Google Sheets) ว่าเป็น Admin หรือ Student
-        const sheetData = await verifyEmailWithFirebase(user.email);
-
-        if (sheetData && sheetData.success) {
-            sessionStorage.setItem('loggedInUser', JSON.stringify({
-                email: user.email,
-                name: user.displayName,
-                picture: user.photoURL,
-                role: sheetData.user.role,
-                studentId: sheetData.user.studentId
-            }));
-
-            // พาไปยังหน้า Dashboard
-            if (sheetData.user.role === 'Admin') { 
-                window.location.href = 'admin_dashboard.html';
-            } else {
-                window.location.href = 'student_dashboard.html';
-            }
-        } else {
-            // ถ้าไม่เจอใน Sheet ให้ล็อคเอาท์ออกจาก Firebase ด้วย
-            await firebase.auth().signOut();
-            showError(`Error: ไม่พบ Email (${user.email}) ในระบบ`);
-            if (loadingHint) loadingHint.style.display = 'none';
-        }
+        await processLoginUser(result.user);
     } catch (error) {
-        console.error("Firebase Login Error:", error);
-        showError("เกิดข้อผิดพลาดในการล็อกอิน: " + error.message);
+        console.warn("Firebase Login Error:", error);
+
+        // กรณีที่เบราว์เซอร์บล็อก Popup ให้สลับไปใช้ Redirect โดยอัตโนมัติ
+        if (error.code === 'auth/popup-blocked' || error.code === 'auth/cancelled-popup-request') {
+            try {
+                showError("กำลังเปลี่ยนหน้าไปยังระบบล็อกอินของ Google...");
+                await firebase.auth().signInWithRedirect(provider);
+                return;
+            } catch (redirErr) {
+                console.error("Redirect fallback error:", redirErr);
+            }
+        }
+
+        if (error.code === 'auth/popup-closed-by-user') {
+            showError("คุณได้ปิดหน้าต่างล็อกอินก่อนทำรายการเสร็จสิ้น");
+        } else {
+            showError("เกิดข้อผิดพลาดในการล็อกอิน: " + error.message);
+        }
+        if (loadingHint) loadingHint.style.display = 'none';
+    }
+}
+
+async function processLoginUser(user) {
+    const loadingHint = document.getElementById('loadingHint');
+    console.log("ล็อกอินด้วย Email:", user.email);
+
+    const sheetData = await verifyEmailWithFirebase(user.email);
+
+    if (sheetData && sheetData.success) {
+        sessionStorage.setItem('loggedInUser', JSON.stringify({
+            email: user.email,
+            name: user.displayName,
+            picture: user.photoURL,
+            role: sheetData.user.role,
+            studentId: sheetData.user.studentId
+        }));
+
+        if (sheetData.user.role === 'Admin') { 
+            window.location.href = 'admin_dashboard.html';
+        } else {
+            window.location.href = 'student_dashboard.html';
+        }
+    } else {
+        await firebase.auth().signOut();
+        showError(`Error: ไม่พบ Email (${user.email}) ในระบบ`);
         if (loadingHint) loadingHint.style.display = 'none';
     }
 }
