@@ -870,57 +870,6 @@
     }
   }
 
-
-  // ─── SYNC SYSTEM STATS (คำนวณยอดสรุปใหม่จากข้อมูลจริง) ───
-  async function syncSystemStats() {
-    const btn = document.getElementById('syncStatsBtn');
-    if (btn) { btn.disabled = true; btn.textContent = 'กำลังคำนวณ...'; }
-    try {
-      const [evSnap, paySnap, expSnap, incSnap] = await Promise.all([
-        db.collection('events').get(),
-        db.collection('payments').get(),
-        db.collection('expenses').get(),
-        db.collection('incomes').get()
-      ]);
-
-      let eventsCount = evSnap.size;
-      let totalExpense = 0, totalIncome = 0;
-      let paidCount = 0, pendingCount = 0, totalPaidPayments = 0;
-
-      expSnap.forEach(doc => { totalExpense += Number(doc.data().amount) || 0; });
-      incSnap.forEach(doc => { totalIncome  += Number(doc.data().amount) || 0; });
-      paySnap.forEach(doc => {
-        const p = doc.data();
-        if (p.status === 'Paid') {
-          paidCount++;
-          totalPaidPayments += Number(p.paidAmount) || 0;
-        } else if (p.status === 'Pending') {
-          pendingCount++;
-        }
-      });
-
-      const totalBalance = totalIncome + totalPaidPayments - totalExpense;
-
-      await db.collection('system_stats').doc('overview').set({
-        eventsCount, totalExpense, totalIncome,
-        paidCount, pendingCount, totalPaidPayments, totalBalance,
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-
-      showToast('✓ ซิงค์ยอดสรุปสำเร็จ!');
-      loadOverview(); // โหลดใหม่เพื่อแสดงตัวเลขล่าสุด
-    } catch (e) {
-      console.error('syncSystemStats error:', e);
-      showToast('เกิดข้อผิดพลาดในการซิงค์: ' + e.message);
-    } finally {
-      if (btn) {
-        btn.disabled = false;
-        btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:4px"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>ซิงค์ยอดสรุป`;
-      }
-    }
-  }
-
-
   // ─── OVERVIEW ───
   async function loadOverview() {
     try {
