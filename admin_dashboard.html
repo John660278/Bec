@@ -1393,3 +1393,32 @@
 </script>
 </body>
 </html>
+
+<script>
+async function emergencyReset() {
+  if (!confirm("⚠️ คำเตือน! คุณแน่ใจหรือไม่ที่จะ 'ล้างข้อมูลทั้งหมด' (รอบเก็บเงิน, สลิป, รายรับรายจ่าย, ตาราง) ทิ้ง?\n\nข้อมูลรายชื่อนิสิตจะไม่ถูกลบ และสามารถเริ่มใหม่ได้ทันที")) return;
+  
+  showToast("กำลังล้างข้อมูล... โปรดรอสักครู่");
+  
+  async function deleteCol(colName) {
+    const snap = await db.collection(colName).get();
+    const batch = db.batch();
+    snap.docs.forEach(d => batch.delete(d.ref));
+    if(snap.size > 0) await batch.commit();
+  }
+
+  try {
+    await deleteCol('events');
+    await deleteCol('payments');
+    await deleteCol('expenses');
+    await deleteCol('incomes');
+    await deleteCol('student_matrix');
+    
+    alert("✅ ล้างฐานข้อมูลสำเร็จเรียบร้อยแล้ว! ระบบจะรีเฟรชหน้าเว็บ");
+    window.location.reload();
+  } catch(e) {
+    console.error(e);
+    alert("❌ เกิดข้อผิดพลาด: " + e.message);
+  }
+}
+</script>
