@@ -9,7 +9,7 @@ window.firebase = {
     firestore: {
         FieldValue: {
             serverTimestamp: () => new Date().toISOString(),
-            increment: (val) => val
+            increment: (val) => ({ _isMockIncrement: true, val })
         }
     }
 };
@@ -133,16 +133,35 @@ class MockCollection {
             },
             set: async (data, opts) => {
                 const key = this.name === 'users' ? 'email' : 'id';
-                data[toCamelCase(key)] = docId;
-                const {error} = await window.myAppDb.from(this.name).upsert([convertKeysToSnake(data, this.name)]); if (error) { console.error('Supabase Upsert Error:', error); throw error; }
+                const { data: existing } = await window.myAppDb.from(this.name).select('*').eq(key, docId).maybeSingle();
+                let baseData = existing ? convertKeysToCamel(existing, this.name) : {};
+                if (!opts || !opts.merge) { baseData = {}; }
+                baseData[toCamelCase(key)] = docId;
+                
+                for (let k in data) {
+                    if (data[k] && data[k]._isMockIncrement) {
+                        baseData[k] = (Number(baseData[k]) || 0) + data[k].val;
+                    } else if (typeof data[k] !== 'function') {
+                        baseData[k] = data[k];
+                    }
+                }
+                const {error} = await window.myAppDb.from(this.name).upsert([convertKeysToSnake(baseData, this.name)]);
+                if (error) { console.error('Supabase Upsert Error:', error); throw error; }
             },
             update: async (data) => {
                 const key = this.name === 'users' ? 'email' : 'id';
-                const cleanData = {};
+                const { data: existing } = await window.myAppDb.from(this.name).select('*').eq(key, docId).maybeSingle();
+                let baseData = {};
                 for (let k in data) {
-                    if (typeof data[k] !== 'function') cleanData[k] = data[k];
+                    if (data[k] && data[k]._isMockIncrement) {
+                        const currentVal = existing ? (existing[mapFieldToDB(this.name, k)] || 0) : 0;
+                        baseData[k] = Number(currentVal) + data[k].val;
+                    } else if (typeof data[k] !== 'function') {
+                        baseData[k] = data[k];
+                    }
                 }
-                await window.myAppDb.from(this.name).update(convertKeysToSnake(cleanData, this.name)).eq(key, docId);
+                const {error} = await window.myAppDb.from(this.name).update(convertKeysToSnake(baseData, this.name)).eq(key, docId);
+                if (error) { console.error('Supabase Update Error:', error); throw error; }
             },
             delete: async () => {
                 const key = this.name === 'users' ? 'email' : 'id';
