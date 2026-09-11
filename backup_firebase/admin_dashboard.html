@@ -751,12 +751,29 @@
 <div id="toast"></div>
 
 <!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 
-<!-- Supabase & Wrapper -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
-<script src="supabase_wrapper.js"></script>
 <script>
+  // ==========================================
+  // firebase
+  // ==========================================
+  const firebaseConfig = {
+  apiKey: "AIzaSyA1Zuhs25HvceVZYpErBuqzhrrTZfN1Z0k",
+  authDomain: "bec-admin-80e83.firebaseapp.com",
+  projectId: "bec-admin-80e83",
+  storageBucket: "bec-admin-80e83.firebasestorage.app",
+  messagingSenderId: "1089372941715",
+  appId: "1:1089372941715:web:880b6f08cdaded6b804c66"
+};
+  
+  // เรียกใช้งาน Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  const storage = firebase.storage();
   // ==========================================
 
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMnLEpGSYmdqeQTgU5s4vtVTRKhhAC594wcF-wycBuJqy4tB-XOxi6xAsP6TXPUuy4ew/exec";

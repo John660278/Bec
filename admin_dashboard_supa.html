@@ -752,11 +752,16 @@
 
 <!-- Firebase SDKs -->
 
-<!-- Supabase & Wrapper -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
-<script src="supabase_wrapper.js"></script>
+
+
+
+
 <script>
+  // ==========================================
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+  // ==========================================
+  
   // ==========================================
 
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMnLEpGSYmdqeQTgU5s4vtVTRKhhAC594wcF-wycBuJqy4tB-XOxi6xAsP6TXPUuy4ew/exec";
@@ -780,16 +785,7 @@
     document.getElementById('sidebarName').textContent = currentUser.name || 'Admin';
     document.getElementById('sidebarEmail').textContent = currentUser.email || '';
 
-    // รอให้ Firebase Auth พร้อมก่อนดึงข้อมูล ป้องกัน permission-denied
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        loadOverview();
-      } else {
-        console.warn('Firebase Auth state not found. Redirecting to login...');
-        sessionStorage.removeItem('loggedInUser');
-        location.href = 'index.html';
-      }
-    });
+    loadOverview();
   });
 
   // ─── NAVIGATION ───
