@@ -970,20 +970,27 @@
       // ----------------------------------------------------
 
       // 1. อัปโหลดรูปไปเก็บที่ Google Drive ผ่าน GAS
+      const paymentId = crypto.randomUUID();
       const uploadRes = await fetch(SCRIPT_URL, {
         method: 'POST',
         body: JSON.stringify({
-          action: 'uploadImageOnly',
-          payload: { base64Image: compressedBase64.split(',')[1] || compressedBase64, prefix: 'SLIP' }
+          action: 'uploadSlip',
+          payload: { 
+            eventId: currentPayment.eventId,
+            email: currentUser.email,
+            studentId: currentUser.studentId || 'UNKNOWN',
+            amount: currentPayment.totalAmount,
+            penalty: currentPayment.penalty,
+            base64Image: compressedBase64
+          }
         })
       });
       const uploadData = await uploadRes.json();
       if (!uploadData.success) {
         throw new Error('อัปโหลดรูปไม่สำเร็จ (GAS): ' + (uploadData.message || 'Unknown error'));
       }
-
-      const slipUrl = uploadData.url;
-      const paymentId = crypto.randomUUID();
+      const slipUrl = uploadData.slipUrl || uploadData.url;
+      
 
       // 2. บันทึกข้อมูลลง Firebase Firestore
       try {
