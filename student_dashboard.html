@@ -974,7 +974,7 @@
         method: 'POST',
         body: JSON.stringify({
           action: 'uploadImageOnly',
-          payload: { base64Image: compressedBase64, prefix: 'SLIP' }
+          payload: { base64Image: compressedBase64.split(',')[1] || compressedBase64, prefix: 'SLIP' }
         })
       });
       const uploadData = await uploadRes.json();
