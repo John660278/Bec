@@ -796,7 +796,16 @@
     document.getElementById('sidebarName').textContent = currentUser.name || 'Admin';
     document.getElementById('sidebarEmail').textContent = currentUser.email || '';
 
-    loadOverview();
+    // รอให้ Firebase Auth พร้อมก่อนดึงข้อมูล ป้องกัน permission-denied
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        loadOverview();
+      } else {
+        console.warn('Firebase Auth state not found. Redirecting to login...');
+        sessionStorage.removeItem('loggedInUser');
+        location.href = 'index.html';
+      }
+    });
   });
 
   // ─── NAVIGATION ───

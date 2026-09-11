@@ -6,7 +6,6 @@
   <title>Dashboard — BEC</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/promptpay-qr@3.2.0/lib/promptpay-qr.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -565,8 +564,17 @@
     document.getElementById('heroBio').textContent =
       `${currentUser.studentId ? currentUser.studentId + '  ·  ' : ''}${currentUser.email}`;
 
-    fetchPayments();
-    fetchPublicBoard(); // โหลดพร้อมกันตั้งแต่ต้น ไม่รอให้กดเมนูก่อน
+    // รอให้ Firebase Auth พร้อมก่อนดึงข้อมูล ป้องกัน permission-denied
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        fetchPayments();
+        fetchPublicBoard();
+      } else {
+        console.warn('Firebase Auth state not found. Redirecting to login...');
+        sessionStorage.removeItem('loggedInUser');
+        location.href = 'index.html';
+      }
+    });
   });
 
   // ─── SWITCH MAIN VIEW ───
