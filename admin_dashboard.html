@@ -569,10 +569,11 @@
               <th>จำนวนเงิน (฿)</th>
               <th>วันครบกำหนด</th>
               <th>วันที่สร้าง</th>
+              <th></th>
             </tr>
           </thead>
           <tbody id="eventsTableBody">
-            <tr><td colspan="4"><div class="skeleton" style="width:70%"></div></td></tr>
+            <tr><td colspan="5"><div class="skeleton" style="width:70%"></div></td></tr>
           </tbody>
         </table>
       </div>
@@ -994,7 +995,7 @@
   // ─── EVENTS ───
   async function fetchEventsData() {
     const tbody = document.getElementById('eventsTableBody');
-    tbody.innerHTML = `<tr><td colspan="4"><div class="skeleton"></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5"><div class="skeleton"></div></td></tr>`;
     try {
       const snap = await db.collection('events').orderBy('createdAt', 'desc').get();
       if (!snap.empty) {
@@ -1006,14 +1007,28 @@
             <td>${Number(ev.baseAmount).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
             <td>${formatDate(ev.dueDate)}</td>
             <td style="color:var(--muted);font-size:0.75rem">${formatDate(ev.createdAt)}</td>
+            <td><button class="btn btn-ghost btn-sm" style="color:var(--danger);" onclick="deleteEvent('${doc.id}')">ลบ</button></td>
           </tr>`;
         }).join('');
       } else {
-        tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><p>ยังไม่มีรอบเก็บเงิน</p></div></td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><p>ยังไม่มีรอบเก็บเงิน</p></div></td></tr>`;
       }
     } catch(e) {
       console.error(e);
-      tbody.innerHTML = `<tr><td colspan="4" style="color:var(--danger);font-size:0.78rem">เชื่อมต่อไม่ได้</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" style="color:var(--danger);font-size:0.78rem">เชื่อมต่อไม่ได้</td></tr>`;
+    }
+  }
+
+  async function deleteEvent(eventId) {
+    if (!confirm('คุณแน่ใจหรือไม่ว่าต้องการ "ลบ" รอบเก็บเงินนี้?\n\n(หากลบแล้ว คอลัมน์นี้จะหายไปจากตารางของทุกคนทันที)')) return;
+    try {
+      await db.collection('events').doc(eventId).delete();
+      showToast('ลบรอบเก็บเงินสำเร็จ');
+      await fetchEventsData();
+      await syncStudentMatrix(); // อัปเดตตารางให้คอลัมน์หายไป
+    } catch(e) {
+      console.error(e);
+      showToast('เกิดข้อผิดพลาดในการลบ');
     }
   }
 
