@@ -972,24 +972,32 @@
         })
       });
       const uploadData = await uploadRes.json();
-      if (!uploadData.success) throw new Error('อัปโหลดรูปไม่สำเร็จ');
+      if (!uploadData.success) {
+        throw new Error('อัปโหลดรูปไม่สำเร็จ (GAS): ' + (uploadData.message || 'Unknown error'));
+      }
 
       const slipUrl = uploadData.url;
       const paymentId = 'PAY_' + currentUser.email.replace(/[^a-zA-Z0-9]/g,'_') + '_' + currentPayment.eventId + '_' + Date.now();
 
       // 2. บันทึกข้อมูลลง Firebase Firestore
-      await db.collection('payments').doc(paymentId).set({
-        paymentId,
-        eventId:    currentPayment.eventId,
-        email:      currentUser.email,
-        name:       currentUser.name || '',
-        studentId:  currentUser.studentId || '',
-        paidAmount: currentPayment.totalAmount,
-        penalty:    currentPayment.penalty,
-        status:     'Pending',
-        slipUrl:    slipUrl,
-        paidAt:     new Date().toISOString()
-      });
+      try {
+        await db.collection('payments').doc(paymentId).set({
+          paymentId,
+          eventId:    currentPayment.eventId,
+          eventTitle: currentPayment.title, // เพิ่มชื่อรอบจ่าย
+          email:      currentUser.email,
+          name:       currentUser.name || '',
+          studentId:  currentUser.studentId || '',
+          paidAmount: currentPayment.totalAmount,
+          penalty:    currentPayment.penalty,
+          status:     'Pending',
+          slipUrl:    slipUrl,
+          paidAt:     new Date().toISOString()
+        });
+      } catch (dbError) {
+        console.error("Firestore Error:", dbError);
+        throw new Error('บันทึกข้อมูลฐานข้อมูลไม่สำเร็จ: ' + dbError.message);
+      }
 
       document.getElementById('modalContent').style.display = 'none';
       document.getElementById('successState').style.display = 'block';
