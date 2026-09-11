@@ -29,7 +29,9 @@ async function handleFirebaseLogin() {
     });
 
     try {
+        console.log("กำลังเปิด Popup Login...");
         const result = await firebase.auth().signInWithPopup(provider);
+        console.log("ได้ข้อมูลผู้ใช้จาก Google แล้ว กำลังเช็คฐานข้อมูล...");
         await processLoginUser(result.user);
     } catch (error) {
         console.warn("Firebase Login Error:", error);
@@ -58,25 +60,37 @@ async function processLoginUser(user) {
     const loadingHint = document.getElementById('loadingHint');
     console.log("ล็อกอินด้วย Email:", user.email);
 
-    const sheetData = await verifyEmailWithFirebase(user.email);
+    // Timeout กันกรณี Firestore ค้าง
+    const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error("หมดเวลาเชื่อมต่อฐานข้อมูล (เน็ตช้าหรือโควต้าเต็ม)")), 10000));
+    
+    try {
+        const sheetData = await Promise.race([
+            verifyEmailWithFirebase(user.email),
+            timeoutPromise
+        ]);
 
-    if (sheetData && sheetData.success) {
-        sessionStorage.setItem('loggedInUser', JSON.stringify({
-            email: user.email,
-            name: user.displayName,
-            picture: user.photoURL,
-            role: sheetData.user.role,
-            studentId: sheetData.user.studentId
-        }));
+        if (sheetData && sheetData.success) {
+            sessionStorage.setItem('loggedInUser', JSON.stringify({
+                email: user.email,
+                name: user.displayName,
+                picture: user.photoURL,
+                role: sheetData.user.role,
+                studentId: sheetData.user.studentId
+            }));
 
-        if (sheetData.user.role === 'Admin') { 
-            window.location.href = 'admin_dashboard.html';
+            if (sheetData.user.role === 'Admin') { 
+                window.location.href = 'admin_dashboard.html';
+            } else {
+                window.location.href = 'student_dashboard.html';
+            }
         } else {
-            window.location.href = 'student_dashboard.html';
+            await firebase.auth().signOut();
+            showError(`Error: ไม่พบ Email (${user.email}) ในระบบ`);
+            if (loadingHint) loadingHint.style.display = 'none';
         }
-    } else {
-        await firebase.auth().signOut();
-        showError(`Error: ไม่พบ Email (${user.email}) ในระบบ`);
+    } catch (err) {
+        console.error("Firestore Timeout Error:", err);
+        showError("เกิดข้อผิดพลาด: " + err.message);
         if (loadingHint) loadingHint.style.display = 'none';
     }
 }
