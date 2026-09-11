@@ -21,7 +21,7 @@ async function handleCredentialResponse(response) {
             .from('users')
             .select('*')
             .eq('email', userEmail)
-            .single();
+            .maybeSingle();
 
         if (error || !data) {
             showError(`ไม่อนุญาตให้เข้าถึง: ไม่พบอีเมล ${userEmail} ในระบบ`);
