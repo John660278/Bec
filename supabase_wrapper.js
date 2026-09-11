@@ -20,26 +20,55 @@ function toSnakeCase(str) {
 function toCamelCase(str) {
     return str.replace(/_([a-z])/g, (g) => g[1].toUpperCase());
 }
-function convertKeysToSnake(obj) {
+
+// แอบแปลชื่อฟิลด์ให้ตรงกับฐานข้อมูล SQL เพราะ Firebase เดิมตั้งชื่อไว้คนละแบบ
+function mapFieldToDB(table, field) {
+    if (table === 'payments') {
+        if (field === 'email') return 'student_email';
+        if (field === 'name') return 'student_name';
+        if (field === 'paymentId') return 'id';
+    }
+    if (table === 'events') {
+        if (field === 'eventId') return 'id';
+    }
+    if (field === 'createdAt') return 'created_at';
+    return toSnakeCase(field);
+}
+
+function convertKeysToSnake(obj, table) {
     if (!obj || typeof obj !== 'object') return obj;
     const newObj = {};
     for (const key in obj) {
-        newObj[toSnakeCase(key)] = obj[key];
+        newObj[mapFieldToDB(table, key)] = obj[key];
     }
     return newObj;
 }
-function convertKeysToCamel(obj) {
+
+function convertKeysToCamel(obj, table) {
     if (!obj || typeof obj !== 'object') return obj;
     const newObj = {};
     for (const key in obj) {
         newObj[toCamelCase(key)] = obj[key];
     }
+    
+    // สร้างนามแฝง (Alias) ให้หน้าเว็บเรียกใช้ได้โดยไม่ต้องแก้โค้ด HTML 1400 บรรทัด
+    if (table === 'payments') {
+        if (newObj.studentEmail) newObj.email = newObj.studentEmail;
+        if (newObj.studentName) newObj.name = newObj.studentName;
+        if (newObj.id) newObj.paymentId = newObj.id;
+        // The HTML dashboard wants to show event title but calls it eventId in the table HTML
+        // Let's overwrite eventId with eventTitle if it exists so it renders nicely!
+        // Actually, it uses eventId in syncStudentMatrix too! We must keep eventId as the UUID.
+    }
+    if (table === 'events') {
+        if (newObj.id) newObj.eventId = newObj.id;
+    }
     return newObj;
 }
 
 class MockDoc {
-    constructor(data, id) {
-        this._data = convertKeysToCamel(data);
+    constructor(data, id, table) {
+        this._data = convertKeysToCamel(data, table);
         this.id = id;
     }
     data() { return this._data; }
@@ -52,7 +81,7 @@ class MockQuery {
         this._order = null;
     }
     where(field, op, val) {
-        const snakeField = toSnakeCase(field);
+        const snakeField = mapFieldToDB(this.table, field);
         if (op === '==') this.q = this.q.eq(snakeField, val);
         else if (op === '!=') this.q = this.q.neq(snakeField, val);
         else if (op === '>') this.q = this.q.gt(snakeField, val);
@@ -60,7 +89,7 @@ class MockQuery {
         return this;
     }
     orderBy(field, dir = 'asc') {
-        const snakeField = toSnakeCase(field);
+        const snakeField = mapFieldToDB(this.table, field);
         this._order = { field: snakeField, ascending: dir === 'asc' };
         this.q = this.q.order(snakeField, { ascending: dir === 'asc' });
         return this;
@@ -78,7 +107,7 @@ class MockQuery {
         return {
             empty: sortedData.length === 0,
             size: sortedData.length,
-            docs: sortedData.map(d => new MockDoc(d, d.id || d.email))
+            docs: sortedData.map(d => new MockDoc(d, d.id || d.email, this.table))
         };
     }
 }
@@ -98,12 +127,12 @@ class MockCollection {
                 const key = this.name === 'users' ? 'email' : 'id';
                 const { data, error } = await window.myAppDb.from(this.name).select('*').eq(key, docId).maybeSingle();
                 if (error || !data) return { exists: false, data: () => null };
-                return { exists: true, data: () => convertKeysToCamel(data) };
+                return { exists: true, data: () => convertKeysToCamel(data, this.name) };
             },
             set: async (data, opts) => {
                 const key = this.name === 'users' ? 'email' : 'id';
                 data[toCamelCase(key)] = docId;
-                await window.myAppDb.from(this.name).upsert([convertKeysToSnake(data)]);
+                await window.myAppDb.from(this.name).upsert([convertKeysToSnake(data, this.name)]);
             },
             update: async (data) => {
                 const key = this.name === 'users' ? 'email' : 'id';
@@ -111,7 +140,7 @@ class MockCollection {
                 for (let k in data) {
                     if (typeof data[k] !== 'function') cleanData[k] = data[k];
                 }
-                await window.myAppDb.from(this.name).update(convertKeysToSnake(cleanData)).eq(key, docId);
+                await window.myAppDb.from(this.name).update(convertKeysToSnake(cleanData, this.name)).eq(key, docId);
             },
             delete: async () => {
                 const key = this.name === 'users' ? 'email' : 'id';
@@ -122,7 +151,7 @@ class MockCollection {
     async add(data) {
         const docId = crypto.randomUUID();
         data.id = docId;
-        await window.myAppDb.from(this.name).insert([convertKeysToSnake(data)]);
+        await window.myAppDb.from(this.name).insert([convertKeysToSnake(data, this.name)]);
         return { id: docId };
     }
 }

@@ -1142,7 +1142,7 @@
     tbody.innerHTML = list.map(p => `
       <tr>
         <td style="font-size:0.75rem;color:var(--muted)">${p.name}</td>
-        <td>${p.eventId}</td>
+        <td>${p.eventTitle || p.eventId}</td>
         <td>${Number(p.paidAmount).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
         <td>${Number(p.penalty||0).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
         <td><span class="badge badge-${p.status === 'Paid' ? 'paid' : 'pending'}">${p.status === 'Paid' ? 'ชำระแล้ว' : 'รอตรวจสอบ'}</span></td>
