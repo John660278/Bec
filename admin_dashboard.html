@@ -1150,9 +1150,26 @@
         <td><span class="badge badge-${p.status === 'Paid' ? 'paid' : 'pending'}">${p.status === 'Paid' ? 'ชำระแล้ว' : 'รอตรวจสอบ'}</span></td>
         <td style="font-size:0.75rem;color:var(--muted)">${formatDate(p.paidAt)}</td>
         <td>${p.slipUrl ? `<a href="${p.slipUrl}" target="_blank" style="color:var(--muted);font-size:0.75rem;text-decoration:underline">ดูสลิป</a>` : '—'}</td>
-        <td>${p.status === 'Pending' ? `<button class="btn btn-primary btn-sm" onclick="approve('${p.paymentId}','${p.eventTitle}','${p.email}',${p.paidAmount})">อนุมัติ</button>` : ''}</td>
+        <td>
+          ${p.status === 'Pending' ? `<button class="btn btn-primary btn-sm" style="margin-bottom:0.25rem;" onclick="approve('${p.paymentId}','${p.eventTitle}','${p.email}',${p.paidAmount})">อนุมัติ</button><br>` : ''}
+          <button class="btn btn-ghost btn-sm" style="color:var(--danger);" onclick="deletePayment('${p.paymentId}')">ลบ</button>
+        </td>
       </tr>
     `).join('');
+  }
+
+  async function deletePayment(paymentId) {
+    if (!confirm('คุณแน่ใจหรือไม่ว่าต้องการ "ลบ" รายการนี้?\n\n(หากลบแล้ว สถานะของนิสิตคนนี้ในตารางจะกลับไปเป็น "ค้างชำระ" ทันที)')) return;
+    
+    try {
+      await db.collection('payments').doc(paymentId).delete();
+      showToast('ลบรายการสำเร็จ');
+      await fetchPaymentsData();
+      await syncStudentMatrix(); // อัปเดตตารางสรุป
+    } catch(e) {
+      console.error(e);
+      showToast('เกิดข้อผิดพลาดในการลบ');
+    }
   }
 
   function filterPayments(status, el) {
