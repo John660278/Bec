@@ -512,20 +512,14 @@
 </div>
 
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js?v=99"></script>
+<script src="supabase_wrapper.js?v=99"></script>
 <script>
   // ==========================================
   // โค้ด firebaseConfig 
   // ==========================================
- const firebaseConfig = {
-  apiKey: "AIzaSyA1Zuhs25HvceVZYpErBuqzhrrTZfN1Z0k",
-  authDomain: "bec-admin-80e83.firebaseapp.com",
-  projectId: "bec-admin-80e83",
-  storageBucket: "bec-admin-80e83.firebasestorage.app",
-  messagingSenderId: "1089372941715",
-  appId: "1:1089372941715:web:880b6f08cdaded6b804c66"
-};
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+ const db = window.db;
   // ==========================================
 
   const SCRIPT_URL    = "https://script.google.com/macros/s/AKfycbwMnLEpGSYmdqeQTgU5s4vtVTRKhhAC594wcF-wycBuJqy4tB-XOxi6xAsP6TXPUuy4ew/exec";
@@ -561,17 +555,8 @@
     document.getElementById('heroBio').textContent =
       `${currentUser.studentId ? currentUser.studentId + '  ·  ' : ''}${currentUser.email}`;
 
-    // รอให้ Firebase Auth พร้อมก่อนดึงข้อมูล ป้องกัน permission-denied
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        fetchPayments();
-        fetchPublicBoard();
-      } else {
-        console.warn('Firebase Auth state not found. Redirecting to login...');
-        sessionStorage.removeItem('loggedInUser');
-        location.href = 'index.html';
-      }
-    });
+    fetchPayments();
+    fetchPublicBoard();
   });
 
   // ─── SWITCH MAIN VIEW ───
