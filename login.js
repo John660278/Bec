@@ -30,11 +30,25 @@ async function handleFirebaseLogin() {
 
     try {
         console.log("กำลังเปิด Popup Login...");
-        const result = await firebase.auth().signInWithPopup(provider);
+        
+        // Timeout สำหรับหน้าต่าง Popup กรณี Safari บล็อกแล้วค้าง
+        const popupPromise = firebase.auth().signInWithPopup(provider);
+        const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error("POPUP_TIMEOUT")), 15000)
+        );
+
+        const result = await Promise.race([popupPromise, timeoutPromise]);
+        
         console.log("ได้ข้อมูลผู้ใช้จาก Google แล้ว กำลังเช็คฐานข้อมูล...");
         await processLoginUser(result.user);
     } catch (error) {
         console.warn("Firebase Login Error:", error);
+
+        if (error.message === "POPUP_TIMEOUT") {
+            showError("ระบบล็อกอินค้าง (Safari อาจบล็อก Popup) กำลังเปลี่ยนหน้าต่าง...");
+            await firebase.auth().signInWithRedirect(provider);
+            return;
+        }
 
         // กรณีที่เบราว์เซอร์บล็อก Popup ให้สลับไปใช้ Redirect โดยอัตโนมัติ
         if (error.code === 'auth/popup-blocked' || error.code === 'auth/cancelled-popup-request') {
