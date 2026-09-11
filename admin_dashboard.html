@@ -863,7 +863,7 @@
                 let val = row[h] || '-';
                 if (i > 1) {
                   if (val==='Pending'||val==='รอตรวจสอบ') return `<td style="color:#d48806;font-weight:600;text-align:center">รอตรวจสอบ</td>`;
-                  if (val==='-'||val==='')                return `<td style="color:#d32f2f;font-weight:600;text-shadow:0 0 8px rgba(211,47,47,0.5);text-align:center">ค้างชำระ</td>`;
+                  if (val==='-'||val===''||val==='ค้างชำระ') return `<td style="color:#d32f2f;font-weight:600;text-shadow:0 0 8px rgba(211,47,47,0.5);text-align:center">ค้างชำระ</td>`;
                   if (!isNaN(val))                         return `<td style="color:#2e7d32;font-weight:600;text-align:center">฿${Number(val).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>`;
                 }
                 return `<td>${val}</td>`;
@@ -969,7 +969,7 @@
                   let val = row[h] || '-';
                   if (i > 1) {
                     if (val==='Pending'||val==='รอตรวจสอบ') return `<td style="padding:0.75rem;white-space:nowrap;color:#d48806;font-weight:600;text-align:center">รอตรวจสอบ</td>`;
-                    if (val==='-'||val==='') return `<td style="padding:0.75rem;white-space:nowrap;color:#d32f2f;font-weight:600;text-shadow:0 0 8px rgba(211,47,47,0.5);text-align:center">ค้างชำระ</td>`;
+                  if (val==='-'||val===''||val==='ค้างชำระ') return `<td style="padding:0.75rem;white-space:nowrap;color:#d32f2f;font-weight:600;text-shadow:0 0 8px rgba(211,47,47,0.5);text-align:center">ค้างชำระ</td>`;
                     if (!isNaN(val)) return `<td style="padding:0.75rem;white-space:nowrap;color:#2e7d32;font-weight:600;text-align:center">฿${fmt(val)}</td>`;
                   }
                   return `<td style="padding:0.75rem;color:var(--text);white-space:nowrap">${val}</td>`;
