@@ -25,7 +25,7 @@ class MockDoc {
 class MockQuery {
     constructor(table) {
         this.table = table;
-        this.q = supabase.from(table).select('*');
+        this.q = window.myAppDb.from(table).select('*');
         this._order = null;
     }
     where(field, op, val) {
@@ -79,14 +79,14 @@ class MockCollection {
             id: docId,
             get: async () => {
                 const key = this.name === 'users' ? 'email' : 'id';
-                const { data, error } = await supabase.from(this.name).select('*').eq(key, docId).maybeSingle();
+                const { data, error } = await window.myAppDb.from(this.name).select('*').eq(key, docId).maybeSingle();
                 if (error || !data) return { exists: false, data: () => null };
                 return { exists: true, data: () => data };
             },
             set: async (data, opts) => {
                 const key = this.name === 'users' ? 'email' : 'id';
                 data[key] = docId;
-                await supabase.from(this.name).upsert([data]);
+                await window.myAppDb.from(this.name).upsert([data]);
             },
             update: async (data) => {
                 const key = this.name === 'users' ? 'email' : 'id';
@@ -95,18 +95,18 @@ class MockCollection {
                 for (let k in data) {
                     if (typeof data[k] !== 'function') cleanData[k] = data[k];
                 }
-                await supabase.from(this.name).update(cleanData).eq(key, docId);
+                await window.myAppDb.from(this.name).update(cleanData).eq(key, docId);
             },
             delete: async () => {
                 const key = this.name === 'users' ? 'email' : 'id';
-                await supabase.from(this.name).delete().eq(key, docId);
+                await window.myAppDb.from(this.name).delete().eq(key, docId);
             }
         };
     }
     async add(data) {
         const docId = crypto.randomUUID();
         data.id = docId;
-        await supabase.from(this.name).insert([data]);
+        await window.myAppDb.from(this.name).insert([data]);
         return { id: docId };
     }
 }

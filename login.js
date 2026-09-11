@@ -1,27 +1,36 @@
 /**
  * ฟังก์ชันนี้จะถูกเรียกอัตโนมัติเมื่อผู้ใช้ Login ผ่าน Google สำเร็จ
- * @param {Object} response - ข้อมูลที่ได้กลับมาจาก Google (มี JWT Token)
  */
 async function handleCredentialResponse(response) {
-    const userData = decodeJwtResponse(response.credential);
-    const userEmail = userData.email;
-    const userName = userData.name;
-    const userPicture = userData.picture;
-
-    console.log("ล็อกอินด้วย Email:", userEmail);
+    // 1. ซ่อนปุ่ม Google และโชว์หน้าโหลดให้ดู Smooth
+    document.querySelector('.google-btn-wrapper').style.display = 'none';
+    const loadingHint = document.getElementById('loadingHint');
+    loadingHint.innerHTML = '<div class="spinner"></div><span>กำลังพาท่านเข้าสู่ระบบ...</span>';
+    loadingHint.style.display = 'flex';
+    document.getElementById('errorMessage').style.display = 'none';
 
     try {
-        const { data, error } = await supabase
+        // 2. ถอดรหัสเอา Email
+        const userData = decodeJwtResponse(response.credential);
+        const userEmail = userData.email;
+        const userName = userData.name;
+        const userPicture = userData.picture;
+
+        // 3. เช็คกับฐานข้อมูลว่ามี Email นี้ไหม
+        const { data, error } = await window.myAppDb
             .from('users')
             .select('*')
             .eq('email', userEmail)
             .single();
 
         if (error || !data) {
-            showError(`Error: ไม่พบ Email (${userEmail}) ในระบบ กรุณาติดต่อแอดมิน`);
+            showError(`ไม่อนุญาตให้เข้าถึง: ไม่พบอีเมล ${userEmail} ในระบบ`);
+            document.querySelector('.google-btn-wrapper').style.display = 'flex';
+            loadingHint.style.display = 'none';
             return;
         }
 
+        // 4. บันทึกข้อมูลลงเครื่องแล้วพาไปหน้า Dashboard ทันที
         sessionStorage.setItem('loggedInUser', JSON.stringify({
             email: userEmail,
             name: userName,
@@ -30,35 +39,29 @@ async function handleCredentialResponse(response) {
             studentId: data.student_id
         }));
 
-        // Role-based Routing
         if (data.role === 'Admin') { 
-            window.location.href = 'admin_dashboard.html';
+            window.location.replace('admin_dashboard.html');
         } else {
-            window.location.href = 'student_dashboard.html';
+            window.location.replace('student_dashboard.html');
         }
 
     } catch (error) {
-        console.error("เกิดข้อผิดพลาดในการตรวจสอบข้อมูล:", error);
-        showError("ระบบขัดข้อง ไม่สามารถตรวจสอบข้อมูลได้ในขณะนี้");
+        console.error("เกิดข้อผิดพลาด:", error);
+        showError("การเชื่อมต่อขัดข้อง กรุณาลองใหม่อีกครั้ง");
+        document.querySelector('.google-btn-wrapper').style.display = 'flex';
+        loadingHint.style.display = 'none';
     }
 }
 
-/**
- * ฟังก์ชันตัวช่วยสำหรับถอดรหัส JWT (JSON Web Token)
- */
 function decodeJwtResponse(token) {
     let base64Url = token.split('.')[1];
     let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     let jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
-
     return JSON.parse(jsonPayload);
 }
 
-/**
- * ฟังก์ชันสำหรับแสดงข้อความ Error
- */
 function showError(message) {
     const errorDiv = document.getElementById('errorMessage');
     errorDiv.textContent = message;
