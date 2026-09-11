@@ -23,7 +23,14 @@ async function handleCredentialResponse(response) {
             .eq('email', userEmail)
             .maybeSingle();
 
-        if (error || !data) {
+        if (error) {
+            console.error("Supabase Error:", error);
+            showError(`เกิดข้อผิดพลาดจากฐานข้อมูล: ${error.message || 'ไม่สามารถเข้าถึงข้อมูลได้'}`);
+            document.querySelector('.google-btn-wrapper').style.display = 'flex';
+            loadingHint.style.display = 'none';
+            return;
+        }
+        if (!data) {
             showError(`ไม่อนุญาตให้เข้าถึง: ไม่พบอีเมล ${userEmail} ในระบบ`);
             document.querySelector('.google-btn-wrapper').style.display = 'flex';
             loadingHint.style.display = 'none';

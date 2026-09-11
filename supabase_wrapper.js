@@ -9,14 +9,37 @@ window.firebase = {
     firestore: {
         FieldValue: {
             serverTimestamp: () => new Date().toISOString(),
-            increment: (val) => val // Ignored in simple wrapper, handled manually if needed
+            increment: (val) => val
         }
     }
 };
 
+function toSnakeCase(str) {
+    return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+}
+function toCamelCase(str) {
+    return str.replace(/_([a-z])/g, (g) => g[1].toUpperCase());
+}
+function convertKeysToSnake(obj) {
+    if (!obj || typeof obj !== 'object') return obj;
+    const newObj = {};
+    for (const key in obj) {
+        newObj[toSnakeCase(key)] = obj[key];
+    }
+    return newObj;
+}
+function convertKeysToCamel(obj) {
+    if (!obj || typeof obj !== 'object') return obj;
+    const newObj = {};
+    for (const key in obj) {
+        newObj[toCamelCase(key)] = obj[key];
+    }
+    return newObj;
+}
+
 class MockDoc {
     constructor(data, id) {
-        this._data = data;
+        this._data = convertKeysToCamel(data);
         this.id = id;
     }
     data() { return this._data; }
@@ -29,15 +52,17 @@ class MockQuery {
         this._order = null;
     }
     where(field, op, val) {
-        if (op === '==') this.q = this.q.eq(field, val);
-        else if (op === '!=') this.q = this.q.neq(field, val);
-        else if (op === '>') this.q = this.q.gt(field, val);
-        else if (op === '<') this.q = this.q.lt(field, val);
+        const snakeField = toSnakeCase(field);
+        if (op === '==') this.q = this.q.eq(snakeField, val);
+        else if (op === '!=') this.q = this.q.neq(snakeField, val);
+        else if (op === '>') this.q = this.q.gt(snakeField, val);
+        else if (op === '<') this.q = this.q.lt(snakeField, val);
         return this;
     }
     orderBy(field, dir = 'asc') {
-        this._order = { field, ascending: dir === 'asc' };
-        this.q = this.q.order(field, { ascending: dir === 'asc' });
+        const snakeField = toSnakeCase(field);
+        this._order = { field: snakeField, ascending: dir === 'asc' };
+        this.q = this.q.order(snakeField, { ascending: dir === 'asc' });
         return this;
     }
     limit(n) {
@@ -49,14 +74,6 @@ class MockQuery {
         if (error) { console.error('Supabase Error:', error); throw error; }
         
         let sortedData = data || [];
-        // If sorting by date and it failed in supabase due to text column, sort manually
-        if (this._order && this._order.field.includes('At')) {
-            sortedData.sort((a,b) => {
-                const d1 = new Date(a[this._order.field] || 0);
-                const d2 = new Date(b[this._order.field] || 0);
-                return this._order.ascending ? d1 - d2 : d2 - d1;
-            });
-        }
         
         return {
             empty: sortedData.length === 0,
@@ -81,21 +98,20 @@ class MockCollection {
                 const key = this.name === 'users' ? 'email' : 'id';
                 const { data, error } = await window.myAppDb.from(this.name).select('*').eq(key, docId).maybeSingle();
                 if (error || !data) return { exists: false, data: () => null };
-                return { exists: true, data: () => data };
+                return { exists: true, data: () => convertKeysToCamel(data) };
             },
             set: async (data, opts) => {
                 const key = this.name === 'users' ? 'email' : 'id';
-                data[key] = docId;
-                await window.myAppDb.from(this.name).upsert([data]);
+                data[toCamelCase(key)] = docId;
+                await window.myAppDb.from(this.name).upsert([convertKeysToSnake(data)]);
             },
             update: async (data) => {
                 const key = this.name === 'users' ? 'email' : 'id';
-                // Remove FieldValue instances from data before update
                 const cleanData = {};
                 for (let k in data) {
                     if (typeof data[k] !== 'function') cleanData[k] = data[k];
                 }
-                await window.myAppDb.from(this.name).update(cleanData).eq(key, docId);
+                await window.myAppDb.from(this.name).update(convertKeysToSnake(cleanData)).eq(key, docId);
             },
             delete: async () => {
                 const key = this.name === 'users' ? 'email' : 'id';
@@ -106,7 +122,7 @@ class MockCollection {
     async add(data) {
         const docId = crypto.randomUUID();
         data.id = docId;
-        await window.myAppDb.from(this.name).insert([data]);
+        await window.myAppDb.from(this.name).insert([convertKeysToSnake(data)]);
         return { id: docId };
     }
 }
@@ -124,5 +140,4 @@ window.db = {
     }
 };
 
-// Global polyfill for showToast
 window.showToast = window.showToast || function(msg) { alert(msg); };
