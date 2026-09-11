@@ -983,7 +983,7 @@
       }
 
       const slipUrl = uploadData.url;
-      const paymentId = 'PAY_' + currentUser.email.replace(/[^a-zA-Z0-9]/g,'_') + '_' + currentPayment.eventId + '_' + Date.now();
+      const paymentId = crypto.randomUUID();
 
       // 2. บันทึกข้อมูลลง Firebase Firestore
       try {

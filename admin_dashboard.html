@@ -1090,7 +1090,7 @@
     btn.disabled = true; btn.textContent = 'กำลังสร้าง...';
 
     try {
-      const eventId = 'EVT_' + Date.now();
+      const eventId = crypto.randomUUID();
       const createdAt = new Date().toISOString();
       const dueDateISO = new Date(dueDate).toISOString();
 

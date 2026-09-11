@@ -134,7 +134,7 @@ class MockCollection {
             set: async (data, opts) => {
                 const key = this.name === 'users' ? 'email' : 'id';
                 data[toCamelCase(key)] = docId;
-                await window.myAppDb.from(this.name).upsert([convertKeysToSnake(data, this.name)]);
+                const {error} = await window.myAppDb.from(this.name).upsert([convertKeysToSnake(data, this.name)]); if (error) { console.error('Supabase Upsert Error:', error); throw error; }
             },
             update: async (data) => {
                 const key = this.name === 'users' ? 'email' : 'id';
