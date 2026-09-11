@@ -104,10 +104,12 @@ class MockQuery {
         
         let sortedData = data || [];
         
+        const docs = sortedData.map(d => new MockDoc(d, d.id || d.email, this.table));
         return {
-            empty: sortedData.length === 0,
-            size: sortedData.length,
-            docs: sortedData.map(d => new MockDoc(d, d.id || d.email, this.table))
+            empty: docs.length === 0,
+            size: docs.length,
+            docs: docs,
+            forEach: (cb) => docs.forEach(cb)
         };
     }
 }
