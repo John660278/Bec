@@ -625,9 +625,9 @@
           <div class="page-title">ตารางเช็คยอดนิสิต</div>
           <div class="page-sub">ข้อมูลรายบุคคลเทียบกับรอบเก็บเงินทั้งหมด</div>
         </div>
-        <button class="btn btn-ghost" onclick="fetchMatrixData()">
+        <button class="btn btn-ghost" onclick="syncStudentMatrix(true)" id="btnSyncMatrix">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
-          รีเฟรช
+          รีเฟรชและคำนวณตารางใหม่
         </button>
       </div>
 
@@ -1017,6 +1017,68 @@
     }
   }
 
+  async function syncStudentMatrix(isManual = false) {
+    const btn = document.getElementById('btnSyncMatrix');
+    if (isManual && btn) { btn.disabled = true; btn.textContent = 'กำลังคำนวณ...'; }
+    try {
+      const [usersSnap, evSnap, paySnap] = await Promise.all([
+        db.collection('users').where('role', '==', 'Student').get(),
+        db.collection('events').get(),
+        db.collection('payments').get()
+      ]);
+      
+      let students = usersSnap.docs.map(d => d.data());
+      let events = evSnap.docs.map(d => d.data());
+      let payments = paySnap.docs.map(d => d.data());
+      
+      events.sort((a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0));
+      
+      let headers = ['รหัสนิสิต', 'ชื่อ-สกุล', 'Email'];
+      events.forEach(ev => headers.push(ev.title));
+      
+      let rows = students.map(stu => {
+          let row = {
+              'รหัสนิสิต': stu.studentId || '-',
+              'ชื่อ-สกุล': stu.name || '-',
+              'Email': stu.email || '-'
+          };
+          events.forEach(ev => {
+              const pay = payments.find(p => p.email === stu.email && p.eventId === ev.eventId);
+              if (pay) {
+                  if (pay.status === 'Paid') {
+                      row[ev.title] = pay.paidAmount || pay.totalAmount || ev.baseAmount;
+                  } else if (pay.status === 'Pending') {
+                      row[ev.title] = 'รอตรวจสอบ';
+                  } else {
+                      row[ev.title] = 'ค้างชำระ';
+                  }
+              } else {
+                  row[ev.title] = 'ค้างชำระ';
+              }
+          });
+          return row;
+      });
+      
+      await db.collection('student_matrix').doc('current').set({
+          headers, rows,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      
+      if (isManual) {
+        showToast('✓ คำนวณตารางใหม่สำเร็จ');
+        fetchMatrixData();
+      }
+    } catch (e) {
+      console.error('syncStudentMatrix Error:', e);
+      if (isManual) showToast('เกิดข้อผิดพลาด');
+    } finally {
+      if (isManual && btn) {
+        btn.disabled = false;
+        btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg> รีเฟรชและคำนวณตารางใหม่`;
+      }
+    }
+  }
+
   async function handleCreateEvent() {
     const title   = document.getElementById('evTitle').value.trim();
     const amount  = document.getElementById('evAmount').value.trim();
@@ -1049,6 +1111,7 @@
       document.getElementById('evTitle').value = '';
       document.getElementById('evAmount').value = '';
       document.getElementById('evDueDate').value = '';
+      await syncStudentMatrix(); // อัปเดตตารางสรุป
       fetchEventsData();
     } catch(e) {
       console.error(e);
@@ -1124,6 +1187,7 @@
       }, { merge: true });
 
       showToast('✓ อนุมัติเรียบร้อย');
+      await syncStudentMatrix(); // อัปเดตตารางสรุป
       fetchPaymentsData();
       loadOverview();
     } catch(e) {
