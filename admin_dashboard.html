@@ -870,17 +870,53 @@
   }
 
   // ─── OVERVIEW ───
+  async function syncSystemStats() {
+    try {
+      const [paidSnap, pendSnap, incSnap, expSnap, evSnap] = await Promise.all([
+        db.collection('payments').where('status', '==', 'Paid').get(),
+        db.collection('payments').where('status', '==', 'Pending').get(),
+        db.collection('incomes').get(),
+        db.collection('expenses').get(),
+        db.collection('events').get()
+      ]);
+
+      let totalPaidPayments = 0;
+      paidSnap.forEach(d => totalPaidPayments += (Number(d.data().paidAmount) || 0));
+
+      let totalIncome = 0;
+      incSnap.forEach(d => totalIncome += (Number(d.data().amount) || 0));
+
+      let totalExpense = 0;
+      expSnap.forEach(d => totalExpense += (Number(d.data().amount) || 0));
+
+      const totalBalance = totalPaidPayments + totalIncome - totalExpense;
+
+      const newStats = {
+        paidCount: paidSnap.size || 0,
+        pendingCount: pendSnap.size || 0,
+        eventsCount: evSnap.size || 0,
+        totalPaidPayments: totalPaidPayments,
+        totalBalance: totalBalance
+      };
+
+      await db.collection('system_stats').doc('overview').set(newStats, { merge: true });
+      return newStats;
+    } catch(e) {
+      console.error("Sync stats error:", e);
+      return {};
+    }
+  }
+
   async function loadOverview() {
     try {
-      // ดึงสถิติรวมจาก system_stats/overview (1 Read) และดึงเฉพาะรายการล่าสุด
-      const [statsDoc, paySnap, expSnap, incSnap] = await Promise.all([
-        db.collection('system_stats').doc('overview').get(),
+      // ดึงสถิติรวมจากการคำนวณสดๆ ทุกครั้งเพื่อความแม่นยำ 100%
+      const [stats, paySnap, expSnap, incSnap] = await Promise.all([
+        syncSystemStats(),
         db.collection('payments').where('status', '==', 'Pending').limit(5).get(),
         db.collection('expenses').orderBy('timestamp', 'desc').limit(20).get().catch(() => db.collection('expenses').limit(20).get()),
         db.collection('incomes').orderBy('timestamp', 'desc').limit(20).get().catch(() => db.collection('incomes').limit(20).get())
       ]);
 
-      const stats = statsDoc.exists ? statsDoc.data() : {};
       document.getElementById('statTotalEvents').textContent = stats.eventsCount != null ? stats.eventsCount : '—';
       document.getElementById('statPaid').textContent    = stats.paidCount != null ? stats.paidCount : '—';
       document.getElementById('statPending').textContent = stats.pendingCount != null ? stats.pendingCount : '—';
