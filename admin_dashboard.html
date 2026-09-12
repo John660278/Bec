@@ -1432,19 +1432,12 @@
     try {
       let receiptUrl = '';
       if (fileInput && fileInput.files.length) {
-        // ใช้ fileToBase64 เดิมที่มีอยู่
-        const base64Image = await fileToBase64(fileInput.files[0]);
-        // อัปโหลดเข้า Google Drive ผ่าน Apps Script
-        const uploadRes = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify({ action: 'uploadImageOnly', payload: { base64Image, prefix: 'INC' } })
-        });
-        const uploadData = await uploadRes.json();
-        if (uploadData.success) {
-          receiptUrl = uploadData.url;
-        } else {
-          throw new Error('อัปโหลดรูปไม่สำเร็จ: ' + uploadData.message);
-        }
+        const compressedBlob = await fileToBlob(fileInput.files[0]);
+        const fileName = `incomes/inc_${crypto.randomUUID()}.jpg`;
+        const { data, error } = await window.myAppDb.storage.from('slips').upload(fileName, compressedBlob, { contentType: 'image/jpeg' });
+        if (error) throw new Error('อัปโหลดรูปไม่สำเร็จ: ' + error.message);
+        const { data: { publicUrl } } = window.myAppDb.storage.from('slips').getPublicUrl(fileName);
+        receiptUrl = publicUrl;
       }
 
       await db.collection('incomes').add({
