@@ -368,5 +368,43 @@
     </script>
 
 
+
+    <!-- 3. Custom OAuth Redirect Logic -->
+    <script>
+        function redirectToGoogle() {
+            const clientId = "160108356601-3u5fsjc24251mastsditc6p9c914bqpd.apps.googleusercontent.com";
+            // ส่งกลับมาที่ Vercel เสมอ
+            const redirectUri = "https://bec-ba-nu69.vercel.app";
+            const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=id_token&scope=email%20profile%20openid&nonce=12345`;
+            window.location.href = url;
+        }
+
+        window.addEventListener('load', () => {
+            const hash = window.location.hash;
+            if (hash && hash.includes('id_token=')) {
+                // โชว์ Loading
+                const btnWrap = document.querySelector('.google-btn-wrapper');
+                if (btnWrap) btnWrap.style.display = 'none';
+                
+                const loadingHint = document.getElementById('loadingHint');
+                if(loadingHint) {
+                    loadingHint.innerHTML = '<div class="spinner"></div><span>กำลังพาท่านเข้าสู่ระบบ...</span>';
+                    loadingHint.style.display = 'flex';
+                }
+
+                // ดึง id_token ออกมาจาก URL Hash
+                const params = new URLSearchParams(hash.substring(1));
+                const idToken = params.get('id_token');
+                
+                // ล้าง URL ให้สะอาด (เอา hash ออกไป)
+                window.history.replaceState(null, null, window.location.pathname);
+                
+                // ส่ง token ไปให้ไฟล์ login.js ทำงานต่อ
+                if (idToken && typeof handleCredentialResponse === 'function') {
+                    handleCredentialResponse({ credential: idToken });
+                }
+            }
+        });
+    </script>
 </body>
 </html>
