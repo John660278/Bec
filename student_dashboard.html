@@ -952,8 +952,8 @@
     try {
       const file = fileInput.files[0];
       
-      // --- ระบบบีบอัดรูปภาพก่อนอัปโหลด (เพิ่มความเร็ว 10 เท่า) ---
-      const compressedBase64 = await new Promise((resolve, reject) => {
+      // --- ระบบบีบอัดรูปภาพก่อนอัปโหลด ---
+      const compressedBlob = await new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = (event) => {
@@ -961,48 +961,37 @@
           img.src = event.target.result;
           img.onload = () => {
             const canvas = document.createElement('canvas');
-            // กำหนดความกว้างสูงสุดแค่ 800px ก็พอสำหรับดูสลิป
             let maxWidth = 800;
             let scale = 1;
-            if (img.width > maxWidth) {
-              scale = maxWidth / img.width;
-            }
+            if (img.width > maxWidth) scale = maxWidth / img.width;
             canvas.width = img.width * scale;
             canvas.height = img.height * scale;
             
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
             
-            // แปลงเป็น JPEG และลดคุณภาพเหลือ 70% (ไฟล์จะเล็กลง 80-90%)
-            resolve(canvas.toDataURL('image/jpeg', 0.7));
+            // แปลงเป็น Blob (JPEG 70%) ส่งตรงเข้า Supabase
+            canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.7);
           };
           img.onerror = reject;
         };
         reader.onerror = reject;
       });
-      // ----------------------------------------------------
 
-      // 1. อัปโหลดรูปไปเก็บที่ Google Drive ผ่าน GAS
+      // 1. อัปโหลดรูปไปเก็บที่ Supabase Storage
       const paymentId = crypto.randomUUID();
-      const uploadRes = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify({
-          action: 'uploadSlip',
-          payload: { 
-            eventId: currentPayment.eventId,
-            email: currentUser.email,
-            studentId: currentUser.studentId || 'UNKNOWN',
-            amount: currentPayment.totalAmount,
-            penalty: currentPayment.penalty,
-            base64Image: compressedBase64
-          }
-        })
-      });
-      const uploadData = await uploadRes.json();
-      if (!uploadData.success) {
-        throw new Error('อัปโหลดรูปไม่สำเร็จ (GAS): ' + (uploadData.message || 'Unknown error'));
+      const fileName = `slip_${paymentId}.jpg`;
+      
+      const { data: uploadData, error: uploadError } = await window.myAppDb.storage
+        .from('slips')
+        .upload(fileName, compressedBlob, { contentType: 'image/jpeg' });
+        
+      if (uploadError) {
+        throw new Error('อัปโหลดรูปลง Supabase ไม่สำเร็จ: ' + uploadError.message);
       }
-      const slipUrl = uploadData.slipUrl || uploadData.url;
+      
+      const { data: { publicUrl } } = window.myAppDb.storage.from('slips').getPublicUrl(fileName);
+      const slipUrl = publicUrl;
       
 
       // 2. บันทึกข้อมูลลง Firebase Firestore

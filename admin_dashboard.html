@@ -1320,8 +1320,8 @@
     reader.readAsDataURL(file);
   }
 
-  // Convert file to base64 and compress it
-  function fileToBase64(file) {
+  // Convert file to Blob and compress it
+  function fileToBlob(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -1340,7 +1340,7 @@
           
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          resolve(canvas.toDataURL('image/jpeg', 0.7));
+          canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.7);
         };
         img.onerror = reject;
       };
@@ -1362,17 +1362,12 @@
     try {
       let receiptUrl = '';
       if (fileInput && fileInput.files.length) {
-        const base64Image = await fileToBase64(fileInput.files[0]);
-        const uploadRes = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify({ action: 'uploadImageOnly', payload: { base64Image, prefix: 'EXP' } })
-        });
-        const uploadData = await uploadRes.json();
-        if (uploadData.success) {
-          receiptUrl = uploadData.url;
-        } else {
-          throw new Error('อัปโหลดรูปไม่สำเร็จ: ' + uploadData.message);
-        }
+        const compressedBlob = await fileToBlob(fileInput.files[0]);
+        const fileName = `exp_${crypto.randomUUID()}.jpg`;
+        const { data, error } = await window.myAppDb.storage.from('slips').upload(fileName, compressedBlob, { contentType: 'image/jpeg' });
+        if (error) throw new Error('อัปโหลดรูปไม่สำเร็จ: ' + error.message);
+        const { data: { publicUrl } } = window.myAppDb.storage.from('slips').getPublicUrl(fileName);
+        receiptUrl = publicUrl;
       }
 
       await db.collection('expenses').add({
