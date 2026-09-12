@@ -32,6 +32,7 @@ function mapFieldToDB(table, field) {
         if (field === 'eventId') return 'id';
     }
     if (field === 'createdAt') return 'created_at';
+    if (field === 'timestamp') return 'created_at';
     return toSnakeCase(field);
 }
 
@@ -172,7 +173,8 @@ class MockCollection {
     async add(data) {
         const docId = crypto.randomUUID();
         data.id = docId;
-        await window.myAppDb.from(this.name).insert([convertKeysToSnake(data, this.name)]);
+        const { error } = await window.myAppDb.from(this.name).insert([convertKeysToSnake(data, this.name)]);
+        if (error) { console.error('Supabase Insert Error:', error); throw error; }
         return { id: docId };
     }
 }
