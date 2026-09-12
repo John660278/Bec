@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script>
+  window.myAppDb = supabase.createClient(supabaseUrl, supabaseKey);
+  async function test() {
+    try {
+      const { data, error } = await window.myAppDb.from('payments').upsert({
+          id: crypto.randomUUID(),
+          event_id: 'EVT_123',
+          event_title: 'Test',
+          student_email: 'test@example.com',
+          student_name: 'Test',
+          status: 'Pending'
+      });
+      console.log("Error:", error);
+    } catch(e) {
+      console.log("Exception:", e);
+    }
+  }
+  test();
+</script>
+</body>
+</html>

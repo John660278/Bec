@@ -1016,7 +1016,7 @@
       fetchPayments(); // refresh list
     } catch (e) {
       console.error(e);
-      alert('อัปโหลดไม่สำเร็จ: ' + e.message);
+      alert('อัปโหลดไม่สำเร็จ: ' + e.message + '\n\nStack: ' + (e.stack || 'No stack trace'));
       btn.disabled = false;
       btn.textContent = 'ยืนยันการชำระเงิน';
     }
