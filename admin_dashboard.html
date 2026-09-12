@@ -771,6 +771,21 @@
   let allPayments = [];
   let matrixFetched = false;
 
+  async function deleteFinanceRecord(type, id) {
+    const typeLabel = type === 'incomes' ? 'รายรับ' : 'รายจ่าย';
+    if (!confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบรายการ${typeLabel}นี้?`)) return;
+    
+    try {
+      await db.collection(type).doc(id).delete();
+      showToast('✓ ลบข้อมูลแล้ว');
+      // ทริกเกอร์โหลดข้อมูลใหม่ ซึ่งจะดึง syncSystemStats() มาคำนวณยอดเงินรวมให้ใหม่อัตโนมัติ!
+      loadOverview();
+    } catch (e) {
+      console.error(e);
+      showToast('ลบไม่สำเร็จ');
+    }
+  }
+  
   // ─── INIT ───
   document.addEventListener('DOMContentLoaded', () => {
     const raw = sessionStorage.getItem('loggedInUser');
@@ -965,7 +980,10 @@
               <div style="color:var(--text)">${e.source}</div>
               <div style="color:var(--muted);font-size:0.7rem;margin-top:2px">${new Date(e.date).toLocaleDateString('th-TH')}${e.receiptUrl ? ` • <a href="${e.receiptUrl}" target="_blank" style="color:var(--muted);text-decoration:underline">ดูใบเสร็จ</a>` : ''}</div>
             </div>
-            <div style="color:#2e7d32;font-weight:600">+฿${fmt(e.amount)}</div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+              <div style="color:#2e7d32;font-weight:600">+฿${fmt(e.amount)}</div>
+              <button onclick="deleteFinanceRecord('incomes', '${e.id}')" style="background:none;border:none;color:var(--danger);font-size:0.7rem;cursor:pointer;padding:0;text-decoration:underline;">ลบรายการ</button>
+            </div>
           </div>`).join('')
       : `<div style="font-size:0.8rem;color:var(--muted);padding:0.5rem 0">ไม่มีรายการรายรับ</div>`;
 
@@ -976,7 +994,10 @@
               <div style="color:var(--text)">${e.title}</div>
               <div style="color:var(--muted);font-size:0.7rem;margin-top:2px">${new Date(e.date).toLocaleDateString('th-TH')}${e.receiptUrl ? ` • <a href="${e.receiptUrl}" target="_blank" style="color:var(--muted);text-decoration:underline">ดูใบเสร็จ</a>` : ''}</div>
             </div>
-            <div style="color:var(--danger)">-฿${fmt(e.amount)}</div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+              <div style="color:var(--danger)">-฿${fmt(e.amount)}</div>
+              <button onclick="deleteFinanceRecord('expenses', '${e.id}')" style="background:none;border:none;color:var(--danger);font-size:0.7rem;cursor:pointer;padding:0;text-decoration:underline;">ลบรายการ</button>
+            </div>
           </div>`).join('')
       : `<div style="font-size:0.8rem;color:var(--muted);padding:0.5rem 0">ไม่มีรายการใช้จ่าย</div>`;
 
