@@ -6,7 +6,17 @@
   <title>Dashboard — BEC</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
+  window.filterPbMatrix = function() {
+    const term = document.getElementById('pbMatrixSearch').value.toLowerCase();
+    const rows = document.querySelectorAll('.pb-matrix-row');
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(term) ? '' : 'none';
+    });
+  };
+</script>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -512,9 +522,39 @@
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js?v=99"></script>
-<script src="supabase_wrapper.js?v=99"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+  window.filterPbMatrix = function() {
+    const term = document.getElementById('pbMatrixSearch').value.toLowerCase();
+    const rows = document.querySelectorAll('.pb-matrix-row');
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(term) ? '' : 'none';
+    });
+  };
+</script>
+
+<script src="config.js?v=99">
+  window.filterPbMatrix = function() {
+    const term = document.getElementById('pbMatrixSearch').value.toLowerCase();
+    const rows = document.querySelectorAll('.pb-matrix-row');
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(term) ? '' : 'none';
+    });
+  };
+</script>
+
+<script src="supabase_wrapper.js?v=99">
+  window.filterPbMatrix = function() {
+    const term = document.getElementById('pbMatrixSearch').value.toLowerCase();
+    const rows = document.querySelectorAll('.pb-matrix-row');
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(term) ? '' : 'none';
+    });
+  };
+</script>
+
 <script>
   // ==========================================
   // โค้ด firebaseConfig 
@@ -609,7 +649,7 @@
           </thead>
           <tbody>
             ${data.matrixRows.map(row=>`
-              <tr style="border-bottom:1px solid var(--border)">
+              <tr class="pb-matrix-row" style="border-bottom:1px solid var(--border)">
                 ${data.matrixHeaders.map((h,i)=>{
                   let val = row[h] || '-';
                   if (i > 1) {
@@ -654,6 +694,11 @@
 
       <!-- Panel: สถานะการชำระเงินของนิสิต -->
       <div id="pbPanel-matrix" style="display:none">
+        <div style="margin-bottom: 1rem; position: relative;">
+          <input type="text" id="pbMatrixSearch" onkeyup="filterPbMatrix()" placeholder="ค้นหารหัสนิสิต หรือ ชื่อ-นามสกุล..." 
+            style="width:100%; padding: 0.5rem 0.75rem 0.5rem 2rem; border-radius: 8px; border: 1px solid var(--border); font-size: 0.8rem; background: var(--surface); color: var(--text); outline: none;">
+          <svg style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--muted);" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </div>
         ${matrixHtml}
       </div>
     `;
@@ -1050,7 +1095,17 @@
   document.getElementById('paymentModal').addEventListener('click', function(e) {
     if (e.target === this) closeModal();
   });
+
+  window.filterPbMatrix = function() {
+    const term = document.getElementById('pbMatrixSearch').value.toLowerCase();
+    const rows = document.querySelectorAll('.pb-matrix-row');
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(term) ? '' : 'none';
+    });
+  };
 </script>
+
 
 <style>
   @keyframes spin { to { transform: rotate(360deg); } }
