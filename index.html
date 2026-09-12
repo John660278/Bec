@@ -375,7 +375,7 @@
             const clientId = "160108356601-3u5fsjc24251mastsditc6p9c914bqpd.apps.googleusercontent.com";
             // ส่งกลับมาที่ Vercel เสมอ
             const redirectUri = "https://bec-ba-nu69.vercel.app";
-            const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=id_token&scope=email%20profile%20openid&nonce=12345`;
+            const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=id_token&scope=email%20profile%20openid&nonce=12345&prompt=select_account`;
             window.location.href = url;
         }
 
