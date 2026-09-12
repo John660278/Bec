@@ -40,7 +40,7 @@ async function handleCredentialResponse(response) {
         // 4. บันทึกข้อมูลลงเครื่องแล้วพาไปหน้า Dashboard ทันที
         sessionStorage.setItem('loggedInUser', JSON.stringify({
             email: userEmail,
-            name: userName,
+            name: data.name || userName, // ใช้ชื่อภาษาไทยจากฐานข้อมูลเป็นหลัก ถ้าไม่มีค่อยใช้ชื่อ Google
             picture: userPicture,
             role: data.role,
             studentId: data.student_id

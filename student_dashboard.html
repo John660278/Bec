@@ -994,12 +994,22 @@
 
       // 2. บันทึกข้อมูลลง Firebase Firestore
       try {
+        let realName = currentUser.name || '';
+        try {
+          const uSnap = await db.collection('users').where('email', '==', currentUser.email).limit(1).get();
+          if (!uSnap.empty && uSnap.docs[0].data().name) {
+            realName = uSnap.docs[0].data().name;
+            currentUser.name = realName;
+            sessionStorage.setItem('loggedInUser', JSON.stringify(currentUser));
+          }
+        } catch(e) { console.error(e); }
+
         await db.collection('payments').doc(paymentId).set({
           paymentId,
           eventId:    currentPayment.eventId,
           eventTitle: currentPayment.title, // เพิ่มชื่อรอบจ่าย
           email:      currentUser.email,
-          name:       currentUser.name || '',
+          name:       realName,
           paidAmount: currentPayment.totalAmount,
           penalty:    currentPayment.penalty,
           status:     'Pending',

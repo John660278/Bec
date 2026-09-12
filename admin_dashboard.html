@@ -595,6 +595,9 @@
         </button>
       </div>
 
+      <div style="margin-bottom: 1rem;">
+        <input type="text" id="paymentSearchInput" placeholder="🔍 ค้นหาชื่อ, รหัสนิสิต, อีเมล หรือชื่อรอบชำระ..." style="width: 100%; padding: 0.8rem 1.2rem; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.95rem; outline: none; background: var(--bg);" onkeyup="applyPaymentFilters()">
+      </div>
       <div class="filter-tabs">
         <button class="filter-tab active" onclick="filterPayments('all',this)">ทั้งหมด</button>
         <button class="filter-tab" onclick="filterPayments('Pending',this)">รอตรวจสอบ</button>
@@ -1129,7 +1132,7 @@
     try {
       const snap = await db.collection('payments').orderBy('paidAt', 'desc').get();
       allPayments = snap.docs.map(d => d.data());
-      renderPaymentsTable(allPayments);
+      applyPaymentFilters();
     } catch(e) {
       console.error(e);
       tbody.innerHTML = `<tr><td colspan="8" style="color:var(--danger)">เชื่อมต่อล้มเหลว</td></tr>`;
@@ -1173,10 +1176,31 @@
     }
   }
 
+  let currentPaymentStatus = 'all';
+
   function filterPayments(status, el) {
     document.querySelectorAll('#view-payments .filter-tab').forEach(t => t.classList.remove('active'));
     el.classList.add('active');
-    const list = status === 'all' ? allPayments : allPayments.filter(p => p.status === status);
+    currentPaymentStatus = status;
+    applyPaymentFilters();
+  }
+
+  function applyPaymentFilters() {
+    const term = (document.getElementById('paymentSearchInput').value || '').trim().toLowerCase();
+    
+    // กรองตามสถานะ
+    let list = currentPaymentStatus === 'all' ? allPayments : allPayments.filter(p => p.status === currentPaymentStatus);
+    
+    // กรองตามคำค้นหา
+    if (term) {
+      list = list.filter(p => {
+         const name = (p.name || '').toLowerCase();
+         const title = (p.eventTitle || '').toLowerCase();
+         const studentId = (p.studentId || '').toLowerCase();
+         const email = (p.email || '').toLowerCase();
+         return name.includes(term) || title.includes(term) || studentId.includes(term) || email.includes(term);
+      });
+    }
     renderPaymentsTable(list);
   }
 
