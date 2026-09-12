@@ -781,7 +781,7 @@
           const tData = targetSnap.data();
           const rUrl = tData.receiptUrl;
           if (rUrl && rUrl.includes('supabase.co')) {
-              const fileName = rUrl.split('/').pop().split('?')[0];
+              const fileName = rUrl.split('/public/slips/')[1].split('?')[0];
               await window.myAppDb.storage.from('slips').remove([fileName]);
           }
       }
@@ -1237,7 +1237,7 @@
       if (targetSnap.exists) {
           const tData = targetSnap.data();
           if (tData.slipUrl && tData.slipUrl.includes('supabase.co')) {
-              const fileName = tData.slipUrl.split('/').pop().split('?')[0];
+              const fileName = tData.slipUrl.split('/public/slips/')[1].split('?')[0];
               await window.myAppDb.storage.from('slips').remove([fileName]);
           }
       }
@@ -1382,7 +1382,7 @@
       let receiptUrl = '';
       if (fileInput && fileInput.files.length) {
         const compressedBlob = await fileToBlob(fileInput.files[0]);
-        const fileName = `exp_${crypto.randomUUID()}.jpg`;
+        const fileName = `expenses/exp_${crypto.randomUUID()}.jpg`;
         const { data, error } = await window.myAppDb.storage.from('slips').upload(fileName, compressedBlob, { contentType: 'image/jpeg' });
         if (error) throw new Error('อัปโหลดรูปไม่สำเร็จ: ' + error.message);
         const { data: { publicUrl } } = window.myAppDb.storage.from('slips').getPublicUrl(fileName);
