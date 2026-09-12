@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เข้าสู่ระบบ - Business NU 69</title>
+    <script>
+        // ถ้าเปิดผ่านแอป LINE ให้บังคับเด้งไป Safari/Chrome อัตโนมัติ
+        if (navigator.userAgent.indexOf("Line") > -1) {
+            if (window.location.search.indexOf("openExternalBrowser=1") === -1) {
+                window.location.href = window.location.href + (window.location.href.indexOf('?') > -1 ? '&' : '?') + "openExternalBrowser=1";
+            }
+        }
+    </script>
     <style>
         *, *::before, *::after {
             box-sizing: border-box;
