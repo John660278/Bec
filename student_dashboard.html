@@ -1016,6 +1016,14 @@
           slipUrl:    slipUrl,
           paidAt:     new Date().toISOString()
         });
+
+        // อัปเดตยอดรอตรวจสอบ
+        try {
+          await db.collection('system_stats').doc('overview').set({
+            pendingCount: firebase.firestore.FieldValue.increment(1)
+          }, { merge: true });
+        } catch(e) { console.error('Stats error:', e); }
+
       } catch (dbError) {
         console.error("Firestore Error:", dbError);
         throw new Error('บันทึกข้อมูลฐานข้อมูลไม่สำเร็จ: ' + dbError.message);
