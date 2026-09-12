@@ -1183,29 +1183,30 @@
   async function approve(paymentId, eventTitle, email, totalAmount) {
     if (!confirm('ยืนยันการอนุมัติยอดนี้?')) return;
     try {
-      // อัปเดตสถานะใน Firebase Firestore เท่านั้น
-      const paySnap = await db.collection('payments')
-        .where('paymentId', '==', paymentId)
-        .limit(1).get();
-
-      if (paySnap.empty) {
-        showToast('ไม่พบข้อมูลการชำระเงินนี้');
-        return;
-      }
-
-      await paySnap.docs[0].ref.update({ status: 'Paid' });
+      // อัปเดตสถานะในฐานข้อมูลโดยตรง
+      await db.collection('payments').doc(paymentId).update({ status: 'Paid' });
 
       // อัปเดตยอดสรุปใน system_stats/overview
       const amountNum = Number(totalAmount) || 0;
-      await db.collection('system_stats').doc('overview').set({
-        paidCount: firebase.firestore.FieldValue.increment(1),
-        pendingCount: firebase.firestore.FieldValue.increment(-1),
-        totalPaidPayments: firebase.firestore.FieldValue.increment(amountNum),
-        totalBalance: firebase.firestore.FieldValue.increment(amountNum)
-      }, { merge: true });
+      try {
+        await db.collection('system_stats').doc('overview').set({
+          paidCount: firebase.firestore.FieldValue.increment(1),
+          pendingCount: firebase.firestore.FieldValue.increment(-1),
+          totalPaidPayments: firebase.firestore.FieldValue.increment(amountNum),
+          totalBalance: firebase.firestore.FieldValue.increment(amountNum)
+        }, { merge: true });
+      } catch (e) {
+        console.error("Stats error:", e);
+      }
 
       showToast('✓ อนุมัติเรียบร้อย');
-      await syncStudentMatrix(); // อัปเดตตารางสรุป
+      
+      try {
+        await syncStudentMatrix(); // อัปเดตตารางสรุป
+      } catch (e) {
+        console.error("Matrix error:", e);
+      }
+      
       fetchPaymentsData();
       loadOverview();
     } catch(e) {
