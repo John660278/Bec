@@ -761,6 +761,12 @@
         if (status === 'Unpaid' && currentDate > dueDate) {
           const diffDays = Math.floor(Math.abs(currentDate - dueDate) / (1000 * 60 * 60 * 24));
           penalty = diffDays * 1;
+          
+          // ยกเว้นค่าปรับสำหรับสัปดาห์ที่ 1-4
+          const t = ev.title.trim();
+          if (t === 'สัปดาห์ที่ 1' || t === 'สัปดาห์ที่ 2' || t === 'สัปดาห์ที่ 3' || t === 'สัปดาห์ที่ 4') {
+            penalty = 0;
+          }
         }
 
         return {

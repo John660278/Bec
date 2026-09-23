@@ -460,6 +460,10 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
         รายรับ / รายจ่าย
       </div>
+      <div class="nav-item" onclick="fixWeek1To4Fines()" style="color: #ff9800; margin-top: 20px; border-top: 1px solid var(--border); padding-top: 10px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        ล้างค่าปรับสัปดาห์ 1-4
+      </div>
     </nav>
 
     <div class="sidebar-user">
@@ -1515,6 +1519,50 @@ async function emergencyReset() {
   } catch(e) {
     console.error(e);
     alert("❌ เกิดข้อผิดพลาด: " + e.message);
+  }
+}
+
+async function fixWeek1To4Fines() {
+  if (!confirm("คุณต้องการล้างค่าปรับสำหรับ สัปดาห์ที่ 1, 2, 3, 4 ทั้งหมดใช่หรือไม่?")) return;
+  try {
+    const btn = document.querySelector('[onclick="fixWeek1To4Fines()"]');
+    const oldText = btn.innerHTML;
+    btn.innerHTML = `<div class="spinner" style="width:14px;height:14px;margin-right:8px;"></div> กำลังอัปเดต...`;
+    btn.style.pointerEvents = 'none';
+
+    // ดึง payment ทั้งหมดมาพร้อมกับ event
+    const { data: payments, error } = await window.myAppDb
+      .from('payments')
+      .select('*, events(*)');
+      
+    if (error) throw error;
+
+    let count = 0;
+    for (const p of payments) {
+      if (p.events && p.events.title) {
+        const title = p.events.title.trim();
+        if (title === 'สัปดาห์ที่ 1' || title === 'สัปดาห์ที่ 2' || title === 'สัปดาห์ที่ 3' || title === 'สัปดาห์ที่ 4') {
+          if (p.penalty > 0) {
+            const baseAmount = Number(p.events.amount || 0);
+            await window.myAppDb
+              .from('payments')
+              .update({ penalty: 0, amount: baseAmount })
+              .eq('id', p.id);
+            count++;
+          }
+        }
+      }
+    }
+    
+    alert(`✅ ล้างค่าปรับเรียบร้อยแล้ว จำนวน ${count} รายการ`);
+    btn.innerHTML = oldText;
+    btn.style.pointerEvents = 'auto';
+    
+    // รีเฟรชหน้า
+    window.location.reload();
+  } catch (e) {
+    console.error(e);
+    alert("เกิดข้อผิดพลาด: " + e.message);
   }
 }
 </script>
