@@ -1091,7 +1091,10 @@
     }
   }
 
-  function logout() {
+  async function logout() {
+    if (window.myAppDb && window.myAppDb.auth) {
+      await window.myAppDb.auth.signOut();
+    }
     sessionStorage.removeItem('loggedInUser');
     location.href = 'index.html';
   }
