@@ -1,22 +1,21 @@
 /**
- * ฟังก์ชันนี้จะถูกเรียกอัตโนมัติเมื่อผู้ใช้ Login ผ่าน Google สำเร็จ
+ * ฟังก์ชันนี้จะถูกเรียกอัตโนมัติเมื่อผู้ใช้ Login ผ่าน Supabase Auth สำเร็จ
  */
-async function handleCredentialResponse(response) {
-    // 1. ซ่อนปุ่ม Google และโชว์หน้าโหลดให้ดู Smooth
+async function handleSupabaseSession(session) {
     document.querySelector('.google-btn-wrapper').style.display = 'none';
     const loadingHint = document.getElementById('loadingHint');
-    loadingHint.innerHTML = '<div class="spinner"></div><span>กำลังพาท่านเข้าสู่ระบบ...</span>';
-    loadingHint.style.display = 'flex';
+    if(loadingHint) {
+        loadingHint.innerHTML = '<div class="spinner"></div><span>กำลังตรวจสอบข้อมูล...</span>';
+        loadingHint.style.display = 'flex';
+    }
     document.getElementById('errorMessage').style.display = 'none';
 
     try {
-        // 2. ถอดรหัสเอา Email
-        const userData = decodeJwtResponse(response.credential);
-        const userEmail = userData.email;
-        const userName = userData.name;
-        const userPicture = userData.picture;
+        const userEmail = session.user.email;
+        const userName = session.user.user_metadata?.full_name || session.user.user_metadata?.name || 'User';
+        const userPicture = session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture || '';
 
-        // 3. เช็คกับฐานข้อมูลว่ามี Email นี้ไหม
+        // เช็คกับฐานข้อมูล public.users ว่ามี Email นี้ไหม
         const { data, error } = await window.myAppDb
             .from('users')
             .select('*')
@@ -27,20 +26,22 @@ async function handleCredentialResponse(response) {
             console.error("Supabase Error:", error);
             showError(`เกิดข้อผิดพลาดจากฐานข้อมูล: ${error.message || 'ไม่สามารถเข้าถึงข้อมูลได้'}`);
             document.querySelector('.google-btn-wrapper').style.display = 'flex';
-            loadingHint.style.display = 'none';
+            if(loadingHint) loadingHint.style.display = 'none';
             return;
         }
         if (!data) {
             showError(`ไม่อนุญาตให้เข้าถึง: ไม่พบอีเมล ${userEmail} ในระบบ`);
             document.querySelector('.google-btn-wrapper').style.display = 'flex';
-            loadingHint.style.display = 'none';
+            if(loadingHint) loadingHint.style.display = 'none';
+            // Sign out completely so they can try again with a different account
+            await window.myAppDb.auth.signOut();
             return;
         }
 
-        // 4. บันทึกข้อมูลลงเครื่องแล้วพาไปหน้า Dashboard ทันที
+        // บันทึกข้อมูลลงเครื่องแล้วพาไปหน้า Dashboard ทันที
         sessionStorage.setItem('loggedInUser', JSON.stringify({
             email: userEmail,
-            name: data.name || userName, // ใช้ชื่อภาษาไทยจากฐานข้อมูลเป็นหลัก ถ้าไม่มีค่อยใช้ชื่อ Google
+            name: data.name || userName,
             picture: userPicture,
             role: data.role,
             studentId: data.student_id
@@ -56,17 +57,8 @@ async function handleCredentialResponse(response) {
         console.error("เกิดข้อผิดพลาด:", error);
         showError("การเชื่อมต่อขัดข้อง กรุณาลองใหม่อีกครั้ง");
         document.querySelector('.google-btn-wrapper').style.display = 'flex';
-        loadingHint.style.display = 'none';
+        if(loadingHint) loadingHint.style.display = 'none';
     }
-}
-
-function decodeJwtResponse(token) {
-    let base64Url = token.split('.')[1];
-    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    let jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-    return JSON.parse(jsonPayload);
 }
 
 function showError(message) {
