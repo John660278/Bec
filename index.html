@@ -212,7 +212,6 @@
         }
 
     </style>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="config.js?v=99"></script>
     <script src="login.js?v=99"></script>
@@ -365,8 +364,37 @@
                 if (hint) hint.style.display = 'none';
             }, 1800);
         });
+
+        // Custom OAuth Redirect Logic
+        function redirectToGoogle() {
+            const clientId = "160108356601-3u5fsjc24251mastsditc6p9c914bqpd.apps.googleusercontent.com";
+            const redirectUri = "https://bec-ba-nu69.vercel.app";
+            const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=id_token&scope=email%20profile%20openid&nonce=final123&prompt=select_account`;
+            window.location.href = url;
+        }
+
+        window.addEventListener('load', () => {
+            const hash = window.location.hash;
+            if (hash && hash.includes('id_token=')) {
+                const btnWrap = document.querySelector('.google-btn-wrapper');
+                if (btnWrap) btnWrap.style.display = 'none';
+                
+                const loadingHint = document.getElementById('loadingHint');
+                if(loadingHint) {
+                    loadingHint.innerHTML = '<div class="spinner"></div><span>กำลังพาท่านเข้าสู่ระบบ...</span>';
+                    loadingHint.style.display = 'flex';
+                }
+
+                const params = new URLSearchParams(hash.substring(1));
+                const idToken = params.get('id_token');
+                
+                window.history.replaceState(null, null, window.location.pathname);
+                
+                if (idToken && typeof handleCredentialResponse === 'function') {
+                    handleCredentialResponse({ credential: idToken });
+                }
+            }
+        });
     </script>
-
-
 </body>
 </html>
