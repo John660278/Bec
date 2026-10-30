@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เข้าสู่ระบบ - Business NU 69</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <script>
         // ถ้าเปิดผ่านแอป LINE ให้บังคับเด้งไป Safari/Chrome อัตโนมัติ
         if (navigator.userAgent.indexOf("Line") > -1) {
@@ -23,44 +26,24 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-            background: #000;
+            font-family: 'Plus Jakarta Sans', 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* ---------- Canvas ---------- */
-        #silkCanvas {
+        /* Ambient subtle background glow */
+        .ambient-bg {
             position: absolute;
             inset: 0;
-            width: 100%;
-            height: 100%;
+            background: 
+                radial-gradient(circle at 50% 15%, rgba(226, 232, 240, 0.7) 0%, transparent 60%),
+                radial-gradient(circle at 85% 85%, rgba(241, 245, 249, 0.9) 0%, transparent 50%),
+                radial-gradient(circle at 15% 80%, rgba(241, 245, 249, 0.9) 0%, transparent 50%);
             z-index: 0;
         }
 
-        /* ---------- Overlays ---------- */
-        .gradient-overlay {
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            background: linear-gradient(to bottom, rgba(0,0,0,.35) 0%, transparent 50%, rgba(0,0,0,.55) 100%);
-        }
-
-        /* ---------- Corner label ---------- */
-        .corner-label {
-            position: absolute;
-            top: 1.75rem;
-            left: 1.75rem;
-            z-index: 30;
-            font-size: 0.65rem;
-            font-weight: 300;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            color: rgba(156,163,175,.45);
-            opacity: 0;
-            transform: translateY(-1rem);
-            animation: fadeInCorner 1s ease-out 1.1s forwards;
-        }
-
-        /* ---------- Center content ---------- */
+        /* Center content */
         .content-wrapper {
             position: absolute;
             inset: 0;
@@ -69,148 +52,172 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 1rem;
-            gap: 1.5rem;  /* ลดระยะห่างระหว่าง title กับ card บนมือถือ */
+            padding: 1.5rem;
+            gap: 1.75rem;
         }
 
-        /* ---------- Title ---------- */
+        /* Title */
         .main-title {
             text-align: center;
             opacity: 0;
-            transform: translateY(2rem);
-            animation: fadeInUp 1s ease-out 0.2s forwards;
+            transform: translateY(1.5rem);
+            animation: fadeInUp 0.8s ease-out 0.1s forwards;
         }
 
         .main-title h1 {
-            /* clamp(ขั้นต่ำ, preferred, ขั้นสูง) 
-               - มือถือเล็ก (320px) → ~2.8rem
-               - มือถือ (390px)    → ~3.5rem
-               - iPad              → ~6rem
-               - Desktop           → สูงสุด 9rem  */
-            font-size: clamp(2.8rem, 12vw, 9rem);
-            font-weight: 300;
-            letter-spacing: -0.04em;
-            line-height: 1;
-            color: #fff;
-            mix-blend-mode: difference;
-            text-shadow: 0 0 60px rgba(255,255,255,.1);
+            font-size: clamp(2.4rem, 8vw, 4.5rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            color: #0f172a;
         }
 
         .main-title .subtitle {
-            margin-top: 0.6rem;
-            font-size: clamp(0.55rem, 2.2vw, 0.85rem);
-            font-weight: 200;
-            letter-spacing: 0.25em;
+            margin-top: 0.5rem;
+            font-size: clamp(0.72rem, 2vw, 0.85rem);
+            font-weight: 500;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: rgba(209,213,219,.75);
+            color: #64748b;
         }
 
-        .main-title .subtitle span:not(.dot) {
-            display: inline-block;
-        }
-
-        .main-title .subtitle .dot {
-            margin: 0 0.5rem;
-            color: rgba(107,114,128,.7);
-        }
-
-        /* ---------- Login Card ---------- */
+        /* Login Card */
         .login-card {
             opacity: 0;
             transform: translateY(1.5rem);
-            animation: fadeInUp 1s ease-out 0.6s forwards;
+            animation: fadeInUp 0.8s ease-out 0.3s forwards;
 
-            background: rgba(255,255,255,.06);
-            border: 1px solid rgba(255,255,255,.12);
-            border-radius: 1.25rem;
-            /* padding แบบ responsive: เล็กบนมือถือ ใหญ่บน desktop */
-            padding: clamp(1.25rem, 4vw, 2rem) clamp(1.25rem, 5vw, 2.25rem);
-            width: min(340px, 88vw);   /* ไม่เกิน 88% ของหน้าจอ */
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: clamp(1.5rem, 5vw, 2.25rem);
+            width: min(380px, 92vw);
             text-align: center;
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            box-shadow: 0 25px 60px rgba(0,0,0,.5);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
         }
 
         .login-card .card-title {
-            font-size: clamp(0.95rem, 3vw, 1.1rem);
-            font-weight: 400;
-            color: rgba(243,244,246,.9);
-            letter-spacing: 0.04em;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0f172a;
             margin-bottom: 0.3rem;
+            letter-spacing: -0.01em;
         }
 
         .login-card .card-subtitle {
-            font-size: clamp(0.68rem, 2vw, 0.75rem);
-            font-weight: 200;
-            color: rgba(156,163,175,.7);
-            letter-spacing: 0.06em;
-            margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
-            font-family: ui-sans-serif, system-ui, sans-serif;
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #64748b;
+            margin-bottom: 1.5rem;
         }
 
-        /* Google button wrapper */
+        /* Google button */
         .google-btn-wrapper {
             display: flex;
             justify-content: center;
+        }
+
+        .google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0f172a;
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 140ms ease;
+            box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.12);
+            user-select: none;
+        }
+        .google-btn:hover {
+            background: #1e293b;
+            transform: translateY(-1px);
+        }
+        .google-btn:active {
+            transform: scale(0.98);
         }
 
         /* Error message */
         #errorMessage {
             display: none;
             margin-top: 0.85rem;
-            font-size: 0.75rem;
-            color: #f87171;
-            font-family: ui-sans-serif, system-ui, sans-serif;
-            letter-spacing: 0.02em;
-            font-weight: 400;
+            font-size: 0.78rem;
+            color: #e11d48;
+            font-weight: 500;
         }
 
-        /* ---------- Loading spinner ---------- */
+        /* Loading spinner */
         .spinner-wrap {
-            margin-top: 0.65rem;
+            margin-top: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.45rem;
-            color: rgba(156,163,175,.5);
-            font-size: 0.65rem;
-            font-family: ui-sans-serif, system-ui, sans-serif;
-            letter-spacing: 0.1em;
+            gap: 0.5rem;
+            color: #64748b;
+            font-size: 0.78rem;
+            font-weight: 500;
         }
 
         .spinner {
-            width: 13px;
-            height: 13px;
-            border: 1.5px solid rgba(156,163,175,.3);
-            border-top-color: rgba(156,163,175,.8);
+            width: 15px;
+            height: 15px;
+            border: 2px solid #cbd5e1;
+            border-top-color: #0f172a;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
 
-        /* ---------- Keyframes ---------- */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(2rem); }
-            to   { opacity: 1; transform: translateY(0);    }
-        }
-
-        @keyframes fadeInCorner {
-            from { opacity: 0; transform: translateY(-1rem); }
-            to   { opacity: 1; transform: translateY(0);     }
+            from { opacity: 0; transform: translateY(1.5rem); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        /* ---------- ปรับ gap ให้ใหญ่ขึ้นบน desktop ---------- */
-        @media (min-width: 768px) {
-            .content-wrapper {
-                gap: 3rem;
-                padding: 2rem;
-            }
+        /* Preview Demo Bar */
+        .preview-box {
+            margin-top: 1.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid #f1f5f9;
         }
-
+        .preview-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+        .preview-btns {
+            display: flex;
+            gap: 8px;
+        }
+        .preview-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            color: #0f172a;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 120ms ease;
+            font-family: inherit;
+        }
+        .preview-btn:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+        .preview-btn:active {
+            transform: scale(0.97);
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="config.js?v=99"></script>
@@ -218,14 +225,8 @@
 </head>
 <body>
 
-    <!-- Silk Canvas -->
-    <canvas id="silkCanvas"></canvas>
-
-    <!-- Dark gradient overlay -->
-    <div class="gradient-overlay"></div>
-
-    <!-- Corner label -->
-    <div class="corner-label"></div>
+    <!-- Ambient background -->
+    <div class="ambient-bg"></div>
 
     <!-- Main content -->
     <div class="content-wrapper">
@@ -233,13 +234,7 @@
         <!-- Big title -->
         <div class="main-title">
             <h1>BEC BA 69</h1>
-            <div class="subtitle">
-                <span></span>
-                <span class="dot"></span>
-                <span>financial system</span>
-                <span class="dot"></span>
-                <span></span>
-            </div>
+            <div class="subtitle">ระบบการเงินสาขาบริหารธุรกิจ</div>
         </div>
 
         <!-- Login card -->
@@ -248,122 +243,41 @@
             <p class="card-subtitle">กรุณายืนยันตัวตนเพื่อเข้าสู่ระบบ</p>
 
             <!-- Google OAuth -->
-            <div class="google-btn-wrapper" style="cursor: pointer; margin-top: 20px;" onclick="signInWithGoogle()">
-                <div style="display:flex; align-items:center; background:#111; color:#fff; padding:12px 24px; border-radius:30px; font-family:sans-serif; font-size:16px; font-weight:500; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                    <svg width="24" height="24" viewBox="0 0 48 48" style="margin-right:12px;"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+            <div class="google-btn-wrapper" onclick="signInWithGoogle()">
+                <div class="google-btn">
+                    <svg width="20" height="20" viewBox="0 0 48 48" style="margin-right:10px;"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
                     เข้าสู่ระบบด้วย Google
                 </div>
             </div>
 
-            <div class="spinner-wrap" id="loadingHint">
+            <div class="spinner-wrap" id="loadingHint" style="display:none">
                 <div class="spinner"></div>
                 <span>กำลังเตรียมระบบ...</span>
             </div>
 
             <!-- Error -->
             <p id="errorMessage"></p>
+
+            <!-- Preview Demo Shortcut -->
+            <div class="preview-box">
+                <div class="preview-label">ทดลองดูหน้าตาเว็บ (UI Preview)</div>
+                <div class="preview-btns">
+                    <button class="preview-btn" onclick="enterDemo('Student')">หน้านิสิต</button>
+                    <button class="preview-btn" onclick="enterDemo('Admin')">หน้าแอดมิน</button>
+                </div>
+            </div>
         </div>
 
     </div>
 
-    <!-- Silk Canvas Animation Script -->
     <script>
-        (function () {
-            const canvas = document.getElementById('silkCanvas');
-            const ctx = canvas.getContext('2d');
-            let time = 0;
-            const speed = 0.02;
-            const scale = 2;
-            const noiseIntensity = 0.8;
-            let animId;
-
-            function resize() {
-                canvas.width  = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            resize();
-            window.addEventListener('resize', resize);
-
-            function noise(x, y) {
-                const G = 2.71828;
-                const rx = G * Math.sin(G * x);
-                const ry = G * Math.sin(G * y);
-                return (rx * ry * (1 + x)) % 1;
-            }
-
-            function animate() {
-                const w = canvas.width;
-                const h = canvas.height;
-
-                // Background gradient
-                const bg = ctx.createLinearGradient(0, 0, w, h);
-                bg.addColorStop(0,   '#1a1a1a');
-                bg.addColorStop(0.5, '#2a2a2a');
-                bg.addColorStop(1,   '#1a1a1a');
-                ctx.fillStyle = bg;
-                ctx.fillRect(0, 0, w, h);
-
-                // Silk pixels (step 2 for performance)
-                const imgData = ctx.createImageData(w, h);
-                const d = imgData.data;
-                const tOff = speed * time;
-
-                for (let x = 0; x < w; x += 2) {
-                    for (let y = 0; y < h; y += 2) {
-                        const u = (x / w) * scale;
-                        const v = (y / h) * scale;
-                        const tex_x = u;
-                        const tex_y = v + 0.03 * Math.sin(8.0 * tex_x - tOff);
-
-                        const pattern = 0.6 + 0.4 * Math.sin(
-                            5.0 * (tex_x + tex_y +
-                                Math.cos(3.0 * tex_x + 5.0 * tex_y) +
-                                0.02 * tOff) +
-                            Math.sin(20.0 * (tex_x + tex_y - 0.1 * tOff))
-                        );
-
-                        const rnd = noise(x, y);
-                        const intensity = Math.max(0, pattern - rnd / 15.0 * noiseIntensity);
-
-                        const r = Math.floor(123 * intensity);
-                        const g = Math.floor(116 * intensity);
-                        const b = Math.floor(129 * intensity);
-
-                        const idx = (y * w + x) * 4;
-                        if (idx < d.length) {
-                            d[idx]     = r;
-                            d[idx + 1] = g;
-                            d[idx + 2] = b;
-                            d[idx + 3] = 255;
-                        }
-                    }
-                }
-                ctx.putImageData(imgData, 0, 0);
-
-                // Radial depth overlay
-                const ov = ctx.createRadialGradient(
-                    w/2, h/2, 0,
-                    w/2, h/2, Math.max(w, h) / 2
-                );
-                ov.addColorStop(0, 'rgba(0,0,0,0.1)');
-                ov.addColorStop(1, 'rgba(0,0,0,0.42)');
-                ctx.fillStyle = ov;
-                ctx.fillRect(0, 0, w, h);
-
-                time++;
-                animId = requestAnimationFrame(animate);
-            }
-
-            animate();
-        })();
-
-        // Hide the "loading" hint once Google button appears
-        window.addEventListener('load', function () {
-            setTimeout(function () {
-                const hint = document.getElementById('loadingHint');
-                if (hint) hint.style.display = 'none';
-            }, 1800);
-        });
+        function enterDemo(role) {
+            const user = role === 'Admin'
+                ? { name: 'Admin (ตัวอย่างทดสอบ)', email: 'admin@nu.ac.th', role: 'Admin' }
+                : { name: 'นิสิต (ตัวอย่างทดสอบ)', email: 'student@nu.ac.th', role: 'Student', studentId: '66000000' };
+            sessionStorage.setItem('loggedInUser', JSON.stringify(user));
+            window.location.href = role === 'Admin' ? 'admin_dashboard.html' : 'student_dashboard.html';
+        }
 
         // Supabase Auth Logic
         async function signInWithGoogle() {
@@ -379,7 +293,7 @@
             const { error } = await window.myAppDb.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: 'https://bec-ba-nu69.vercel.app'
+                    redirectTo: window.location.origin
                 }
             });
 
@@ -393,11 +307,9 @@
         }
 
         window.addEventListener('load', async () => {
-            // Check if we are returning from OAuth login
             const { data: { session } } = await window.myAppDb.auth.getSession();
             
             if (session) {
-                // User is logged in, pass session to login.js to verify against `users` table
                 const btnWrap = document.querySelector('.google-btn-wrapper');
                 if (btnWrap) btnWrap.style.display = 'none';
                 
@@ -411,7 +323,6 @@
                     handleSupabaseSession(session);
                 }
             } else {
-                // Not logged in, listen for auth state changes just in case
                 window.myAppDb.auth.onAuthStateChange((event, session) => {
                     if (event === 'SIGNED_IN' && session) {
                         const btnWrap = document.querySelector('.google-btn-wrapper');
@@ -422,6 +333,7 @@
                             loadingHint.innerHTML = '<div class="spinner"></div><span>กำลังตรวจสอบข้อมูล...</span>';
                             loadingHint.style.display = 'flex';
                         }
+
                         if (typeof handleSupabaseSession === 'function') {
                             handleSupabaseSession(session);
                         }

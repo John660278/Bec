@@ -935,7 +935,7 @@
 
     // รอให้ Firebase Auth พร้อมก่อนดึงข้อมูล ป้องกัน permission-denied
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
+      if (user || (currentUser && currentUser.name && currentUser.name.includes('ตัวอย่าง'))) {
         loadOverview();
       } else {
         console.warn('Firebase Auth state not found. Redirecting to login...');
@@ -1057,6 +1057,52 @@
   }
 
   async function loadOverview() {
+    if (currentUser && currentUser.name && currentUser.name.includes('ตัวอย่าง')) {
+      document.getElementById('statTotalEvents').textContent = '5';
+      document.getElementById('statPaid').textContent = '98';
+      document.getElementById('statPending').textContent = '5';
+      document.getElementById('statTotal').textContent = '45,200.00';
+      document.getElementById('overviewPendingBody').innerHTML = `
+        <tr>
+          <td>15 ก.ย. 2026</td>
+          <td>นายธนพล มีสุข</td>
+          <td>สัปดาห์ที่ 3</td>
+          <td>100.00</td>
+          <td>0.00</td>
+          <td><span class="badge badge-pending">รอตรวจสอบ</span></td>
+        </tr>
+        <tr>
+          <td>15 ก.ย. 2026</td>
+          <td>น.ส.กมลวรรณ บุญมี</td>
+          <td>สัปดาห์ที่ 3</td>
+          <td>100.00</td>
+          <td>20.00</td>
+          <td><span class="badge badge-pending">รอตรวจสอบ</span></td>
+        </tr>
+      `;
+      let incomeRows = `
+        <div style="display:flex;justify-content:space-between;padding:0.75rem;border-bottom:1px solid var(--border);font-size:0.8rem">
+          <div><div style="color:var(--text);font-weight:600">เงินสนับสนุนพี่บัณฑิต</div><div style="color:var(--muted);font-size:0.7rem">10 ก.ย. 2026</div></div>
+          <div style="color:#15803d;font-weight:600">+฿5,000.00</div>
+        </div>
+      `;
+      let expenseRows = `
+        <div style="display:flex;justify-content:space-between;padding:0.75rem;border-bottom:1px solid var(--border);font-size:0.8rem">
+          <div><div style="color:var(--text);font-weight:600">ค่าอุปกรณ์ป้ายกิจกรรม</div><div style="color:var(--muted);font-size:0.7rem">12 ก.ย. 2026</div></div>
+          <div style="color:var(--danger);font-weight:600">-฿1,600.00</div>
+        </div>
+      `;
+      document.getElementById('overviewPublicBoard').innerHTML = `
+        <div class="section-title" style="margin-bottom:1rem">รายการใช้จ่ายเงินสาขา</div>
+        <div id="adminPbPanel-finance">
+          <div style="font-size:0.8rem;font-weight:600;color:#15803d;margin-bottom:0.5rem">รายรับ</div>
+          ${incomeRows}
+          <div style="font-size:0.8rem;font-weight:600;color:var(--danger);margin:1rem 0 0.5rem">รายจ่าย</div>
+          ${expenseRows}
+        </div>
+      `;
+      return;
+    }
     try {
       // ดึงสถิติรวมจากการคำนวณสดๆ ทุกครั้งเพื่อความแม่นยำ 100%
       const [stats, paySnap, expSnap, incSnap] = await Promise.all([
