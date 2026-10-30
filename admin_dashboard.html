@@ -2,29 +2,58 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin — BEC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ระบบการเงินสาขา (Admin) — BEC BA 69</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
 
     :root {
-      --bg:          #f8fafc;
-      --surface:     #ffffff;
-      --surface2:    #f1f5f9;
-      --border:      #e2e8f0;
-      --border2:     #cbd5e1;
-      --text:        #0f172a;
-      --muted:       #64748b;
-      --muted2:      #94a3b8;
-      --accent:      #0f172a;
-      --accent-text: #ffffff;
-      --danger:      #e11d48;
-      --sidebar:     240px;
-      --shadow-sm:   0 1px 3px rgba(0,0,0,0.03), 0 1px 2px rgba(0,0,0,0.02);
-      --shadow-md:   0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.03);
+      --bg:           #f8fafc;
+      --surface:      #ffffff;
+      --surface-sub:  #f1f5f9;
+      --border:       #e2e8f0;
+      --border-dark:  #cbd5e1;
+      --text:         #090d16;
+      --text-sub:     #475569;
+      --muted:        #64748b;
+      --muted-light:  #94a3b8;
+      
+      --accent:       #090d16;
+      --accent-hover: #1e293b;
+      --accent-text:  #ffffff;
+
+      --sidebar-w:    260px;
+
+      --primary-blue: #0284c7;
+      --success:      #15803d;
+      --success-bg:   #f0fdf4;
+      --success-bdr:  #bbf7d0;
+
+      --warning:      #b45309;
+      --warning-bg:   #fefce8;
+      --warning-bdr:  #fef08a;
+
+      --danger:       #dc2626;
+      --danger-bg:    #fef2f2;
+      --danger-bdr:   #fecaca;
+
+      --radius-sm:    8px;
+      --radius-md:    12px;
+      --radius-lg:    18px;
+      --radius-xl:    24px;
+
+      --shadow-subtle: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
+      --shadow-card:   0 4px 14px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+      --shadow-float:  0 14px 28px -4px rgba(15, 23, 42, 0.12), 0 6px 12px -3px rgba(15, 23, 42, 0.06);
     }
 
     html, body {
@@ -34,278 +63,482 @@
       font-family: 'Plus Jakarta Sans', 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
       font-size: 14px;
       line-height: 1.5;
-      overflow-x: hidden;
-      overflow-y: auto;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* ─── LAYOUT ─── */
-    .shell {
+    /* ─── APP SHELL ─── */
+    .app-shell {
       display: flex;
       height: 100vh;
       overflow: hidden;
     }
 
-    /* ─── SIDEBAR ─── */
+    /* ─── SIDEBAR (BANKING TREASURY CONSOLE) ─── */
     .sidebar {
-      width: var(--sidebar);
-      min-width: var(--sidebar);
-      background: var(--surface);
+      width: var(--sidebar-w);
+      min-width: var(--sidebar-w);
+      background: #ffffff;
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       height: 100vh;
       position: sticky;
       top: 0;
-      overflow: hidden;
+      z-index: 50;
     }
 
-    .sidebar-logo {
-      padding: 1.5rem 1.25rem 1.15rem;
+    .sidebar-brand {
+      padding: 1.5rem 1.35rem 1.25rem;
       border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
     }
-    .sidebar-logo .logo-text {
-      font-size: 1.15rem;
-      font-weight: 700;
+
+    .brand-logo-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #090d16;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.8rem;
+      letter-spacing: -0.02em;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.2);
+    }
+
+    .brand-texts {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-size: 0.95rem;
+      font-weight: 800;
       color: var(--text);
       letter-spacing: -0.02em;
     }
-    .sidebar-logo .logo-sub {
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 0.02em;
-      margin-top: 0.2rem;
-      font-weight: 500;
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--primary-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
     }
 
     .sidebar-nav {
       flex: 1;
-      padding: 0.85rem 0.75rem;
+      padding: 1rem 0.85rem;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 5px;
       overflow-y: auto;
     }
 
-    .nav-item {
+    .nav-header-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--muted-light);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.5rem 0.75rem 0.35rem;
+    }
+
+    .nav-link {
       display: flex;
       align-items: center;
-      gap: 0.65rem;
-      padding: 0.6rem 0.85rem;
-      border-radius: 8px;
+      gap: 0.75rem;
+      padding: 0.65rem 0.85rem;
+      border-radius: var(--radius-md);
       cursor: pointer;
       color: var(--muted);
       font-size: 0.82rem;
-      font-weight: 500;
+      font-weight: 600;
       transition: all 120ms ease;
       user-select: none;
       border: 1px solid transparent;
+      text-decoration: none;
     }
-    .nav-item:hover { background: var(--surface2); color: var(--text); }
-    .nav-item.active { background: #0f172a; color: #ffffff; }
-    .nav-item svg { flex-shrink: 0; opacity: 0.7; }
-    .nav-item.active svg { opacity: 1; }
+
+    .nav-link:hover {
+      background: var(--surface-sub);
+      color: var(--text);
+    }
+
+    .nav-link.active {
+      background: #090d16;
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+    }
+
+    .nav-link svg {
+      flex-shrink: 0;
+      opacity: 0.75;
+    }
+
+    .nav-link.active svg {
+      opacity: 1;
+    }
 
     .sidebar-user {
       padding: 1rem 1.25rem;
       border-top: 1px solid var(--border);
-      background: #fafafa;
+      background: #fafbfc;
     }
-    .user-row {
+
+    .user-profile-row {
       display: flex;
       align-items: center;
       gap: 0.65rem;
     }
+
     .user-avatar {
-      width: 32px; height: 32px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.75rem; font-weight: 600; color: var(--text);
-      flex-shrink: 0;
-    }
-    .user-info { flex: 1; min-width: 0; }
-    .user-name { font-size: 0.8rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .user-email { font-size: 0.7rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .logout-btn {
-      background: none; border: 1px solid var(--border); cursor: pointer;
-      color: var(--muted); padding: 5px; border-radius: 6px;
-      display: flex; transition: all 120ms;
-    }
-    .logout-btn:hover { color: var(--danger); border-color: #fecdd3; background: #fff1f2; }
-
-    /* ─── MAIN ─── */
-    .main {
-      flex: 1;
-      min-width: 0;
-      padding: 2rem;
-      padding-bottom: 6rem;
-      height: 100vh;
-      overflow-y: auto;
-    }
-
-    /* ─── PAGE HEADER ─── */
-    .page-header {
+      background: #090d16;
+      color: #ffffff;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      margin-bottom: 2rem;
-    }
-    .page-title {
-      font-size: 1.25rem;
+      justify-content: center;
+      font-size: 0.75rem;
       font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .user-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .user-name-text {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-email-text {
+      font-size: 0.7rem;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn-logout-sidebar {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 120ms;
+    }
+
+    .btn-logout-sidebar:hover {
+      color: var(--danger);
+      background: #fff1f2;
+      border-color: #fecdd3;
+    }
+
+    /* ─── MAIN CONTENT AREA ─── */
+    .main-viewport {
+      flex: 1;
+      min-width: 0;
+      padding: 2rem 2.5rem 5rem;
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--bg);
+    }
+
+    /* ─── PAGE HEADER BAR ─── */
+    .page-title-bar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+      flex-wrap: wrap;
+    }
+
+    .page-title-group h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
       color: var(--text);
       letter-spacing: -0.02em;
     }
-    .page-sub {
+
+    .page-title-group p {
       font-size: 0.78rem;
       color: var(--muted);
-      margin-top: 0.2rem;
+      margin-top: 0.25rem;
+    }
+
+    .page-action-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
     /* ─── VIEWS ─── */
-    .view { display: none; }
-    .view.active { display: block; }
+    .view-pane {
+      display: none;
+    }
 
-    /* ─── STAT CARDS ─── */
-    .stats-grid {
+    .view-pane.active {
+      display: block;
+    }
+
+    /* ─── FINANCIAL KPI STATS GRID ─── */
+    .kpi-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      background: transparent;
-      border: none;
+      gap: 14px;
       margin-bottom: 2rem;
     }
-    .stat-card {
-      background: var(--surface);
+
+    .kpi-card {
+      background: #ffffff;
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.25rem 1.5rem;
-      box-shadow: var(--shadow-sm);
+      border-radius: var(--radius-lg);
+      padding: 1.35rem 1.5rem;
+      box-shadow: var(--shadow-subtle);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 140ms ease;
     }
-    .stat-num {
-      font-size: 1.85rem;
+
+    .kpi-card:hover {
+      box-shadow: var(--shadow-card);
+      border-color: var(--border-dark);
+    }
+
+    .kpi-card.highlight {
+      background: linear-gradient(135deg, #090d16 0%, #1e293b 100%);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 10px 24px -4px rgba(15, 23, 42, 0.2);
+    }
+
+    .kpi-card.highlight .kpi-label {
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .kpi-card.highlight .kpi-value {
+      color: #ffffff;
+    }
+
+    .kpi-label {
+      font-size: 0.7rem;
       font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .kpi-value {
+      font-size: 1.85rem;
+      font-weight: 800;
       color: var(--text);
       letter-spacing: -0.03em;
-      line-height: 1;
+      line-height: 1.1;
       font-variant-numeric: tabular-nums;
     }
-    .stat-label {
-      font-size: 0.72rem;
-      color: var(--muted);
-      margin-top: 0.5rem;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      font-weight: 600;
+
+    .kpi-sub {
+      font-size: 0.68rem;
+      color: var(--muted-light);
+      margin-top: 0.4rem;
+      font-weight: 500;
     }
 
-    /* ─── SECTION TITLE ─── */
-    .section-title {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 0.85rem;
+    .kpi-card.highlight .kpi-sub {
+      color: rgba(255, 255, 255, 0.55);
     }
 
-    /* ─── TABLE ─── */
-    .table-wrap {
-      background: var(--surface);
+    /* ─── STATEMENT LEDGER TABLE ─── */
+    .ledger-container {
+      background: #ffffff;
       border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: var(--shadow-sm);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-subtle);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .ledger-header {
+      padding: 1.15rem 1.35rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background: #fafbfc;
+    }
+
+    .ledger-header-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .table-scroll {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
     }
-    table {
+
+    table.formal-table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 600px;
+      font-size: 0.82rem;
+      min-width: 650px;
     }
-    thead tr {
-      border-bottom: 1px solid var(--border);
-    }
-    th {
-      padding: 0.75rem 1rem;
+
+    table.formal-table th {
+      background: var(--surface-sub);
+      padding: 0.75rem 1.15rem;
       text-align: left;
-      font-size: 0.72rem;
-      font-weight: 600;
+      font-size: 0.7rem;
+      font-weight: 700;
       color: var(--muted);
-      letter-spacing: 0.04em;
       text-transform: uppercase;
-      background: #f8fafc;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid var(--border);
       white-space: nowrap;
     }
-    td {
-      padding: 0.85rem 1rem;
-      font-size: 0.82rem;
+
+    table.formal-table td {
+      padding: 0.95rem 1.15rem;
       border-bottom: 1px solid #f1f5f9;
-      background: var(--surface);
       color: var(--text);
       white-space: nowrap;
+      vertical-align: middle;
     }
-    tbody tr:last-child td { border-bottom: none; }
-    tbody tr:hover td { background: #f8fafc; }
 
-    /* ─── STATUS BADGE ─── */
+    table.formal-table tr:hover td {
+      background: #fafbfc;
+    }
+
+    table.formal-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* ─── STATUS BADGES ─── */
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
-      padding: 3px 10px;
+      gap: 5px;
+      padding: 3px 9px;
       border-radius: 9999px;
       font-size: 0.72rem;
       font-weight: 600;
-      letter-spacing: 0.02em;
+      white-space: nowrap;
     }
-    .badge-pending { background: #fefce8; border: 1px solid #fef08a; color: #b45309; }
-    .badge-paid    { background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d; }
+
+    .badge-pending {
+      background: var(--warning-bg);
+      border: 1px solid var(--warning-bdr);
+      color: var(--warning);
+    }
+
+    .badge-paid {
+      background: var(--success-bg);
+      border: 1px solid var(--success-bdr);
+      color: var(--success);
+    }
 
     /* ─── BUTTONS ─── */
     .btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      padding: 0.5rem 1rem;
-      border-radius: 10px;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.55rem 1.15rem;
+      border-radius: var(--radius-md);
       font-size: 0.8rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       transition: all 120ms ease;
-      border: none;
+      border: 1px solid transparent;
       font-family: inherit;
+      user-select: none;
     }
-    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-    .btn:active:not(:disabled) { transform: scale(0.98); }
+
+    .btn:active:not(:disabled) {
+      transform: scale(0.97);
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
     .btn-primary {
-      background: #0f172a;
+      background: #090d16;
       color: #ffffff;
-      box-shadow: 0 2px 4px rgba(15,23,42,0.12);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.16);
     }
+
     .btn-primary:hover:not(:disabled) {
       background: #1e293b;
-      opacity: 1;
     }
+
     .btn-ghost {
       background: #ffffff;
       color: var(--text);
       border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
+      box-shadow: var(--shadow-subtle);
     }
-    .btn-ghost:hover { background: var(--surface2); border-color: var(--border2); }
-    .btn-sm { padding: 0.35rem 0.75rem; font-size: 0.74rem; }
 
-    /* ─── FILTER TABS ─── */
+    .btn-ghost:hover:not(:disabled) {
+      background: var(--surface-sub);
+      border-color: var(--border-dark);
+    }
+
+    .btn-danger-ghost {
+      background: #ffffff;
+      color: var(--danger);
+      border: 1px solid var(--danger-bdr);
+    }
+
+    .btn-danger-ghost:hover:not(:disabled) {
+      background: var(--danger-bg);
+    }
+
+    .btn-sm {
+      padding: 0.38rem 0.85rem;
+      font-size: 0.75rem;
+      border-radius: 8px;
+    }
+
+    /* ─── FILTER TABS (SEGMENTED) ─── */
     .filter-tabs {
       display: flex;
       gap: 6px;
       margin-bottom: 1.25rem;
     }
+
     .filter-tab {
-      padding: 0.4rem 1rem;
+      padding: 0.45rem 1.1rem;
       border-radius: 9999px;
       font-size: 0.78rem;
       font-weight: 600;
@@ -315,63 +548,83 @@
       color: var(--muted);
       font-family: inherit;
       transition: all 120ms ease;
-      box-shadow: var(--shadow-sm);
-    }
-    .filter-tab:hover { border-color: var(--border2); color: var(--text); }
-    .filter-tab.active {
-      background: #0f172a;
-      color: #ffffff;
-      border-color: #0f172a;
-      box-shadow: 0 2px 4px rgba(15,23,42,0.12);
     }
 
-    /* ─── FORM ─── */
+    .filter-tab:hover {
+      border-color: var(--border-dark);
+      color: var(--text);
+    }
+
+    .filter-tab.active {
+      background: #090d16;
+      color: #ffffff;
+      border-color: #090d16;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+    }
+
+    /* ─── FORM CARD ─── */
+    .form-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-subtle);
+      margin-bottom: 2rem;
+    }
+
+    .form-card-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      margin-bottom: 1.35rem;
+    }
+
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1.25rem;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.35rem;
     }
-    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-    .form-group.full { grid-column: 1/-1; }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
     label {
       font-size: 0.72rem;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--muted);
       letter-spacing: 0.04em;
       text-transform: uppercase;
     }
+
     input, select, textarea {
       background: #ffffff;
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 0.65rem 0.85rem;
-      font-size: 0.82rem;
+      border-radius: var(--radius-md);
+      padding: 0.7rem 0.95rem;
+      font-size: 0.85rem;
       color: var(--text);
       font-family: inherit;
       outline: none;
       transition: all 120ms ease;
       width: 100%;
     }
+
     input:focus, select:focus {
-      border-color: #0f172a;
+      border-color: #090d16;
       box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.08);
     }
-    input::placeholder { color: var(--muted2); }
 
-    .form-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1.75rem;
-      margin-bottom: 1.5rem;
-      box-shadow: var(--shadow-sm);
-    }
-    .form-card-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 1.25rem;
+    input::placeholder {
+      color: var(--muted-light);
     }
 
     /* ─── SKELETON ─── */
@@ -391,86 +644,75 @@
     /* ─── EMPTY STATE ─── */
     .empty-state {
       text-align: center;
-      padding: 3.5rem 1rem;
+      padding: 3rem 1rem;
       color: var(--muted);
     }
-    .empty-state svg { opacity: 0.4; margin-bottom: 0.75rem; }
-    .empty-state p { font-size: 0.85rem; font-weight: 500; }
 
-    /* ─── TOAST ─── */
+    .empty-state p {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* ─── TOAST NOTIFICATION ─── */
     #toast {
       position: fixed;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      background: #0f172a;
+      bottom: 2rem;
+      right: 2rem;
+      background: #090d16;
       border: 1px solid #1e293b;
-      border-radius: 10px;
-      padding: 0.85rem 1.35rem;
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.4rem;
       font-size: 0.82rem;
       color: #ffffff;
-      font-weight: 500;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      font-weight: 600;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
       z-index: 999;
       opacity: 0;
-      transform: translateY(8px);
-      transition: all 200ms;
+      transform: translateY(10px);
+      transition: all 180ms ease;
       pointer-events: none;
-      max-width: 320px;
+      max-width: 340px;
     }
-    #toast.show { opacity: 1; transform: translateY(0); }
 
-    /* ─── MOBILE ─── */
-    @media (max-width: 768px) {
-      html, body { overflow: auto; }
-      .shell { flex-direction: column; height: auto; min-height: 100vh; overflow: visible; }
-      .sidebar { display: none; }
-      .main { padding: 1rem; padding-bottom: 5.5rem; height: auto; overflow-y: visible; }
-      .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-      .form-grid { grid-template-columns: 1fr; }
-      td, th { padding: 0.65rem 0.85rem; }
+    #toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-      /* Bottom nav mobile */
-      .mobile-nav {
-        display: flex;
-        position: fixed;
-        bottom: 0; left: 0; right: 0;
-        background: rgba(255, 255, 255, 0.94);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border-top: 1px solid var(--border);
-        box-shadow: 0 -4px 16px rgba(0,0,0,0.04);
-        z-index: 100;
-      }
-      .mobile-nav-item {
-        flex: 1;
-        display: flex;
+    /* ─── MOBILE ADAPTATIONS ─── */
+    @media (max-width: 840px) {
+      .app-shell {
         flex-direction: column;
-        align-items: center;
-        gap: 3px;
-        padding: 0.65rem 0.25rem;
-        cursor: pointer;
-        color: var(--muted);
-        font-size: 0.62rem;
-        font-weight: 500;
-        transition: color 120ms;
-        border: none;
-        background: none;
-        font-family: inherit;
+        height: auto;
+        min-height: 100vh;
+        overflow: visible;
       }
-      .mobile-nav-item.active { color: #0f172a; font-weight: 700; }
-      .mobile-nav-item svg { opacity: 0.65; }
-      .mobile-nav-item.active svg { opacity: 1; }
-    }
-    @media (min-width: 769px) {
-      .mobile-nav { display: none; }
-      .mobile-topbar { display: none; }
-    }
-    @media (max-width: 768px) {
+
+      .sidebar {
+        display: none;
+      }
+
+      .main-viewport {
+        padding: 1rem 1rem 5.5rem;
+        height: auto;
+        overflow-y: visible;
+      }
+
+      .kpi-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
       .mobile-topbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0.75rem 1rem;
+        padding: 0.85rem 1.25rem;
         background: rgba(255, 255, 255, 0.94);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
@@ -479,49 +721,99 @@
         top: 0;
         z-index: 95;
       }
+
       .mobile-topbar-brand {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
       }
+
       .mobile-topbar-title {
-        font-size: 0.88rem;
-        font-weight: 700;
-        color: #0f172a;
+        font-size: 0.92rem;
+        font-weight: 800;
+        color: var(--text);
         letter-spacing: -0.01em;
       }
+
       .mobile-topbar-badge {
         font-size: 0.65rem;
-        font-weight: 600;
-        color: #0f172a;
-        background: #f1f5f9;
-        padding: 2px 6px;
-        border-radius: 4px;
+        font-weight: 700;
+        color: var(--primary-blue);
+        background: #f0f9ff;
+        border: 1px solid #bae6fd;
+        padding: 2px 7px;
+        border-radius: 9999px;
       }
+
       .mobile-logout-btn {
-        background: none;
-        border: 1px solid #fecdd3;
         background: #fff1f2;
-        border-radius: 6px;
-        padding: 4px 8px;
+        border: 1px solid #fecdd3;
+        border-radius: 8px;
+        padding: 5px 10px;
         color: var(--danger);
         font-size: 0.72rem;
         font-family: inherit;
-        font-weight: 600;
+        font-weight: 700;
         display: flex;
         align-items: center;
         gap: 4px;
         cursor: pointer;
-        transition: background 120ms;
       }
-      .mobile-logout-btn:active {
-        background: rgba(239, 68, 68, 0.08);
+
+      .mobile-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-top: 1px solid var(--border);
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.05);
+        z-index: 100;
       }
+
+      .mobile-nav-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        padding: 0.7rem 0.25rem;
+        cursor: pointer;
+        color: var(--muted);
+        font-size: 0.65rem;
+        font-weight: 600;
+        border: none;
+        background: none;
+        font-family: inherit;
+        transition: color 120ms;
+      }
+
+      .mobile-nav-item.active {
+        color: #090d16;
+        font-weight: 800;
+      }
+
+      .mobile-nav-item svg {
+        opacity: 0.7;
+      }
+
+      .mobile-nav-item.active svg {
+        opacity: 1;
+      }
+    }
+
+    @media (min-width: 841px) {
+      .mobile-nav { display: none; }
+      .mobile-topbar { display: none; }
     }
   </style>
 </head>
 <body>
 
+<!-- ─── MOBILE TOP APP BAR ─── -->
 <header class="mobile-topbar">
   <div class="mobile-topbar-brand">
     <div class="mobile-topbar-title">BEC BA 69</div>
@@ -533,122 +825,153 @@
   </button>
 </header>
 
-<div class="shell">
-  <!-- ── SIDEBAR ── -->
+<div class="app-shell">
+
+  <!-- ─── SIDEBAR (DESKTOP) ─── -->
   <aside class="sidebar">
-    <div class="sidebar-logo">
-      <div class="logo-text"> BEC BA 69</div>
-      <div class="logo-sub">Admin Panel</div>
+    <div class="sidebar-brand">
+      <div class="brand-logo-mark">NU</div>
+      <div class="brand-texts">
+        <div class="brand-name">BEC BA 69</div>
+        <div class="brand-badge">Treasury Console</div>
+      </div>
     </div>
 
     <nav class="sidebar-nav">
-      <div class="nav-item active" data-view="overview" onclick="switchView('overview',this)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-        ภาพรวม
+      <div class="nav-header-label">เมนูการเงิน</div>
+      
+      <div class="nav-link active nav-item" data-view="overview" onclick="switchView('overview', this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        ภาพรวมการเงิน
       </div>
-      <div class="nav-item" data-view="events" onclick="switchView('events',this)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+
+      <div class="nav-link nav-item" data-view="events" onclick="switchView('events', this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         รอบเก็บเงิน
       </div>
-      <div class="nav-item" data-view="payments" onclick="switchView('payments',this)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+
+      <div class="nav-link nav-item" data-view="payments" onclick="switchView('payments', this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
         ตรวจสอบสลิป
       </div>
-      <div class="nav-item" data-view="matrix" onclick="switchView('matrix',this)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+
+      <div class="nav-link nav-item" data-view="matrix" onclick="switchView('matrix', this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
         ตารางเช็คยอด
       </div>
-      <div class="nav-item" data-view="finance" onclick="switchView('finance',this)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+
+      <div class="nav-link nav-item" data-view="finance" onclick="switchView('finance', this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
         รายรับ / รายจ่าย
       </div>
     </nav>
 
     <div class="sidebar-user">
-      <div class="user-row">
+      <div class="user-profile-row">
         <div class="user-avatar" id="sidebarAvatar">A</div>
-        <div class="user-info">
-          <div class="user-name" id="sidebarName">กำลังโหลด</div>
-          <div class="user-email" id="sidebarEmail">—</div>
+        <div class="user-details">
+          <div class="user-name-text" id="sidebarName">ผู้ดูแลระบบ</div>
+          <div class="user-email-text" id="sidebarEmail">admin@nu.ac.th</div>
         </div>
-        <button class="logout-btn" onclick="logout()" title="ออกจากระบบ">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <button class="btn-logout-sidebar" onclick="logout()" title="ออกจากระบบ">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         </button>
       </div>
     </div>
   </aside>
 
-  <!-- ── MAIN ── -->
-  <main class="main">
+  <!-- ─── MAIN VIEWPORT ─── -->
+  <main class="main-viewport">
 
-    <!-- VIEW: OVERVIEW -->
-    <div class="view active" id="view-overview">
-      <div class="page-header">
-        <div>
-          <div class="page-title">ภาพรวม</div>
-          <div class="page-sub">สรุปสถานะการเงินทั้งหมดของสาขา</div>
+    <!-- ── VIEW 1: OVERVIEW ── -->
+    <section class="view-pane active view" id="view-overview">
+      <div class="page-title-bar">
+        <div class="page-title-group">
+          <h1>ภาพรวมการเงินสาขา</h1>
+          <p>สรุปยอดกองทุน ธุรกรรม และการตรวจสอบสลิปประจำรุ่น</p>
         </div>
-        <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+        <div class="page-action-row">
           <button class="btn btn-ghost" onclick="switchView('finance', document.querySelector('[data-view=finance]'))">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
             บันทึกรับ-จ่าย
           </button>
           <button class="btn btn-primary" onclick="switchView('events', document.querySelector('[data-view=events]'))">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             สร้างรอบใหม่
           </button>
         </div>
       </div>
 
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-num" id="statTotalEvents">—</div>
-          <div class="stat-label">รอบเก็บเงินทั้งหมด</div>
+      <!-- KPI Executive Grid -->
+      <div class="kpi-grid stats-grid">
+        <div class="kpi-card highlight">
+          <div>
+            <div class="kpi-label">ยอดเงินกองทุนคงเหลือสุทธิ</div>
+            <div class="kpi-value"><span id="statTotal">—</span> <span style="font-size: 1rem; font-weight: 600;">฿</span></div>
+          </div>
+          <div class="kpi-sub">คำนวณจากยอดชำระ + รายรับ - รายจ่าย</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-num" id="statPaid">—</div>
-          <div class="stat-label">ชำระแล้ว</div>
+
+        <div class="kpi-card">
+          <div>
+            <div class="kpi-label">รอบเก็บเงินทั้งหมด</div>
+            <div class="kpi-value" id="statTotalEvents">—</div>
+          </div>
+          <div class="kpi-sub">จำนวนรอบกิจกรรมที่สร้างแล้ว</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-num" id="statPending">—</div>
-          <div class="stat-label">รอตรวจสอบ</div>
+
+        <div class="kpi-card">
+          <div>
+            <div class="kpi-label">ชำระแล้วเสร็จ</div>
+            <div class="kpi-value" style="color: var(--success);" id="statPaid">—</div>
+          </div>
+          <div class="kpi-sub">รายการที่ผ่านการตรวจสอบแล้ว</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-num" id="statTotal">—</div>
-          <div class="stat-label">ยอดเงินคงเหลือสาขา (฿)</div>
+
+        <div class="kpi-card">
+          <div>
+            <div class="kpi-label">รอตรวจสอบสลิป</div>
+            <div class="kpi-value" style="color: var(--warning);" id="statPending">—</div>
+          </div>
+          <div class="kpi-sub">สลิปที่รอเหรัญญิกอนุมัติ</div>
         </div>
       </div>
 
-      <div class="section-title">สลิปรอตรวจสอบล่าสุด</div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>วันที่</th>
-              <th>ชื่อ-นามสกุล</th>
-              <th>รอบการชำระ</th>
-              <th>ยอด (฿)</th>
-              <th>ค่าปรับ (฿)</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="overviewPendingBody">
-            <tr><td colspan="6"><div class="skeleton" style="width:80%"></div><div class="skeleton" style="width:60%"></div></td></tr>
-          </tbody>
-        </table>
+      <!-- Pending Slips Ledger -->
+      <div class="ledger-container">
+        <div class="ledger-header">
+          <div class="ledger-header-title">สลิปรอการตรวจสอบล่าสุด</div>
+          <button class="btn btn-ghost btn-sm" onclick="switchView('payments', document.querySelector('[data-view=payments]'))">ดูทั้งหมด</button>
+        </div>
+        <div class="table-scroll table-wrap">
+          <table class="formal-table">
+            <thead>
+              <tr>
+                <th>วันที่</th>
+                <th>ชื่อ-นามสกุล</th>
+                <th>รอบการชำระ</th>
+                <th>ยอด (฿)</th>
+                <th>ค่าปรับ (฿)</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="overviewPendingBody">
+              <tr><td colspan="6"><div class="skeleton" style="width:80%"></div><div class="skeleton" style="width:60%"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <div style="margin-top:2rem">
-        <div id="overviewPublicBoard"></div>
-      </div>
-    </div>
+      <!-- Public Board Feed inside Admin -->
+      <div id="overviewPublicBoard"></div>
+    </section>
 
-    <!-- VIEW: EVENTS -->
-    <div class="view" id="view-events">
-      <div class="page-header">
-        <div>
-          <div class="page-title">รอบเก็บเงิน</div>
-          <div class="page-sub">สร้างและจัดการรอบการชำระเงิน</div>
+    <!-- ── VIEW 2: EVENTS ── -->
+    <section class="view-pane view" id="view-events">
+      <div class="page-title-bar">
+        <div class="page-title-group">
+          <h1>รอบเก็บเงินสาขา</h1>
+          <p>สร้างรอบกิจกรรมใหม่และจัดการกำหนดเวลาการชำระเงิน</p>
         </div>
       </div>
 
@@ -656,232 +979,238 @@
         <div class="form-card-title">สร้างรอบเก็บเงินใหม่</div>
         <div class="form-grid">
           <div class="form-group full">
-            <label>ชื่อรายการ</label>
-            <input type="text" id="evTitle" placeholder="เช่น ค่าเสื้อสาขา รุ่น 69" />
+            <label>ชื่อรายการ / กิจกรรม</label>
+            <input type="text" id="evTitle" placeholder="เช่น ค่าเสื้อสาขา รุ่น 69 หรือ สัปดาห์ที่ 5" />
           </div>
           <div class="form-group">
             <label>จำนวนเงิน (บาท)</label>
-            <input type="number" id="evAmount" placeholder="500" />
+            <input type="number" id="evAmount" placeholder="100" />
           </div>
           <div class="form-group">
-            <label>วันครบกำหนด</label>
+            <label>วันครบกำหนดชำระ</label>
             <input type="date" id="evDueDate" />
           </div>
         </div>
         <button class="btn btn-primary" id="btnCreateEvent" onclick="handleCreateEvent()">สร้างรอบเก็บเงิน</button>
       </div>
 
-      <div class="section-title">รอบเก็บเงินที่มีอยู่</div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>ชื่อรายการ</th>
-              <th>จำนวนเงิน (฿)</th>
-              <th>วันครบกำหนด</th>
-              <th>วันที่สร้าง</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="eventsTableBody">
-            <tr><td colspan="5"><div class="skeleton" style="width:70%"></div></td></tr>
-          </tbody>
-        </table>
+      <div class="ledger-container">
+        <div class="ledger-header">
+          <div class="ledger-header-title">รอบเก็บเงินที่มีอยู่ในระบบ</div>
+        </div>
+        <div class="table-scroll table-wrap">
+          <table class="formal-table">
+            <thead>
+              <tr>
+                <th>ชื่อรายการ</th>
+                <th>จำนวนเงิน (฿)</th>
+                <th>วันครบกำหนด</th>
+                <th>วันที่สร้าง</th>
+                <th>จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="eventsTableBody">
+              <tr><td colspan="5"><div class="skeleton" style="width:70%"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <!-- VIEW: PAYMENTS -->
-    <div class="view" id="view-payments">
-      <div class="page-header">
-        <div>
-          <div class="page-title">ตรวจสอบสลิป</div>
-          <div class="page-sub">รายการชำระเงินทั้งหมดของนิสิต</div>
+    <!-- ── VIEW 3: PAYMENTS (VERIFICATION) ── -->
+    <section class="view-pane view" id="view-payments">
+      <div class="page-title-bar">
+        <div class="page-title-group">
+          <h1>ตรวจสอบสลิปโอนเงิน</h1>
+          <p>ตรวจสอบหลักฐานและอนุมัติยอดการชำระเงินของนิสิต</p>
         </div>
         <button class="btn btn-ghost" onclick="fetchPaymentsData()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
-          รีเฟรช
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+          รีเฟรชข้อมูล
         </button>
       </div>
 
       <div style="margin-bottom: 1rem;">
-        <input type="text" id="paymentSearchInput" placeholder=" ค้นหาชื่อ, รหัสนิสิต, อีเมล หรือชื่อรอบชำระ..." style="width: 100%; padding: 0.8rem 1.2rem; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 0.95rem; outline: none; background: var(--bg);" onkeyup="applyPaymentFilters()">
+        <input type="text" id="paymentSearchInput" placeholder=" ค้นหาชื่อ-นามสกุล, รหัสนิสิต, อีเมล หรือชื่อรอบ..." onkeyup="applyPaymentFilters()" />
       </div>
+
       <div class="filter-tabs">
-        <button class="filter-tab active" onclick="filterPayments('all',this)">ทั้งหมด</button>
-        <button class="filter-tab" onclick="filterPayments('Pending',this)">รอตรวจสอบ</button>
-        <button class="filter-tab" onclick="filterPayments('Paid',this)">ชำระแล้ว</button>
+        <button class="filter-tab active" onclick="filterPayments('all', this)">ทั้งหมด</button>
+        <button class="filter-tab" onclick="filterPayments('Pending', this)">รอตรวจสอบ</button>
+        <button class="filter-tab" onclick="filterPayments('Paid', this)">ชำระแล้ว</button>
       </div>
 
-      <div class="table-wrap" style="overflow-x:auto">
-        <table>
-          <thead>
-            <tr>
-              <th>ชื่อ-นามสกุล</th>
-              <th>รอบการชำระ</th>
-              <th>ยอด (฿)</th>
-              <th>ค่าปรับ (฿)</th>
-              <th>สถานะ</th>
-              <th>วันที่</th>
-              <th>สลิป</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="paymentsTableBody">
-            <tr><td colspan="8"><div class="skeleton" style="width:80%"></div></td></tr>
-          </tbody>
-        </table>
+      <div class="ledger-container">
+        <div class="table-scroll table-wrap">
+          <table class="formal-table">
+            <thead>
+              <tr>
+                <th>ชื่อ-นามสกุล</th>
+                <th>รอบการชำระ</th>
+                <th>ยอด (฿)</th>
+                <th>ค่าปรับ (฿)</th>
+                <th>สถานะ</th>
+                <th>วันที่</th>
+                <th>หลักฐาน</th>
+                <th>การกระทำ</th>
+              </tr>
+            </thead>
+            <tbody id="paymentsTableBody">
+              <tr><td colspan="8"><div class="skeleton" style="width:80%"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <!-- VIEW: MATRIX (NEW) -->
-    <div class="view" id="view-matrix">
-      <div class="page-header">
-        <div>
-          <div class="page-title">ตารางเช็คยอดนิสิต</div>
-          <div class="page-sub">ข้อมูลรายบุคคลเทียบกับรอบเก็บเงินทั้งหมด</div>
+    <!-- ── VIEW 4: MATRIX ── -->
+    <section class="view-pane view" id="view-matrix">
+      <div class="page-title-bar">
+        <div class="page-title-group">
+          <h1>ตารางเช็คยอดนิสิต (Matrix)</h1>
+          <p>สรุปการชำระเงินของนิสิตทุกคนเทียบกับรอบเก็บเงินทั้งหมด</p>
         </div>
         <button class="btn btn-ghost" onclick="syncStudentMatrix(true)" id="btnSyncMatrix">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
-          รีเฟรชและคำนวณตารางใหม่
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+          รีเฟรชและคำนวณใหม่
         </button>
       </div>
 
-      <div class="table-wrap" style="overflow-x:auto">
-        <table id="matrixTable">
-          <thead>
-            <tr id="matrixHeaders">
-              <th><div class="skeleton" style="width:60px"></div></th>
-            </tr>
-          </thead>
-          <tbody id="matrixBody">
-            <tr><td><div class="skeleton"></div></td></tr>
-            <tr><td><div class="skeleton"></div></td></tr>
-          </tbody>
-        </table>
+      <div class="ledger-container">
+        <div class="table-scroll table-wrap">
+          <table class="formal-table" id="matrixTable">
+            <thead>
+              <tr id="matrixHeaders">
+                <th><div class="skeleton" style="width:60px"></div></th>
+              </tr>
+            </thead>
+            <tbody id="matrixBody">
+              <tr><td><div class="skeleton"></div></td></tr>
+              <tr><td><div class="skeleton"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <!-- VIEW: FINANCE -->
-    <div class="view" id="view-finance">
-      <div class="page-header">
-        <div>
-          <div class="page-title">รายรับ / รายจ่าย</div>
-          <div class="page-sub">บันทึกรายรับจากสปอนเซอร์และรายจ่ายของสาขา</div>
+    <!-- ── VIEW 5: FINANCE (INCOMES & EXPENSES) ── -->
+    <section class="view-pane view" id="view-finance">
+      <div class="page-title-bar">
+        <div class="page-title-group">
+          <h1>รายรับ / รายจ่าย</h1>
+          <p>บันทึกเงินสนับสนุน เงินสปอนเซอร์ และค่าใช้จ่ายกิจกรรมสาขา</p>
         </div>
       </div>
 
-      <div class="filter-tabs" style="margin-bottom:1.5rem">
-        <button class="filter-tab active" id="tabExpense" onclick="switchFinance('expense',this)">รายจ่าย</button>
-        <button class="filter-tab" id="tabIncome" onclick="switchFinance('income',this)">รายรับ</button>
+      <div class="filter-tabs" style="margin-bottom: 1.5rem;">
+        <button class="filter-tab active" id="tabExpense" onclick="switchFinance('expense', this)">บันทึกรายจ่าย</button>
+        <button class="filter-tab" id="tabIncome" onclick="switchFinance('income', this)">บันทึกรายรับ</button>
       </div>
 
       <!-- Expense Form -->
       <div class="form-card" id="expenseForm">
-        <div class="form-card-title">บันทึกรายจ่าย</div>
+        <div class="form-card-title">บันทึกรายการรายจ่าย</div>
         <div class="form-grid">
           <div class="form-group full">
-            <label>รายการ</label>
-            <input type="text" id="expTitle" placeholder="เช่น ค่าของว่างประชุม" />
+            <label>ชื่อรายการค่าใช้จ่าย</label>
+            <input type="text" id="expTitle" placeholder="เช่น ค่าของว่างประชุมสาขา หรือ ค่าอุปกรณ์ป้าย" />
           </div>
           <div class="form-group">
-            <label>จำนวน (฿)</label>
-            <input type="number" id="expAmount" placeholder="0" />
+            <label>จำนวนเงิน (บาท)</label>
+            <input type="number" id="expAmount" placeholder="0.00" />
           </div>
           <div class="form-group">
-            <label>วันที่</label>
+            <label>วันที่เกิดรายการ</label>
             <input type="date" id="expDate" />
           </div>
           <div class="form-group full">
-            <label>ใบเสร็จ / สลิป (รูปภาพ)</label>
-            <div style="border:1.5px dashed var(--border2);border-radius:6px;padding:1.25rem 1rem;text-align:center;cursor:pointer;position:relative;transition:border-color 150ms" id="expUploadArea">
-              <input type="file" id="expReceiptFile" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;z-index:5" onchange="previewFile(this,'expPreview','expFileName')" />
-              <div style="pointer-events:none">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--muted);margin-bottom:4px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                <div style="font-size:0.78rem;color:var(--muted)">แตะเพื่อแนบรูปภาพ (ไม่บังคับ)</div>
-                <div id="expFileName" style="font-size:0.72rem;color:var(--text);margin-top:4px;font-weight:500"></div>
+            <label>ใบเสร็จ / หลักฐานการจ่ายเงิน (รูปภาพ)</label>
+            <div style="border: 1.5px dashed var(--border-dark); border-radius: var(--radius-md); padding: 1.25rem 1rem; text-align: center; cursor: pointer; position: relative; background: #fafbfc;" id="expUploadArea">
+              <input type="file" id="expReceiptFile" accept="image/*" style="position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; z-index: 5;" onchange="previewFile(this, 'expPreview', 'expFileName')" />
+              <div style="pointer-events: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color: var(--muted); margin-bottom: 4px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <div style="font-size: 0.8rem; color: var(--text); font-weight: 600;">แตะเพื่อแนบรูปใบเสร็จ (ไม่บังคับ)</div>
+                <div id="expFileName" style="font-size: 0.72rem; color: var(--primary-blue); margin-top: 4px; font-weight: 700;"></div>
               </div>
             </div>
-            <img id="expPreview" src="" alt="" style="display:none;max-width:200px;max-height:160px;border-radius:6px;margin-top:0.5rem;border:1px solid var(--border)" />
+            <img id="expPreview" src="" alt="" style="display: none; max-width: 220px; max-height: 160px; border-radius: 8px; margin-top: 0.65rem; border: 1px solid var(--border);" />
           </div>
         </div>
         <button class="btn btn-primary" id="expSubmitBtn" onclick="handleAddExpense(this)">บันทึกรายจ่าย</button>
       </div>
 
       <!-- Income Form -->
-      <div class="form-card" id="incomeForm" style="display:none">
-        <div class="form-card-title">บันทึกรายรับ</div>
+      <div class="form-card" id="incomeForm" style="display: none;">
+        <div class="form-card-title">บันทึกรายการรายรับ</div>
         <div class="form-grid">
           <div class="form-group full">
-            <label>แหล่งที่มา</label>
-            <input type="text" id="incSource" placeholder="เช่น สปอนเซอร์ พี่บัณฑิต" />
+            <label>แหล่งที่มาของรายรับ</label>
+            <input type="text" id="incSource" placeholder="เช่น เงินสนับสนุนจากพี่บัณฑิต หรือ สปอนเซอร์กิจกรรม" />
           </div>
           <div class="form-group">
-            <label>จำนวน (฿)</label>
-            <input type="number" id="incAmount" placeholder="0" />
+            <label>จำนวนเงิน (บาท)</label>
+            <input type="number" id="incAmount" placeholder="0.00" />
           </div>
           <div class="form-group">
-            <label>วันที่</label>
+            <label>วันที่เกิดรายการ</label>
             <input type="date" id="incDate" />
           </div>
           <div class="form-group full">
-            <label>ใบเสร็จ / สลิป (รูปภาพ)</label>
-            <div style="border:1.5px dashed var(--border2);border-radius:6px;padding:1.25rem 1rem;text-align:center;cursor:pointer;position:relative;transition:border-color 150ms" id="incUploadArea">
-              <input type="file" id="incReceiptFile" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;z-index:5" onchange="previewFile(this,'incPreview','incFileName')" />
-              <div style="pointer-events:none">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--muted);margin-bottom:4px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                <div style="font-size:0.78rem;color:var(--muted)">แตะเพื่อแนบรูปภาพ (ไม่บังคับ)</div>
-                <div id="incFileName" style="font-size:0.72rem;color:var(--text);margin-top:4px;font-weight:500"></div>
+            <label>หลักฐานการรับเงิน (รูปภาพ)</label>
+            <div style="border: 1.5px dashed var(--border-dark); border-radius: var(--radius-md); padding: 1.25rem 1rem; text-align: center; cursor: pointer; position: relative; background: #fafbfc;" id="incUploadArea">
+              <input type="file" id="incReceiptFile" accept="image/*" style="position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; z-index: 5;" onchange="previewFile(this, 'incPreview', 'incFileName')" />
+              <div style="pointer-events: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color: var(--muted); margin-bottom: 4px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <div style="font-size: 0.8rem; color: var(--text); font-weight: 600;">แตะเพื่อแนบรูปหลักฐาน (ไม่บังคับ)</div>
+                <div id="incFileName" style="font-size: 0.72rem; color: var(--primary-blue); margin-top: 4px; font-weight: 700;"></div>
               </div>
             </div>
-            <img id="incPreview" src="" alt="" style="display:none;max-width:200px;max-height:160px;border-radius:6px;margin-top:0.5rem;border:1px solid var(--border)" />
+            <img id="incPreview" src="" alt="" style="display: none; max-width: 220px; max-height: 160px; border-radius: 8px; margin-top: 0.65rem; border: 1px solid var(--border);" />
           </div>
         </div>
         <button class="btn btn-primary" id="incSubmitBtn" onclick="handleAddIncome(this)">บันทึกรายรับ</button>
       </div>
-
-
-    </div><!-- /view-finance -->
+    </section>
 
   </main>
-</div><!-- /shell -->
+</div>
 
-<!-- Mobile Bottom Nav -->
+<!-- ─── MOBILE BOTTOM BAR ─── -->
 <nav class="mobile-nav">
-  <button class="mobile-nav-item active" data-view="overview" onclick="switchView('overview',this)">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+  <button class="mobile-nav-item active" data-view="overview" onclick="switchView('overview', this)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
     ภาพรวม
   </button>
-  <button class="mobile-nav-item" data-view="events" onclick="switchView('events',this)">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+  <button class="mobile-nav-item" data-view="events" onclick="switchView('events', this)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
     รอบเงิน
   </button>
-  <button class="mobile-nav-item" data-view="payments" onclick="switchView('payments',this)">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+  <button class="mobile-nav-item" data-view="payments" onclick="switchView('payments', this)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
     สลิป
   </button>
-  <button class="mobile-nav-item" data-view="matrix" onclick="switchView('matrix',this)">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+  <button class="mobile-nav-item" data-view="matrix" onclick="switchView('matrix', this)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
     เช็คยอด
   </button>
-  <button class="mobile-nav-item" data-view="finance" onclick="switchView('finance',this)">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+  <button class="mobile-nav-item" data-view="finance" onclick="switchView('finance', this)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
     รับ-จ่าย
   </button>
 </nav>
 
-<!-- Toast -->
+<!-- ─── TOAST NOTIFICATION ─── -->
 <div id="toast"></div>
 
-<!-- Firebase SDKs -->
-
-<!-- Supabase & Wrapper -->
+<!-- Firebase & Supabase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js?v=2"></script>
-<script src="supabase_wrapper.js?v=2"></script>
-<script>
-  // ==========================================
+<script src="config.js?v=99"></script>
+<script src="supabase_wrapper.js?v=99"></script>
 
-  
+<script>
   let currentUser = null;
   let allPayments = [];
   let matrixFetched = false;
@@ -893,17 +1222,16 @@
     try {
       const targetSnap = await db.collection(type).doc(id).get();
       if (targetSnap.exists) {
-          const tData = targetSnap.data();
-          const rUrl = tData.receiptUrl;
-          if (rUrl && rUrl.includes('supabase.co')) {
-              const fileName = rUrl.split('/public/slips/')[1].split('?')[0];
-              await window.myAppDb.storage.from('slips').remove([fileName]);
-          }
+        const tData = targetSnap.data();
+        const rUrl = tData.receiptUrl;
+        if (rUrl && rUrl.includes('supabase.co')) {
+          const fileName = rUrl.split('/public/slips/')[1].split('?')[0];
+          await window.myAppDb.storage.from('slips').remove([fileName]);
+        }
       }
 
       await db.collection(type).doc(id).delete();
       showToast('✓ ลบข้อมูลแล้ว');
-      // ทริกเกอร์โหลดข้อมูลใหม่ ซึ่งจะดึง syncSystemStats() มาคำนวณยอดเงินรวมให้ใหม่อัตโนมัติ!
       loadOverview();
     } catch (e) {
       console.error(e);
@@ -922,18 +1250,19 @@
     }
 
     const initial = (currentUser.name || currentUser.email || 'A')[0].toUpperCase();
-    document.getElementById('sidebarAvatar').textContent = initial;
-    document.getElementById('sidebarName').textContent = currentUser.name || 'Admin';
-    document.getElementById('sidebarEmail').textContent = currentUser.email || '';
+    const avEl = document.getElementById('sidebarAvatar');
+    if (avEl) avEl.textContent = initial;
+    const nameEl = document.getElementById('sidebarName');
+    if (nameEl) nameEl.textContent = currentUser.name || 'Admin';
+    const emailEl = document.getElementById('sidebarEmail');
+    if (emailEl) emailEl.textContent = currentUser.email || '';
 
-    // ตั้งค่าวันที่เริ่มต้นเป็นวันนี้สำหรับฟอร์มรายรับ-รายจ่าย
     const todayStr = new Date().toISOString().split('T')[0];
     const expDateInput = document.getElementById('expDate');
     const incDateInput = document.getElementById('incDate');
     if (expDateInput && !expDateInput.value) expDateInput.value = todayStr;
     if (incDateInput && !incDateInput.value) incDateInput.value = todayStr;
 
-    // รอให้ Firebase Auth พร้อมก่อนดึงข้อมูล ป้องกัน permission-denied
     firebase.auth().onAuthStateChanged((user) => {
       if (user || (currentUser && currentUser.name && currentUser.name.includes('ตัวอย่าง'))) {
         loadOverview();
@@ -947,12 +1276,11 @@
 
   // ─── NAVIGATION ───
   function switchView(viewId, el) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.getElementById('view-' + viewId).classList.add('active');
+    document.querySelectorAll('.view-pane, .view').forEach(v => v.classList.remove('active'));
+    const targetView = document.getElementById('view-' + viewId);
+    if (targetView) targetView.classList.add('active');
 
-    document.querySelectorAll('.nav-item, .mobile-nav-item').forEach(n => n.classList.remove('active'));
-    if (el) el.classList.add('active');
-    // sync both sidebar + mobile
+    document.querySelectorAll('.nav-link, .nav-item, .mobile-nav-item').forEach(n => n.classList.remove('active'));
     document.querySelectorAll(`[data-view="${viewId}"]`).forEach(n => n.classList.add('active'));
 
     if (viewId === 'overview') loadOverview();
@@ -964,12 +1292,13 @@
   // ─── TOAST ───
   function showToast(msg, dur = 2800) {
     const t = document.getElementById('toast');
+    if (!t) return;
     t.textContent = msg;
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), dur);
   }
 
-  // ─── MATRIX (NEW) ───
+  // ─── MATRIX ───
   async function fetchMatrixData() {
     matrixFetched = true;
     const tBody = document.getElementById('matrixBody');
@@ -983,25 +1312,24 @@
         let headers = mx.headers || [];
         let rows    = mx.rows    || [];
 
-        // ซ่อนคอลัมน์ Email และสรุปยอด
         const hide = h => h === 'Email' || h.includes('ยอดเงินรวม') || h.includes('รวมที่เก็บได้');
         headers = headers.filter(h => !hide(h));
         rows    = rows.map(row => { const r={}; for(let k in row){ if(!hide(k)) r[k]=row[k]; } return r; });
 
-        tHead.innerHTML = headers.map((h,i) =>
-          `<th style="text-align:${i>1?'center':'left'}">${h}</th>`).join('');
+        tHead.innerHTML = headers.map((h, i) =>
+          `<th style="text-align:${i > 1 ? 'center' : 'left'}">${h}</th>`).join('');
 
         if (rows.length === 0) {
           tBody.innerHTML = `<tr><td colspan="${headers.length}"><div class="empty-state"><p>ยังไม่มีข้อมูลนิสิต</p></div></td></tr>`;
         } else {
           tBody.innerHTML = rows.map(row => `
             <tr>
-              ${headers.map((h,i) => {
+              ${headers.map((h, i) => {
                 let val = row[h] || '-';
                 if (i > 1) {
-                  if (val==='Pending'||val==='รอตรวจสอบ') return `<td style="color:#b45309;font-weight:600;text-align:center">รอตรวจสอบ</td>`;
-                  if (val==='-'||val===''||val==='ค้างชำระ') return `<td style="color:#e11d48;font-weight:600;text-align:center">ค้างชำระ</td>`;
-                  if (!isNaN(val))                         return `<td style="color:#15803d;font-weight:600;text-align:center">฿${Number(val).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>`;
+                  if (val === 'Pending' || val === 'รอตรวจสอบ') return `<td style="color:#b45309;font-weight:700;text-align:center">รอตรวจสอบ</td>`;
+                  if (val === '-' || val === '' || val === 'ค้างชำระ') return `<td style="color:#dc2626;font-weight:700;text-align:center">ค้างชำระ</td>`;
+                  if (!isNaN(val)) return `<td style="color:#15803d;font-weight:700;text-align:center">฿${Number(val).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>`;
                 }
                 return `<td>${val}</td>`;
               }).join('')}
@@ -1065,46 +1393,48 @@
       document.getElementById('overviewPendingBody').innerHTML = `
         <tr>
           <td>15 ก.ย. 2026</td>
-          <td>นายธนพล มีสุข</td>
+          <td style="font-weight:700">นายธนพล มีสุข</td>
           <td>สัปดาห์ที่ 3</td>
-          <td>100.00</td>
+          <td style="font-weight:700">100.00</td>
           <td>0.00</td>
           <td><span class="badge badge-pending">รอตรวจสอบ</span></td>
         </tr>
         <tr>
           <td>15 ก.ย. 2026</td>
-          <td>น.ส.กมลวรรณ บุญมี</td>
+          <td style="font-weight:700">น.ส.กมลวรรณ บุญมี</td>
           <td>สัปดาห์ที่ 3</td>
-          <td>100.00</td>
+          <td style="font-weight:700">100.00</td>
           <td>20.00</td>
           <td><span class="badge badge-pending">รอตรวจสอบ</span></td>
         </tr>
       `;
       let incomeRows = `
-        <div style="display:flex;justify-content:space-between;padding:0.75rem;border-bottom:1px solid var(--border);font-size:0.8rem">
-          <div><div style="color:var(--text);font-weight:600">เงินสนับสนุนพี่บัณฑิต</div><div style="color:var(--muted);font-size:0.7rem">10 ก.ย. 2026</div></div>
-          <div style="color:#15803d;font-weight:600">+฿5,000.00</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:0.85rem 1rem;border-bottom:1px solid var(--border);font-size:0.82rem">
+          <div><div style="color:var(--text);font-weight:700">เงินสนับสนุนพี่บัณฑิต</div><div style="color:var(--muted);font-size:0.7rem">10 ก.ย. 2026</div></div>
+          <div style="color:var(--success);font-weight:800">+฿5,000.00</div>
         </div>
       `;
       let expenseRows = `
-        <div style="display:flex;justify-content:space-between;padding:0.75rem;border-bottom:1px solid var(--border);font-size:0.8rem">
-          <div><div style="color:var(--text);font-weight:600">ค่าอุปกรณ์ป้ายกิจกรรม</div><div style="color:var(--muted);font-size:0.7rem">12 ก.ย. 2026</div></div>
-          <div style="color:var(--danger);font-weight:600">-฿1,600.00</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:0.85rem 1rem;border-bottom:1px solid var(--border);font-size:0.82rem">
+          <div><div style="color:var(--text);font-weight:700">ค่าอุปกรณ์ป้ายกิจกรรม</div><div style="color:var(--muted);font-size:0.7rem">12 ก.ย. 2026</div></div>
+          <div style="color:var(--danger);font-weight:800">-฿1,600.00</div>
         </div>
       `;
       document.getElementById('overviewPublicBoard').innerHTML = `
-        <div class="section-title" style="margin-bottom:1rem">รายการใช้จ่ายเงินสาขา</div>
-        <div id="adminPbPanel-finance">
-          <div style="font-size:0.8rem;font-weight:600;color:#15803d;margin-bottom:0.5rem">รายรับ</div>
-          ${incomeRows}
-          <div style="font-size:0.8rem;font-weight:600;color:var(--danger);margin:1rem 0 0.5rem">รายจ่าย</div>
-          ${expenseRows}
+        <div class="ledger-container" style="margin-top:2rem;">
+          <div class="ledger-header"><div class="ledger-header-title">รายการใช้จ่ายเงินสาขา</div></div>
+          <div style="padding:1rem;">
+            <div style="font-size:0.75rem;font-weight:700;color:var(--success);text-transform:uppercase;margin-bottom:0.5rem">รายรับ</div>
+            ${incomeRows}
+            <div style="font-size:0.75rem;font-weight:700;color:var(--danger);text-transform:uppercase;margin:1.25rem 0 0.5rem">รายจ่าย</div>
+            ${expenseRows}
+          </div>
         </div>
       `;
       return;
     }
+
     try {
-      // ดึงสถิติรวมจากการคำนวณสดๆ ทุกครั้งเพื่อความแม่นยำ 100%
       const [stats, paySnap, expSnap, incSnap] = await Promise.all([
         syncSystemStats(),
         db.collection('payments').where('status', '==', 'Pending').limit(5).get(),
@@ -1117,105 +1447,86 @@
       document.getElementById('statPending').textContent = stats.pendingCount != null ? stats.pendingCount : '—';
 
       const balance = stats.totalBalance != null ? stats.totalBalance : 0;
-      document.getElementById('statTotal').textContent = Number(balance).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+      document.getElementById('statTotal').textContent = Number(balance).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-      // ตาราง Pending รอตรวจสอบ (5 รายการล่าสุด)
-      const tbody  = document.getElementById('overviewPendingBody');
+      const tbody = document.getElementById('overviewPendingBody');
       if (paySnap.empty) {
-        tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><p>ไม่มีสลิปรอตรวจสอบ</p></div></td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><p>ไม่มีสลิปรอการตรวจสอบ</p></div></td></tr>`;
       } else {
         tbody.innerHTML = paySnap.docs.map(doc => {
           const p = doc.data();
           return `
             <tr>
               <td>${formatDate(p.paidAt)}</td>
-              <td style="color:var(--muted);font-size:0.75rem">${p.name || ''}</td>
-              <td>${p.eventId || ''}</td>
-              <td>${Number(p.paidAmount||0).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+              <td style="font-weight:700">${p.name || '—'}</td>
+              <td>${p.eventTitle || p.eventId || '—'}</td>
+              <td style="font-weight:700">${Number(p.paidAmount||0).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
               <td>${Number(p.penalty||0).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+              <td><span class="badge badge-pending">รอตรวจสอบ</span></td>
             </tr>
           `;
         }).join('');
       }
 
-      // Finance
       const expenses = expSnap.docs.map(d => ({ id: d.id, ...d.data() }));
       const incomes  = incSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-      // รายรับ/รายจ่ายสาขา
       renderAdminPublicBoard({ expenses, incomes, matrixHeaders: [], matrixRows: [] });
     } catch (e) {
       console.error('loadOverview error:', e);
     }
   }
 
-
   function renderAdminPublicBoard(data) {
-    const fmt = (n) => Number(n).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});
+    const fmt = (n) => Number(n).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
     const incomeRows = (data.incomes && data.incomes.length > 0)
       ? data.incomes.map(e => `
-          <div style="display:flex;justify-content:space-between;padding:0.75rem;border-bottom:1px solid var(--border);font-size:0.8rem">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.85rem 1rem;border-bottom:1px solid var(--border);font-size:0.82rem">
             <div>
-              <div style="color:var(--text)">${e.source}</div>
-              <div style="color:var(--muted);font-size:0.7rem;margin-top:2px">${new Date(e.date).toLocaleDateString('th-TH')}${e.receiptUrl ? ` • <a href="${e.receiptUrl}" target="_blank" style="color:var(--muted);text-decoration:underline">ดูใบเสร็จ</a>` : ''}</div>
+              <div style="color:var(--text);font-weight:700">${e.source}</div>
+              <div style="color:var(--muted);font-size:0.7rem;margin-top:2px">
+                ${new Date(e.date).toLocaleDateString('th-TH')}
+                ${e.receiptUrl ? ` · <a href="${e.receiptUrl}" target="_blank" style="color:var(--primary-blue);text-decoration:underline">ดูหลักฐาน</a>` : ''}
+              </div>
             </div>
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
-              <div style="color:#2e7d32;font-weight:600">+฿${fmt(e.amount)}</div>
-              <button onclick="deleteFinanceRecord('incomes', '${e.id}')" style="background:none;border:none;color:var(--danger);font-size:0.7rem;cursor:pointer;padding:0;text-decoration:underline;">ลบรายการ</button>
+              <div style="color:var(--success);font-weight:800">+฿${fmt(e.amount)}</div>
+              <button onclick="deleteFinanceRecord('incomes', '${e.id}')" style="background:none;border:none;color:var(--danger);font-size:0.7rem;cursor:pointer;padding:0;text-decoration:underline;">ลบ</button>
             </div>
           </div>`).join('')
-      : `<div style="font-size:0.8rem;color:var(--muted);padding:0.5rem 0">ไม่มีรายการรายรับ</div>`;
+      : `<div style="font-size:0.8rem;color:var(--muted);padding:0.75rem 0">ไม่มีรายการรายรับ</div>`;
 
     const expenseRows = (data.expenses && data.expenses.length > 0)
       ? data.expenses.map(e => `
-          <div style="display:flex;justify-content:space-between;padding:0.75rem;border-bottom:1px solid var(--border);font-size:0.8rem">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.85rem 1rem;border-bottom:1px solid var(--border);font-size:0.82rem">
             <div>
-              <div style="color:var(--text)">${e.title}</div>
-              <div style="color:var(--muted);font-size:0.7rem;margin-top:2px">${new Date(e.date).toLocaleDateString('th-TH')}${e.receiptUrl ? ` • <a href="${e.receiptUrl}" target="_blank" style="color:var(--muted);text-decoration:underline">ดูใบเสร็จ</a>` : ''}</div>
+              <div style="color:var(--text);font-weight:700">${e.title}</div>
+              <div style="color:var(--muted);font-size:0.7rem;margin-top:2px">
+                ${new Date(e.date).toLocaleDateString('th-TH')}
+                ${e.receiptUrl ? ` · <a href="${e.receiptUrl}" target="_blank" style="color:var(--primary-blue);text-decoration:underline">ดูหลักฐาน</a>` : ''}
+              </div>
             </div>
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
-              <div style="color:var(--danger)">-฿${fmt(e.amount)}</div>
-              <button onclick="deleteFinanceRecord('expenses', '${e.id}')" style="background:none;border:none;color:var(--danger);font-size:0.7rem;cursor:pointer;padding:0;text-decoration:underline;">ลบรายการ</button>
+              <div style="color:var(--danger);font-weight:800">-฿${fmt(e.amount)}</div>
+              <button onclick="deleteFinanceRecord('expenses', '${e.id}')" style="background:none;border:none;color:var(--danger);font-size:0.7rem;cursor:pointer;padding:0;text-decoration:underline;">ลบ</button>
             </div>
           </div>`).join('')
-      : `<div style="font-size:0.8rem;color:var(--muted);padding:0.5rem 0">ไม่มีรายการใช้จ่าย</div>`;
-
-    const matrixHtml = `
-      <div style="overflow-x:auto;border:1px solid var(--border);border-radius:6px">
-        <table style="width:100%;border-collapse:collapse;font-size:0.75rem">
-          <thead>
-            <tr style="border-bottom:1px solid var(--border);background:var(--surface)">
-              ${data.matrixHeaders.map((h,i)=>`<th style="padding:0.75rem;text-align:${i>1?'center':'left'};color:var(--muted);white-space:nowrap">${h}</th>`).join('')}
-            </tr>
-          </thead>
-          <tbody>
-            ${data.matrixRows.map(row=>`
-              <tr style="border-bottom:1px solid var(--border)">
-                ${data.matrixHeaders.map((h,i)=>{
-                  let val = row[h] || '-';
-                  if (i > 1) {
-                    if (val==='Pending'||val==='รอตรวจสอบ') return `<td style="padding:0.75rem;white-space:nowrap;color:#b45309;font-weight:600;text-align:center">รอตรวจสอบ</td>`;
-                  if (val==='-'||val===''||val==='ค้างชำระ') return `<td style="padding:0.75rem;white-space:nowrap;color:#e11d48;font-weight:600;text-align:center">ค้างชำระ</td>`;
-                    if (!isNaN(val)) return `<td style="padding:0.75rem;white-space:nowrap;color:#15803d;font-weight:600;text-align:center">฿${fmt(val)}</td>`;
-                  }
-                  return `<td style="padding:0.75rem;color:var(--text);white-space:nowrap">${val}</td>`;
-                }).join('')}
-              </tr>`).join('')}
-          </tbody>
-        </table>
-      </div>`;
+      : `<div style="font-size:0.8rem;color:var(--muted);padding:0.75rem 0">ไม่มีรายการใช้จ่าย</div>`;
 
     let html = `
-      <div class="section-title" style="margin-bottom:1rem">รายการใช้จ่ายเงินสาขา</div>
-      <div id="adminPbPanel-finance">
-        <div style="font-size:0.8rem;font-weight:600;color:#2e7d32;margin-bottom:0.5rem">รายรับ</div>
-        ${incomeRows}
-        <div style="font-size:0.8rem;font-weight:600;color:var(--danger);margin:1rem 0 0.5rem">รายจ่าย</div>
-        ${expenseRows}
+      <div class="ledger-container" style="margin-top:2rem;">
+        <div class="ledger-header"><div class="ledger-header-title">รายการใช้จ่ายเงินสาขา</div></div>
+        <div style="padding:1.25rem;">
+          <div style="font-size:0.75rem;font-weight:700;color:var(--success);text-transform:uppercase;margin-bottom:0.5rem">รายรับ</div>
+          ${incomeRows}
+          <div style="font-size:0.75rem;font-weight:700;color:var(--danger);text-transform:uppercase;margin:1.5rem 0 0.5rem">รายจ่าย</div>
+          ${expenseRows}
+        </div>
       </div>
     `;
-    document.getElementById('overviewPublicBoard').innerHTML = html;
+    const pbContainer = document.getElementById('overviewPublicBoard');
+    if (pbContainer) pbContainer.innerHTML = html;
   }
 
   // ─── EVENTS ───
@@ -1229,11 +1540,11 @@
           const ev = doc.data();
           return `
           <tr>
-            <td>${ev.title}</td>
-            <td>${Number(ev.baseAmount).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+            <td style="font-weight:700">${ev.title}</td>
+            <td style="font-weight:700">${Number(ev.baseAmount).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
             <td>${formatDate(ev.dueDate)}</td>
             <td style="color:var(--muted);font-size:0.75rem">${formatDate(ev.createdAt)}</td>
-            <td><button class="btn btn-ghost btn-sm" style="color:var(--danger);" onclick="deleteEvent('${doc.id}')">ลบ</button></td>
+            <td><button class="btn btn-danger-ghost btn-sm" onclick="deleteEvent('${doc.id}')">ลบ</button></td>
           </tr>`;
         }).join('');
       } else {
@@ -1251,7 +1562,7 @@
       await db.collection('events').doc(eventId).delete();
       showToast('ลบรอบเก็บเงินสำเร็จ');
       await fetchEventsData();
-      await syncStudentMatrix(); // อัปเดตตารางให้คอลัมน์หายไป
+      await syncStudentMatrix();
     } catch(e) {
       console.error(e);
       showToast('เกิดข้อผิดพลาดในการลบ');
@@ -1315,7 +1626,7 @@
     } finally {
       if (isManual && btn) {
         btn.disabled = false;
-        btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg> รีเฟรชและคำนวณตารางใหม่`;
+        btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg> รีเฟรชและคำนวณใหม่`;
       }
     }
   }
@@ -1334,7 +1645,6 @@
       const createdAt = new Date().toISOString();
       const dueDateISO = new Date(dueDate).toISOString();
 
-      // บันทึกลง Firebase Firestore โดยตรง
       await db.collection('events').doc(eventId).set({
         eventId,
         title,
@@ -1343,7 +1653,6 @@
         createdAt
       });
 
-      // อัปเดตจำนวนรอบใน system_stats/overview
       await db.collection('system_stats').doc('overview').set({
         eventsCount: firebase.firestore.FieldValue.increment(1)
       }, { merge: true });
@@ -1352,7 +1661,7 @@
       document.getElementById('evTitle').value = '';
       document.getElementById('evAmount').value = '';
       document.getElementById('evDueDate').value = '';
-      await syncStudentMatrix(); // อัปเดตตารางสรุป
+      await syncStudentMatrix();
       fetchEventsData();
     } catch(e) {
       console.error(e);
@@ -1379,21 +1688,23 @@
   function renderPaymentsTable(list) {
     const tbody = document.getElementById('paymentsTableBody');
     if (list.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><p>ไม่มีรายการ</p></div></td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><p>ไม่มีรายการที่ค้นหา</p></div></td></tr>`;
       return;
     }
     tbody.innerHTML = list.map(p => `
       <tr>
-        <td style="font-size:0.75rem;color:var(--muted)">${p.name}</td>
-        <td>${p.eventTitle || p.eventId}</td>
-        <td>${Number(p.paidAmount).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+        <td style="font-weight:700">${p.name || '—'}</td>
+        <td>${p.eventTitle || p.eventId || '—'}</td>
+        <td style="font-weight:700">${Number(p.paidAmount).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
         <td>${Number(p.penalty||0).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
         <td><span class="badge badge-${p.status === 'Paid' ? 'paid' : 'pending'}">${p.status === 'Paid' ? 'ชำระแล้ว' : 'รอตรวจสอบ'}</span></td>
         <td style="font-size:0.75rem;color:var(--muted)">${formatDate(p.paidAt)}</td>
-        <td>${p.slipUrl ? `<a href="${p.slipUrl}" target="_blank" style="color:var(--muted);font-size:0.75rem;text-decoration:underline">ดูสลิป</a>` : '—'}</td>
+        <td>${p.slipUrl ? `<a href="${p.slipUrl}" target="_blank" style="color:var(--primary-blue);font-weight:600;text-decoration:underline">ดูสลิป</a>` : '—'}</td>
         <td>
-          ${p.status === 'Pending' ? `<button class="btn btn-primary btn-sm" style="margin-bottom:0.25rem;" onclick="approve('${p.paymentId}','${p.eventTitle}','${p.email}',${p.paidAmount})">อนุมัติ</button><br>` : ''}
-          <button class="btn btn-ghost btn-sm" style="color:var(--danger);" onclick="deletePayment('${p.paymentId}')">ลบ</button>
+          <div style="display:flex;gap:4px;flex-wrap:wrap">
+            ${p.status === 'Pending' ? `<button class="btn btn-primary btn-sm" onclick="approve('${p.paymentId}','${p.eventTitle}','${p.email}',${p.paidAmount})">อนุมัติ</button>` : ''}
+            <button class="btn btn-danger-ghost btn-sm" onclick="deletePayment('${p.paymentId}')">ลบ</button>
+          </div>
         </td>
       </tr>
     `).join('');
@@ -1405,17 +1716,17 @@
     try {
       const targetSnap = await db.collection('payments').doc(paymentId).get();
       if (targetSnap.exists) {
-          const tData = targetSnap.data();
-          if (tData.slipUrl && tData.slipUrl.includes('supabase.co')) {
-              const fileName = tData.slipUrl.split('/public/slips/')[1].split('?')[0];
-              await window.myAppDb.storage.from('slips').remove([fileName]);
-          }
+        const tData = targetSnap.data();
+        if (tData.slipUrl && tData.slipUrl.includes('supabase.co')) {
+          const fileName = tData.slipUrl.split('/public/slips/')[1].split('?')[0];
+          await window.myAppDb.storage.from('slips').remove([fileName]);
+        }
       }
       
       await db.collection('payments').doc(paymentId).delete();
       showToast('ลบรายการสำเร็จ');
       await fetchPaymentsData();
-      await syncStudentMatrix(); // อัปเดตตารางสรุป
+      await syncStudentMatrix();
     } catch(e) {
       console.error(e);
       showToast('เกิดข้อผิดพลาดในการลบ');
@@ -1434,29 +1745,25 @@
   function applyPaymentFilters() {
     const term = (document.getElementById('paymentSearchInput').value || '').trim().toLowerCase();
     
-    // กรองตามสถานะ
     let list = currentPaymentStatus === 'all' ? allPayments : allPayments.filter(p => p.status === currentPaymentStatus);
     
-    // กรองตามคำค้นหา
     if (term) {
       list = list.filter(p => {
-         const name = (p.name || '').toLowerCase();
-         const title = (p.eventTitle || '').toLowerCase();
-         const studentId = (p.studentId || '').toLowerCase();
-         const email = (p.email || '').toLowerCase();
-         return name.includes(term) || title.includes(term) || studentId.includes(term) || email.includes(term);
+        const name = (p.name || '').toLowerCase();
+        const title = (p.eventTitle || '').toLowerCase();
+        const studentId = (p.studentId || '').toLowerCase();
+        const email = (p.email || '').toLowerCase();
+        return name.includes(term) || title.includes(term) || studentId.includes(term) || email.includes(term);
       });
     }
     renderPaymentsTable(list);
   }
 
   async function approve(paymentId, eventTitle, email, totalAmount) {
-    if (!confirm('ยืนยันการอนุมัติยอดนี้?')) return;
+    if (!confirm('ยืนยันการอนุมัติยอดเงินนี้?')) return;
     try {
-      // อัปเดตสถานะในฐานข้อมูลโดยตรง
       await db.collection('payments').doc(paymentId).update({ status: 'Paid' });
 
-      // อัปเดตยอดสรุปใน system_stats/overview
       const amountNum = Number(totalAmount) || 0;
       try {
         await db.collection('system_stats').doc('overview').set({
@@ -1472,7 +1779,7 @@
       showToast('✓ อนุมัติเรียบร้อย');
       
       try {
-        await syncStudentMatrix(); // อัปเดตตารางสรุป
+        await syncStudentMatrix();
       } catch (e) {
         console.error("Matrix error:", e);
       }
@@ -1485,7 +1792,6 @@
     }
   }
 
-
   // ─── FINANCE ───
   function switchFinance(tab, el) {
     const isExp = tab === 'expense';
@@ -1495,7 +1801,6 @@
     if (el) el.classList.add('active');
   }
 
-  // Show image preview when file selected
   function previewFile(input, imgId, nameId) {
     const file = input.files[0];
     if (!file) return;
@@ -1509,7 +1814,6 @@
     reader.readAsDataURL(file);
   }
 
-  // Convert file to Blob and compress it
   function fileToBlob(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -1521,9 +1825,7 @@
           const canvas = document.createElement('canvas');
           let maxWidth = 800;
           let scale = 1;
-          if (img.width > maxWidth) {
-            scale = maxWidth / img.width;
-          }
+          if (img.width > maxWidth) scale = maxWidth / img.width;
           canvas.width = img.width * scale;
           canvas.height = img.height * scale;
           
@@ -1536,8 +1838,6 @@
       reader.onerror = reject;
     });
   }
-
-
 
   async function handleAddExpense(btn) {
     const title     = document.getElementById('expTitle').value.trim();
@@ -1567,7 +1867,6 @@
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       });
 
-      // อัปเดตยอดสรุปใน system_stats/overview
       const expAmountNum = Number(amount) || 0;
       await db.collection('system_stats').doc('overview').set({
         totalExpense: firebase.firestore.FieldValue.increment(expAmountNum),
@@ -1584,8 +1883,7 @@
       loadOverview();
     } catch(e) {
       console.error(e);
-      alert("Error: " + e.message);
-      showToast('เชื่อมต่อล้มเหลว หรือ ไม่ได้รับอนุญาต');
+      showToast('เชื่อมต่อล้มเหลว: ' + e.message);
     }
     finally { if (btn) { btn.disabled = false; btn.textContent = 'บันทึกรายจ่าย'; } }
   }
@@ -1618,7 +1916,6 @@
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       });
 
-      // อัปเดตยอดสรุปใน system_stats/overview
       const incAmountNum = Number(amount) || 0;
       await db.collection('system_stats').doc('overview').set({
         totalIncome: firebase.firestore.FieldValue.increment(incAmountNum),
@@ -1635,8 +1932,7 @@
       loadOverview();
     } catch(e) {
       console.error(e);
-      alert("Error: " + e.message);
-      showToast('เชื่อมต่อล้มเหลว หรือ ไม่ได้รับอนุญาต');
+      showToast('เชื่อมต่อล้มเหลว: ' + e.message);
     }
     finally { if (btn) { btn.disabled = false; btn.textContent = 'บันทึกรายรับ'; } }
   }
@@ -1646,7 +1942,7 @@
     if (!val) return '—';
     const d = new Date(val);
     if (isNaN(d)) return val;
-    return d.toLocaleDateString('th-TH', { day:'2-digit', month:'short', year:'2-digit' });
+    return d.toLocaleDateString('th-TH', { day: '2-digit', month: 'short', year: '2-digit' });
   }
 
   async function logout() {
@@ -1656,36 +1952,30 @@
     sessionStorage.removeItem('loggedInUser');
     location.href = 'index.html';
   }
+
+  async function emergencyReset() {
+    if (!confirm("⚠️ คำเตือน! คุณแน่ใจหรือไม่ที่จะ 'ล้างข้อมูลทั้งหมด' ทิ้ง?")) return;
+    showToast("กำลังล้างข้อมูล... โปรดรอสักครู่");
+    async function deleteCol(colName) {
+      const snap = await db.collection(colName).get();
+      const batch = db.batch();
+      snap.docs.forEach(d => batch.delete(d.ref));
+      if (snap.size > 0) await batch.commit();
+    }
+    try {
+      await deleteCol('events');
+      await deleteCol('payments');
+      await deleteCol('expenses');
+      await deleteCol('incomes');
+      await deleteCol('student_matrix');
+      alert("✅ ล้างฐานข้อมูลสำเร็จเรียบร้อยแล้ว!");
+      window.location.reload();
+    } catch(e) {
+      console.error(e);
+      alert("❌ เกิดข้อผิดพลาด: " + e.message);
+    }
+  }
 </script>
+
 </body>
 </html>
-
-<script>
-async function emergencyReset() {
-  if (!confirm("⚠️ คำเตือน! คุณแน่ใจหรือไม่ที่จะ 'ล้างข้อมูลทั้งหมด' (รอบเก็บเงิน, สลิป, รายรับรายจ่าย, ตาราง) ทิ้ง?\n\nข้อมูลรายชื่อนิสิตจะไม่ถูกลบ และสามารถเริ่มใหม่ได้ทันที")) return;
-  
-  showToast("กำลังล้างข้อมูล... โปรดรอสักครู่");
-  
-  async function deleteCol(colName) {
-    const snap = await db.collection(colName).get();
-    const batch = db.batch();
-    snap.docs.forEach(d => batch.delete(d.ref));
-    if(snap.size > 0) await batch.commit();
-  }
-
-  try {
-    await deleteCol('events');
-    await deleteCol('payments');
-    await deleteCol('expenses');
-    await deleteCol('incomes');
-    await deleteCol('student_matrix');
-    
-    alert("✅ ล้างฐานข้อมูลสำเร็จเรียบร้อยแล้ว! ระบบจะรีเฟรชหน้าเว็บ");
-    window.location.reload();
-  } catch(e) {
-    console.error(e);
-    alert("❌ เกิดข้อผิดพลาด: " + e.message);
-  }
-}
-
-</script>
