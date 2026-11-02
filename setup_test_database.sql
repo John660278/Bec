@@ -1,9 +1,9 @@
 -- ==============================================================
--- 🧪 SETUP COMPLETE TEST DATABASE (CLONED FROM REAL PRODUCTION)
--- รันโค้ดนี้ใน SQL Editor ของ Supabase Test Project (ก๊อปปี้ไปวางแล้วกด Run ทีเดียวจบ!)
+-- 🧪 SETUP COMPLETE TEST DATABASE (WITH OPEN RLS POLICIES)
+-- รันโค้ดชุดนี้ใน SQL Editor ของ Supabase ตัวเทส (rhjoigavmevgqtfmoygs)
 -- ==============================================================
 
--- 1. ล้างตารางเก่าแล้วสร้างใหม่ทั้งหมด
+-- 1. ล้างตารางเก่าแล้วสร้างใหม่
 DROP TABLE IF EXISTS payments CASCADE;
 DROP TABLE IF EXISTS events CASCADE;
 DROP TABLE IF EXISTS incomes CASCADE;
@@ -77,14 +77,30 @@ CREATE TABLE student_matrix (
   updated_at timestamp with time zone default timezone('utc'::text, now())
 );
 
--- 3. ปลดล็อก RLS สำหรับ Database เทส เพื่อให้ทดสอบได้ 100% ไม่ติด Permission
-ALTER TABLE users DISABLE ROW LEVEL SECURITY;
-ALTER TABLE events DISABLE ROW LEVEL SECURITY;
-ALTER TABLE payments DISABLE ROW LEVEL SECURITY;
-ALTER TABLE incomes DISABLE ROW LEVEL SECURITY;
-ALTER TABLE expenses DISABLE ROW LEVEL SECURITY;
-ALTER TABLE system_stats DISABLE ROW LEVEL SECURITY;
-ALTER TABLE student_matrix DISABLE ROW LEVEL SECURITY;
+-- 3. 🔓 ปลดล็อก RLS 100% สำหรับเซิฟเทส (สร้าง Policy ให้เข้าถึงได้อิสระ ไม่ติด Permission บั๊ก)
+ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.events ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.payments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.incomes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.expenses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.system_stats ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.student_matrix ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "allow_all_users" ON public.users;
+DROP POLICY IF EXISTS "allow_all_events" ON public.events;
+DROP POLICY IF EXISTS "allow_all_payments" ON public.payments;
+DROP POLICY IF EXISTS "allow_all_incomes" ON public.incomes;
+DROP POLICY IF EXISTS "allow_all_expenses" ON public.expenses;
+DROP POLICY IF EXISTS "allow_all_system_stats" ON public.system_stats;
+DROP POLICY IF EXISTS "allow_all_student_matrix" ON public.student_matrix;
+
+CREATE POLICY "allow_all_users" ON public.users FOR ALL TO public USING (true) WITH CHECK (true);
+CREATE POLICY "allow_all_events" ON public.events FOR ALL TO public USING (true) WITH CHECK (true);
+CREATE POLICY "allow_all_payments" ON public.payments FOR ALL TO public USING (true) WITH CHECK (true);
+CREATE POLICY "allow_all_incomes" ON public.incomes FOR ALL TO public USING (true) WITH CHECK (true);
+CREATE POLICY "allow_all_expenses" ON public.expenses FOR ALL TO public USING (true) WITH CHECK (true);
+CREATE POLICY "allow_all_system_stats" ON public.system_stats FOR ALL TO public USING (true) WITH CHECK (true);
+CREATE POLICY "allow_all_student_matrix" ON public.student_matrix FOR ALL TO public USING (true) WITH CHECK (true);
 
 -- 4. ตั้งค่ายอดเงินเริ่มต้นของระบบ
 INSERT INTO system_stats (id, total_balance, total_income, total_expense, total_paid_payments)

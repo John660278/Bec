@@ -6,7 +6,7 @@
   <title>กองทุนนิสิตสาขาบริหารธุรกิจ — BEC BA 69</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <style>
@@ -228,71 +228,181 @@
       gap: 1.25rem;
     }
 
-    /* ─── HERO VIRTUAL BANK CARD ─── */
+    /* ─── HERO 3D VIRTUAL EXECUTIVE CARD ─── */
     .hero-card-container {
-      perspective: 1000px;
+      perspective: 1200px;
+      margin-bottom: 0.25rem;
+      user-select: none;
+      -webkit-user-select: none;
+      position: relative;
     }
 
-    .hero-bank-card {
-      background: linear-gradient(135deg, #090d16 0%, #172033 50%, #0a0e1a 100%);
-      border-radius: var(--radius-xl);
-      padding: 1.5rem 1.4rem;
+    .hero-card-flipper {
+      position: relative;
+      width: 100%;
+      min-height: 228px;
+      border-radius: 20px;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      transition: transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1);
+      will-change: transform;
+    }
+
+    .hero-card-container.is-flipped .hero-card-flipper {
+      transform: rotateY(180deg);
+    }
+
+    /* Common Card Face Properties */
+    .hero-card-face {
+      width: 100%;
+      min-height: 228px;
+      border-radius: 20px;
+      padding: 1.35rem 1.35rem;
       color: #ffffff;
-      box-shadow: 0 18px 36px -10px rgba(15, 23, 42, 0.32), 0 4px 12px rgba(0, 0, 0, 0.12);
       position: relative;
       overflow: hidden;
-      border: 1.5px solid rgba(255, 255, 255, 0.15);
-      transition: all 260ms cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      box-shadow: 0 18px 36px -10px rgba(15, 23, 42, 0.38), 0 4px 12px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      transition: background 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
     }
 
-    .hero-bank-card::before {
+    /* Front Face */
+    .hero-card-front {
+      transform: rotateY(0deg) translateZ(1px);
+      z-index: 2;
+    }
+
+    /* Back Face */
+    .hero-card-back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      transform: rotateY(180deg) translateZ(1px);
+      z-index: 1;
+      padding: 1rem 1.25rem;
+    }
+
+    /* ─── CARD FINISH THEMES ─── */
+    /* 1. Obsidian Titanium (Default) */
+    .hero-card-container[data-finish="obsidian"] .hero-card-face {
+      background: linear-gradient(135deg, #0a0e17 0%, #172238 45%, #0b111e 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.18);
+    }
+
+    /* 2. Wisdom Emerald */
+    .hero-card-container[data-finish="emerald"] .hero-card-face {
+      background: linear-gradient(135deg, #051f15 0%, #0d3826 45%, #04170f 100%);
+      border: 1.5px solid rgba(74, 222, 128, 0.3);
+      box-shadow: 0 18px 36px -10px rgba(5, 31, 21, 0.45), 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(187, 247, 208, 0.25);
+    }
+
+    /* 3. Midnight Sapphire */
+    .hero-card-container[data-finish="sapphire"] .hero-card-face {
+      background: linear-gradient(135deg, #09152e 0%, #132a58 45%, #060e20 100%);
+      border: 1.5px solid rgba(147, 197, 253, 0.28);
+      box-shadow: 0 18px 36px -10px rgba(9, 21, 46, 0.45), 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(191, 219, 254, 0.25);
+    }
+
+    /* Background Micro-Textured Sheens */
+    .hero-card-face::before {
       content: '';
       position: absolute;
       top: -60px;
       right: -60px;
-      width: 200px;
-      height: 200px;
+      width: 220px;
+      height: 220px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
       pointer-events: none;
     }
 
-    .hero-bank-card::after {
-      content: '';
+    /* Dynamic Parallax Specular Sheen */
+    .card-specular-light {
       position: absolute;
-      bottom: -40px;
-      left: -40px;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(2, 132, 199, 0.18) 0%, transparent 70%);
+      inset: 0;
+      background: radial-gradient(circle 280px at var(--sheen-x, 50%) var(--sheen-y, 30%), rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.04) 50%, transparent 80%);
       pointer-events: none;
+      mix-blend-mode: overlay;
+      opacity: 0.85;
+      transition: opacity 200ms ease;
     }
 
+    /* ─── FRONT FACE CONTENTS ─── */
     .card-row-top {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.15rem;
+      align-items: flex-start;
       position: relative;
       z-index: 2;
     }
 
+    .card-brand-col {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
     .card-org-tag {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-sub-brand {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    .card-top-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-flip-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: var(--radius-full);
       font-size: 0.65rem;
       font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #ffffff;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: all 140ms ease;
+      font-family: inherit;
+    }
+
+    .card-flip-btn:hover {
+      background: rgba(255, 255, 255, 0.22);
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-1px);
     }
 
     .card-status-pill {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 3px 10px;
+      padding: 3px 9px;
       border-radius: var(--radius-full);
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       font-weight: 700;
       background: rgba(255, 255, 255, 0.12);
       border: 1px solid rgba(255, 255, 255, 0.18);
@@ -305,57 +415,144 @@
       border-radius: 50%;
       background: #4ade80;
       box-shadow: 0 0 8px #4ade80;
+      transition: background 200ms ease, box-shadow 200ms ease;
     }
 
+    .pulse-dot.pulse-amber {
+      background: #fbbf24;
+      box-shadow: 0 0 8px #fbbf24;
+    }
+
+    /* Chip & Contactless */
     .card-chip-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 1.15rem;
+      margin: 0.6rem 0 0.5rem;
       position: relative;
       z-index: 2;
     }
 
-    .gold-emv-chip {
-      width: 38px;
-      height: 28px;
-      border-radius: 6px;
-      background: linear-gradient(135deg, #fce96a 0%, #dfb536 50%, #9e7417 100%);
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      position: relative;
-      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.7);
-      transition: background 200ms ease;
+    .card-chip-cluster {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
-    .gold-emv-chip::after {
-      content: '';
+
+    .gold-emv-chip {
+      width: 42px;
+      height: 30px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #fce96a 0%, #d4a520 50%, #946914 100%);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      position: relative;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8), 0 2px 5px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    .chip-line {
       position: absolute;
+      background: rgba(80, 50, 0, 0.35);
+    }
+    .chip-line-1 {
       top: 50%;
       left: 0;
       right: 0;
       height: 1px;
-      background: rgba(0, 0, 0, 0.2);
     }
-    .contactless-glyph {
-      color: rgba(255, 255, 255, 0.65);
+    .chip-line-2 {
+      top: 0;
+      bottom: 0;
+      left: 35%;
+      width: 1px;
+    }
+    .chip-line-3 {
+      top: 0;
+      bottom: 0;
+      right: 35%;
+      width: 1px;
     }
 
+    .contactless-glyph {
+      color: rgba(255, 255, 255, 0.7);
+      display: flex;
+      align-items: center;
+    }
+
+    .card-holo-emblem {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      padding: 3px 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .holo-text {
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: rgba(255, 255, 255, 0.8);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ─── REALISTIC EMBOSSED CARD NUMBERS ─── */
+    .card-embossed-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0.45rem 0 0.55rem;
+      position: relative;
+      z-index: 2;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 6px;
+      transition: background 140ms ease;
+    }
+
+    .card-embossed-row:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .embossed-digits {
+      font-family: 'Space Mono', monospace, -apple-system;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: #f1f5f9;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4), 0 -1px 1px rgba(0, 0, 0, 0.85);
+      line-height: 1;
+    }
+
+    .embossed-copy-icon {
+      color: rgba(255, 255, 255, 0.45);
+      display: flex;
+      align-items: center;
+      transition: color 120ms ease;
+    }
+    .card-embossed-row:hover .embossed-copy-icon {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* Balance Section */
     .card-balance-section {
       position: relative;
       z-index: 2;
-      margin-bottom: 1.25rem;
+      margin-bottom: 0.65rem;
     }
 
     .card-balance-caption {
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       color: rgba(255, 255, 255, 0.65);
       font-weight: 600;
-      margin-bottom: 0.2rem;
+      margin-bottom: 0.15rem;
     }
 
     .card-balance-sum {
-      font-size: 2rem;
+      font-size: 1.75rem;
       font-weight: 800;
       letter-spacing: -0.03em;
       line-height: 1.1;
@@ -367,18 +564,19 @@
     }
 
     .card-balance-currency {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
       color: rgba(255, 255, 255, 0.7);
     }
 
+    /* Card Bottom Meta */
     .card-row-bottom {
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
       position: relative;
       z-index: 2;
-      padding-top: 0.85rem;
+      padding-top: 0.65rem;
       border-top: 1px solid rgba(255, 255, 255, 0.12);
     }
 
@@ -390,20 +588,49 @@
     }
 
     .card-student-name {
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       font-weight: 700;
-      letter-spacing: 0.01em;
+      letter-spacing: 0.02em;
       color: #ffffff;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 240px;
+      max-width: 230px;
     }
 
     .card-student-sub {
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       color: rgba(255, 255, 255, 0.6);
       margin-top: 2px;
+      font-family: inherit;
+    }
+
+    .card-right-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .card-valid-date {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      line-height: 1.1;
+    }
+
+    .valid-label {
+      font-size: 0.5rem;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .valid-val {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.85);
     }
 
     .kbank-official-badge {
@@ -413,7 +640,7 @@
       background: rgba(0, 0, 0, 0.35);
       padding: 4px 10px;
       border-radius: var(--radius-sm);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       font-size: 0.72rem;
       font-weight: 800;
       letter-spacing: 0.05em;
@@ -421,7 +648,246 @@
       transition: all 120ms;
     }
     .kbank-official-badge:hover {
+      background: rgba(0, 0, 0, 0.55);
+      transform: translateY(-1px);
+    }
+
+    /* ─── BACK FACE STYLING ─── */
+    .card-mag-stripe {
+      width: calc(100% + 2.7rem);
+      margin: -1rem -1.35rem 0.65rem;
+      height: 38px;
+      background: linear-gradient(180deg, #11141c 0%, #06080d 50%, #151a24 100%);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .mag-stripe-sheen {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.06) 50%, transparent 100%);
+    }
+
+    .card-signature-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 0.65rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .card-signature-strip {
+      flex: 1;
+      height: 34px;
+      background: #f8fafc;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .sig-security-pattern {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0, 0, 0, 0.03) 5px, rgba(0, 0, 0, 0.03) 10px);
+      pointer-events: none;
+    }
+
+    .sig-handwriting {
+      font-family: 'Caveat', cursive, sans-serif;
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: 0.02em;
+      position: relative;
+      z-index: 2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 190px;
+    }
+
+    .card-cvc-box {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      padding: 3px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 44px;
+    }
+
+    .cvc-label {
+      font-size: 0.5rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .cvc-value {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.1em;
+    }
+
+    /* Back Bank Account Box */
+    .card-back-account-box {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 10px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 140ms ease;
+      position: relative;
+      z-index: 2;
+      margin-bottom: 0.65rem;
+    }
+
+    .card-back-account-box:hover {
       background: rgba(0, 0, 0, 0.5);
+      border-color: rgba(255, 255, 255, 0.28);
+    }
+
+    .back-acc-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(74, 222, 128, 0.15);
+      color: #4ade80;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .back-acc-details {
+      flex: 1;
+      min-width: 0;
+      line-height: 1.25;
+    }
+
+    .back-acc-title {
+      font-size: 0.62rem;
+      color: rgba(255, 255, 255, 0.65);
+      font-weight: 600;
+    }
+
+    .back-acc-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.05em;
+    }
+
+    .back-acc-name {
+      font-size: 0.6rem;
+      color: #4ade80;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .back-acc-copy-pill {
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 4px 8px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      color: #ffffff;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* Back Footer */
+    .card-back-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      position: relative;
+      z-index: 2;
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card-back-microtext {
+      font-size: 0.56rem;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 1.25;
+      flex: 1;
+    }
+
+    .card-flip-back-btn {
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.28);
+    }
+
+    /* ─── CARD FINISH SELECTOR ─── */
+    .card-finish-selector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 0.5rem 0 0.85rem;
+      padding: 4px 12px;
+    }
+
+    .finish-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+
+    .finish-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      outline: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 140ms ease, outline-color 140ms ease;
+      padding: 0;
+    }
+
+    .finish-dot:hover {
+      transform: scale(1.15);
+    }
+
+    .finish-dot.active {
+      outline: 2px solid #090d16;
+      outline-offset: 2px;
+      transform: scale(1.1);
+    }
+
+    .finish-obsidian {
+      background: linear-gradient(135deg, #1e293b, #090d16);
+      border-color: #94a3b8;
+    }
+
+    .finish-emerald {
+      background: linear-gradient(135deg, #15803d, #064e3b);
+      border-color: #86efac;
+    }
+
+    .finish-sapphire {
+      background: linear-gradient(135deg, #1d4ed8, #0f172a);
+      border-color: #93c5fd;
     }
 
     /* Compatibility hidden IDs */
@@ -1240,42 +1706,132 @@
   <!-- ─── SCROLLABLE MAIN CONTENT ─── -->
   <main class="app-content">
 
-    <!-- ─── HERO EXECUTIVE BANK CARD ─── -->
-    <div class="hero-card-container">
-      <div class="hero-bank-card" id="mainHeroBankCard">
-        <div class="card-row-top">
-          <div class="card-org-tag">BEC · B.B.A. COHORT 69</div>
-          <div class="card-status-pill">
-            <span class="pulse-dot"></span>
-            <span>สถานะปกติ</span>
+    <!-- ─── HERO EXECUTIVE BANK CARD (3D DUAL-SIDED) ─── -->
+    <div class="hero-card-container" id="card3dContainer" data-finish="obsidian">
+      <div class="hero-card-flipper" id="card3dFlipper">
+
+        <!-- ── FRONT FACE ── -->
+        <div class="hero-card-face hero-card-front" id="mainHeroBankCard">
+          <div class="card-specular-light" id="cardSheenFront"></div>
+
+          <div class="card-row-top">
+            <div class="card-brand-col">
+              <div class="card-org-tag">BEC · B.B.A. COHORT 69</div>
+              <div class="card-sub-brand">EXECUTIVE STUDENT PASS</div>
+            </div>
+            <div class="card-top-actions">
+              <button type="button" class="card-flip-btn" onclick="toggleCardFlip(event)" title="แตะเพื่อพลิกดูหลังบัตร">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 11-.57-8.38l5.67-5.19"/></svg>
+                <span>พลิกบัตร</span>
+              </button>
+              <div class="card-status-pill" id="cardStatusBadge">
+                <span class="pulse-dot"></span>
+                <span id="cardStatusText">สถานะปกติ</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-chip-row">
+            <div class="card-chip-cluster">
+              <div class="gold-emv-chip" id="mainCardChip" title="Smart EMV Security Chip">
+                <div class="chip-line chip-line-1"></div>
+                <div class="chip-line chip-line-2"></div>
+                <div class="chip-line chip-line-3"></div>
+              </div>
+              <div class="contactless-glyph" title="Contactless Payment Enabled">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><line x1="12" y1="20" x2="12.01" y2="20" stroke-width="3"/></svg>
+              </div>
+            </div>
+            <div class="card-holo-emblem">
+              <span class="holo-text">NU · 69</span>
+            </div>
+          </div>
+
+          <div class="card-embossed-row" onclick="copyCardNumber(event)" title="แตะเพื่อคัดลอกเลขบัตรเสมือน">
+            <span class="embossed-digits" id="cardEmbossedDigits">6934 •••• •••• 2026</span>
+            <span class="embossed-copy-icon">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </span>
+          </div>
+
+          <div class="card-balance-section">
+            <div class="card-balance-caption">รายการค้างชำระของฉัน</div>
+            <div class="card-balance-sum">
+              <span id="heroUnpaidCount">—</span>
+              <span class="card-balance-currency">รายการ</span>
+            </div>
+          </div>
+
+          <div class="card-row-bottom">
+            <div class="card-student-meta">
+              <div class="card-student-name" id="cardHolderName">กำลังโหลดข้อมูล...</div>
+              <div class="card-student-sub" id="cardHolderSub">—</div>
+            </div>
+            <div class="card-right-meta">
+              <div class="card-valid-date">
+                <span class="valid-label">VALID THRU</span>
+                <span class="valid-val">03/28</span>
+              </div>
+              <div class="kbank-official-badge" onclick="copyBankAccount(event)" style="cursor:pointer;" title="แตะเพื่อคัดลอกเลขบัญชี KBANK">
+                <span>KBANK</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="card-chip-row">
-          <div class="gold-emv-chip" id="mainCardChip"></div>
-          <div class="contactless-glyph">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><line x1="12" y1="20" x2="12.01" y2="20" stroke-width="3"/></svg>
+        <!-- ── BACK FACE ── -->
+        <div class="hero-card-face hero-card-back">
+          <div class="card-specular-light" id="cardSheenBack"></div>
+
+          <div class="card-mag-stripe">
+            <div class="mag-stripe-sheen"></div>
+          </div>
+
+          <div class="card-signature-row">
+            <div class="card-signature-strip">
+              <div class="sig-security-pattern"></div>
+              <span class="sig-handwriting" id="cardSignatureText">นิสิต บัญชี 69</span>
+            </div>
+            <div class="card-cvc-box">
+              <span class="cvc-label">CVC</span>
+              <span class="cvc-value">069</span>
+            </div>
+          </div>
+
+          <div class="card-back-account-box" onclick="copyBankAccount(event)" title="แตะเพื่อคัดลอกเลขบัญชีสำหรับโอนเงิน">
+            <div class="back-acc-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            </div>
+            <div class="back-acc-details">
+              <div class="back-acc-title">ธนาคารกสิกรไทย (KBANK)</div>
+              <div class="back-acc-num">235-1-83876-3</div>
+              <div class="back-acc-name">บัญชีกองทุนสาขาบริหารธุรกิจ รุ่น 69</div>
+            </div>
+            <div class="back-acc-copy-pill">
+              <span>คัดลอก</span>
+            </div>
+          </div>
+
+          <div class="card-back-footer">
+            <div class="card-back-microtext">
+              บัตรเสมือนประจำตัวนิสิต คณะบริหารศาสตร์ ม.นเรศวร • สำหรับบริหารจัดการงบประมาณและตรวจสอบสถานะการเงินรุ่น 69
+            </div>
+            <button type="button" class="card-flip-btn card-flip-back-btn" onclick="toggleCardFlip(event)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2.5 2v6h6M2.66 15.57a10 10 0 00.57-8.38l-5.67-5.19"/></svg>
+              <span>ด้านหน้า</span>
+            </button>
           </div>
         </div>
 
-        <div class="card-balance-section">
-          <div class="card-balance-caption">รายการค้างชำระของฉัน</div>
-          <div class="card-balance-sum">
-            <span id="heroUnpaidCount">—</span>
-            <span class="card-balance-currency">รายการ</span>
-          </div>
-        </div>
-
-        <div class="card-row-bottom">
-          <div class="card-student-meta">
-            <div class="card-student-name" id="cardHolderName">กำลังโหลดข้อมูล...</div>
-            <div class="card-student-sub" id="cardHolderSub">—</div>
-          </div>
-          <div class="kbank-official-badge" onclick="copyBankAccount()" style="cursor:pointer;" title="แตะเพื่อคัดลอกเลขบัญชี KBANK">
-            <span>KBANK</span>
-          </div>
-        </div>
       </div>
+    </div>
+
+    <!-- ── CARD FINISH SELECTOR ── -->
+    <div class="card-finish-selector">
+      <span class="finish-label">พื้นผิวบัตร:</span>
+      <button type="button" class="finish-dot finish-obsidian active" onclick="setCardFinish('obsidian')" title="Obsidian Titanium (ดำด้านไทเทเนียม)"></button>
+      <button type="button" class="finish-dot finish-emerald" onclick="setCardFinish('emerald')" title="Wisdom Emerald (เขียวมรกตกสิกร)"></button>
+      <button type="button" class="finish-dot finish-sapphire" onclick="setCardFinish('sapphire')" title="Midnight Sapphire (น้ำเงินแซฟไฟร์)"></button>
     </div>
 
     <!-- Hidden compatibility markers -->
@@ -1445,6 +2001,30 @@
     if (cardSub) {
       cardSub.textContent = `${currentUser.studentId ? currentUser.studentId + ' · ' : ''}${currentUser.email || ''}`;
     }
+
+    // Realistic embossed card number (e.g. 6934 • 8820 • 0069 • [last 4 digits])
+    let last4 = '2026';
+    if (currentUser.studentId) {
+      const cleanId = String(currentUser.studentId).replace(/\D/g, '');
+      if (cleanId.length >= 4) {
+        last4 = cleanId.slice(-4);
+      } else if (cleanId.length > 0) {
+        last4 = cleanId.padStart(4, '0');
+      }
+    }
+    const embossedEl = document.getElementById('cardEmbossedDigits');
+    if (embossedEl) {
+      embossedEl.textContent = `6934 • 8820 • 0069 • ${last4}`;
+    }
+
+    // Set signature on the back panel
+    const sigEl = document.getElementById('cardSignatureText');
+    if (sigEl) {
+      sigEl.textContent = currentUser.name || 'นิสิต บัญชี 69';
+    }
+
+    // Initialize 3D Card tilt and interactive flip
+    initCard3D();
 
     // Keep hidden element IDs intact for backward compatibility
     const heroAv = document.getElementById('heroAvatar');
@@ -1656,6 +2236,20 @@
       const unpaid = allEvents.filter(e => e.status === 'Unpaid').length;
       const heroEl = document.getElementById('heroUnpaidCount');
       if (heroEl) heroEl.textContent = unpaid;
+
+      // Update card status badge
+      const statusBadge = document.getElementById('cardStatusBadge');
+      const statusText = document.getElementById('cardStatusText');
+      if (statusBadge && statusText) {
+        const dot = statusBadge.querySelector('.pulse-dot');
+        if (unpaid === 0) {
+          statusText.textContent = 'ชำระครบถ้วน ✓';
+          if (dot) dot.classList.remove('pulse-amber');
+        } else {
+          statusText.textContent = `ค้างชำระ ${unpaid} รายการ`;
+          if (dot) dot.classList.add('pulse-amber');
+        }
+      }
       renderList(allEvents);
     } catch (e) {
       console.error(e);
@@ -1858,10 +2452,111 @@
     document.body.style.overflow = 'hidden';
   }
 
-  function copyBankAccount() {
+  function copyBankAccount(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
     navigator.clipboard.writeText(BANK_ACCOUNT).then(() => {
       showToast('คัดลอกเลขบัญชี 235-1-83876-3 แล้ว ✓');
     }).catch(() => alert('235-1-83876-3'));
+  }
+
+  // ─── VIRTUAL EXECUTIVE CARD 3D & INTERACTIONS ───
+  function initCard3D() {
+    const container = document.getElementById('card3dContainer');
+    const flipper = document.getElementById('card3dFlipper');
+    if (!container || !flipper) return;
+
+    // Load saved finish
+    const saved = localStorage.getItem('bec_card_finish') || 'obsidian';
+    setCardFinish(saved, false);
+
+    // Card click flip (unless clicking an inner action button/link)
+    container.addEventListener('click', (e) => {
+      if (e.target.closest('button, .card-embossed-row, .kbank-official-badge, .card-back-account-box, .card-finish-selector, a')) {
+        return;
+      }
+      toggleCardFlip(e);
+    });
+
+    // Parallax tilt on mouse/touch
+    let rect = null;
+    const updateRect = () => { rect = container.getBoundingClientRect(); };
+    window.addEventListener('resize', updateRect);
+    window.addEventListener('scroll', updateRect, { passive: true });
+
+    const handlePointerMove = (clientX, clientY) => {
+      if (!rect) updateRect();
+      if (!rect || rect.width === 0) return;
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+      const px = Math.max(0, Math.min(100, (x / rect.width) * 100));
+      const py = Math.max(0, Math.min(100, (y / rect.height) * 100));
+
+      const isFlipped = container.classList.contains('is-flipped');
+      const rx = ((y - rect.height / 2) / (rect.height / 2)) * -6.5;
+      const ry = ((x - rect.width / 2) / (rect.width / 2)) * (isFlipped ? -6.5 : 6.5);
+
+      container.style.setProperty('--sheen-x', `${px.toFixed(1)}%`);
+      container.style.setProperty('--sheen-y', `${py.toFixed(1)}%`);
+      
+      flipper.style.transform = isFlipped
+        ? `rotateY(180deg) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`
+        : `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+    };
+
+    container.addEventListener('mouseenter', () => {
+      updateRect();
+      flipper.style.transition = 'transform 100ms ease-out';
+    });
+
+    container.addEventListener('mousemove', (e) => {
+      handlePointerMove(e.clientX, e.clientY);
+    });
+
+    container.addEventListener('mouseleave', () => {
+      flipper.style.transition = 'transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1)';
+      const isFlipped = container.classList.contains('is-flipped');
+      flipper.style.transform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
+      container.style.setProperty('--sheen-x', '50%');
+      container.style.setProperty('--sheen-y', '30%');
+      setTimeout(() => {
+        flipper.style.transition = 'transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1)';
+      }, 450);
+    });
+  }
+
+  function toggleCardFlip(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    const container = document.getElementById('card3dContainer');
+    const flipper = document.getElementById('card3dFlipper');
+    if (!container || !flipper) return;
+    const willFlip = !container.classList.contains('is-flipped');
+    container.classList.toggle('is-flipped', willFlip);
+    flipper.style.transform = willFlip ? 'rotateY(180deg)' : 'rotateY(0deg)';
+  }
+
+  function setCardFinish(finish, save = true) {
+    const container = document.getElementById('card3dContainer');
+    if (!container) return;
+    container.setAttribute('data-finish', finish);
+    document.querySelectorAll('.finish-dot').forEach(dot => {
+      dot.classList.toggle('active', dot.classList.contains(`finish-${finish}`));
+    });
+    if (save) {
+      localStorage.setItem('bec_card_finish', finish);
+      const label = finish === 'emerald' ? 'Wisdom Emerald' : finish === 'sapphire' ? 'Midnight Sapphire' : 'Obsidian Titanium';
+      showToast(`สลับลายบัตร: ${label} ✓`);
+    }
+  }
+
+  function copyCardNumber(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    const digitsEl = document.getElementById('cardEmbossedDigits');
+    const digits = digitsEl ? digitsEl.textContent.trim() : '6934 •••• •••• 2026';
+    navigator.clipboard.writeText(digits).then(() => {
+      showToast('คัดลอกเลขบัตรเสมือนแล้ว ✓');
+    }).catch(() => {
+      showToast('คัดลอกเลขบัตรแล้ว');
+    });
   }
 
   function closeModal() {
