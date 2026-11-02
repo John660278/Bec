@@ -360,8 +360,8 @@
 
         function enterDemo(role) {
             const user = role === 'Admin'
-                ? { name: 'Admin (ตัวอย่างทดสอบ)', email: 'admin@nu.ac.th', role: 'Admin' }
-                : { name: 'นิสิต (ตัวอย่างทดสอบ)', email: 'student@nu.ac.th', role: 'Student', studentId: '66000000' };
+                ? { name: 'แอดมินระบบ', email: 'admin@nu.ac.th', role: 'Admin' }
+                : { name: 'นางสาวกมลทิพย์ ยะพลหา', email: 'kamonthipy69@nu.ac.th', role: 'Student', studentId: '69343832' };
             sessionStorage.setItem('loggedInUser', JSON.stringify(user));
             window.location.href = role === 'Admin' ? 'admin_dashboard.html' : 'student_dashboard.html';
         }

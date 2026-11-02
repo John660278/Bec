@@ -1612,20 +1612,6 @@
 
   // ─── FETCH PAYMENTS (Firebase) ───
   async function fetchPayments() {
-    if (currentUser && currentUser.name && currentUser.name.includes('ตัวอย่าง')) {
-      const demoEvents = [
-        { eventId: 'demo-1', title: 'ค่าบำรุงสาขา สัปดาห์ที่ 1', baseAmount: 100, dueDate: '2026-09-01', status: 'Paid', penalty: 0, totalAmount: 100 },
-        { eventId: 'demo-2', title: 'ค่าบำรุงสาขา สัปดาห์ที่ 2', baseAmount: 100, dueDate: '2026-09-08', status: 'Pending', penalty: 0, totalAmount: 100 },
-        { eventId: 'demo-3', title: 'ค่าบำรุงสาขา สัปดาห์ที่ 3', baseAmount: 100, dueDate: '2026-09-15', status: 'Unpaid', penalty: 20, totalAmount: 120 }
-      ];
-      allEvents = demoEvents;
-      const unpaid = demoEvents.filter(e => e.status === 'Unpaid').length;
-      const heroEl = document.getElementById('heroUnpaidCount');
-      if (heroEl) heroEl.textContent = unpaid;
-      renderList(demoEvents);
-      return;
-    }
-
     try {
       const evSnap = await db.collection('events').get();
       const events = [];
@@ -1681,29 +1667,6 @@
 
   // ─── FETCH PUBLIC BOARD (Firebase) ───
   async function fetchPublicBoard() {
-    if (currentUser && currentUser.name && currentUser.name.includes('ตัวอย่าง')) {
-      renderPublicBoard({
-        totalBalance: 35400,
-        totalIncome: 45000,
-        totalExpense: 9600,
-        incomes: [
-          { source: 'เงินสนับสนุนพี่บัณฑิต', amount: 5000, date: '2026-09-10' },
-          { source: 'เงินกองทุนสาขา', amount: 30000, date: '2026-09-01' }
-        ],
-        expenses: [
-          { title: 'ค่าอุปกรณ์ป้ายกิจกรรม', amount: 1600, date: '2026-09-12' },
-          { title: 'ค่าของว่างประชุมสาขา', amount: 800, date: '2026-09-05' }
-        ],
-        matrixHeaders: ['รหัสนิสิต', 'ชื่อ-นามสกุล', 'สัปดาห์ 1', 'สัปดาห์ 2', 'สัปดาห์ 3'],
-        matrixRows: [
-          { 'รหัสนิสิต': '66050001', 'ชื่อ-นามสกุล': 'นายสมชาย ใจดี', 'สัปดาห์ 1': 100, 'สัปดาห์ 2': 100, 'สัปดาห์ 3': '-' },
-          { 'รหัสนิสิต': '66050002', 'ชื่อ-นามสกุล': 'น.ส.วิภา สวยงาม', 'สัปดาห์ 1': 100, 'สัปดาห์ 2': 'Pending', 'สัปดาห์ 3': '-' },
-          { 'รหัสนิสิต': '66050003', 'ชื่อ-นามสกุล': 'นายณัฐพล มีทรัพย์', 'สัปดาห์ 1': 100, 'สัปดาห์ 2': 100, 'สัปดาห์ 3': 100 }
-        ]
-      });
-      return;
-    }
-
     try {
       const [statsDoc, incSnap, expSnap, matrixSnap] = await Promise.all([
         db.collection('system_stats').doc('overview').get(),
