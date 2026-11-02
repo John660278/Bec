@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>ระบบการเงินสาขา (Admin) — BEC BA 69</title>
+  <title>ระบบการเงินสาขา (Admin Console) — BEC BA 69</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -50,6 +50,7 @@
       --radius-md:    12px;
       --radius-lg:    18px;
       --radius-xl:    24px;
+      --radius-full:  9999px;
 
       --shadow-subtle: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
       --shadow-card:   0 4px 14px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
@@ -74,7 +75,7 @@
       overflow: hidden;
     }
 
-    /* ─── SIDEBAR (BANKING TREASURY CONSOLE) ─── */
+    /* ─── SIDEBAR (DESKTOP) ─── */
     .sidebar {
       width: var(--sidebar-w);
       min-width: var(--sidebar-w);
@@ -256,7 +257,7 @@
       border-color: #fecdd3;
     }
 
-    /* ─── MAIN CONTENT AREA ─── */
+    /* ─── MAIN VIEWPORT ─── */
     .main-viewport {
       flex: 1;
       min-width: 0;
@@ -305,7 +306,7 @@
       display: block;
     }
 
-    /* ─── FINANCIAL KPI STATS GRID ─── */
+    /* ─── KPI EXECUTIVE GRID ─── */
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -331,10 +332,10 @@
     }
 
     .kpi-card.highlight {
-      background: linear-gradient(135deg, #090d16 0%, #1e293b 100%);
+      background: linear-gradient(135deg, #090d16 0%, #172033 50%, #0a0e1a 100%);
       color: #ffffff;
       border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 10px 24px -4px rgba(15, 23, 42, 0.2);
+      box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.25);
     }
 
     .kpi-card.highlight .kpi-label {
@@ -448,9 +449,9 @@
       align-items: center;
       gap: 5px;
       padding: 3px 9px;
-      border-radius: 9999px;
+      border-radius: var(--radius-full);
       font-size: 0.72rem;
-      font-weight: 600;
+      font-weight: 700;
       white-space: nowrap;
     }
 
@@ -539,9 +540,9 @@
 
     .filter-tab {
       padding: 0.45rem 1.1rem;
-      border-radius: 9999px;
+      border-radius: var(--radius-full);
       font-size: 0.78rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       border: 1px solid var(--border);
       background: #ffffff;
@@ -650,8 +651,78 @@
 
     .empty-state p {
       font-size: 0.88rem;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text);
+    }
+
+    /* ─── SLIP INSPECTION LIGHTBOX MODAL ─── */
+    .lightbox-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(9, 13, 22, 0.8);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 180ms ease;
+    }
+
+    .lightbox-modal.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox-dialog {
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      max-width: 440px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: var(--shadow-float);
+      position: relative;
+    }
+
+    .lightbox-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .lightbox-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .lightbox-body {
+      padding: 1.25rem;
+      max-height: 70vh;
+      overflow-y: auto;
+      text-align: center;
+    }
+
+    .lightbox-body img {
+      max-width: 100%;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-card);
+    }
+
+    .lightbox-footer {
+      padding: 1rem 1.25rem;
+      border-top: 1px solid var(--border);
+      background: #fafbfc;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.5rem;
     }
 
     /* ─── TOAST NOTIFICATION ─── */
@@ -665,7 +736,7 @@
       padding: 0.85rem 1.4rem;
       font-size: 0.82rem;
       color: #ffffff;
-      font-weight: 600;
+      font-weight: 700;
       box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
       z-index: 999;
       opacity: 0;
@@ -742,13 +813,13 @@
         background: #f0f9ff;
         border: 1px solid #bae6fd;
         padding: 2px 7px;
-        border-radius: 9999px;
+        border-radius: var(--radius-full);
       }
 
       .mobile-logout-btn {
         background: #fff1f2;
         border: 1px solid #fecdd3;
-        border-radius: 8px;
+        border-radius: var(--radius-sm);
         padding: 5px 10px;
         color: var(--danger);
         font-size: 0.72rem;
@@ -784,7 +855,7 @@
         cursor: pointer;
         color: var(--muted);
         font-size: 0.65rem;
-        font-weight: 600;
+        font-weight: 700;
         border: none;
         background: none;
         font-family: inherit;
@@ -952,7 +1023,7 @@
                 <th>รอบการชำระ</th>
                 <th>ยอด (฿)</th>
                 <th>ค่าปรับ (฿)</th>
-                <th></th>
+                <th>สถานะ</th>
               </tr>
             </thead>
             <tbody id="overviewPendingBody">
@@ -1129,7 +1200,7 @@
               <input type="file" id="expReceiptFile" accept="image/*" style="position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; z-index: 5;" onchange="previewFile(this, 'expPreview', 'expFileName')" />
               <div style="pointer-events: none;">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color: var(--muted); margin-bottom: 4px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                <div style="font-size: 0.8rem; color: var(--text); font-weight: 600;">แตะเพื่อแนบรูปใบเสร็จ (ไม่บังคับ)</div>
+                <div style="font-size: 0.8rem; color: var(--text); font-weight: 700;">แตะเพื่อแนบรูปใบเสร็จ (ไม่บังคับ)</div>
                 <div id="expFileName" style="font-size: 0.72rem; color: var(--primary-blue); margin-top: 4px; font-weight: 700;"></div>
               </div>
             </div>
@@ -1161,7 +1232,7 @@
               <input type="file" id="incReceiptFile" accept="image/*" style="position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; z-index: 5;" onchange="previewFile(this, 'incPreview', 'incFileName')" />
               <div style="pointer-events: none;">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color: var(--muted); margin-bottom: 4px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                <div style="font-size: 0.8rem; color: var(--text); font-weight: 600;">แตะเพื่อแนบรูปหลักฐาน (ไม่บังคับ)</div>
+                <div style="font-size: 0.8rem; color: var(--text); font-weight: 700;">แตะเพื่อแนบรูปหลักฐาน (ไม่บังคับ)</div>
                 <div id="incFileName" style="font-size: 0.72rem; color: var(--primary-blue); margin-top: 4px; font-weight: 700;"></div>
               </div>
             </div>
@@ -1198,6 +1269,23 @@
     รับ-จ่าย
   </button>
 </nav>
+
+<!-- ─── SLIP INSPECTION LIGHTBOX ─── -->
+<div class="lightbox-modal" id="slipModal" onclick="closeSlipModal(event)">
+  <div class="lightbox-dialog" onclick="event.stopPropagation()">
+    <div class="lightbox-header">
+      <div class="lightbox-title" id="slipModalTitle">หลักฐานการโอนเงิน</div>
+      <button class="btn-ghost btn-sm" onclick="closeSlipModal()">✕</button>
+    </div>
+    <div class="lightbox-body">
+      <img id="slipModalImg" src="" alt="สลิปโอนเงิน" />
+      <div id="slipModalMeta" style="margin-top:0.85rem;font-size:0.8rem;color:var(--text);font-weight:700;"></div>
+    </div>
+    <div class="lightbox-footer" id="slipModalFooter">
+      <button class="btn btn-ghost btn-sm" onclick="closeSlipModal()">ปิด</button>
+    </div>
+  </div>
+</div>
 
 <!-- ─── TOAST NOTIFICATION ─── -->
 <div id="toast"></div>
@@ -1296,6 +1384,26 @@
     t.textContent = msg;
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), dur);
+  }
+
+  // ─── LIGHTBOX MODAL ───
+  function openSlipModal(url, title, metaText, approveBtnHtml = '') {
+    const m = document.getElementById('slipModal');
+    document.getElementById('slipModalImg').src = url;
+    document.getElementById('slipModalTitle').textContent = title || 'หลักฐานสลิปโอนเงิน';
+    document.getElementById('slipModalMeta').textContent = metaText || '';
+    
+    const footer = document.getElementById('slipModalFooter');
+    footer.innerHTML = `
+      ${approveBtnHtml}
+      <button class="btn btn-ghost btn-sm" onclick="closeSlipModal()">ปิด</button>
+    `;
+    m.classList.add('open');
+  }
+
+  function closeSlipModal(e) {
+    const m = document.getElementById('slipModal');
+    if (m) m.classList.remove('open');
   }
 
   // ─── MATRIX ───
@@ -1487,7 +1595,7 @@
               <div style="color:var(--text);font-weight:700">${e.source}</div>
               <div style="color:var(--muted);font-size:0.7rem;margin-top:2px">
                 ${new Date(e.date).toLocaleDateString('th-TH')}
-                ${e.receiptUrl ? ` · <a href="${e.receiptUrl}" target="_blank" style="color:var(--primary-blue);text-decoration:underline">ดูหลักฐาน</a>` : ''}
+                ${e.receiptUrl ? ` · <a href="javascript:void(0)" onclick="openSlipModal('${e.receiptUrl}', '${e.source}', '฿${fmt(e.amount)}') style="color:var(--primary-blue);text-decoration:underline">ดูหลักฐาน</a>` : ''}
               </div>
             </div>
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
@@ -1504,7 +1612,7 @@
               <div style="color:var(--text);font-weight:700">${e.title}</div>
               <div style="color:var(--muted);font-size:0.7rem;margin-top:2px">
                 ${new Date(e.date).toLocaleDateString('th-TH')}
-                ${e.receiptUrl ? ` · <a href="${e.receiptUrl}" target="_blank" style="color:var(--primary-blue);text-decoration:underline">ดูหลักฐาน</a>` : ''}
+                ${e.receiptUrl ? ` · <a href="javascript:void(0)" onclick="openSlipModal('${e.receiptUrl}', '${e.title}', '฿${fmt(e.amount)}') style="color:var(--primary-blue);text-decoration:underline">ดูหลักฐาน</a>` : ''}
               </div>
             </div>
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
@@ -1691,23 +1799,31 @@
       tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><p>ไม่มีรายการที่ค้นหา</p></div></td></tr>`;
       return;
     }
-    tbody.innerHTML = list.map(p => `
-      <tr>
-        <td style="font-weight:700">${p.name || '—'}</td>
-        <td>${p.eventTitle || p.eventId || '—'}</td>
-        <td style="font-weight:700">${Number(p.paidAmount).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
-        <td>${Number(p.penalty||0).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
-        <td><span class="badge badge-${p.status === 'Paid' ? 'paid' : 'pending'}">${p.status === 'Paid' ? 'ชำระแล้ว' : 'รอตรวจสอบ'}</span></td>
-        <td style="font-size:0.75rem;color:var(--muted)">${formatDate(p.paidAt)}</td>
-        <td>${p.slipUrl ? `<a href="${p.slipUrl}" target="_blank" style="color:var(--primary-blue);font-weight:600;text-decoration:underline">ดูสลิป</a>` : '—'}</td>
-        <td>
-          <div style="display:flex;gap:4px;flex-wrap:wrap">
-            ${p.status === 'Pending' ? `<button class="btn btn-primary btn-sm" onclick="approve('${p.paymentId}','${p.eventTitle}','${p.email}',${p.paidAmount})">อนุมัติ</button>` : ''}
-            <button class="btn btn-danger-ghost btn-sm" onclick="deletePayment('${p.paymentId}')">ลบ</button>
-          </div>
-        </td>
-      </tr>
-    `).join('');
+    tbody.innerHTML = list.map(p => {
+      const safeTitle = (p.eventTitle || p.eventId || '').replace(/'/g, "\\'");
+      const safeName = (p.name || '').replace(/'/g, "\\'");
+      const slipBtn = p.slipUrl
+        ? `<button class="btn btn-ghost btn-sm" onclick="openSlipModal('${p.slipUrl}', '${safeName} - ${safeTitle}', 'ยอดชำระ: ฿${Number(p.paidAmount).toLocaleString('th-TH')}', '${p.status === 'Pending' ? `<button class=\\'btn btn-primary btn-sm\\' onclick=\\'approve(\\\"${p.paymentId}\\\", \\\"${safeTitle}\\\", \\\"${p.email}\\\", ${p.paidAmount}); closeSlipModal();\\'>อนุมัติยอดนี้ ✓</button>` : ''}')">ดูสลิป</button>`
+        : '—';
+
+      return `
+        <tr>
+          <td style="font-weight:700">${p.name || '—'}</td>
+          <td>${p.eventTitle || p.eventId || '—'}</td>
+          <td style="font-weight:700">${Number(p.paidAmount).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+          <td>${Number(p.penalty||0).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+          <td><span class="badge badge-${p.status === 'Paid' ? 'paid' : 'pending'}">${p.status === 'Paid' ? 'ชำระแล้ว' : 'รอตรวจสอบ'}</span></td>
+          <td style="font-size:0.75rem;color:var(--muted)">${formatDate(p.paidAt)}</td>
+          <td>${slipBtn}</td>
+          <td>
+            <div style="display:flex;gap:4px;flex-wrap:wrap">
+              ${p.status === 'Pending' ? `<button class="btn btn-primary btn-sm" onclick="approve('${p.paymentId}','${safeTitle}','${p.email}',${p.paidAmount})">อนุมัติ</button>` : ''}
+              <button class="btn btn-danger-ghost btn-sm" onclick="deletePayment('${p.paymentId}')">ลบ</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
   }
 
   async function deletePayment(paymentId) {

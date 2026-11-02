@@ -2,8 +2,8 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>กองทุนสาขาบริหารธุรกิจ — BEC BA 69</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>กองทุนนิสิตสาขาบริหารธุรกิจ — BEC BA 69</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -23,16 +23,24 @@
       --surface-sub:  #f1f5f9;
       --border:       #e2e8f0;
       --border-dark:  #cbd5e1;
+      
       --text:         #090d16;
       --text-sub:     #475569;
       --muted:        #64748b;
       --muted-light:  #94a3b8;
       
-      --accent:       #0f172a;
+      --accent:       #090d16;
       --accent-hover: #1e293b;
       --accent-text:  #ffffff;
 
-      --primary-blue: #0284c7;
+      --kbank-green:  #00a950;
+      --kbank-light:  #f0fdf4;
+      --kbank-border: #bbf7d0;
+
+      --pp-blue:      #003d79;
+      --pp-light:     #f0f7ff;
+      --pp-border:    #bae6fd;
+
       --success:      #15803d;
       --success-bg:   #f0fdf4;
       --success-bdr:  #bbf7d0;
@@ -49,10 +57,11 @@
       --radius-md:    12px;
       --radius-lg:    18px;
       --radius-xl:    24px;
+      --radius-full:  9999px;
 
       --shadow-subtle: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
       --shadow-card:   0 4px 14px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
-      --shadow-float:  0 14px 28px -4px rgba(15, 23, 42, 0.12), 0 6px 12px -3px rgba(15, 23, 42, 0.06);
+      --shadow-float:  0 16px 36px -4px rgba(15, 23, 42, 0.15), 0 6px 14px -2px rgba(15, 23, 42, 0.08);
     }
 
     html, body {
@@ -66,8 +75,9 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    .app-container {
-      max-width: 520px;
+    /* ─── FINTECH APP SHELL ─── */
+    .app-viewport {
+      max-width: 580px;
       margin: 0 auto;
       min-height: 100vh;
       background: #ffffff;
@@ -76,20 +86,21 @@
       display: flex;
       flex-direction: column;
       position: relative;
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.03);
     }
 
-    @media (max-width: 540px) {
-      .app-container {
+    @media (max-width: 600px) {
+      .app-viewport {
         border-left: none;
         border-right: none;
       }
     }
 
-    /* ─── APP HEADER (BANKING BAR) ─── */
-    .app-header {
+    /* ─── STICKY TOP BANKING BAR ─── */
+    .top-app-bar {
       position: sticky;
       top: 0;
-      z-index: 40;
+      z-index: 50;
       background: rgba(255, 255, 255, 0.94);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
@@ -100,68 +111,69 @@
       justify-content: space-between;
     }
 
-    .brand-block {
+    .app-brand {
       display: flex;
       align-items: center;
       gap: 0.65rem;
     }
 
-    .brand-badge {
-      width: 32px;
-      height: 32px;
-      border-radius: 9px;
+    .brand-emblem {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
       background: #090d16;
       color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       letter-spacing: -0.02em;
-      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.2);
+      box-shadow: 0 3px 8px rgba(15, 23, 42, 0.2);
     }
 
-    .brand-meta {
+    .brand-info {
       display: flex;
       flex-direction: column;
     }
 
     .brand-title {
       font-size: 0.88rem;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: -0.01em;
       color: var(--text);
       line-height: 1.2;
     }
 
-    .brand-desc {
+    .brand-sub {
       font-size: 0.65rem;
       color: var(--muted);
       font-weight: 500;
       letter-spacing: 0.02em;
     }
 
-    .header-user {
+    .app-bar-actions {
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
 
-    .user-pill {
+    .student-badge-pill {
       display: flex;
       align-items: center;
       gap: 0.45rem;
       padding: 4px 8px 4px 4px;
       background: var(--surface-sub);
       border: 1px solid var(--border);
-      border-radius: 9999px;
+      border-radius: var(--radius-full);
+      max-width: 140px;
     }
 
     .nav-avatar {
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      background: #0f172a;
+      background: #090d16;
       color: #ffffff;
       display: flex;
       align-items: center;
@@ -169,6 +181,7 @@
       font-size: 0.65rem;
       font-weight: 700;
       overflow: hidden;
+      flex-shrink: 0;
     }
 
     .nav-avatar img {
@@ -181,16 +194,15 @@
       font-size: 0.72rem;
       font-weight: 600;
       color: var(--text);
-      max-width: 90px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .icon-btn {
+    .btn-icon {
       background: none;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: var(--radius-sm);
       width: 32px;
       height: 32px;
       display: flex;
@@ -201,74 +213,74 @@
       transition: all 120ms;
     }
 
-    .icon-btn:hover {
+    .btn-icon:hover {
       background: #fff1f2;
       border-color: #fecdd3;
       color: var(--danger);
     }
 
-    /* ─── SCROLLABLE MAIN BODY ─── */
-    .app-body {
+    /* ─── SCROLLABLE CONTENT ─── */
+    .app-content {
       flex: 1;
-      padding: 1.25rem 1.25rem 3rem;
+      padding: 1.25rem 1.25rem 4rem;
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
     }
 
-    /* ─── VIRTUAL BANK CARD (กองทุนสาขา) ─── */
-    .virtual-card-wrapper {
+    /* ─── HERO OBSIDIAN TITANIUM BANK CARD ─── */
+    .hero-card-container {
       perspective: 1000px;
     }
 
-    .virtual-card {
-      background: linear-gradient(135deg, #090d16 0%, #1e293b 55%, #0f172a 100%);
+    .hero-bank-card {
+      background: linear-gradient(135deg, #090d16 0%, #172033 50%, #0a0e1a 100%);
       border-radius: var(--radius-xl);
-      padding: 1.5rem 1.35rem;
+      padding: 1.5rem 1.4rem;
       color: #ffffff;
-      box-shadow: 0 16px 30px -8px rgba(15, 23, 42, 0.28), 0 4px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 18px 36px -10px rgba(15, 23, 42, 0.32), 0 4px 12px rgba(0, 0, 0, 0.12);
       position: relative;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
-    .virtual-card::before {
+    .hero-bank-card::before {
       content: '';
       position: absolute;
       top: -60px;
       right: -60px;
-      width: 190px;
-      height: 190px;
+      width: 200px;
+      height: 200px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
       pointer-events: none;
     }
 
-    .virtual-card::after {
+    .hero-bank-card::after {
       content: '';
       position: absolute;
       bottom: -40px;
       left: -40px;
-      width: 140px;
-      height: 140px;
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(2, 132, 199, 0.15) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(2, 132, 199, 0.18) 0%, transparent 70%);
       pointer-events: none;
     }
 
-    .card-top {
+    .card-row-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.15rem;
       position: relative;
       z-index: 2;
     }
 
-    .card-org {
+    .card-org-tag {
       font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
+      font-weight: 700;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: rgba(255, 255, 255, 0.7);
     }
@@ -276,22 +288,22 @@
     .card-status-pill {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      padding: 3px 9px;
-      border-radius: 9999px;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
       font-size: 0.68rem;
-      font-weight: 600;
+      font-weight: 700;
       background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       backdrop-filter: blur(8px);
     }
 
-    .card-status-dot {
+    .pulse-dot {
       width: 6px;
       height: 6px;
       border-radius: 50%;
       background: #4ade80;
-      box-shadow: 0 0 6px #4ade80;
+      box-shadow: 0 0 8px #4ade80;
     }
 
     .card-chip-row {
@@ -303,49 +315,47 @@
       z-index: 2;
     }
 
-    .card-emv-chip {
+    .gold-emv-chip {
       width: 38px;
       height: 28px;
       border-radius: 6px;
-      background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 50%, #94a3b8 100%);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: linear-gradient(135deg, #fce96a 0%, #dfb536 50%, #9e7417 100%);
+      border: 1px solid rgba(255, 255, 255, 0.4);
       position: relative;
-      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.6);
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.7);
     }
 
-    .card-emv-chip::after {
+    .gold-emv-chip::after {
       content: '';
       position: absolute;
       top: 50%;
       left: 0;
       right: 0;
       height: 1px;
-      background: rgba(0, 0, 0, 0.18);
+      background: rgba(0, 0, 0, 0.2);
     }
 
-    .card-contactless {
-      color: rgba(255, 255, 255, 0.6);
-      display: flex;
-      align-items: center;
+    .contactless-glyph {
+      color: rgba(255, 255, 255, 0.65);
     }
 
-    .card-balance-block {
+    .card-balance-section {
       position: relative;
       z-index: 2;
       margin-bottom: 1.25rem;
     }
 
-    .card-balance-label {
+    .card-balance-caption {
       font-size: 0.68rem;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       color: rgba(255, 255, 255, 0.65);
-      font-weight: 500;
+      font-weight: 600;
       margin-bottom: 0.2rem;
     }
 
-    .card-balance-value {
-      font-size: 1.85rem;
+    .card-balance-sum {
+      font-size: 2rem;
       font-weight: 800;
       letter-spacing: -0.03em;
       line-height: 1.1;
@@ -356,68 +366,124 @@
       gap: 0.35rem;
     }
 
-    .card-balance-unit {
+    .card-balance-currency {
       font-size: 0.85rem;
       font-weight: 600;
       color: rgba(255, 255, 255, 0.7);
     }
 
-    .card-bottom {
+    .card-row-bottom {
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
       position: relative;
       z-index: 2;
-      padding-top: 0.75rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 0.85rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
     }
 
-    .card-holder {
+    .card-student-meta {
       display: flex;
       flex-direction: column;
     }
 
-    .card-holder-name {
-      font-size: 0.85rem;
+    .card-student-name {
+      font-size: 0.88rem;
       font-weight: 700;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
       color: #ffffff;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 220px;
+      max-width: 240px;
     }
 
-    .card-holder-sub {
+    .card-student-sub {
       font-size: 0.68rem;
       color: rgba(255, 255, 255, 0.6);
-      letter-spacing: 0.02em;
+      margin-top: 2px;
     }
 
-    .card-bank-badge {
+    .kbank-official-badge {
       display: flex;
       align-items: center;
       gap: 6px;
-      background: rgba(0, 0, 0, 0.25);
-      padding: 4px 8px;
-      border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .card-bank-kbank {
+      background: rgba(0, 0, 0, 0.35);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
+      font-weight: 800;
+      letter-spacing: 0.05em;
       color: #4ade80;
     }
 
-    /* ─── HIDDEN/INTERNAL ELEMENTS PRESERVED FOR COMPATIBILITY ─── */
-    #heroAvatar, #heroName, #heroBio {
-      display: none;
+    /* ─── QUICK ACTION DOCK ─── */
+    .quick-dock {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
     }
 
-    /* ─── SEGMENTED VIEW SWITCHER ─── */
-    .segmented-control {
+    .dock-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 140ms ease;
+      font-family: inherit;
+      color: var(--text);
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .dock-btn:hover {
+      border-color: var(--border-dark);
+      background: var(--surface-sub);
+      transform: translateY(-1px);
+    }
+
+    .dock-btn:active {
+      transform: scale(0.96);
+    }
+
+    .dock-icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: var(--surface-sub);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dock-icon-box.green {
+      background: var(--kbank-light);
+      color: var(--kbank-green);
+    }
+
+    .dock-icon-box.blue {
+      background: var(--pp-light);
+      color: var(--pp-blue);
+    }
+
+    .dock-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    /* Compatibility hidden IDs */
+    #heroAvatar, #heroName, #heroBio { display: none; }
+
+    /* ─── SEGMENTED SWITCHER ─── */
+    .segmented-switch {
       background: var(--surface-sub);
       border: 1px solid var(--border);
       border-radius: 14px;
@@ -427,14 +493,14 @@
       gap: 4px;
     }
 
-    .seg-btn {
-      padding: 0.6rem 0.75rem;
+    .seg-tab-btn {
+      padding: 0.65rem 0.75rem;
       border-radius: 10px;
       border: none;
       background: transparent;
       color: var(--muted);
       font-size: 0.8rem;
-      font-weight: 600;
+      font-weight: 700;
       font-family: inherit;
       cursor: pointer;
       transition: all 140ms ease;
@@ -442,58 +508,57 @@
       white-space: nowrap;
     }
 
-    .seg-btn:hover {
+    .seg-tab-btn:hover {
       color: var(--text);
     }
 
-    .seg-btn.active {
+    .seg-tab-btn.active {
       background: #ffffff;
       color: #090d16;
       box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
-      font-weight: 700;
     }
 
     /* ─── FILTER ROW ─── */
-    .filter-scroll-row {
+    .filter-pills-row {
       display: flex;
       gap: 6px;
       overflow-x: auto;
-      padding-bottom: 4px;
+      padding-bottom: 2px;
       -webkit-overflow-scrolling: touch;
     }
 
-    .filter-scroll-row::-webkit-scrollbar {
+    .filter-pills-row::-webkit-scrollbar {
       display: none;
     }
 
-    .pill-filter {
-      padding: 0.4rem 0.95rem;
-      border-radius: 9999px;
+    .pill-btn {
+      padding: 0.42rem 1rem;
+      border-radius: var(--radius-full);
       border: 1px solid var(--border);
       background: #ffffff;
       color: var(--muted);
       font-size: 0.75rem;
-      font-weight: 600;
+      font-weight: 700;
       font-family: inherit;
       cursor: pointer;
       white-space: nowrap;
       transition: all 120ms ease;
     }
 
-    .pill-filter:hover {
+    .pill-btn:hover {
       border-color: var(--border-dark);
       color: var(--text);
     }
 
-    .pill-filter.active {
+    .pill-btn.active {
       background: #090d16;
       color: #ffffff;
       border-color: #090d16;
       box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15);
     }
 
-    /* ─── SECTION HEADER ─── */
-    .section-head {
+    /* ─── STATEMENT LIST ─── */
+    .statement-section-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -503,7 +568,7 @@
     .section-head-title {
       font-size: 0.78rem;
       font-weight: 700;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
       color: var(--muted);
     }
@@ -514,7 +579,6 @@
       font-weight: 600;
     }
 
-    /* ─── STATEMENT LIST (FEED) ─── */
     .statement-feed {
       display: flex;
       flex-direction: column;
@@ -552,8 +616,8 @@
     }
 
     .statement-title {
-      font-size: 0.92rem;
-      font-weight: 700;
+      font-size: 0.95rem;
+      font-weight: 800;
       color: var(--text);
       letter-spacing: -0.01em;
       line-height: 1.3;
@@ -568,7 +632,7 @@
       color: var(--muted);
     }
 
-    .statement-penalty-alert {
+    .penalty-pill {
       display: inline-flex;
       align-items: center;
       gap: 4px;
@@ -578,7 +642,7 @@
       padding: 2px 7px;
       border-radius: 4px;
       font-size: 0.68rem;
-      font-weight: 600;
+      font-weight: 700;
       margin-top: 0.4rem;
     }
 
@@ -588,7 +652,7 @@
     }
 
     .statement-amount {
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       font-weight: 800;
       color: var(--text);
       font-variant-numeric: tabular-nums;
@@ -618,9 +682,9 @@
       align-items: center;
       gap: 5px;
       padding: 4px 10px;
-      border-radius: 9999px;
+      border-radius: var(--radius-full);
       font-size: 0.72rem;
-      font-weight: 600;
+      font-weight: 700;
       white-space: nowrap;
     }
 
@@ -657,7 +721,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.4rem;
+      gap: 0.45rem;
       padding: 0.55rem 1.15rem;
       border-radius: var(--radius-md);
       font-size: 0.8rem;
@@ -678,22 +742,23 @@
       cursor: not-allowed;
     }
 
-    .btn-pay {
+    .btn-pay-now {
       background: #090d16;
       color: #ffffff;
       box-shadow: 0 2px 6px rgba(15, 23, 42, 0.16);
-      padding: 0.48rem 1rem;
+      padding: 0.5rem 1.15rem;
       font-size: 0.78rem;
+      border-radius: var(--radius-md);
     }
 
-    .btn-pay:hover:not(:disabled) {
+    .btn-pay-now:hover:not(:disabled) {
       background: #1e293b;
     }
 
     .btn-primary {
       background: #090d16;
       color: #ffffff;
-      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.16);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.16);
     }
 
     .btn-primary:hover:not(:disabled) {
@@ -707,7 +772,7 @@
       border-radius: var(--radius-md);
     }
 
-    /* ─── SKELETON ─── */
+    /* ─── SKELETON LOADERS ─── */
     @keyframes shimmer {
       0% { background-position: -400px 0; }
       100% { background-position: 400px 0; }
@@ -747,7 +812,7 @@
 
     .empty-state p {
       font-size: 0.88rem;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text);
     }
 
@@ -758,11 +823,11 @@
       display: block;
     }
 
-    /* ─── BOTTOM SHEET MODAL (BANKING TRANSFER SHEET) ─── */
+    /* ─── BOTTOM SHEET PAYMENT MODAL ─── */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(9, 13, 22, 0.55);
+      background: rgba(9, 13, 22, 0.6);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       z-index: 200;
@@ -779,11 +844,11 @@
       pointer-events: auto;
     }
 
-    .modal-sheet {
+    .bottom-sheet {
       background: #ffffff;
       border-radius: 24px 24px 0 0;
       width: 100%;
-      max-width: 520px;
+      max-width: 580px;
       max-height: 92vh;
       overflow-y: auto;
       padding: 1.5rem 1.5rem 2.5rem;
@@ -793,19 +858,19 @@
       box-shadow: var(--shadow-float);
     }
 
-    .modal-overlay.open .modal-sheet {
+    .modal-overlay.open .bottom-sheet {
       transform: translateY(0);
     }
 
     .sheet-handle {
-      width: 40px;
+      width: 44px;
       height: 4px;
       background: var(--border-dark);
-      border-radius: 9999px;
+      border-radius: var(--radius-full);
       margin: 0 auto 1.25rem;
     }
 
-    .sheet-close-btn {
+    .sheet-close {
       position: absolute;
       top: 1.25rem;
       right: 1.25rem;
@@ -822,12 +887,12 @@
       transition: all 120ms;
     }
 
-    .sheet-close-btn:hover {
+    .sheet-close:hover {
       background: var(--border);
       color: var(--text);
     }
 
-    .sheet-header {
+    .sheet-head {
       text-align: center;
       margin-bottom: 1.25rem;
     }
@@ -837,19 +902,19 @@
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--primary-blue);
+      color: var(--pp-blue);
       margin-bottom: 0.3rem;
     }
 
     .modal-title {
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       font-weight: 800;
       color: var(--text);
       letter-spacing: -0.01em;
     }
 
     .modal-amount-box {
-      margin: 0.85rem 0 0.5rem;
+      margin: 0.75rem 0 0.5rem;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -865,16 +930,16 @@
 
     .modal-penalty {
       font-size: 0.72rem;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--danger);
       background: var(--danger-bg);
       border: 1px solid var(--danger-bdr);
-      padding: 3px 9px;
-      border-radius: 9999px;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
       margin-top: 0.3rem;
     }
 
-    /* ─── OFFICIAL QR CARD ─── */
+    /* ─── PROMPTPAY & BANK CARD INSIDE MODAL ─── */
     .qr-formal-card {
       background: #f8fafc;
       border: 1px solid var(--border);
@@ -883,11 +948,21 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.85rem;
       margin: 1.15rem 0;
     }
 
-    .qr-wrapper {
+    .qr-banner {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--pp-blue);
+      letter-spacing: 0.04em;
+    }
+
+    .qr-box-frame {
       background: #ffffff;
       padding: 14px;
       border-radius: var(--radius-md);
@@ -895,16 +970,6 @@
       box-shadow: var(--shadow-subtle);
       display: flex;
       justify-content: center;
-    }
-
-    .qr-promptpay-tag {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #003764;
-      letter-spacing: 0.04em;
     }
 
     .bank-account-box {
@@ -921,17 +986,17 @@
 
     .bank-account-num {
       font-size: 0.95rem;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.06em;
       color: var(--text);
       font-variant-numeric: tabular-nums;
     }
 
-    .btn-copy {
+    .btn-copy-account {
       background: #090d16;
       color: #ffffff;
       border: none;
-      border-radius: 8px;
+      border-radius: var(--radius-sm);
       padding: 5px 12px;
       font-size: 0.72rem;
       font-weight: 700;
@@ -940,19 +1005,19 @@
       font-family: inherit;
     }
 
-    .btn-copy:active {
+    .btn-copy-account:active {
       transform: scale(0.95);
     }
 
-    .bank-account-sub {
+    .bank-beneficiary-sub {
       font-size: 0.68rem;
       color: var(--muted);
       text-align: center;
       line-height: 1.4;
     }
 
-    /* ─── UPLOAD SLIP SECTION ─── */
-    .upload-box {
+    /* ─── UPLOAD SLIP DROPZONE ─── */
+    .slip-upload-dropzone {
       border: 1.5px dashed var(--border-dark);
       background: #f8fafc;
       border-radius: var(--radius-lg);
@@ -964,12 +1029,12 @@
       margin-bottom: 1.25rem;
     }
 
-    .upload-box:hover {
+    .slip-upload-dropzone:hover {
       border-color: var(--text);
       background: #ffffff;
     }
 
-    .upload-box input[type="file"] {
+    .slip-upload-dropzone input[type="file"] {
       position: absolute;
       inset: 0;
       opacity: 0;
@@ -984,13 +1049,13 @@
       margin-bottom: 0.4rem;
     }
 
-    .upload-title {
+    .upload-main-text {
       font-size: 0.82rem;
       font-weight: 700;
       color: var(--text);
     }
 
-    .upload-sub {
+    .upload-sub-text {
       font-size: 0.7rem;
       color: var(--muted);
       margin-top: 2px;
@@ -999,19 +1064,19 @@
     .upload-filename {
       font-size: 0.75rem;
       font-weight: 700;
-      color: var(--primary-blue);
+      color: var(--pp-blue);
       margin-top: 0.5rem;
       word-break: break-all;
     }
 
-    /* ─── SUCCESS STATE ─── */
-    .success-state {
+    /* ─── SUCCESS VIEW ─── */
+    .success-sheet-view {
       text-align: center;
       padding: 2.5rem 1rem;
       display: none;
     }
 
-    .success-icon-wrap {
+    .success-badge-icon {
       width: 64px;
       height: 64px;
       border-radius: 50%;
@@ -1024,20 +1089,20 @@
       margin: 0 auto 1rem;
     }
 
-    .success-title {
-      font-size: 1.15rem;
+    .success-main-title {
+      font-size: 1.2rem;
       font-weight: 800;
       color: var(--text);
     }
 
-    .success-sub {
-      font-size: 0.8rem;
+    .success-desc {
+      font-size: 0.82rem;
       color: var(--muted);
       margin-top: 0.4rem;
     }
 
-    /* ─── PUBLIC BOARD FINANCIAL STYLES ─── */
-    .treasury-summary-card {
+    /* ─── PUBLIC BOARD FINANCIAL PORTAL ─── */
+    .treasury-card {
       background: #ffffff;
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
@@ -1046,7 +1111,7 @@
       margin-bottom: 1.25rem;
     }
 
-    .treasury-label {
+    .treasury-caption {
       font-size: 0.7rem;
       font-weight: 700;
       letter-spacing: 0.08em;
@@ -1055,7 +1120,7 @@
       text-align: center;
     }
 
-    .treasury-amount {
+    .treasury-total-val {
       font-size: 2.2rem;
       font-weight: 800;
       letter-spacing: -0.03em;
@@ -1065,7 +1130,7 @@
       font-variant-numeric: tabular-nums;
     }
 
-    .treasury-stats-grid {
+    .treasury-split-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
@@ -1073,7 +1138,7 @@
       padding-top: 1rem;
     }
 
-    .treasury-stat-item {
+    .treasury-split-card {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1082,24 +1147,24 @@
       padding: 0.65rem 0.5rem;
     }
 
-    .treasury-stat-tag {
+    .treasury-split-tag {
       font-size: 0.65rem;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--muted);
       text-transform: uppercase;
     }
 
-    .treasury-stat-val {
+    .treasury-split-num {
       font-size: 0.95rem;
-      font-weight: 700;
+      font-weight: 800;
       font-variant-numeric: tabular-nums;
       margin-top: 2px;
     }
 
-    .treasury-stat-val.income { color: var(--success); }
-    .treasury-stat-val.expense { color: var(--danger); }
+    .treasury-split-num.inc { color: var(--success); }
+    .treasury-split-num.exp { color: var(--danger); }
 
-    .matrix-table-wrap {
+    .matrix-scroll-wrap {
       overflow-x: auto;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
@@ -1141,10 +1206,10 @@
 
     .matrix-search-input {
       width: 100%;
-      padding: 0.7rem 0.85rem 0.7rem 2.3rem;
+      padding: 0.75rem 0.85rem 0.75rem 2.4rem;
       border-radius: var(--radius-md);
       border: 1px solid var(--border);
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       background: #ffffff;
       color: var(--text);
       outline: none;
@@ -1158,15 +1223,14 @@
 
     .matrix-search-icon {
       position: absolute;
-      left: 10px;
+      left: 12px;
       top: 50%;
       transform: translateY(-50%);
       color: var(--muted);
       pointer-events: none;
     }
 
-    /* ─── PUBLIC SUBTABS ─── */
-    .public-subtabs {
+    .public-subtab-row {
       display: flex;
       gap: 6px;
       margin-bottom: 1rem;
@@ -1175,12 +1239,12 @@
     .public-subtab-btn {
       flex: 1;
       padding: 0.55rem;
-      border-radius: 9999px;
+      border-radius: var(--radius-full);
       border: 1px solid var(--border);
       background: #ffffff;
       color: var(--muted);
       font-size: 0.75rem;
-      font-weight: 600;
+      font-weight: 700;
       font-family: inherit;
       cursor: pointer;
       transition: all 120ms;
@@ -1197,92 +1261,123 @@
 </head>
 <body>
 
-<div class="app-container">
+<div class="app-viewport">
 
-  <!-- ─── APP HEADER ─── -->
-  <header class="app-header">
-    <div class="brand-block">
-      <div class="brand-badge">BEC</div>
-      <div class="brand-meta">
+  <!-- ─── TOP APP BAR ─── -->
+  <header class="top-app-bar">
+    <div class="app-brand">
+      <div class="brand-emblem">NU</div>
+      <div class="brand-info">
         <div class="brand-title">BEC BA 69</div>
-        <div class="brand-desc">กองทุนนิสิตสาขาบริหารธุรกิจ</div>
+        <div class="brand-sub">กองทุนนิสิตสาขาบริหารธุรกิจ</div>
       </div>
     </div>
-    <div class="header-user">
-      <div class="user-pill">
+    <div class="app-bar-actions">
+      <div class="student-badge-pill">
         <div class="nav-avatar" id="navAvatar">U</div>
         <span class="nav-name" id="navName">นิสิต</span>
       </div>
-      <button class="icon-btn" onclick="logout()" title="ออกจากระบบ">
+      <button class="btn-icon" onclick="logout()" title="ออกจากระบบ">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       </button>
     </div>
   </header>
 
-  <!-- ─── MAIN APP BODY ─── -->
-  <main class="app-body">
+  <!-- ─── SCROLLABLE MAIN CONTENT ─── -->
+  <main class="app-content">
 
-    <!-- ─── VIRTUAL BANK CARD ─── -->
-    <div class="virtual-card-wrapper">
-      <div class="virtual-card">
-        <div class="card-top">
-          <div class="card-org">BEC · B.B.A. COHORT 69</div>
+    <!-- ─── HERO OBSIDIAN TITANIUM CARD ─── -->
+    <div class="hero-card-container">
+      <div class="hero-bank-card">
+        <div class="card-row-top">
+          <div class="card-org-tag">BEC · B.B.A. COHORT 69</div>
           <div class="card-status-pill">
-            <span class="card-status-dot"></span>
+            <span class="pulse-dot"></span>
             <span>สถานะปกติ</span>
           </div>
         </div>
 
         <div class="card-chip-row">
-          <div class="card-emv-chip"></div>
-          <div class="card-contactless">
+          <div class="gold-emv-chip"></div>
+          <div class="contactless-glyph">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><line x1="12" y1="20" x2="12.01" y2="20" stroke-width="3"/></svg>
           </div>
         </div>
 
-        <div class="card-balance-block">
-          <div class="card-balance-label">รายการค้างชำระของฉัน</div>
-          <div class="card-balance-value">
+        <div class="card-balance-section">
+          <div class="card-balance-caption">รายการค้างชำระของฉัน</div>
+          <div class="card-balance-sum">
             <span id="heroUnpaidCount">—</span>
-            <span class="card-balance-unit">รายการ</span>
+            <span class="card-balance-currency">รายการ</span>
           </div>
         </div>
 
-        <div class="card-bottom">
-          <div class="card-holder">
-            <div class="card-holder-name" id="cardHolderName">กำลังโหลดข้อมูล...</div>
-            <div class="card-holder-sub" id="cardHolderSub">—</div>
+        <div class="card-row-bottom">
+          <div class="card-student-meta">
+            <div class="card-student-name" id="cardHolderName">กำลังโหลดข้อมูล...</div>
+            <div class="card-student-sub" id="cardHolderSub">—</div>
           </div>
-          <div class="card-bank-badge">
-            <span class="card-bank-kbank">KBANK</span>
+          <div class="kbank-official-badge">
+            <span>KBANK</span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Hidden compatibility elements -->
+    <!-- Hidden compatibility markers -->
     <div id="heroAvatar"></div>
     <div id="heroName"></div>
     <div id="heroBio"></div>
 
+    <!-- ─── QUICK ACTION DOCK ─── -->
+    <div class="quick-dock">
+      <button class="dock-btn" onclick="scrollToPayments()">
+        <div class="dock-icon-box blue">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <span class="dock-label">ชำระเงิน</span>
+      </button>
+
+      <button class="dock-btn" onclick="copyBankAccount()">
+        <div class="dock-icon-box green">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        </div>
+        <span class="dock-label">คัดลอก KBANK</span>
+      </button>
+
+      <button class="dock-btn" onclick="switchMainView('public-board', document.querySelectorAll('#mainTabsBar .seg-tab-btn')[1])">
+        <div class="dock-icon-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <span class="dock-label">งบสาขา</span>
+      </button>
+
+      <button class="dock-btn" onclick="fetchPayments(); fetchPublicBoard();">
+        <div class="dock-icon-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+        </div>
+        <span class="dock-label">รีเฟรช</span>
+      </button>
+    </div>
+
     <!-- ─── SEGMENTED SWITCHER ─── -->
-    <div class="segmented-control" id="mainTabsBar">
-      <button class="seg-btn active tab-pill" onclick="switchMainView('my-payments', this)">รายการชำระของฉัน</button>
-      <button class="seg-btn tab-pill" onclick="switchMainView('public-board', this)">งบการเงินสาขา (Public)</button>
+    <div class="segmented-switch" id="mainTabsBar">
+      <button class="seg-tab-btn active tab-pill" onclick="switchMainView('my-payments', this)">รายการชำระของฉัน</button>
+      <button class="seg-tab-btn tab-pill" onclick="switchMainView('public-board', this)">งบการเงินสาขา (Public)</button>
     </div>
 
     <!-- ─── VIEW 1: MY PAYMENTS ─── -->
     <section id="view-my-payments">
       
       <!-- Filter status pills -->
-      <div class="filter-scroll-row" id="filterTabsBar" style="margin-bottom: 0.85rem;">
-        <button class="pill-filter active tab-pill" onclick="filterItems('all', this)">ทั้งหมด</button>
-        <button class="pill-filter tab-pill" onclick="filterItems('Unpaid', this)">ค้างชำระ</button>
-        <button class="pill-filter tab-pill" onclick="filterItems('Pending', this)">รอตรวจสอบ</button>
-        <button class="pill-filter tab-pill" onclick="filterItems('Paid', this)">ชำระแล้ว</button>
+      <div class="filter-pills-row" id="filterTabsBar" style="margin-bottom: 0.85rem;">
+        <button class="pill-btn active tab-pill" onclick="filterItems('all', this)">ทั้งหมด</button>
+        <button class="pill-btn tab-pill" onclick="filterItems('Unpaid', this)">ค้างชำระ</button>
+        <button class="pill-btn tab-pill" onclick="filterItems('Pending', this)">รอตรวจสอบ</button>
+        <button class="pill-btn tab-pill" onclick="filterItems('Paid', this)">ชำระแล้ว</button>
       </div>
 
-      <div class="section-head" style="margin-bottom: 0.65rem;">
+      <div class="statement-section-head" style="margin-bottom: 0.65rem;">
         <div class="section-head-title">ประวัติรอบการเก็บเงิน</div>
         <div class="section-head-count" id="statementCount"></div>
       </div>
@@ -1311,18 +1406,18 @@
   </main>
 </div>
 
-<!-- ─── PAYMENT BOTTOM SHEET MODAL ─── -->
+<!-- ─── PAYMENT BOTTOM SHEET ─── -->
 <div class="modal-overlay" id="paymentModal">
-  <div class="modal-sheet">
+  <div class="bottom-sheet">
     <div class="sheet-handle"></div>
-    <button class="sheet-close-btn" onclick="closeModal()">
+    <button class="sheet-close" onclick="closeModal()">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
 
-    <!-- Interactive Form -->
+    <!-- Form Content -->
     <div id="modalContent">
-      <div class="sheet-header">
-        <div class="sheet-tag">PAYMENT CONFIRMATION</div>
+      <div class="sheet-head">
+        <div class="sheet-tag">TRANSFER PAYMENT</div>
         <div class="modal-title" id="modalTitle">—</div>
         <div class="modal-amount-box">
           <div class="modal-amount" id="modalAmount">฿0.00</div>
@@ -1330,39 +1425,39 @@
         </div>
       </div>
 
-      <!-- Official QR & KBANK Account Card -->
+      <!-- PromptPay & KBANK Card -->
       <div class="qr-formal-card">
-        <div class="qr-promptpay-tag">
+        <div class="qr-banner">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
           <span id="qrLabel">PromptPay QR</span>
         </div>
 
-        <div class="qr-wrapper">
+        <div class="qr-box-frame">
           <div id="qrcode"></div>
         </div>
 
         <div class="bank-account-box">
           <div>
-            <div style="font-size: 0.65rem; color: var(--muted); font-weight: 600; text-transform: uppercase;">เลขบัญชีธนาคารกสิกรไทย</div>
+            <div style="font-size: 0.65rem; color: var(--muted); font-weight: 700; text-transform: uppercase;">ธนาคารกสิกรไทย (KBANK)</div>
             <div class="bank-account-num" id="bankAccountDisplay">235-1-83876-3</div>
           </div>
-          <button class="btn-copy" onclick="copyBankAccount()">คัดลอก</button>
+          <button class="btn-copy-account" onclick="copyBankAccount()">คัดลอก</button>
         </div>
 
-        <div class="bank-account-sub">
+        <div class="bank-beneficiary-sub">
           น.ส. ธนัชชา เตรียมพล และ น.ส. วราภรณ์ แสงพันตา<br>
-          <span style="color: #15803d; font-weight: 600;">บัญชีกองทุนสาขาบริหารธุรกิจ รุ่น 69</span>
+          <span style="color: var(--kbank-green); font-weight: 700;">บัญชีกองทุนสาขาบริหารธุรกิจ รุ่น 69</span>
         </div>
       </div>
 
       <!-- Upload Slip Dropzone -->
-      <div class="upload-box" id="uploadArea">
+      <div class="slip-upload-dropzone" id="uploadArea">
         <input type="file" id="slipInput" accept="image/*" onchange="onFileSelect(this)" />
         <div class="upload-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         </div>
-        <div class="upload-title">แตะเพื่อแนบรูปภาพสลิปโอนเงิน</div>
-        <div class="upload-sub">รองรับ JPG, PNG และ WebP จากแอปธนาคาร</div>
+        <div class="upload-main-text">แตะเพื่อแนบรูปภาพสลิปโอนเงิน</div>
+        <div class="upload-sub-text">รองรับ JPG, PNG และ WebP จากทุกแอปธนาคาร</div>
         <div class="upload-filename" id="uploadFilename"></div>
       </div>
 
@@ -1370,12 +1465,12 @@
     </div>
 
     <!-- Success View -->
-    <div class="success-state" id="successState">
-      <div class="success-icon-wrap">
+    <div class="success-sheet-view" id="successState">
+      <div class="success-badge-icon">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
-      <div class="success-title">ส่งสลิปเรียบร้อยแล้ว</div>
-      <div class="success-sub">ระบบได้บันทึกการส่งสลิปแล้ว เหรัญญิกจะตรวจสอบและอัปเดตสถานะให้ท่านโดยเร็ว</div>
+      <div class="success-main-title">ส่งสลิปเรียบร้อยแล้ว</div>
+      <div class="success-desc">ระบบได้บันทึกการส่งสลิปแล้ว เหรัญญิกจะตรวจสอบและอัปเดตสถานะให้ท่านโดยเร็ว</div>
       <button class="btn btn-primary btn-full" style="margin-top: 1.5rem;" onclick="closeModal()">กลับสู่หน้าหลัก</button>
     </div>
   </div>
@@ -1441,13 +1536,18 @@
 
   // ─── SWITCH MAIN VIEW ───
   function switchMainView(view, el) {
-    document.querySelectorAll('#mainTabsBar .seg-btn, #mainTabsBar .tab-pill').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('#mainTabsBar .seg-tab-btn, #mainTabsBar .tab-pill').forEach(t => t.classList.remove('active'));
     if (el) el.classList.add('active');
     
     const vPayments = document.getElementById('view-my-payments');
     const vPublic = document.getElementById('view-public-board');
     if (vPayments) vPayments.style.display = view === 'my-payments' ? 'block' : 'none';
     if (vPublic) vPublic.style.display = view === 'public-board' ? 'block' : 'none';
+  }
+
+  function scrollToPayments() {
+    const list = document.getElementById('paymentList');
+    if (list) list.scrollIntoView({ behavior: 'smooth' });
   }
 
   // ─── RENDER PUBLIC BOARD ───
@@ -1462,7 +1562,7 @@
               <div style="color:var(--text);font-weight:700">${e.source}</div>
               <div style="color:var(--muted);font-size:0.72rem;margin-top:2px">
                 ${new Date(e.date).toLocaleDateString('th-TH')}
-                ${e.receiptUrl ? ` · <a href="${e.receiptUrl}" target="_blank" style="color:var(--primary-blue);text-decoration:underline">ดูหลักฐาน</a>` : ''}
+                ${e.receiptUrl ? ` · <a href="${e.receiptUrl}" target="_blank" style="color:var(--pp-blue);text-decoration:underline">ดูหลักฐาน</a>` : ''}
               </div>
             </div>
             <div style="color:var(--success);font-weight:800;font-variant-numeric:tabular-nums">+฿${fmt(e.amount)}</div>
@@ -1477,7 +1577,7 @@
               <div style="color:var(--text);font-weight:700">${e.title}</div>
               <div style="color:var(--muted);font-size:0.72rem;margin-top:2px">
                 ${new Date(e.date).toLocaleDateString('th-TH')}
-                ${e.receiptUrl ? ` · <a href="${e.receiptUrl}" target="_blank" style="color:var(--primary-blue);text-decoration:underline">ดูหลักฐาน</a>` : ''}
+                ${e.receiptUrl ? ` · <a href="${e.receiptUrl}" target="_blank" style="color:var(--pp-blue);text-decoration:underline">ดูหลักฐาน</a>` : ''}
               </div>
             </div>
             <div style="color:var(--danger);font-weight:800;font-variant-numeric:tabular-nums">-฿${fmt(e.amount)}</div>
@@ -1486,7 +1586,7 @@
 
     // Matrix rows
     const matrixHtml = `
-      <div class="matrix-table-wrap">
+      <div class="matrix-scroll-wrap">
         <table class="matrix-table">
           <thead>
             <tr>
@@ -1512,23 +1612,23 @@
 
     let html = `
       <!-- Treasury Statement Card -->
-      <div class="treasury-summary-card">
-        <div class="treasury-label">ยอดเงินกองทุนสาขาคงเหลือสุทธิ</div>
-        <div class="treasury-amount">฿${fmt(data.totalBalance)}</div>
-        <div class="treasury-stats-grid">
-          <div class="treasury-stat-item">
-            <span class="treasury-stat-tag">รายรับรวม</span>
-            <span class="treasury-stat-val income">+฿${fmt(data.totalIncome || 0)}</span>
+      <div class="treasury-card">
+        <div class="treasury-caption">ยอดเงินกองทุนสาขาคงเหลือสุทธิ</div>
+        <div class="treasury-total-val">฿${fmt(data.totalBalance)}</div>
+        <div class="treasury-split-grid">
+          <div class="treasury-split-card">
+            <span class="treasury-split-tag">รายรับรวม</span>
+            <span class="treasury-split-num inc">+฿${fmt(data.totalIncome || 0)}</span>
           </div>
-          <div class="treasury-stat-item">
-            <span class="treasury-stat-tag">รายจ่ายรวม</span>
-            <span class="treasury-stat-val expense">-฿${fmt(data.totalExpense || 0)}</span>
+          <div class="treasury-split-card">
+            <span class="treasury-split-tag">รายจ่ายรวม</span>
+            <span class="treasury-split-num exp">-฿${fmt(data.totalExpense || 0)}</span>
           </div>
         </div>
       </div>
 
       <!-- Segmented Sub-tabs -->
-      <div class="public-subtabs">
+      <div class="public-subtab-row">
         <button id="pbTab-finance" class="public-subtab-btn active" onclick="switchPbTab('finance')">
           รายการบัญชี รับ-จ่าย
         </button>
@@ -1761,7 +1861,7 @@
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 <span>ครบกำหนด ${dueStr}</span>
               </div>
-              ${ev.penalty > 0 ? `<div class="statement-penalty-alert">+ ค่าปรับ ฿${ev.penalty} (เกินกำหนด)</div>` : ''}
+              ${ev.penalty > 0 ? `<div class="penalty-pill">+ ค่าปรับ ฿${ev.penalty} (เกินกำหนด)</div>` : ''}
             </div>
             <div class="statement-amount-box">
               <div class="statement-amount">฿${Number(ev.totalAmount).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
@@ -1774,7 +1874,7 @@
           <div class="statement-row-bottom">
             <span class="status-badge ${badgeClass}">${badgeText}</span>
             ${isUnpaid ? `
-              <button class="btn btn-pay" onclick="openModal('${ev.eventId}', '${ev.title.replace(/'/g, "\\'")}', ${ev.totalAmount}, ${ev.penalty})">
+              <button class="btn btn-pay-now" onclick="openModal('${ev.eventId}', '${ev.title.replace(/'/g, "\\'")}', ${ev.totalAmount}, ${ev.penalty})">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 ชำระเงิน
               </button>
@@ -1786,7 +1886,7 @@
   }
 
   function filterItems(status, el) {
-    document.querySelectorAll('#filterTabsBar .pill-filter, #filterTabsBar .tab-pill').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('#filterTabsBar .pill-btn, #filterTabsBar .tab-pill').forEach(t => t.classList.remove('active'));
     if (el) el.classList.add('active');
     const list = status === 'all' ? allEvents : allEvents.filter(e => e.status === status);
     renderList(list);
@@ -1837,7 +1937,7 @@
     return payload + (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
   }
 
-  // ─── PAYMENT BOTTOM SHEET MODAL ───
+  // ─── BOTTOM SHEET PAYMENT MODAL ───
   function openModal(eventId, title, totalAmount, penalty) {
     currentPayment = { eventId, title, totalAmount, penalty };
     document.getElementById('modalTitle').textContent  = title;
@@ -1878,15 +1978,8 @@
 
   function copyBankAccount() {
     navigator.clipboard.writeText(BANK_ACCOUNT).then(() => {
-      const btn = document.querySelector('.btn-copy');
-      if (btn) {
-        btn.textContent = 'คัดลอกแล้ว ✓';
-        btn.style.background = '#15803d';
-        setTimeout(() => {
-          btn.textContent = 'คัดลอก';
-          btn.style.background = '#090d16';
-        }, 1800);
-      }
+      const btns = document.querySelectorAll('.btn-copy-account, .dock-btn');
+      showToast('คัดลอกเลขบัญชี 235-1-83876-3 แล้ว ✓');
     }).catch(() => alert('235-1-83876-3'));
   }
 
@@ -2003,6 +2096,24 @@
       btn.disabled = false;
       btn.textContent = 'ยืนยันการชำระเงิน';
     }
+  }
+
+  // Toast helper
+  function showToast(msg) {
+    let t = document.getElementById('appToast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'appToast';
+      t.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:#090d16;color:#fff;padding:0.75rem 1.25rem;border-radius:9999px;font-size:0.8rem;font-weight:600;z-index:999;box-shadow:0 10px 25px rgba(0,0,0,0.2);opacity:0;transition:all 200ms ease;pointer-events:none;';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.style.opacity = '1';
+    t.style.transform = 'translateX(-50%) translateY(0)';
+    setTimeout(() => {
+      t.style.opacity = '0';
+      t.style.transform = 'translateX(-50%) translateY(20px)';
+    }, 2400);
   }
 
   async function logout() {
