@@ -269,87 +269,6 @@
       pointer-events: none;
     }
 
-    /* Card Themes */
-    .hero-bank-card[data-theme="obsidian"] {
-      background: linear-gradient(135deg, #090d16 0%, #172033 50%, #0a0e1a 100%);
-      border-color: rgba(255, 255, 255, 0.15);
-    }
-    .hero-bank-card[data-theme="pearl"] {
-      background: linear-gradient(135deg, #1e293b 0%, #334155 45%, #475569 100%);
-      border-color: rgba(255, 255, 255, 0.35);
-      box-shadow: 0 18px 36px -10px rgba(71, 85, 105, 0.35), 0 4px 12px rgba(0, 0, 0, 0.12);
-    }
-    .hero-bank-card[data-theme="rosegold"] {
-      background: linear-gradient(135deg, #431407 0%, #78350f 35%, #b45309 70%, #d97706 100%);
-      border-color: rgba(251, 191, 36, 0.35);
-      box-shadow: 0 18px 36px -10px rgba(180, 83, 9, 0.4), 0 4px 12px rgba(0, 0, 0, 0.12);
-    }
-    .hero-bank-card[data-theme="emerald"] {
-      background: linear-gradient(135deg, #022c22 0%, #064e3b 45%, #047857 100%);
-      border-color: rgba(74, 222, 128, 0.35);
-      box-shadow: 0 18px 36px -10px rgba(4, 120, 87, 0.4), 0 4px 12px rgba(0, 0, 0, 0.12);
-    }
-    .hero-bank-card[data-theme="sapphire"] {
-      background: linear-gradient(135deg, #082f49 0%, #0369a1 45%, #0284c7 100%);
-      border-color: rgba(56, 189, 248, 0.35);
-      box-shadow: 0 18px 36px -10px rgba(2, 132, 199, 0.4), 0 4px 12px rgba(0, 0, 0, 0.12);
-    }
-    .hero-bank-card[data-theme="neon"] {
-      background: linear-gradient(135deg, #2e1065 0%, #581c87 45%, #7e22ce 100%);
-      border-color: rgba(192, 132, 252, 0.35);
-      box-shadow: 0 18px 36px -10px rgba(126, 34, 206, 0.4), 0 4px 12px rgba(0, 0, 0, 0.12);
-    }
-    .hero-bank-card[data-theme="aurora"] {
-      background: linear-gradient(135deg, #0f172a 0%, #0f766e 40%, #4338ca 100%);
-      border-color: rgba(45, 212, 191, 0.35);
-      box-shadow: 0 18px 36px -10px rgba(15, 118, 110, 0.4), 0 4px 12px rgba(0, 0, 0, 0.12);
-    }
-    .hero-bank-card[data-theme="sunset"] {
-      background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 40%, #b45309 100%);
-      border-color: rgba(248, 113, 113, 0.35);
-      box-shadow: 0 18px 36px -10px rgba(185, 28, 28, 0.4), 0 4px 12px rgba(0, 0, 0, 0.12);
-    }
-
-    /* Patterns */
-    .hero-bank-card[data-pattern="waves"]::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border-radius: inherit;
-      background: radial-gradient(circle at 10% 20%, rgba(255,255,255,0.18) 0%, transparent 40%),
-                  radial-gradient(circle at 90% 80%, rgba(255,255,255,0.15) 0%, transparent 40%);
-      pointer-events: none;
-    }
-    .hero-bank-card[data-pattern="mesh"]::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background-image: linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
-      background-size: 16px 16px;
-      pointer-events: none;
-    }
-    .hero-bank-card[data-pattern="dots"]::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background-image: radial-gradient(rgba(255,255,255,0.16) 1px, transparent 1px);
-      background-size: 14px 14px;
-      pointer-events: none;
-    }
-    .hero-bank-card[data-pattern="hologram"]::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.15) 40%, rgba(255,215,0,0.15) 50%, rgba(0,255,255,0.15) 60%, transparent 80%);
-      pointer-events: none;
-    }
-
     .card-row-top {
       display: flex;
       justify-content: space-between;
@@ -365,30 +284,6 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: rgba(255, 255, 255, 0.7);
-    }
-
-    .card-edit-chip-btn {
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: #ffffff;
-      padding: 3px 9px;
-      border-radius: var(--radius-full);
-      font-size: 0.65rem;
-      font-weight: 700;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      transition: all 120ms ease;
-      font-family: inherit;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-    }
-    .card-edit-chip-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
-      transform: scale(1.04);
-    }
-    .card-edit-chip-btn:active {
-      transform: scale(0.96);
     }
 
     .card-status-pill {
@@ -440,27 +335,6 @@
       height: 1px;
       background: rgba(0, 0, 0, 0.2);
     }
-    .gold-emv-chip[data-chip="silver"] {
-      background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 50%, #94a3b8 100%);
-      border-color: rgba(255,255,255,0.6);
-    }
-    .gold-emv-chip[data-chip="cyber"] {
-      background: linear-gradient(135deg, #86efac 0%, #22c55e 50%, #15803d 100%);
-      border-color: rgba(255,255,255,0.5);
-    }
-
-    .card-sticker-badge {
-      font-size: 1.7rem;
-      line-height: 1;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.35));
-      transform: rotate(-6deg);
-      transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
-      user-select: none;
-    }
-    .card-sticker-badge:hover {
-      transform: rotate(6deg) scale(1.15);
-    }
-
     .contactless-glyph {
       color: rgba(255, 255, 255, 0.65);
     }
@@ -526,18 +400,6 @@
       max-width: 240px;
     }
 
-    .card-custom-tagline {
-      font-size: 0.68rem;
-      color: rgba(255, 255, 255, 0.85);
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      margin-top: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 220px;
-    }
-
     .card-student-sub {
       font-size: 0.68rem;
       color: rgba(255, 255, 255, 0.6);
@@ -560,65 +422,6 @@
     }
     .kbank-official-badge:hover {
       background: rgba(0, 0, 0, 0.5);
-    }
-
-    /* ─── CARD ACTION BAR (REPLACING THE 4 DOCK BOXES) ─── */
-    .card-action-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .btn-card-studio {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 0.7rem 1rem;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      background: #ffffff;
-      color: var(--text);
-      font-size: 0.78rem;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: var(--shadow-subtle);
-      transition: all 140ms ease;
-      font-family: inherit;
-    }
-    .btn-card-studio:hover {
-      border-color: var(--border-dark);
-      background: var(--surface-sub);
-      transform: translateY(-1px);
-    }
-    .btn-card-studio:active {
-      transform: scale(0.97);
-    }
-
-    .btn-copy-kbank-pill {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 0.7rem 0.95rem;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--kbank-border);
-      background: var(--kbank-light);
-      color: var(--kbank-green);
-      font-size: 0.75rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 140ms ease;
-      font-family: inherit;
-      white-space: nowrap;
-    }
-    .btn-copy-kbank-pill:hover {
-      background: #dcfce7;
-      transform: translateY(-1px);
-    }
-    .btn-copy-kbank-pill:active {
-      transform: scale(0.97);
     }
 
     /* Compatibility hidden IDs */
@@ -1252,132 +1055,6 @@
       margin-top: 0.4rem;
     }
 
-    /* ─── CARD STUDIO STYLES ─── */
-    .studio-preview-box {
-      margin-bottom: 1.25rem;
-      perspective: 1000px;
-    }
-    .studio-card-preview {
-      margin: 0 auto;
-      box-shadow: 0 12px 28px -6px rgba(15, 23, 42, 0.25);
-      transition: background 250ms ease, border-color 250ms ease;
-    }
-    .studio-controls-body {
-      display: flex;
-      flex-direction: column;
-      gap: 1.15rem;
-    }
-    .studio-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-    }
-    .studio-label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-    .studio-theme-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-    }
-    @media (max-width: 440px) {
-      .studio-theme-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    .theme-option {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 7px 9px;
-      border-radius: var(--radius-md);
-      border: 1.5px solid var(--border);
-      background: #ffffff;
-      cursor: pointer;
-      font-family: inherit;
-      transition: all 120ms ease;
-    }
-    .theme-option:hover {
-      border-color: var(--border-dark);
-    }
-    .theme-option.active {
-      border-color: #090d16;
-      background: var(--surface-sub);
-      box-shadow: 0 0 0 2px rgba(9, 13, 22, 0.12);
-    }
-    .theme-swatch {
-      width: 20px;
-      height: 20px;
-      border-radius: 6px;
-      border: 1px solid rgba(0,0,0,0.1);
-      flex-shrink: 0;
-    }
-    .theme-name {
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--text);
-      white-space: nowrap;
-    }
-    .studio-pill-row {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .studio-pill-btn {
-      padding: 0.45rem 0.85rem;
-      border-radius: var(--radius-full);
-      border: 1px solid var(--border);
-      background: #ffffff;
-      color: var(--muted);
-      font-size: 0.75rem;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-      transition: all 120ms;
-    }
-    .studio-pill-btn:hover {
-      border-color: var(--border-dark);
-      color: var(--text);
-    }
-    .studio-pill-btn.active {
-      background: #090d16;
-      color: #ffffff;
-      border-color: #090d16;
-    }
-    .studio-sticker-row {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-    }
-    .sticker-btn {
-      padding: 6px 12px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      background: #ffffff;
-      font-size: 1.15rem;
-      cursor: pointer;
-      transition: all 120ms;
-      font-family: inherit;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 44px;
-    }
-    .sticker-btn:hover {
-      border-color: var(--border-dark);
-      transform: scale(1.08);
-    }
-    .sticker-btn.active {
-      border-color: #090d16;
-      background: var(--surface-sub);
-      box-shadow: 0 0 0 2px rgba(9, 13, 22, 0.12);
-    }
-
     /* ─── PUBLIC BOARD FINANCIAL PORTAL ─── */
     .treasury-card {
       background: #ffffff;
@@ -1563,25 +1240,19 @@
   <!-- ─── SCROLLABLE MAIN CONTENT ─── -->
   <main class="app-content">
 
-    <!-- ─── HERO CUSTOMIZABLE BANK CARD ─── -->
+    <!-- ─── HERO EXECUTIVE BANK CARD ─── -->
     <div class="hero-card-container">
-      <div class="hero-bank-card" id="mainHeroBankCard" data-theme="obsidian" data-pattern="none">
+      <div class="hero-bank-card" id="mainHeroBankCard">
         <div class="card-row-top">
           <div class="card-org-tag">BEC · B.B.A. COHORT 69</div>
-          <div style="display:flex; align-items:center; gap:6px;">
-            <button class="card-edit-chip-btn" onclick="openCardStudio()" title="ปรับแต่งดีไซน์บัตรของคุณ">
-              <span>🎨 แต่งบัตร</span>
-            </button>
-            <div class="card-status-pill">
-              <span class="pulse-dot"></span>
-              <span>สถานะปกติ</span>
-            </div>
+          <div class="card-status-pill">
+            <span class="pulse-dot"></span>
+            <span>สถานะปกติ</span>
           </div>
         </div>
 
         <div class="card-chip-row">
-          <div class="gold-emv-chip" id="mainCardChip" data-chip="gold"></div>
-          <div class="card-sticker-badge" id="cardStickerBadge" style="display:none;"></div>
+          <div class="gold-emv-chip" id="mainCardChip"></div>
           <div class="contactless-glyph">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><line x1="12" y1="20" x2="12.01" y2="20" stroke-width="3"/></svg>
           </div>
@@ -1598,7 +1269,6 @@
         <div class="card-row-bottom">
           <div class="card-student-meta">
             <div class="card-student-name" id="cardHolderName">กำลังโหลดข้อมูล...</div>
-            <div class="card-custom-tagline" id="cardCustomTagline" style="display:none;"></div>
             <div class="card-student-sub" id="cardHolderSub">—</div>
           </div>
           <div class="kbank-official-badge" onclick="copyBankAccount()" style="cursor:pointer;" title="แตะเพื่อคัดลอกเลขบัญชี KBANK">
@@ -1612,17 +1282,6 @@
     <div id="heroAvatar"></div>
     <div id="heroName"></div>
     <div id="heroBio"></div>
-
-    <!-- ─── CARD ACTION BAR (STUDIO & KBANK PILL) ─── -->
-    <div class="card-action-bar">
-      <button class="btn-card-studio" onclick="openCardStudio()">
-        <span>🎨 ปรับแต่งดีไซน์บัตร (Card Studio)</span>
-      </button>
-      <button class="btn-copy-kbank-pill" onclick="copyBankAccount()" title="คัดลอกเลขบัญชีกองทุน">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-        <span>KBANK 235-1-83876-3</span>
-      </button>
-    </div>
 
     <!-- ─── SEGMENTED SWITCHER ─── -->
     <div class="segmented-switch" id="mainTabsBar">
@@ -1668,163 +1327,6 @@
     </section>
 
   </main>
-</div>
-
-<!-- ─── CARD STUDIO MODAL (CUSTOMIZE VIRTUAL CARD) ─── -->
-<div class="modal-overlay" id="cardStudioModal">
-  <div class="bottom-sheet studio-sheet">
-    <div class="sheet-handle"></div>
-    <button class="sheet-close" onclick="closeCardStudio()">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-
-    <div class="sheet-head">
-      <div class="sheet-tag">STUDENT CARD STUDIO</div>
-      <div class="modal-title">ปรับแต่งบัตรกองทุนของคุณ</div>
-      <p style="font-size:0.75rem; color:var(--muted); margin-top:0.25rem;">เลือกโทนสี ลวดลาย สติกเกอร์ และข้อความประจำตัวได้ตามใจชอบ</p>
-    </div>
-
-    <!-- Live Card Mini-Preview -->
-    <div class="studio-preview-box">
-      <div class="hero-bank-card studio-card-preview" id="studioPreviewCard" data-theme="obsidian" data-pattern="none">
-        <div class="card-row-top">
-          <div class="card-org-tag">BEC · B.B.A. COHORT 69</div>
-          <div class="card-status-pill">
-            <span class="pulse-dot"></span>
-            <span>ตัวอย่างสด</span>
-          </div>
-        </div>
-
-        <div class="card-chip-row">
-          <div class="gold-emv-chip" id="studioPreviewChip" data-chip="gold"></div>
-          <div class="card-sticker-badge" id="studioPreviewSticker" style="display:none;"></div>
-          <div class="contactless-glyph">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><line x1="12" y1="20" x2="12.01" y2="20" stroke-width="3"/></svg>
-          </div>
-        </div>
-
-        <div class="card-balance-section">
-          <div class="card-balance-caption">รายการค้างชำระของฉัน</div>
-          <div class="card-balance-sum">
-            <span id="studioPreviewBalance">1 รายการ</span>
-          </div>
-        </div>
-
-        <div class="card-row-bottom">
-          <div class="card-student-meta">
-            <div class="card-student-name" id="studioPreviewName">ชื่อของคุณ</div>
-            <div class="card-custom-tagline" id="studioPreviewTagline" style="display:none;"></div>
-            <div class="card-student-sub">นิสิตสาขาบริหารธุรกิจ</div>
-          </div>
-          <div class="kbank-official-badge">
-            <span>KBANK</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Customization Controls -->
-    <div class="studio-controls-body">
-      <!-- 1. Color Themes -->
-      <div class="studio-group">
-        <label class="studio-label">1. โทนสีและวัสดุบัตร (Card Material & Color)</label>
-        <div class="studio-theme-grid">
-          <button type="button" class="theme-option active" data-theme="obsidian" onclick="setStudioTheme('obsidian', this)">
-            <span class="theme-swatch" style="background: linear-gradient(135deg, #090d16, #1e293b);"></span>
-            <span class="theme-name">Obsidian</span>
-          </button>
-          <button type="button" class="theme-option" data-theme="pearl" onclick="setStudioTheme('pearl', this)">
-            <span class="theme-swatch" style="background: linear-gradient(135deg, #334155, #64748b);"></span>
-            <span class="theme-name">Platinum</span>
-          </button>
-          <button type="button" class="theme-option" data-theme="rosegold" onclick="setStudioTheme('rosegold', this)">
-            <span class="theme-swatch" style="background: linear-gradient(135deg, #78350f, #d97706);"></span>
-            <span class="theme-name">Rose Gold</span>
-          </button>
-          <button type="button" class="theme-option" data-theme="emerald" onclick="setStudioTheme('emerald', this)">
-            <span class="theme-swatch" style="background: linear-gradient(135deg, #064e3b, #047857);"></span>
-            <span class="theme-name">Emerald</span>
-          </button>
-          <button type="button" class="theme-option" data-theme="sapphire" onclick="setStudioTheme('sapphire', this)">
-            <span class="theme-swatch" style="background: linear-gradient(135deg, #0369a1, #0284c7);"></span>
-            <span class="theme-name">Sapphire</span>
-          </button>
-          <button type="button" class="theme-option" data-theme="neon" onclick="setStudioTheme('neon', this)">
-            <span class="theme-swatch" style="background: linear-gradient(135deg, #581c87, #7e22ce);"></span>
-            <span class="theme-name">Violet Glow</span>
-          </button>
-          <button type="button" class="theme-option" data-theme="aurora" onclick="setStudioTheme('aurora', this)">
-            <span class="theme-swatch" style="background: linear-gradient(135deg, #0f766e, #4338ca);"></span>
-            <span class="theme-name">Aurora</span>
-          </button>
-          <button type="button" class="theme-option" data-theme="sunset" onclick="setStudioTheme('sunset', this)">
-            <span class="theme-swatch" style="background: linear-gradient(135deg, #991b1b, #b45309);"></span>
-            <span class="theme-name">Crimson Gold</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- 2. Pattern Overlay -->
-      <div class="studio-group">
-        <label class="studio-label">2. ลวดลายพื้นผิว (Texture & Pattern)</label>
-        <div class="studio-pill-row">
-          <button type="button" class="studio-pill-btn active" data-pattern="none" onclick="setStudioPattern('none', this)">เรียบหรู (Clean)</button>
-          <button type="button" class="studio-pill-btn" data-pattern="waves" onclick="setStudioPattern('waves', this)">คลื่นผ้าไหม</button>
-          <button type="button" class="studio-pill-btn" data-pattern="mesh" onclick="setStudioPattern('mesh', this)">คาร์บอนกริด</button>
-          <button type="button" class="studio-pill-btn" data-pattern="dots" onclick="setStudioPattern('dots', this)">ดวงดาว</button>
-          <button type="button" class="studio-pill-btn" data-pattern="hologram" onclick="setStudioPattern('hologram', this)">โฮโลแกรม</button>
-        </div>
-      </div>
-
-      <!-- 3. Sticker Badge -->
-      <div class="studio-group">
-        <label class="studio-label">3. สติกเกอร์ประจำตัว (Card Sticker Badge)</label>
-        <div class="studio-sticker-row">
-          <button type="button" class="sticker-btn active" data-sticker="" onclick="setStudioSticker('', this)">✕ ไม่มี</button>
-          <button type="button" class="sticker-btn" data-sticker="👑" onclick="setStudioSticker('👑', this)">👑</button>
-          <button type="button" class="sticker-btn" data-sticker="💸" onclick="setStudioSticker('💸', this)">💸</button>
-          <button type="button" class="sticker-btn" data-sticker="💼" onclick="setStudioSticker('💼', this)">💼</button>
-          <button type="button" class="sticker-btn" data-sticker="🚀" onclick="setStudioSticker('🚀', this)">🚀</button>
-          <button type="button" class="sticker-btn" data-sticker="🎓" onclick="setStudioSticker('🎓', this)">🎓</button>
-          <button type="button" class="sticker-btn" data-sticker="🐱" onclick="setStudioSticker('🐱', this)">🐱</button>
-          <button type="button" class="sticker-btn" data-sticker="⚡" onclick="setStudioSticker('⚡', this)">⚡</button>
-          <button type="button" class="sticker-btn" data-sticker="💎" onclick="setStudioSticker('💎', this)">💎</button>
-          <button type="button" class="sticker-btn" data-sticker="💖" onclick="setStudioSticker('💖', this)">💖</button>
-          <button type="button" class="sticker-btn" data-sticker="☕" onclick="setStudioSticker('☕', this)">☕</button>
-          <button type="button" class="sticker-btn" data-sticker="🦁" onclick="setStudioSticker('🦁', this)">🦁</button>
-        </div>
-      </div>
-
-      <!-- 4. Custom Tagline -->
-      <div class="studio-group">
-        <label class="studio-label">4. ข้อความฉายา / สโลแกนประจำตัว (Custom Tagline)</label>
-        <div style="position:relative;">
-          <input type="text" id="studioInputTagline" maxlength="30" placeholder="เช่น เด็กบริหาร 69, Future CEO, สายเปย์" oninput="updateStudioTagline(this.value)" style="width:100%; padding:0.75rem 3rem 0.75rem 0.85rem; border-radius:var(--radius-md); border:1px solid var(--border); font-family:inherit; font-size:0.85rem; outline:none;" />
-          <span style="position:absolute; right:10px; top:50%; transform:translateY(-50%); font-size:0.68rem; color:var(--muted);" id="taglineCharCount">0/30</span>
-        </div>
-      </div>
-
-      <!-- 5. Chip Style -->
-      <div class="studio-group">
-        <label class="studio-label">5. ชิปสมาร์ตการ์ด (EMV Chip Finish)</label>
-        <div class="studio-pill-row">
-          <button type="button" class="studio-pill-btn active" data-chip="gold" onclick="setStudioChip('gold', this)">ทอง 24K Gold</button>
-          <button type="button" class="studio-pill-btn" data-chip="silver" onclick="setStudioChip('silver', this)">เงิน Platinum</button>
-          <button type="button" class="studio-pill-btn" data-chip="cyber" onclick="setStudioChip('cyber', this)">นีออน Cyber Green</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Actions -->
-    <div style="display:flex; flex-direction:column; gap:8px; margin-top:1.5rem;">
-      <button class="btn btn-primary btn-full" onclick="saveCardCustomization()">
-        <span>บันทึกดีไซน์บัตร ✓</span>
-      </button>
-      <button class="btn btn-ghost btn-full" onclick="resetCardCustomization()">
-        <span>รีเซ็ตเป็นค่าเริ่มต้น</span>
-      </button>
-    </div>
-  </div>
 </div>
 
 <!-- ─── PAYMENT BOTTOM SHEET ─── -->
@@ -1916,167 +1418,6 @@
   let currentPayment = null;
   let publicDataFetched = false;
 
-  // ─── CARD STUDIO LOGIC ───
-  let currentCardCustom = {
-    theme: 'obsidian',
-    pattern: 'none',
-    sticker: '',
-    tagline: '',
-    chip: 'gold'
-  };
-
-  let studioDraftCustom = { ...currentCardCustom };
-
-  function getCardStorageKey() {
-    const email = (currentUser && currentUser.email) ? currentUser.email : 'guest';
-    return 'bec_card_custom_' + email.replace(/[^a-zA-Z0-9]/g, '_');
-  }
-
-  function loadCardCustomization() {
-    try {
-      const saved = localStorage.getItem(getCardStorageKey());
-      if (saved) {
-        currentCardCustom = { ...currentCardCustom, ...JSON.parse(saved) };
-      }
-    } catch(e) {
-      console.error('Error loading card custom:', e);
-    }
-    applyCardCustomToElement(currentCardCustom, document.getElementById('mainHeroBankCard'));
-  }
-
-  function applyCardCustomToElement(custom, cardEl) {
-    if (!cardEl) return;
-    cardEl.setAttribute('data-theme', custom.theme || 'obsidian');
-    cardEl.setAttribute('data-pattern', custom.pattern || 'none');
-    
-    // Chip
-    const chipEl = cardEl.querySelector('.gold-emv-chip');
-    if (chipEl) chipEl.setAttribute('data-chip', custom.chip || 'gold');
-    
-    // Sticker
-    const stickerEl = cardEl.querySelector('.card-sticker-badge');
-    if (stickerEl) {
-      if (custom.sticker) {
-        stickerEl.textContent = custom.sticker;
-        stickerEl.style.display = 'inline-block';
-      } else {
-        stickerEl.style.display = 'none';
-      }
-    }
-    
-    // Tagline
-    const taglineEl = cardEl.querySelector('.card-custom-tagline');
-    if (taglineEl) {
-      taglineEl.textContent = custom.tagline || '';
-      taglineEl.style.display = custom.tagline ? 'block' : 'none';
-    }
-  }
-
-  function openCardStudio() {
-    studioDraftCustom = { ...currentCardCustom };
-    syncStudioUIWithDraft();
-    
-    // Set preview name & balance
-    const nameEl = document.getElementById('studioPreviewName');
-    if (nameEl && currentUser) nameEl.textContent = currentUser.name || 'ชื่อของคุณ';
-    const balEl = document.getElementById('studioPreviewBalance');
-    const mainBalEl = document.getElementById('heroUnpaidCount');
-    if (balEl && mainBalEl) balEl.textContent = (mainBalEl.textContent || '0') + ' รายการค้างชำระ';
-    
-    document.getElementById('cardStudioModal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeCardStudio() {
-    const m = document.getElementById('cardStudioModal');
-    if (m) m.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  function syncStudioUIWithDraft() {
-    const previewCard = document.getElementById('studioPreviewCard');
-    applyCardCustomToElement(studioDraftCustom, previewCard);
-
-    // Theme buttons
-    document.querySelectorAll('.theme-option').forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-theme') === studioDraftCustom.theme);
-    });
-
-    // Pattern buttons
-    document.querySelectorAll('.studio-pill-btn[data-pattern]').forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-pattern') === studioDraftCustom.pattern);
-    });
-
-    // Sticker buttons
-    document.querySelectorAll('.sticker-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-sticker') === studioDraftCustom.sticker);
-    });
-
-    // Tagline input
-    const tagInput = document.getElementById('studioInputTagline');
-    if (tagInput) {
-      tagInput.value = studioDraftCustom.tagline || '';
-      const countEl = document.getElementById('taglineCharCount');
-      if (countEl) countEl.textContent = `${(studioDraftCustom.tagline || '').length}/30`;
-    }
-
-    // Chip buttons
-    document.querySelectorAll('.studio-pill-btn[data-chip]').forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-chip') === studioDraftCustom.chip);
-    });
-  }
-
-  function setStudioTheme(theme, el) {
-    studioDraftCustom.theme = theme;
-    syncStudioUIWithDraft();
-  }
-
-  function setStudioPattern(pattern, el) {
-    studioDraftCustom.pattern = pattern;
-    syncStudioUIWithDraft();
-  }
-
-  function setStudioSticker(sticker, el) {
-    studioDraftCustom.sticker = sticker;
-    syncStudioUIWithDraft();
-  }
-
-  function updateStudioTagline(val) {
-    studioDraftCustom.tagline = val.trim();
-    const countEl = document.getElementById('taglineCharCount');
-    if (countEl) countEl.textContent = `${val.length}/30`;
-    const previewCard = document.getElementById('studioPreviewCard');
-    applyCardCustomToElement(studioDraftCustom, previewCard);
-  }
-
-  function setStudioChip(chip, el) {
-    studioDraftCustom.chip = chip;
-    syncStudioUIWithDraft();
-  }
-
-  function saveCardCustomization() {
-    currentCardCustom = { ...studioDraftCustom };
-    try {
-      localStorage.setItem(getCardStorageKey(), JSON.stringify(currentCardCustom));
-    } catch(e) {
-      console.error('Error saving card custom:', e);
-    }
-    applyCardCustomToElement(currentCardCustom, document.getElementById('mainHeroBankCard'));
-    closeCardStudio();
-    showToast('บันทึกดีไซน์บัตรของคุณเรียบร้อยแล้ว ✨');
-  }
-
-  function resetCardCustomization() {
-    studioDraftCustom = {
-      theme: 'obsidian',
-      pattern: 'none',
-      sticker: '',
-      tagline: '',
-      chip: 'gold'
-    };
-    syncStudioUIWithDraft();
-  }
-
   // ─── INITIALIZATION ───
   document.addEventListener('DOMContentLoaded', () => {
     const raw = sessionStorage.getItem('loggedInUser');
@@ -2112,7 +1453,9 @@
     const heroBio = document.getElementById('heroBio');
     if (heroBio) heroBio.textContent = `${currentUser.studentId ? currentUser.studentId + ' · ' : ''}${currentUser.email || ''}`;
 
-    loadCardCustomization();
+    fetchPayments();
+    fetchPublicBoard();
+  });
     fetchPayments();
     fetchPublicBoard();
   });
@@ -2703,10 +2046,6 @@
 
   document.getElementById('paymentModal').addEventListener('click', function(e) {
     if (e.target === this) closeModal();
-  });
-
-  document.getElementById('cardStudioModal').addEventListener('click', function(e) {
-    if (e.target === this) closeCardStudio();
   });
 
   window.filterPbMatrix = function() {
