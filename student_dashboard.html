@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>กองทุนนิสิตสาขาบริหารธุรกิจ — BEC BA 69</title>
+  <title>ระบบการเงินนิสิตสาขาบริหารธุรกิจ — BEC BA 69</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet" />
@@ -1522,7 +1522,7 @@
       <div class="brand-emblem" title="BEC BA NU 69 ✦ Kuromi Edition">NU</div>
       <div class="brand-info">
         <div class="brand-title">BEC BA 69 <span style="color:var(--kuromi-pink);font-size:0.78rem;font-weight:700;">✦</span></div>
-        <div class="brand-sub">กองทุนนิสิตสาขาบริหารธุรกิจ</div>
+        <div class="brand-sub">ระบบการเงินนิสิตสาขาบริหารธุรกิจ</div>
       </div>
     </div>
     <div class="app-bar-actions">
@@ -1597,7 +1597,7 @@
     <!-- ─── SEGMENTED SWITCHER ─── -->
     <div class="segmented-switch" id="mainTabsBar">
       <button class="seg-tab-btn active tab-pill" onclick="switchMainView('my-payments', this)">รายการชำระของฉัน</button>
-      <button class="seg-tab-btn tab-pill" onclick="switchMainView('public-board', this)">งบการเงินสาขา (Public)</button>
+      <button class="seg-tab-btn tab-pill" onclick="switchMainView('public-board', this)">งบการเงินสาขา</button>
     </div>
 
     <!-- ─── VIEW 1: MY PAYMENTS ─── -->
@@ -1687,7 +1687,7 @@
 
         <div class="bank-beneficiary-sub">
           น.ส. ธนัชชา เตรียมพล และ น.ส. วราภรณ์ แสงพันตา<br>
-          <span style="color: var(--kbank-green); font-weight: 700;">บัญชีกองทุนสาขาบริหารธุรกิจ รุ่น 69</span>
+          <span style="color: var(--kbank-green); font-weight: 700;">บัญชีสาขาบริหารธุรกิจ รุ่น 69</span>
         </div>
       </div>
 
@@ -1726,7 +1726,7 @@
         <img src="assets/kuromi_success.png" class="success-kuromi-img" alt="Kuromi Success" />
       </div>
       <div class="success-main-title">ส่งสลิปเรียบร้อยแล้ว</div>
-      <div class="success-desc">ระบบได้บันทึกการส่งสลิปแล้ว เหรัญญิกจะตรวจสอบและอัปเดตสถานะให้ท่านโดยเร็ว</div>
+      <div class="success-desc">ระบบได้บันทึกการส่งสลิปแล้ว เดี๋ยวเหรัญญิกสุดสวยรีบตรวจให้น้า</div>
       <button class="btn btn-primary btn-full" style="margin-top: 1.5rem;" onclick="closeModal()">กลับสู่หน้าหลัก</button>
     </div>
   </div>
@@ -1888,7 +1888,7 @@
     let html = `
       <!-- Treasury Statement Card -->
       <div class="treasury-card">
-        <div class="treasury-caption">ยอดเงินกองทุนสาขาคงเหลือสุทธิ</div>
+        <div class="treasury-caption">ยอดเงินสาขาคงเหลือสุทธิ</div>
         <div class="treasury-total-val">฿${fmt(data.totalBalance)}</div>
       </div>
 
@@ -1906,14 +1906,14 @@
       <div id="pbPanel-finance">
         <div style="background:#ffffff;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:1rem;">
           <div style="padding:0.75rem 1rem;background:var(--surface-sub);border-bottom:1px solid var(--border);font-size:0.75rem;font-weight:700;color:var(--success);text-transform:uppercase;letter-spacing:0.04em;">
-            รายรับ (Incomes)
+            รายรับ 
           </div>
           ${incomeRows}
         </div>
 
         <div style="background:#ffffff;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;">
           <div style="padding:0.75rem 1rem;background:var(--surface-sub);border-bottom:1px solid var(--border);font-size:0.75rem;font-weight:700;color:var(--danger);text-transform:uppercase;letter-spacing:0.04em;">
-            รายจ่าย (Expenses)
+            รายจ่าย 
           </div>
           ${expenseRows}
         </div>
@@ -2009,10 +2009,10 @@
       if (statusBadge && statusText) {
         const dot = statusBadge.querySelector('.pulse-dot');
         if (unpaid === 0) {
-          statusText.textContent = 'ชำระครบถ้วน ✓';
+          statusText.textContent = 'ชำระครบถ้วนงับอ้วร ✓';
           if (dot) dot.classList.remove('pulse-amber');
         } else {
-          statusText.textContent = `ค้างชำระ ${unpaid} รายการ`;
+          statusText.textContent = `ค้างชำระน้าเตง ${unpaid} รายการ`;
           if (dot) dot.classList.add('pulse-amber');
         }
       }
