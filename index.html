@@ -54,13 +54,15 @@
             pointer-events: none;
         }
 
-        /* Carbon / Dot grid texture */
+        /* Carbon / Dot grid texture with soft edge fade */
         .texture-overlay {
             position: absolute;
             inset: 0;
             z-index: 2;
-            background-image: radial-gradient(rgba(240, 205, 245, 0.06) 1px, transparent 1px);
+            background-image: radial-gradient(rgba(240, 205, 245, 0.05) 1px, transparent 1px);
             background-size: 7px 7px;
+            mask-image: radial-gradient(circle at 50% 45%, black 45%, transparent 95%);
+            -webkit-mask-image: radial-gradient(circle at 50% 45%, black 45%, transparent 95%);
             pointer-events: none;
         }
 
@@ -119,13 +121,13 @@
             font-weight: 600;
             letter-spacing: -0.01em;
             line-height: 1;
-            background: linear-gradient(90deg, #c4b0e8 0%, #dab8ea 45%, #f2bfd9 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            /* Multi-layered neon glow matching login card border */
-            filter: drop-shadow(0 0 12px rgba(235, 185, 245, 0.85))
-                    drop-shadow(0 0 28px rgba(215, 160, 235, 0.6))
-                    drop-shadow(0 0 60px rgba(185, 120, 215, 0.35));
+            color: #f7e2f5;
+            /* Pure text-shadow completely eliminates browser rectangular tile clipping */
+            text-shadow: 
+                0 0 12px rgba(235, 185, 245, 0.95),
+                0 0 26px rgba(215, 160, 235, 0.75),
+                0 0 50px rgba(185, 120, 215, 0.5),
+                0 0 80px rgba(145, 75, 185, 0.3);
         }
 
         .main-title .subtitle {
@@ -145,17 +147,17 @@
             transform: translateY(1.5rem);
             animation: fadeInUp 1s ease-out 0.6s forwards;
 
-            background: rgba(38, 33, 50, 0.82);
-            border: 1.5px solid rgba(225, 185, 235, 0.55);
+            background: rgba(24, 18, 34, 0.68);
+            border: 1.5px solid rgba(225, 185, 235, 0.45);
             border-radius: 28px;
             padding: clamp(1.6rem, 4.5vw, 2.25rem) clamp(1.5rem, 5vw, 2.5rem);
             width: min(390px, 92vw);
             text-align: center;
-            backdrop-filter: blur(28px);
-            -webkit-backdrop-filter: blur(28px);
-            box-shadow: 0 0 35px rgba(215, 165, 235, 0.28),
-                        0 25px 60px rgba(0, 0, 0, 0.7),
-                        inset 0 0 1px 1px rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            box-shadow: 0 0 32px rgba(215, 165, 235, 0.22),
+                        0 25px 60px rgba(0, 0, 0, 0.65),
+                        inset 0 0 1px 1px rgba(255, 255, 255, 0.12);
             position: relative;
         }
 
