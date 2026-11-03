@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เข้าสู่ระบบ - BEC BA 69 Financial System</title>
     
-    <!-- Google Fonts: Playfair Display for luxury serif title, Plus Jakarta Sans & Prompt for UI -->
+    <!-- Google Fonts: Cinzel for lining numerals, Playfair Display for luxury serif title, Plus Jakarta Sans & Prompt for UI -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <script>
         // ถ้าเปิดผ่านแอป LINE ให้บังคับเด้งไป Safari/Chrome อัตโนมัติ
@@ -128,6 +128,14 @@
                 0 0 26px rgba(215, 160, 235, 0.75),
                 0 0 50px rgba(185, 120, 215, 0.5),
                 0 0 80px rgba(145, 75, 185, 0.3);
+        }
+
+        .main-title .brand-num {
+            font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-variant-numeric: lining-nums;
+            font-feature-settings: "lnum" 1;
+            letter-spacing: 0.02em;
         }
 
         .main-title .subtitle {
@@ -283,7 +291,7 @@
             <div class="brand-logo-container">
                 <img src="assets/kuromi_planet_logo.png" class="brand-planet-logo" alt="BEC BA 69 Kuromi Logo" />
             </div>
-            <h1>BEC BA 69</h1>
+            <h1>BEC BA <span class="brand-num">69</span></h1>
             <div class="subtitle">FINANCIAL SYSTEM</div>
         </div>
 
