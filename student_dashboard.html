@@ -240,7 +240,6 @@
 
     /* ─── HERO VIRTUAL EXECUTIVE CARD ─── */
     .hero-card-container {
-      perspective: 1000px;
       margin-bottom: 0.25rem;
       user-select: none;
       -webkit-user-select: none;
@@ -251,7 +250,7 @@
       width: 100%;
       aspect-ratio: 1.618 / 1;
       min-height: 228px;
-      border-radius: 22px;
+      border-radius: 20px;
       padding: 1.35rem 1.35rem;
       color: #ffffff;
       position: relative;
@@ -260,12 +259,8 @@
       flex-direction: column;
       justify-content: space-between;
       background: #181126 url('assets/card_bg_kuromi.png') center center / cover no-repeat;
-      border: 1.5px solid rgba(244, 114, 182, 0.4);
-      box-shadow: 0 20px 42px -10px rgba(35, 12, 60, 0.45), 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.25);
-      transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
-      transform-style: preserve-3d;
-      -webkit-transform-style: preserve-3d;
-      will-change: transform;
+      border: 1.5px solid rgba(244, 114, 182, 0.45);
+      box-shadow: 0 16px 36px -8px rgba(24, 10, 38, 0.5), 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.25);
       -webkit-mask-image: -webkit-radial-gradient(white, black);
       mask-image: radial-gradient(white, black);
       isolation: isolate;
@@ -276,15 +271,14 @@
       display: none;
     }
 
-    /* Dynamic Parallax Specular Sheen with Kuromi Violet-Pink Glow */
+    /* Ambient Specular Light with Kuromi Violet-Pink Glow */
     .card-specular-light {
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle 280px at var(--sheen-x, 50%) var(--sheen-y, 30%), rgba(244, 114, 182, 0.22) 0%, rgba(167, 139, 250, 0.12) 40%, transparent 80%);
+      background: radial-gradient(circle 280px at 50% 30%, rgba(244, 114, 182, 0.2) 0%, rgba(167, 139, 250, 0.1) 40%, transparent 80%);
       pointer-events: none;
       mix-blend-mode: screen;
       opacity: 0.85;
-      transition: opacity 200ms ease;
     }
 
     /* ─── CARD CONTENTS ─── */
@@ -2246,50 +2240,9 @@
     }).catch(() => alert('235-1-83876-3'));
   }
 
-  // ─── VIRTUAL EXECUTIVE CARD 3D & INTERACTIONS ───
+  // ─── VIRTUAL EXECUTIVE CARD (STATIC REALISTIC FINISH) ───
   function initCard3D() {
-    const container = document.getElementById('card3dContainer');
-    const card = document.getElementById('mainHeroBankCard');
-    if (!container || !card) return;
-
-    // Parallax tilt on mouse/touch
-    let rect = null;
-    const updateRect = () => { rect = card.getBoundingClientRect(); };
-    window.addEventListener('resize', updateRect);
-    window.addEventListener('scroll', updateRect, { passive: true });
-
-    const handlePointerMove = (clientX, clientY) => {
-      if (!rect) updateRect();
-      if (!rect || rect.width === 0) return;
-      const x = clientX - rect.left;
-      const y = clientY - rect.top;
-      const px = Math.max(0, Math.min(100, (x / rect.width) * 100));
-      const py = Math.max(0, Math.min(100, (y / rect.height) * 100));
-
-      const rx = ((y - rect.height / 2) / (rect.height / 2)) * -6.5;
-      const ry = ((x - rect.width / 2) / (rect.width / 2)) * 6.5;
-
-      container.style.setProperty('--sheen-x', `${px.toFixed(1)}%`);
-      container.style.setProperty('--sheen-y', `${py.toFixed(1)}%`);
-      
-      card.style.transform = `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
-    };
-
-    container.addEventListener('mouseenter', () => {
-      updateRect();
-      card.style.transition = 'transform 100ms ease-out';
-    });
-
-    container.addEventListener('mousemove', (e) => {
-      handlePointerMove(e.clientX, e.clientY);
-    });
-
-    container.addEventListener('mouseleave', () => {
-      card.style.transition = 'transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1)';
-      card.style.transform = 'rotateX(0deg) rotateY(0deg)';
-      container.style.setProperty('--sheen-x', '50%');
-      container.style.setProperty('--sheen-y', '30%');
-    });
+    // Mouse movement / tilt disabled per user preference for authentic physical card stability
   }
 
   function closeModal() {
