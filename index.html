@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เข้าสู่ระบบ - Business NU 69</title>
+    <title>เข้าสู่ระบบ - BEC BA 69 Financial System</title>
+    
+    <!-- Google Fonts: Playfair Display for luxury serif title, Plus Jakarta Sans & Prompt for UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <script>
         // ถ้าเปิดผ่านแอป LINE ให้บังคับเด้งไป Safari/Chrome อัตโนมัติ
         if (navigator.userAgent.indexOf("Line") > -1) {
@@ -23,8 +29,9 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-            background: #000;
+            font-family: 'Plus Jakarta Sans', 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #09070c;
+            color: #f1e8f8;
         }
 
         /* ---------- Canvas ---------- */
@@ -41,23 +48,20 @@
             position: absolute;
             inset: 0;
             z-index: 1;
-            background: linear-gradient(to bottom, rgba(0,0,0,.35) 0%, transparent 50%, rgba(0,0,0,.55) 100%);
+            background: radial-gradient(circle at 85% 15%, rgba(140, 85, 135, 0.28) 0%, transparent 55%),
+                        radial-gradient(circle at 15% 85%, rgba(120, 75, 140, 0.25) 0%, transparent 50%),
+                        linear-gradient(to bottom, rgba(9,7,12,0.4) 0%, transparent 50%, rgba(9,7,12,0.7) 100%);
+            pointer-events: none;
         }
 
-        /* ---------- Corner label ---------- */
-        .corner-label {
+        /* Carbon / Dot grid texture */
+        .texture-overlay {
             position: absolute;
-            top: 1.75rem;
-            left: 1.75rem;
-            z-index: 30;
-            font-size: 0.65rem;
-            font-weight: 300;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            color: rgba(156,163,175,.45);
-            opacity: 0;
-            transform: translateY(-1rem);
-            animation: fadeInCorner 1s ease-out 1.1s forwards;
+            inset: 0;
+            z-index: 2;
+            background-image: radial-gradient(rgba(240, 205, 245, 0.06) 1px, transparent 1px);
+            background-size: 7px 7px;
+            pointer-events: none;
         }
 
         /* ---------- Center content ---------- */
@@ -69,8 +73,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 1rem;
-            gap: 1.5rem;
+            padding: 1.5rem 1rem;
+            gap: 2rem;
         }
 
         /* ---------- Title ---------- */
@@ -79,34 +83,60 @@
             opacity: 0;
             transform: translateY(2rem);
             animation: fadeInUp 1s ease-out 0.2s forwards;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .brand-logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0.65rem;
+        }
+
+        .brand-planet-logo {
+            width: clamp(100px, 15vw, 155px);
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 0 16px rgba(230, 180, 240, 0.8))
+                    drop-shadow(0 0 32px rgba(210, 150, 230, 0.5));
+            transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), filter 300ms ease;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .brand-planet-logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 24px rgba(245, 195, 255, 0.95))
+                    drop-shadow(0 0 45px rgba(225, 165, 245, 0.65));
         }
 
         .main-title h1 {
-            font-size: clamp(2.8rem, 12vw, 9rem);
-            font-weight: 300;
-            letter-spacing: -0.04em;
+            font-family: 'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
+            font-size: clamp(3.2rem, 13vw, 8.5rem);
+            font-weight: 600;
+            letter-spacing: -0.01em;
             line-height: 1;
-            color: #fff;
-            mix-blend-mode: difference;
-            text-shadow: 0 0 60px rgba(255,255,255,.1);
+            background: linear-gradient(90deg, #c4b0e8 0%, #dab8ea 45%, #f2bfd9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            /* Multi-layered neon glow matching login card border */
+            filter: drop-shadow(0 0 12px rgba(235, 185, 245, 0.85))
+                    drop-shadow(0 0 28px rgba(215, 160, 235, 0.6))
+                    drop-shadow(0 0 60px rgba(185, 120, 215, 0.35));
         }
 
         .main-title .subtitle {
-            margin-top: 0.6rem;
-            font-size: clamp(0.55rem, 2.2vw, 0.85rem);
-            font-weight: 200;
-            letter-spacing: 0.25em;
+            margin-top: 0.85rem;
+            font-family: 'Plus Jakarta Sans', 'Prompt', sans-serif;
+            font-size: clamp(0.7rem, 2.2vw, 0.88rem);
+            font-weight: 700;
+            letter-spacing: 0.38em;
             text-transform: uppercase;
-            color: rgba(209,213,219,.75);
-        }
-
-        .main-title .subtitle span:not(.dot) {
-            display: inline-block;
-        }
-
-        .main-title .subtitle .dot {
-            margin: 0 0.5rem;
-            color: rgba(107,114,128,.7);
+            color: #d6bde0;
+            text-shadow: 0 0 12px rgba(225, 175, 235, 0.75), 0 0 25px rgba(205, 145, 225, 0.4);
         }
 
         /* ---------- Login Card ---------- */
@@ -115,69 +145,98 @@
             transform: translateY(1.5rem);
             animation: fadeInUp 1s ease-out 0.6s forwards;
 
-            background: rgba(255,255,255,.06);
-            border: 1px solid rgba(255,255,255,.12);
-            border-radius: 1.25rem;
-            padding: clamp(1.25rem, 4vw, 2rem) clamp(1.25rem, 5vw, 2.25rem);
-            width: min(340px, 88vw);
+            background: rgba(38, 33, 50, 0.82);
+            border: 1.5px solid rgba(225, 185, 235, 0.55);
+            border-radius: 28px;
+            padding: clamp(1.6rem, 4.5vw, 2.25rem) clamp(1.5rem, 5vw, 2.5rem);
+            width: min(390px, 92vw);
             text-align: center;
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            box-shadow: 0 25px 60px rgba(0,0,0,.5);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            box-shadow: 0 0 35px rgba(215, 165, 235, 0.28),
+                        0 25px 60px rgba(0, 0, 0, 0.7),
+                        inset 0 0 1px 1px rgba(255, 255, 255, 0.1);
+            position: relative;
         }
 
         .login-card .card-title {
-            font-size: clamp(0.95rem, 3vw, 1.1rem);
-            font-weight: 400;
-            color: rgba(243,244,246,.9);
-            letter-spacing: 0.04em;
-            margin-bottom: 0.3rem;
+            font-size: clamp(1.05rem, 3.2vw, 1.2rem);
+            font-weight: 700;
+            color: #f1d5e7;
+            letter-spacing: 0.02em;
+            margin-bottom: 0.35rem;
         }
 
         .login-card .card-subtitle {
-            font-size: clamp(0.68rem, 2vw, 0.75rem);
-            font-weight: 200;
-            color: rgba(156,163,175,.7);
-            letter-spacing: 0.06em;
-            margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
-            font-family: ui-sans-serif, system-ui, sans-serif;
+            font-size: clamp(0.75rem, 2.2vw, 0.82rem);
+            font-weight: 400;
+            color: #a78fae;
+            letter-spacing: 0.02em;
+            margin-bottom: 1.65rem;
         }
 
-        /* Google button wrapper */
+        /* Google button */
         .google-btn-wrapper {
             display: flex;
             justify-content: center;
+        }
+
+        .google-login-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(46, 42, 58, 0.95);
+            color: #ffffff;
+            padding: 12px 28px;
+            border-radius: 9999px;
+            font-family: inherit;
+            font-size: 0.98rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1.5px solid rgba(230, 185, 235, 0.75);
+            box-shadow: 0 0 18px rgba(220, 165, 235, 0.45);
+            transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+            text-decoration: none;
+        }
+
+        .google-login-btn:hover {
+            transform: scale(1.03);
+            border-color: rgba(245, 205, 250, 0.95);
+            box-shadow: 0 0 28px rgba(235, 180, 245, 0.65), 0 4px 14px rgba(0, 0, 0, 0.4);
+        }
+
+        .google-login-btn:active {
+            transform: scale(0.98);
         }
 
         /* Error message */
         #errorMessage {
             display: none;
             margin-top: 0.85rem;
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             color: #f87171;
-            font-family: ui-sans-serif, system-ui, sans-serif;
-            letter-spacing: 0.02em;
-            font-weight: 400;
+            font-weight: 500;
         }
 
         /* ---------- Loading spinner ---------- */
         .spinner-wrap {
-            margin-top: 0.65rem;
+            margin-top: 0.85rem;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.45rem;
-            color: rgba(156,163,175,.5);
-            font-size: 0.65rem;
-            font-family: ui-sans-serif, system-ui, sans-serif;
-            letter-spacing: 0.1em;
+            color: #c4a9d4;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
         }
 
         .spinner {
-            width: 13px;
-            height: 13px;
-            border: 1.5px solid rgba(156,163,175,.3);
-            border-top-color: rgba(156,163,175,.8);
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(220, 180, 230, 0.25);
+            border-top-color: #f1bed8;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
@@ -188,18 +247,13 @@
             to   { opacity: 1; transform: translateY(0);    }
         }
 
-        @keyframes fadeInCorner {
-            from { opacity: 0; transform: translateY(-1rem); }
-            to   { opacity: 1; transform: translateY(0);     }
-        }
-
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
         @media (min-width: 768px) {
             .content-wrapper {
-                gap: 3rem;
+                gap: 2.8rem;
                 padding: 2rem;
             }
         }
@@ -207,7 +261,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="config.js?v=99"></script>
     <script src="login.js?v=99"></script>
-    <script src="test_switcher.js?v=1"></script>
 </head>
 <body>
 
@@ -217,22 +270,19 @@
     <!-- Dark gradient overlay -->
     <div class="gradient-overlay"></div>
 
-    <!-- Corner label -->
-    <div class="corner-label"></div>
+    <!-- Micro-dot texture overlay -->
+    <div class="texture-overlay"></div>
 
     <!-- Main content -->
     <div class="content-wrapper">
 
-        <!-- Big title -->
+        <!-- Big title with Kuromi Planet Logo -->
         <div class="main-title">
-            <h1>BEC BA 69</h1>
-            <div class="subtitle">
-                <span></span>
-                <span class="dot"></span>
-                <span>financial system</span>
-                <span class="dot"></span>
-                <span></span>
+            <div class="brand-logo-container">
+                <img src="assets/kuromi_planet_logo.png" class="brand-planet-logo" alt="BEC BA 69 Kuromi Logo" />
             </div>
+            <h1>BEC BA 69</h1>
+            <div class="subtitle">FINANCIAL SYSTEM</div>
         </div>
 
         <!-- Login card -->
@@ -241,10 +291,10 @@
             <p class="card-subtitle">กรุณายืนยันตัวตนเพื่อเข้าสู่ระบบ</p>
 
             <!-- Google OAuth -->
-            <div class="google-btn-wrapper" style="cursor: pointer; margin-top: 20px;" onclick="signInWithGoogle()">
-                <div style="display:flex; align-items:center; background:#111; color:#fff; padding:12px 24px; border-radius:30px; font-family:sans-serif; font-size:16px; font-weight:500; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                    <svg width="24" height="24" viewBox="0 0 48 48" style="margin-right:12px;"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-                    เข้าสู่ระบบด้วย Google
+            <div class="google-btn-wrapper">
+                <div class="google-login-btn" onclick="signInWithGoogle()">
+                    <svg width="22" height="22" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+                    <span>เข้าสู่ระบบด้วย Google</span>
                 </div>
             </div>
 
@@ -255,29 +305,6 @@
 
             <!-- Error -->
             <p id="errorMessage"></p>
-
-            <!-- Test Environment Quick Switcher -->
-            <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid rgba(255,255,255,0.08);">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-                    <span style="font-size:0.68rem; color:rgba(255,255,255,0.5); font-family:sans-serif; letter-spacing:0.05em; text-transform:uppercase;">🧪 เซิฟเวอร์ทดสอบ (Test Server)</span>
-                    <span style="font-size:0.62rem; color:#4ade80; background:rgba(74,222,128,0.12); padding:2px 8px; border-radius:10px; font-weight:700;">104 บัญชี</span>
-                </div>
-                
-                <div style="display:flex; flex-direction:column; gap:8px;">
-                    <!-- Admin Shortcut -->
-                    <button type="button" onclick="loginAsUser('admin@nu.ac.th', 'แอดมินระบบ', 'Admin', '00000000')" style="width:100%; padding:10px 14px; border-radius:12px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); color:#fff; font-size:0.78rem; font-weight:600; cursor:pointer; font-family:sans-serif; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 120ms;">
-                        <span>⚡ เข้าสู่ระบบในฐานะ: แอดมินระบบ (Admin)</span>
-                    </button>
-                    
-                    <!-- Student Selector Dropdown (103 students) -->
-                    <div style="position:relative;">
-                        <select id="studentSelect" onchange="onSelectStudent(this.value)" style="width:100%; padding:10px 32px 10px 14px; border-radius:12px; border:1px solid rgba(255,255,255,0.18); background:#18181b; color:#f8fafc; font-size:0.78rem; font-family:sans-serif; outline:none; cursor:pointer; appearance:none; -webkit-appearance:none;">
-                            <option value="" disabled selected>👤 เลือกล็อกอินในชื่อนิสิต (103 คน)...</option>
-                        </select>
-                        <span style="position:absolute; right:14px; top:50%; transform:translateY(-50%); pointer-events:none; color:rgba(255,255,255,0.5); font-size:0.65rem;">▼</span>
-                    </div>
-                </div>
-            </div>
         </div>
 
     </div>
@@ -311,15 +338,16 @@
                 const w = canvas.width;
                 const h = canvas.height;
 
-                // Background gradient
+                // Background gradient with deep obsidian and dark mauve/violet
                 const bg = ctx.createLinearGradient(0, 0, w, h);
-                bg.addColorStop(0,   '#1a1a1a');
-                bg.addColorStop(0.5, '#2a2a2a');
-                bg.addColorStop(1,   '#1a1a1a');
+                bg.addColorStop(0,   '#0c0a10');
+                bg.addColorStop(0.35,'#201529');
+                bg.addColorStop(0.7, '#140e1b');
+                bg.addColorStop(1,   '#09070c');
                 ctx.fillStyle = bg;
                 ctx.fillRect(0, 0, w, h);
 
-                // Silk pixels (step 2 for performance)
+                // Silk pixels with soft purple/lavender ripples
                 const imgData = ctx.createImageData(w, h);
                 const d = imgData.data;
                 const tOff = speed * time;
@@ -337,9 +365,9 @@
                         const rnd = noise(x, y);
                         const intensity = Math.max(0, pattern - rnd / 15.0 * noiseIntensity);
 
-                        const r = Math.floor(123 * intensity);
-                        const g = Math.floor(116 * intensity);
-                        const b = Math.floor(129 * intensity);
+                        const r = Math.floor(180 * intensity);
+                        const g = Math.floor(140 * intensity);
+                        const b = Math.floor(205 * intensity);
 
                         const idx = (y * w + x) * 4;
                         if (idx < d.length) {
@@ -355,10 +383,10 @@
                 // Radial depth overlay
                 const ov = ctx.createRadialGradient(
                     w/2, h/2, 0,
-                    w/2, h/2, Math.max(w, h) / 2
+                    w/2, h/2, Math.max(w, h) / 1.5
                 );
-                ov.addColorStop(0, 'rgba(0,0,0,0.1)');
-                ov.addColorStop(1, 'rgba(0,0,0,0.42)');
+                ov.addColorStop(0, 'rgba(12, 10, 16, 0.2)');
+                ov.addColorStop(1, 'rgba(9, 7, 12, 0.75)');
                 ctx.fillStyle = ov;
                 ctx.fillRect(0, 0, w, h);
 
@@ -368,14 +396,6 @@
 
             animate();
         })();
-
-        function enterDemo(role) {
-            const user = role === 'Admin'
-                ? { name: 'แอดมินระบบ', email: 'admin@nu.ac.th', role: 'Admin' }
-                : { name: 'นางสาวกมลทิพย์ ยะพลหา', email: 'kamonthipy69@nu.ac.th', role: 'Student', studentId: '69343832' };
-            sessionStorage.setItem('loggedInUser', JSON.stringify(user));
-            window.location.href = role === 'Admin' ? 'admin_dashboard.html' : 'student_dashboard.html';
-        }
 
         // Hide the "loading" hint once Google button appears
         window.addEventListener('load', function () {

@@ -18,55 +18,65 @@
     }
 
     :root {
-      --bg:           #f8fafc;
+      /* ─── KUROMI PASTEL GOTHIC PALETTE ─── */
+      --bg:           #f7f4fc;
       --surface:      #ffffff;
-      --surface-sub:  #f1f5f9;
-      --border:       #e2e8f0;
-      --border-dark:  #cbd5e1;
+      --surface-sub:  #f3edf9;
+      --surface-hover:#ebe2f7;
+      --border:       #e8def7;
+      --border-dark:  #d6c3f0;
       
-      --text:         #090d16;
-      --text-sub:     #475569;
-      --muted:        #64748b;
-      --muted-light:  #94a3b8;
+      --text:         #1f142b;
+      --text-sub:     #523c6d;
+      --muted:        #7e689a;
+      --muted-light:  #a998c2;
       
-      --accent:       #090d16;
-      --accent-hover: #1e293b;
+      --accent:       #7c3aed;
+      --accent-hover: #6d28d9;
       --accent-text:  #ffffff;
 
-      --kbank-green:  #00a950;
-      --kbank-light:  #f0fdf4;
-      --kbank-border: #bbf7d0;
+      --kuromi-purple:#7c3aed;
+      --kuromi-dark:  #1e112a;
+      --kuromi-pink:  #ec4899;
+      --kuromi-pink-light: #fdf2f8;
+      --kuromi-pink-bdr:   #fbcfe8;
 
-      --pp-blue:      #003d79;
-      --pp-light:     #f0f7ff;
-      --pp-border:    #bae6fd;
+      --kbank-green:  #059669;
+      --kbank-light:  #ecfdf5;
+      --kbank-border: #a7f3d0;
 
-      --success:      #15803d;
+      --pp-blue:      #7c3aed;
+      --pp-light:     #f5f0fd;
+      --pp-border:    #ddd1f5;
+
+      --success:      #10b981;
       --success-bg:   #f0fdf4;
       --success-bdr:  #bbf7d0;
 
-      --warning:      #b45309;
+      --warning:      #f59e0b;
       --warning-bg:   #fefce8;
-      --warning-bdr:  #fef08a;
+      --warning-bdr:  #fde68a;
 
-      --danger:       #dc2626;
-      --danger-bg:    #fef2f2;
-      --danger-bdr:   #fecaca;
+      --danger:       #f43f5e;
+      --danger-bg:    #fff1f2;
+      --danger-bdr:   #fecdd3;
 
-      --radius-sm:    8px;
-      --radius-md:    12px;
-      --radius-lg:    18px;
-      --radius-xl:    24px;
+      --radius-sm:    10px;
+      --radius-md:    14px;
+      --radius-lg:    20px;
+      --radius-xl:    26px;
       --radius-full:  9999px;
 
-      --shadow-subtle: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
-      --shadow-card:   0 4px 14px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
-      --shadow-float:  0 16px 36px -4px rgba(15, 23, 42, 0.15), 0 6px 14px -2px rgba(15, 23, 42, 0.08);
+      --shadow-subtle: 0 2px 6px rgba(67, 24, 107, 0.04), 0 1px 3px rgba(67, 24, 107, 0.02);
+      --shadow-card:   0 6px 18px -2px rgba(67, 24, 107, 0.07), 0 2px 6px -1px rgba(67, 24, 107, 0.03);
+      --shadow-float:  0 18px 40px -4px rgba(35, 12, 60, 0.22), 0 6px 16px -2px rgba(35, 12, 60, 0.1);
     }
 
     html, body {
       min-height: 100%;
-      background: var(--bg);
+      background: radial-gradient(circle at 12% 15%, rgba(243, 232, 255, 0.75) 0%, transparent 40%),
+                  radial-gradient(circle at 88% 85%, rgba(253, 242, 248, 0.75) 0%, transparent 40%),
+                  #f7f4fc;
       color: var(--text);
       font-family: 'Plus Jakarta Sans', 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
       font-size: 14px;
@@ -86,7 +96,7 @@
       display: flex;
       flex-direction: column;
       position: relative;
-      box-shadow: 0 0 50px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 0 60px rgba(88, 28, 135, 0.06);
     }
 
     @media (max-width: 600px) {
@@ -118,18 +128,18 @@
     }
 
     .brand-emblem {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: #090d16;
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1f142b 0%, #7c3aed 55%, #ec4899 100%);
       color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       letter-spacing: -0.02em;
-      box-shadow: 0 3px 8px rgba(15, 23, 42, 0.2);
+      box-shadow: 0 3px 10px rgba(124, 58, 237, 0.3);
     }
 
     .brand-info {
@@ -138,7 +148,7 @@
     }
 
     .brand-title {
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       font-weight: 800;
       letter-spacing: -0.01em;
       color: var(--text);
@@ -146,7 +156,7 @@
     }
 
     .brand-sub {
-      font-size: 0.65rem;
+      font-size: 0.66rem;
       color: var(--muted);
       font-weight: 500;
       letter-spacing: 0.02em;
@@ -161,33 +171,33 @@
     .student-badge-pill {
       display: flex;
       align-items: center;
-      gap: 0.45rem;
-      padding: 4px 8px 4px 4px;
+      gap: 0.5rem;
+      padding: 3px 10px 3px 3px;
       background: var(--surface-sub);
       border: 1px solid var(--border);
       border-radius: var(--radius-full);
-      max-width: 140px;
+      max-width: 155px;
     }
 
     .nav-avatar {
-      width: 24px;
-      height: 24px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
-      background: #090d16;
-      color: #ffffff;
+      background: #ffffff;
+      border: 1.5px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.65rem;
-      font-weight: 700;
       overflow: hidden;
       flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(124, 58, 237, 0.15);
     }
 
     .nav-avatar img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
+      transform: scale(1.12);
     }
 
     .nav-name {
@@ -200,11 +210,11 @@
     }
 
     .btn-icon {
-      background: none;
+      background: var(--surface-sub);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -228,35 +238,20 @@
       gap: 1.25rem;
     }
 
-    /* ─── HERO 3D VIRTUAL EXECUTIVE CARD ─── */
+    /* ─── HERO VIRTUAL EXECUTIVE CARD ─── */
     .hero-card-container {
-      perspective: 1200px;
+      perspective: 1000px;
       margin-bottom: 0.25rem;
       user-select: none;
       -webkit-user-select: none;
       position: relative;
     }
 
-    .hero-card-flipper {
-      position: relative;
+    .hero-bank-card {
       width: 100%;
+      aspect-ratio: 1.618 / 1;
       min-height: 228px;
-      border-radius: 20px;
-      transform-style: preserve-3d;
-      -webkit-transform-style: preserve-3d;
-      transition: transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1);
-      will-change: transform;
-    }
-
-    .hero-card-container.is-flipped .hero-card-flipper {
-      transform: rotateY(180deg);
-    }
-
-    /* Common Card Face Properties */
-    .hero-card-face {
-      width: 100%;
-      min-height: 228px;
-      border-radius: 20px;
+      border-radius: 22px;
       padding: 1.35rem 1.35rem;
       color: #ffffff;
       position: relative;
@@ -264,148 +259,50 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      box-shadow: 0 18px 36px -10px rgba(15, 23, 42, 0.38), 0 4px 12px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-      transition: background 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
-    }
-
-    /* Front Face */
-    .hero-card-front {
-      transform: rotateY(0deg) translateZ(1px);
-      z-index: 2;
-    }
-
-    /* Back Face */
-    .hero-card-back {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      transform: rotateY(180deg) translateZ(1px);
-      z-index: 1;
-      padding: 1rem 1.25rem;
-    }
-
-    /* ─── CARD FINISH THEMES ─── */
-    /* 1. Obsidian Titanium (Default) */
-    .hero-card-container[data-finish="obsidian"] .hero-card-face {
-      background: linear-gradient(135deg, #0a0e17 0%, #172238 45%, #0b111e 100%);
-      border: 1.5px solid rgba(255, 255, 255, 0.18);
-    }
-
-    /* 2. Wisdom Emerald */
-    .hero-card-container[data-finish="emerald"] .hero-card-face {
-      background: linear-gradient(135deg, #051f15 0%, #0d3826 45%, #04170f 100%);
-      border: 1.5px solid rgba(74, 222, 128, 0.3);
-      box-shadow: 0 18px 36px -10px rgba(5, 31, 21, 0.45), 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(187, 247, 208, 0.25);
-    }
-
-    /* 3. Midnight Sapphire */
-    .hero-card-container[data-finish="sapphire"] .hero-card-face {
-      background: linear-gradient(135deg, #09152e 0%, #132a58 45%, #060e20 100%);
-      border: 1.5px solid rgba(147, 197, 253, 0.28);
-      box-shadow: 0 18px 36px -10px rgba(9, 21, 46, 0.45), 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(191, 219, 254, 0.25);
+      background: #181126 url('assets/card_bg_kuromi.png') center center / cover no-repeat;
+      border: 1.5px solid rgba(244, 114, 182, 0.35);
+      box-shadow: 0 20px 42px -10px rgba(35, 12, 60, 0.45), 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+      transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      will-change: transform;
     }
 
     /* Background Micro-Textured Sheens */
-    .hero-card-face::before {
-      content: '';
-      position: absolute;
-      top: -60px;
-      right: -60px;
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
-      pointer-events: none;
+    .hero-bank-card::before {
+      display: none;
     }
 
-    /* Dynamic Parallax Specular Sheen */
+    /* Dynamic Parallax Specular Sheen with Kuromi Violet-Pink Glow */
     .card-specular-light {
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle 280px at var(--sheen-x, 50%) var(--sheen-y, 30%), rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.04) 50%, transparent 80%);
+      background: radial-gradient(circle 280px at var(--sheen-x, 50%) var(--sheen-y, 30%), rgba(244, 114, 182, 0.22) 0%, rgba(167, 139, 250, 0.12) 40%, transparent 80%);
       pointer-events: none;
-      mix-blend-mode: overlay;
+      mix-blend-mode: screen;
       opacity: 0.85;
       transition: opacity 200ms ease;
     }
 
-    /* ─── FRONT FACE CONTENTS ─── */
+    /* ─── CARD CONTENTS ─── */
     .card-row-top {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       position: relative;
       z-index: 2;
-    }
-
-    .card-brand-col {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .card-org-tag {
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.9);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .card-sub-brand {
-      font-size: 0.58rem;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.55);
-    }
-
-    .card-top-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .card-flip-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 9px;
-      border-radius: var(--radius-full);
-      font-size: 0.65rem;
-      font-weight: 700;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      color: #ffffff;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      transition: all 140ms ease;
-      font-family: inherit;
-    }
-
-    .card-flip-btn:hover {
-      background: rgba(255, 255, 255, 0.22);
-      border-color: rgba(255, 255, 255, 0.35);
-      transform: translateY(-1px);
     }
 
     .card-status-pill {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 3px 9px;
+      padding: 3px 10px;
       border-radius: var(--radius-full);
       font-size: 0.65rem;
       font-weight: 700;
       background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.22);
       backdrop-filter: blur(8px);
     }
 
@@ -421,6 +318,15 @@
     .pulse-dot.pulse-amber {
       background: #fbbf24;
       box-shadow: 0 0 8px #fbbf24;
+    }
+
+    .card-org-tag {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.95);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     }
 
     /* Chip & Contactless */
@@ -479,60 +385,26 @@
       align-items: center;
     }
 
-    .card-holo-emblem {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 8px;
-      padding: 3px 8px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .holo-text {
-      font-size: 0.62rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      color: rgba(255, 255, 255, 0.8);
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-    }
-
-    /* ─── REALISTIC EMBOSSED CARD NUMBERS ─── */
+    /* ─── REALISTIC EMBOSSED STUDENT ID (8 DIGITS) ─── */
     .card-embossed-row {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      justify-content: space-between;
       margin: 0.45rem 0 0.55rem;
       position: relative;
       z-index: 2;
-      cursor: pointer;
-      padding: 4px 6px;
-      border-radius: 6px;
-      transition: background 140ms ease;
-    }
-
-    .card-embossed-row:hover {
-      background: rgba(255, 255, 255, 0.06);
+      padding: 2px 0;
+      align-self: flex-start;
+      cursor: default;
     }
 
     .embossed-digits {
       font-family: 'Space Mono', monospace, -apple-system;
-      font-size: 1.05rem;
+      font-size: 1.25rem;
       font-weight: 700;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.16em;
       color: #f1f5f9;
       text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4), 0 -1px 1px rgba(0, 0, 0, 0.85);
       line-height: 1;
-    }
-
-    .embossed-copy-icon {
-      color: rgba(255, 255, 255, 0.45);
-      display: flex;
-      align-items: center;
-      transition: color 120ms ease;
-    }
-    .card-embossed-row:hover .embossed-copy-icon {
-      color: rgba(255, 255, 255, 0.9);
     }
 
     /* Balance Section */
@@ -588,14 +460,14 @@
     }
 
     .card-student-name {
-      font-size: 0.86rem;
+      font-size: 0.88rem;
       font-weight: 700;
       letter-spacing: 0.02em;
       color: #ffffff;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 230px;
+      max-width: 250px;
     }
 
     .card-student-sub {
@@ -608,286 +480,51 @@
     .card-right-meta {
       display: flex;
       align-items: center;
-      gap: 10px;
       flex-shrink: 0;
     }
 
-    .card-valid-date {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      line-height: 1.1;
-    }
-
-    .valid-label {
-      font-size: 0.5rem;
-      letter-spacing: 0.06em;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.5);
-    }
-
-    .valid-val {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.85);
-    }
-
-    .kbank-official-badge {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(0, 0, 0, 0.35);
-      padding: 4px 10px;
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      color: #4ade80;
-      transition: all 120ms;
-    }
-    .kbank-official-badge:hover {
-      background: rgba(0, 0, 0, 0.55);
-      transform: translateY(-1px);
-    }
-
-    /* ─── BACK FACE STYLING ─── */
-    .card-mag-stripe {
-      width: calc(100% + 2.7rem);
-      margin: -1rem -1.35rem 0.65rem;
-      height: 38px;
-      background: linear-gradient(180deg, #11141c 0%, #06080d 50%, #151a24 100%);
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
-      position: relative;
-    }
-
-    .mag-stripe-sheen {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.06) 50%, transparent 100%);
-    }
-
-    .card-signature-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 0.65rem;
-      position: relative;
-      z-index: 2;
-    }
-
-    .card-signature-strip {
-      flex: 1;
-      height: 34px;
-      background: #f8fafc;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      padding: 0 10px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
-    }
-
-    .sig-security-pattern {
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0, 0, 0, 0.03) 5px, rgba(0, 0, 0, 0.03) 10px);
-      pointer-events: none;
-    }
-
-    .sig-handwriting {
-      font-family: 'Caveat', cursive, sans-serif;
-      font-size: 1.18rem;
-      font-weight: 700;
-      color: #0f172a;
-      letter-spacing: 0.02em;
-      position: relative;
-      z-index: 2;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 190px;
-    }
-
-    .card-cvc-box {
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 4px;
-      padding: 3px 8px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-width: 44px;
-    }
-
-    .cvc-label {
-      font-size: 0.5rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    .cvc-value {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: 0.1em;
-    }
-
-    /* Back Bank Account Box */
-    .card-back-account-box {
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.16);
+    .card-holo-emblem {
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.22) 0%, rgba(124, 58, 237, 0.28) 100%);
+      border: 1px solid rgba(244, 114, 182, 0.4);
       border-radius: 10px;
-      padding: 8px 10px;
+      padding: 5px 12px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      cursor: pointer;
+      gap: 4px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+    }
+
+    .holo-text {
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: #ffffff;
+      text-shadow: 0 0 8px rgba(244, 114, 182, 0.6), 0 1px 2px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ─── RECEIPT PROOF BUTTON ─── */
+    .btn-receipt-view {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: var(--radius-sm);
+      background: var(--surface-sub);
+      border: 1px solid var(--border);
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-decoration: none;
       transition: all 140ms ease;
-      position: relative;
-      z-index: 2;
-      margin-bottom: 0.65rem;
+      margin-top: 5px;
     }
-
-    .card-back-account-box:hover {
-      background: rgba(0, 0, 0, 0.5);
-      border-color: rgba(255, 255, 255, 0.28);
-    }
-
-    .back-acc-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: rgba(74, 222, 128, 0.15);
-      color: #4ade80;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .back-acc-details {
-      flex: 1;
-      min-width: 0;
-      line-height: 1.25;
-    }
-
-    .back-acc-title {
-      font-size: 0.62rem;
-      color: rgba(255, 255, 255, 0.65);
-      font-weight: 600;
-    }
-
-    .back-acc-num {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: 0.05em;
-    }
-
-    .back-acc-name {
-      font-size: 0.6rem;
-      color: #4ade80;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .back-acc-copy-pill {
-      font-size: 0.62rem;
-      font-weight: 700;
-      padding: 4px 8px;
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 6px;
-      color: #ffffff;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    /* Back Footer */
-    .card-back-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      position: relative;
-      z-index: 2;
-      padding-top: 0.5rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .card-back-microtext {
-      font-size: 0.56rem;
-      color: rgba(255, 255, 255, 0.5);
-      line-height: 1.25;
-      flex: 1;
-    }
-
-    .card-flip-back-btn {
-      flex-shrink: 0;
-      background: rgba(255, 255, 255, 0.16);
-      border-color: rgba(255, 255, 255, 0.28);
-    }
-
-    /* ─── CARD FINISH SELECTOR ─── */
-    .card-finish-selector {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin: 0.5rem 0 0.85rem;
-      padding: 4px 12px;
-    }
-
-    .finish-label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--muted);
-      letter-spacing: 0.02em;
-    }
-
-    .finish-dot {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      border: 2px solid transparent;
-      outline: 2px solid transparent;
-      cursor: pointer;
-      transition: transform 140ms ease, outline-color 140ms ease;
-      padding: 0;
-    }
-
-    .finish-dot:hover {
-      transform: scale(1.15);
-    }
-
-    .finish-dot.active {
-      outline: 2px solid #090d16;
-      outline-offset: 2px;
-      transform: scale(1.1);
-    }
-
-    .finish-obsidian {
-      background: linear-gradient(135deg, #1e293b, #090d16);
-      border-color: #94a3b8;
-    }
-
-    .finish-emerald {
-      background: linear-gradient(135deg, #15803d, #064e3b);
-      border-color: #86efac;
-    }
-
-    .finish-sapphire {
-      background: linear-gradient(135deg, #1d4ed8, #0f172a);
-      border-color: #93c5fd;
+    .btn-receipt-view:hover {
+      background: #ffffff;
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+      box-shadow: 0 3px 10px rgba(124, 58, 237, 0.15);
     }
 
     /* Compatibility hidden IDs */
@@ -897,7 +534,7 @@
     .segmented-switch {
       background: var(--surface-sub);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 4px;
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -906,7 +543,7 @@
 
     .seg-tab-btn {
       padding: 0.65rem 0.75rem;
-      border-radius: 10px;
+      border-radius: 12px;
       border: none;
       background: transparent;
       color: var(--muted);
@@ -925,8 +562,8 @@
 
     .seg-tab-btn.active {
       background: #ffffff;
-      color: #090d16;
-      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+      color: var(--accent);
+      box-shadow: 0 3px 10px rgba(124, 58, 237, 0.14);
     }
 
     /* ─── FILTER ROW ─── */
@@ -943,7 +580,7 @@
     }
 
     .pill-btn {
-      padding: 0.42rem 1rem;
+      padding: 0.45rem 1.1rem;
       border-radius: var(--radius-full);
       border: 1px solid var(--border);
       background: #ffffff;
@@ -958,14 +595,15 @@
 
     .pill-btn:hover {
       border-color: var(--border-dark);
-      color: var(--text);
+      color: var(--accent);
+      background: #faf7fd;
     }
 
     .pill-btn.active {
-      background: #090d16;
+      background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
       color: #ffffff;
-      border-color: #090d16;
-      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15);
+      border-color: transparent;
+      box-shadow: 0 3px 10px rgba(124, 58, 237, 0.28);
     }
 
     /* ─── STATEMENT LIST ─── */
@@ -1154,26 +792,28 @@
     }
 
     .btn-pay-now {
-      background: #090d16;
+      background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
       color: #ffffff;
-      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.16);
+      box-shadow: 0 3px 10px rgba(124, 58, 237, 0.28);
       padding: 0.5rem 1.15rem;
       font-size: 0.78rem;
       border-radius: var(--radius-md);
     }
 
     .btn-pay-now:hover:not(:disabled) {
-      background: #1e293b;
+      background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%);
+      box-shadow: 0 5px 14px rgba(124, 58, 237, 0.38);
     }
 
     .btn-primary {
-      background: #090d16;
+      background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
       color: #ffffff;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.16);
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.28);
     }
 
     .btn-primary:hover:not(:disabled) {
-      background: #1e293b;
+      background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%);
+      box-shadow: 0 6px 18px rgba(124, 58, 237, 0.38);
     }
 
     .btn-ghost {
@@ -1223,6 +863,20 @@
       background: #ffffff;
       border-radius: var(--radius-lg);
       border: 1px dashed var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .empty-state-avatar {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      margin-bottom: 0.85rem;
+      filter: drop-shadow(0 4px 10px rgba(124, 58, 237, 0.15));
+      user-select: none;
+      -webkit-user-drag: none;
     }
 
     .empty-state svg {
@@ -1266,16 +920,16 @@
 
     .bottom-sheet {
       background: #ffffff;
-      border-radius: 24px 24px 0 0;
+      border-radius: 28px 28px 0 0;
       width: 100%;
-      max-width: 580px;
-      max-height: 92vh;
+      max-width: 520px;
+      max-height: 94vh;
       overflow-y: auto;
-      padding: 1.5rem 1.5rem 2.5rem;
+      padding: 1.25rem 1.35rem 2.5rem;
       position: relative;
       transform: translateY(100%);
       transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: var(--shadow-float);
+      box-shadow: 0 -10px 40px rgba(31, 20, 43, 0.18);
     }
 
     .modal-overlay.open .bottom-sheet {
@@ -1285,173 +939,285 @@
     .sheet-handle {
       width: 44px;
       height: 4px;
-      background: var(--border-dark);
+      background: #d8b4fe;
       border-radius: var(--radius-full);
-      margin: 0 auto 1.25rem;
+      margin: 0 auto 1.15rem;
     }
 
     .sheet-close {
       position: absolute;
-      top: 1.25rem;
-      right: 1.25rem;
-      background: var(--surface-sub);
-      border: 1px solid var(--border);
+      top: 1.15rem;
+      right: 1.15rem;
+      background: #f3edf9;
+      border: none;
       cursor: pointer;
-      color: var(--muted);
+      color: #523c6d;
       border-radius: 50%;
       width: 32px;
       height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 120ms;
+      transition: all 120ms ease;
     }
 
     .sheet-close:hover {
-      background: var(--border);
-      color: var(--text);
+      background: #ebe2f7;
+      color: #1f142b;
+      transform: scale(1.05);
     }
 
     .sheet-head {
       text-align: center;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.15rem;
     }
 
     .sheet-tag {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--pp-blue);
-      margin-bottom: 0.3rem;
+      color: #7c3aed;
+      margin-bottom: 0.25rem;
     }
 
     .modal-title {
-      font-size: 1.1rem;
+      font-size: 1.18rem;
       font-weight: 800;
-      color: var(--text);
+      color: #1f142b;
       letter-spacing: -0.01em;
     }
 
     .modal-amount-box {
-      margin: 0.75rem 0 0.5rem;
+      margin: 0.5rem 0 0.25rem;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
+    .modal-amount-row {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.85rem;
+      position: relative;
+    }
+
+    .sparkle-stars {
+      color: #ec4899;
+      font-size: 1.15rem;
+      user-select: none;
+      opacity: 0.85;
+      filter: drop-shadow(0 2px 6px rgba(236, 72, 153, 0.35));
+    }
+    .sparkle-stars.left {
+      transform: translateY(-4px) rotate(-10deg);
+    }
+    .sparkle-stars.right {
+      transform: translateY(-8px) rotate(10deg);
+    }
+
     .modal-amount {
-      font-size: 2.2rem;
+      font-size: 2.35rem;
       font-weight: 800;
       letter-spacing: -0.03em;
-      color: var(--text);
+      color: #1f142b;
       font-variant-numeric: tabular-nums;
+      line-height: 1.1;
     }
 
     .modal-penalty {
       font-size: 0.72rem;
       font-weight: 700;
-      color: var(--danger);
-      background: var(--danger-bg);
-      border: 1px solid var(--danger-bdr);
-      padding: 3px 10px;
+      color: #ec4899;
+      background: #fdf2f8;
+      border: 1px solid #fbcfe8;
+      padding: 3px 14px;
       border-radius: var(--radius-full);
-      margin-top: 0.3rem;
+      margin-top: 0.45rem;
+      display: inline-block;
     }
 
     /* ─── PROMPTPAY & BANK CARD INSIDE MODAL ─── */
     .qr-formal-card {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.25rem;
+      background: #fcfaff;
+      border: 1.5px solid #ede4f9;
+      border-radius: 22px;
+      padding: 1.35rem 1.15rem 1.15rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.85rem;
-      margin: 1.15rem 0;
-    }
-
-    .qr-banner {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.75rem;
-      font-weight: 800;
-      color: var(--pp-blue);
-      letter-spacing: 0.04em;
+      margin: 1rem 0;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(124, 58, 237, 0.04);
     }
 
     .qr-box-frame {
       background: #ffffff;
-      padding: 14px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-subtle);
+      padding: 1.15rem 1.25rem 1.25rem;
+      border-radius: 18px;
+      border: 1px solid #ede4f9;
+      box-shadow: 0 4px 18px rgba(124, 58, 237, 0.06);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      max-width: 290px;
+    }
+
+    .qr-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #7c3aed;
+      letter-spacing: 0.02em;
+      margin-bottom: 1.15rem;
+    }
+
+    .qr-banner svg {
+      color: #7c3aed;
+    }
+
+    .qr-code-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      background: #ffffff;
+      border-radius: 14px;
+      border: 1.5px solid #ede4f9;
+      box-shadow: 0 2px 10px rgba(124, 58, 237, 0.04);
+    }
+
+    .kuromi-qr-peek {
+      position: absolute;
+      top: -32px;
+      left: -40px;
+      width: 52px;
+      height: auto;
+      z-index: 10;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+      filter: drop-shadow(0 3px 6px rgba(31, 20, 43, 0.15));
+    }
+
+    #qrcode {
       display: flex;
       justify-content: center;
+      align-items: center;
+      border-radius: 6px;
+      overflow: hidden;
+      width: 180px;
+      height: 180px;
+    }
+    #qrcode img, #qrcode canvas {
+      border-radius: 6px;
+      display: block;
     }
 
     .bank-account-box {
       width: 100%;
       background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
+      border: 1px solid #e8def7;
+      border-radius: 14px;
       padding: 0.75rem 1rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 0.75rem;
+      margin-top: 1rem;
+      box-shadow: 0 2px 8px rgba(124, 58, 237, 0.04);
+    }
+
+    .bank-account-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .bank-account-label {
+      font-size: 0.68rem;
+      color: #64748b;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
     }
 
     .bank-account-num {
-      font-size: 0.95rem;
+      font-family: 'Space Mono', monospace, -apple-system;
+      font-size: 1.05rem;
       font-weight: 800;
       letter-spacing: 0.06em;
-      color: var(--text);
+      color: #1f142b;
       font-variant-numeric: tabular-nums;
     }
 
     .btn-copy-account {
-      background: #090d16;
+      background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
       color: #ffffff;
       border: none;
-      border-radius: var(--radius-sm);
-      padding: 5px 12px;
-      font-size: 0.72rem;
+      border-radius: 10px;
+      padding: 6px 16px;
+      font-size: 0.78rem;
       font-weight: 700;
       cursor: pointer;
-      transition: all 120ms;
+      transition: all 120ms ease;
       font-family: inherit;
+      box-shadow: 0 3px 10px rgba(124, 58, 237, 0.28);
+    }
+
+    .btn-copy-account:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 14px rgba(124, 58, 237, 0.35);
     }
 
     .btn-copy-account:active {
-      transform: scale(0.95);
+      transform: scale(0.96);
     }
 
     .bank-beneficiary-sub {
-      font-size: 0.68rem;
-      color: var(--muted);
+      font-size: 0.7rem;
+      color: #64748b;
       text-align: center;
-      line-height: 1.4;
+      line-height: 1.45;
+      margin-top: 0.85rem;
+    }
+
+    .bank-beneficiary-sub span {
+      color: #059669;
+      font-weight: 700;
+      display: inline-block;
+      margin-top: 2px;
     }
 
     /* ─── UPLOAD SLIP DROPZONE ─── */
     .slip-upload-dropzone {
-      border: 1.5px dashed var(--border-dark);
-      background: #f8fafc;
-      border-radius: var(--radius-lg);
+      border: 1.5px dashed #d8b4fe;
+      background: #faf7fd;
+      border-radius: 18px;
       padding: 1.5rem 1rem;
       text-align: center;
       cursor: pointer;
       transition: all 150ms ease;
       position: relative;
-      margin-bottom: 1.25rem;
+      margin: 1.15rem 0 1rem;
     }
 
     .slip-upload-dropzone:hover {
-      border-color: var(--text);
-      background: #ffffff;
+      border-color: #7c3aed;
+      background: #f5edfc;
+    }
+
+    .slip-upload-dropzone.has-file {
+      border-color: #a855f7;
+      border-style: solid;
+      background: linear-gradient(135deg, #fcf9ff 0%, #fdf2f8 100%);
+      box-shadow: 0 4px 18px rgba(124, 58, 237, 0.1);
     }
 
     .slip-upload-dropzone input[type="file"] {
@@ -1464,29 +1230,115 @@
       z-index: 5;
     }
 
+    .upload-prompt {
+      transition: all 180ms ease;
+    }
+
     .upload-icon {
-      color: var(--muted);
-      margin-bottom: 0.4rem;
+      color: #7c3aed;
+      margin-bottom: 0.45rem;
+      display: flex;
+      justify-content: center;
     }
 
     .upload-main-text {
-      font-size: 0.82rem;
+      font-size: 0.86rem;
       font-weight: 700;
-      color: var(--text);
+      color: #1f142b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .dropzone-heart {
+      font-size: 0.95rem;
+      user-select: none;
     }
 
     .upload-sub-text {
-      font-size: 0.7rem;
-      color: var(--muted);
-      margin-top: 2px;
+      font-size: 0.72rem;
+      color: #7e689a;
+      margin-top: 3px;
+    }
+
+    .upload-attached {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 0.25rem 0;
+      animation: uploadPopIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes uploadPopIn {
+      0% { transform: scale(0.92); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .upload-attached-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #059669;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      padding: 3px 10px;
+      border-radius: 9999px;
     }
 
     .upload-filename {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--pp-blue);
-      margin-top: 0.5rem;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #1f142b;
       word-break: break-all;
+      max-width: 90%;
+      line-height: 1.35;
+      margin-top: 2px;
+    }
+
+    .upload-change-hint {
+      font-size: 0.7rem;
+      color: #7e689a;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .btn-submit-payment {
+      width: 100%;
+      height: 50px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+      color: #ffffff;
+      font-size: 0.96rem;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35);
+      transition: all 140ms ease;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0.75rem;
+    }
+
+    .btn-submit-payment:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 28px rgba(124, 58, 237, 0.42);
+    }
+
+    .btn-submit-payment:active {
+      transform: scale(0.98);
+    }
+
+    .btn-submit-payment:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
     }
 
     /* ─── SUCCESS VIEW ─── */
@@ -1496,17 +1348,28 @@
       display: none;
     }
 
-    .success-badge-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: var(--success-bg);
-      border: 1px solid var(--success-bdr);
-      color: var(--success);
+    .success-kuromi-wrapper {
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 1rem;
+      margin: 0 auto 1.25rem;
+      position: relative;
+      animation: successPopIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .success-kuromi-img {
+      width: 140px;
+      max-width: 80%;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 20px rgba(124, 58, 237, 0.18)) drop-shadow(0 4px 10px rgba(236, 72, 153, 0.15));
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    @keyframes successPopIn {
+      0% { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
 
     .success-main-title {
@@ -1526,13 +1389,14 @@
       background: #ffffff;
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
-      padding: 1.5rem;
+      padding: 1.5rem 1.25rem;
       box-shadow: var(--shadow-card);
       margin-bottom: 1.25rem;
+      text-align: center;
     }
 
     .treasury-caption {
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -1541,47 +1405,14 @@
     }
 
     .treasury-total-val {
-      font-size: 2.2rem;
+      font-size: 2.25rem;
       font-weight: 800;
       letter-spacing: -0.03em;
       color: var(--text);
       text-align: center;
-      margin: 0.35rem 0 1rem;
+      margin: 0.35rem 0 0;
       font-variant-numeric: tabular-nums;
     }
-
-    .treasury-split-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      border-top: 1px solid var(--border);
-      padding-top: 1rem;
-    }
-
-    .treasury-split-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: var(--surface-sub);
-      border-radius: var(--radius-md);
-      padding: 0.65rem 0.5rem;
-    }
-
-    .treasury-split-tag {
-      font-size: 0.65rem;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-    }
-
-    .treasury-split-num {
-      font-size: 0.95rem;
-      font-weight: 800;
-      font-variant-numeric: tabular-nums;
-      margin-top: 2px;
-    }
-
-    .treasury-split-num.inc { color: var(--success); }
     .treasury-split-num.exp { color: var(--danger); }
 
     .matrix-scroll-wrap {
@@ -1637,8 +1468,8 @@
     }
 
     .matrix-search-input:focus {
-      border-color: #090d16;
-      box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.06);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
     }
 
     .matrix-search-icon {
@@ -1671,11 +1502,16 @@
       text-align: center;
     }
 
+    .public-subtab-btn:hover {
+      border-color: var(--border-dark);
+      color: var(--accent);
+    }
+
     .public-subtab-btn.active {
-      background: #090d16;
+      background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
       color: #ffffff;
-      border-color: #090d16;
-      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+      border-color: transparent;
+      box-shadow: 0 3px 10px rgba(124, 58, 237, 0.25);
     }
   </style>
 </head>
@@ -1686,17 +1522,13 @@
   <!-- ─── TOP APP BAR ─── -->
   <header class="top-app-bar">
     <div class="app-brand">
-      <div class="brand-emblem">NU</div>
+      <div class="brand-emblem" title="BEC BA NU 69 ✦ Kuromi Edition">NU</div>
       <div class="brand-info">
-        <div class="brand-title">BEC BA 69</div>
+        <div class="brand-title">BEC BA 69 <span style="color:var(--kuromi-pink);font-size:0.78rem;font-weight:700;">✦</span></div>
         <div class="brand-sub">กองทุนนิสิตสาขาบริหารธุรกิจ</div>
       </div>
     </div>
     <div class="app-bar-actions">
-      <div class="student-badge-pill">
-        <div class="nav-avatar" id="navAvatar">U</div>
-        <span class="nav-name" id="navName">นิสิต</span>
-      </div>
       <button class="btn-icon" onclick="logout()" title="ออกจากระบบ">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       </button>
@@ -1706,135 +1538,61 @@
   <!-- ─── SCROLLABLE MAIN CONTENT ─── -->
   <main class="app-content">
 
-    <!-- ─── HERO EXECUTIVE BANK CARD (3D DUAL-SIDED) ─── -->
-    <div class="hero-card-container" id="card3dContainer" data-finish="obsidian">
-      <div class="hero-card-flipper" id="card3dFlipper">
+    <!-- ─── HERO EXECUTIVE BANK CARD ─── -->
+    <div class="hero-card-container" id="card3dContainer">
+      <div class="hero-bank-card" id="mainHeroBankCard">
+        <div class="card-specular-light" id="cardSheenFront"></div>
 
-        <!-- ── FRONT FACE ── -->
-        <div class="hero-card-face hero-card-front" id="mainHeroBankCard">
-          <div class="card-specular-light" id="cardSheenFront"></div>
-
-          <div class="card-row-top">
-            <div class="card-brand-col">
-              <div class="card-org-tag">BEC · B.B.A. COHORT 69</div>
-              <div class="card-sub-brand">EXECUTIVE STUDENT PASS</div>
-            </div>
-            <div class="card-top-actions">
-              <button type="button" class="card-flip-btn" onclick="toggleCardFlip(event)" title="แตะเพื่อพลิกดูหลังบัตร">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 11-.57-8.38l5.67-5.19"/></svg>
-                <span>พลิกบัตร</span>
-              </button>
-              <div class="card-status-pill" id="cardStatusBadge">
-                <span class="pulse-dot"></span>
-                <span id="cardStatusText">สถานะปกติ</span>
-              </div>
-            </div>
+        <div class="card-row-top">
+          <div class="card-status-pill" id="cardStatusBadge">
+            <span class="pulse-dot"></span>
+            <span id="cardStatusText">สถานะปกติ</span>
           </div>
+          <div class="card-org-tag">NARESUAN UNIVERSITY</div>
+        </div>
 
-          <div class="card-chip-row">
-            <div class="card-chip-cluster">
-              <div class="gold-emv-chip" id="mainCardChip" title="Smart EMV Security Chip">
-                <div class="chip-line chip-line-1"></div>
-                <div class="chip-line chip-line-2"></div>
-                <div class="chip-line chip-line-3"></div>
-              </div>
-              <div class="contactless-glyph" title="Contactless Payment Enabled">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><line x1="12" y1="20" x2="12.01" y2="20" stroke-width="3"/></svg>
-              </div>
+        <div class="card-chip-row">
+          <div class="card-chip-cluster">
+            <div class="gold-emv-chip" id="mainCardChip" title="Smart EMV Security Chip">
+              <div class="chip-line chip-line-1"></div>
+              <div class="chip-line chip-line-2"></div>
+              <div class="chip-line chip-line-3"></div>
             </div>
-            <div class="card-holo-emblem">
-              <span class="holo-text">NU · 69</span>
-            </div>
-          </div>
-
-          <div class="card-embossed-row" onclick="copyCardNumber(event)" title="แตะเพื่อคัดลอกเลขบัตรเสมือน">
-            <span class="embossed-digits" id="cardEmbossedDigits">6934 •••• •••• 2026</span>
-            <span class="embossed-copy-icon">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            </span>
-          </div>
-
-          <div class="card-balance-section">
-            <div class="card-balance-caption">รายการค้างชำระของฉัน</div>
-            <div class="card-balance-sum">
-              <span id="heroUnpaidCount">—</span>
-              <span class="card-balance-currency">รายการ</span>
-            </div>
-          </div>
-
-          <div class="card-row-bottom">
-            <div class="card-student-meta">
-              <div class="card-student-name" id="cardHolderName">กำลังโหลดข้อมูล...</div>
-              <div class="card-student-sub" id="cardHolderSub">—</div>
-            </div>
-            <div class="card-right-meta">
-              <div class="card-valid-date">
-                <span class="valid-label">VALID THRU</span>
-                <span class="valid-val">03/28</span>
-              </div>
-              <div class="kbank-official-badge" onclick="copyBankAccount(event)" style="cursor:pointer;" title="แตะเพื่อคัดลอกเลขบัญชี KBANK">
-                <span>KBANK</span>
-              </div>
+            <div class="contactless-glyph" title="Contactless Payment Enabled">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><line x1="12" y1="20" x2="12.01" y2="20" stroke-width="3"/></svg>
             </div>
           </div>
         </div>
 
-        <!-- ── BACK FACE ── -->
-        <div class="hero-card-face hero-card-back">
-          <div class="card-specular-light" id="cardSheenBack"></div>
+        <div class="card-embossed-row">
+          <span class="embossed-digits" id="cardEmbossedDigits">69343832</span>
+        </div>
 
-          <div class="card-mag-stripe">
-            <div class="mag-stripe-sheen"></div>
-          </div>
-
-          <div class="card-signature-row">
-            <div class="card-signature-strip">
-              <div class="sig-security-pattern"></div>
-              <span class="sig-handwriting" id="cardSignatureText">นิสิต บัญชี 69</span>
-            </div>
-            <div class="card-cvc-box">
-              <span class="cvc-label">CVC</span>
-              <span class="cvc-value">069</span>
-            </div>
-          </div>
-
-          <div class="card-back-account-box" onclick="copyBankAccount(event)" title="แตะเพื่อคัดลอกเลขบัญชีสำหรับโอนเงิน">
-            <div class="back-acc-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-            </div>
-            <div class="back-acc-details">
-              <div class="back-acc-title">ธนาคารกสิกรไทย (KBANK)</div>
-              <div class="back-acc-num">235-1-83876-3</div>
-              <div class="back-acc-name">บัญชีกองทุนสาขาบริหารธุรกิจ รุ่น 69</div>
-            </div>
-            <div class="back-acc-copy-pill">
-              <span>คัดลอก</span>
-            </div>
-          </div>
-
-          <div class="card-back-footer">
-            <div class="card-back-microtext">
-              บัตรเสมือนประจำตัวนิสิต คณะบริหารศาสตร์ ม.นเรศวร • สำหรับบริหารจัดการงบประมาณและตรวจสอบสถานะการเงินรุ่น 69
-            </div>
-            <button type="button" class="card-flip-btn card-flip-back-btn" onclick="toggleCardFlip(event)">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2.5 2v6h6M2.66 15.57a10 10 0 00.57-8.38l-5.67-5.19"/></svg>
-              <span>ด้านหน้า</span>
-            </button>
+        <div class="card-balance-section">
+          <div class="card-balance-caption">รายการค้างชำระของฉัน</div>
+          <div class="card-balance-sum">
+            <span id="heroUnpaidCount">—</span>
+            <span class="card-balance-currency">รายการ</span>
           </div>
         </div>
 
+        <div class="card-row-bottom">
+          <div class="card-student-meta">
+            <div class="card-student-name" id="cardHolderName">กำลังโหลดข้อมูล...</div>
+            <div class="card-student-sub" id="cardHolderSub">—</div>
+          </div>
+          <div class="card-right-meta">
+            <div class="card-holo-emblem" id="cardNuBadge">
+              <span class="holo-text">NU 69</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- ── CARD FINISH SELECTOR ── -->
-    <div class="card-finish-selector">
-      <span class="finish-label">พื้นผิวบัตร:</span>
-      <button type="button" class="finish-dot finish-obsidian active" onclick="setCardFinish('obsidian')" title="Obsidian Titanium (ดำด้านไทเทเนียม)"></button>
-      <button type="button" class="finish-dot finish-emerald" onclick="setCardFinish('emerald')" title="Wisdom Emerald (เขียวมรกตกสิกร)"></button>
-      <button type="button" class="finish-dot finish-sapphire" onclick="setCardFinish('sapphire')" title="Midnight Sapphire (น้ำเงินแซฟไฟร์)"></button>
-    </div>
-
     <!-- Hidden compatibility markers -->
+    <div id="navAvatar" style="display: none;"></div>
+    <div id="navName" style="display: none;"></div>
     <div id="heroAvatar"></div>
     <div id="heroName"></div>
     <div id="heroBio"></div>
@@ -1899,25 +1657,32 @@
         <div class="sheet-tag">TRANSFER PAYMENT</div>
         <div class="modal-title" id="modalTitle">—</div>
         <div class="modal-amount-box">
-          <div class="modal-amount" id="modalAmount">฿0.00</div>
+          <div class="modal-amount-row">
+            <span class="sparkle-stars left">✦</span>
+            <div class="modal-amount" id="modalAmount">฿0.00</div>
+            <span class="sparkle-stars right">✦</span>
+          </div>
           <div class="modal-penalty" id="modalPenalty" style="display: none;"></div>
         </div>
       </div>
 
       <!-- PromptPay & KBANK Card -->
       <div class="qr-formal-card">
-        <div class="qr-banner">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
-          <span id="qrLabel">PromptPay QR</span>
-        </div>
-
         <div class="qr-box-frame">
-          <div id="qrcode"></div>
+          <div class="qr-banner">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
+            <span id="qrLabel">PromptPay · ฿0.00</span>
+          </div>
+
+          <div class="qr-code-wrapper">
+            <img src="assets/kuromi_qr_peek.png" class="kuromi-qr-peek" alt="Kuromi Mascot" />
+            <div id="qrcode"></div>
+          </div>
         </div>
 
         <div class="bank-account-box">
-          <div>
-            <div style="font-size: 0.65rem; color: var(--muted); font-weight: 700; text-transform: uppercase;">ธนาคารกสิกรไทย (KBANK)</div>
+          <div class="bank-account-info">
+            <div class="bank-account-label">ธนาคารกสิกรไทย (KBANK)</div>
             <div class="bank-account-num" id="bankAccountDisplay">235-1-83876-3</div>
           </div>
           <button class="btn-copy-account" onclick="copyBankAccount()">คัดลอก</button>
@@ -1932,21 +1697,36 @@
       <!-- Upload Slip Dropzone -->
       <div class="slip-upload-dropzone" id="uploadArea">
         <input type="file" id="slipInput" accept="image/*" onchange="onFileSelect(this)" />
-        <div class="upload-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        
+        <!-- Prompt State (default) -->
+        <div class="upload-prompt" id="uploadPrompt">
+          <div class="upload-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="upload-main-text">
+            <span>แตะเพื่อแนบรูปภาพสลิปโอนเงิน</span>
+          </div>
+          <div class="upload-sub-text">รองรับ JPG, PNG และ WebP จากทุกแอปธนาคาร</div>
         </div>
-        <div class="upload-main-text">แตะเพื่อแนบรูปภาพสลิปโอนเงิน</div>
-        <div class="upload-sub-text">รองรับ JPG, PNG และ WebP จากทุกแอปธนาคาร</div>
-        <div class="upload-filename" id="uploadFilename"></div>
+
+        <!-- Attached State (visible only when file selected) -->
+        <div class="upload-attached" id="uploadAttached">
+          <div class="upload-attached-pill">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>แนบรูปภาพแล้ว</span>
+          </div>
+          <div class="upload-filename" id="uploadFilename"></div>
+          <div class="upload-change-hint">แตะเพื่อเปลี่ยนรูปสลิป</div>
+        </div>
       </div>
 
-      <button class="btn btn-primary btn-full" id="submitBtn" onclick="submitSlip()">ยืนยันการชำระเงิน</button>
+      <button class="btn-submit-payment" id="submitBtn" onclick="submitSlip()">ยืนยันการชำระเงิน</button>
     </div>
 
     <!-- Success View -->
     <div class="success-sheet-view" id="successState">
-      <div class="success-badge-icon">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <div class="success-kuromi-wrapper">
+        <img src="assets/kuromi_success.png" class="success-kuromi-img" alt="Kuromi Success" />
       </div>
       <div class="success-main-title">ส่งสลิปเรียบร้อยแล้ว</div>
       <div class="success-desc">ระบบได้บันทึกการส่งสลิปแล้ว เหรัญญิกจะตรวจสอบและอัปเดตสถานะให้ท่านโดยเร็ว</div>
@@ -1962,7 +1742,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js?v=99"></script>
 <script src="supabase_wrapper.js?v=99"></script>
-<script src="test_switcher.js?v=1"></script>
 
 <script>
   const db = window.db;
@@ -1988,9 +1767,11 @@
     const initial = (currentUser.name || 'U')[0].toUpperCase();
     const pic = currentUser.picture || '';
 
-    // Header profile pill
+    // Header profile pill (Cute Kuromi avatar)
     const navAv = document.getElementById('navAvatar');
-    if (navAv) navAv.innerHTML = pic ? `<img src="${pic}" alt="">` : initial;
+    if (navAv) {
+      navAv.innerHTML = `<img src="assets/kuromi_avatar.png?v=3" alt="Kuromi">`;
+    }
     const navName = document.getElementById('navName');
     if (navName) navName.textContent = currentUser.name || 'นิสิต';
 
@@ -1999,31 +1780,21 @@
     if (cardName) cardName.textContent = currentUser.name || 'นิสิตสาขาบริหารธุรกิจ';
     const cardSub = document.getElementById('cardHolderSub');
     if (cardSub) {
-      cardSub.textContent = `${currentUser.studentId ? currentUser.studentId + ' · ' : ''}${currentUser.email || ''}`;
+      cardSub.textContent = currentUser.email || '';
     }
 
-    // Realistic embossed card number (e.g. 6934 • 8820 • 0069 • [last 4 digits])
-    let last4 = '2026';
+    // 8-digit Student ID on the card
+    let stId = '69340000';
     if (currentUser.studentId) {
-      const cleanId = String(currentUser.studentId).replace(/\D/g, '');
-      if (cleanId.length >= 4) {
-        last4 = cleanId.slice(-4);
-      } else if (cleanId.length > 0) {
-        last4 = cleanId.padStart(4, '0');
-      }
+      const cleanId = String(currentUser.studentId).trim();
+      if (cleanId) stId = cleanId;
     }
     const embossedEl = document.getElementById('cardEmbossedDigits');
     if (embossedEl) {
-      embossedEl.textContent = `6934 • 8820 • 0069 • ${last4}`;
+      embossedEl.textContent = stId;
     }
 
-    // Set signature on the back panel
-    const sigEl = document.getElementById('cardSignatureText');
-    if (sigEl) {
-      sigEl.textContent = currentUser.name || 'นิสิต บัญชี 69';
-    }
-
-    // Initialize 3D Card tilt and interactive flip
+    // Initialize 3D Card tilt and sheen
     initCard3D();
 
     // Keep hidden element IDs intact for backward compatibility
@@ -2061,10 +1832,14 @@
               <div style="color:var(--text);font-weight:700">${e.source}</div>
               <div style="color:var(--muted);font-size:0.72rem;margin-top:2px">
                 ${new Date(e.date).toLocaleDateString('th-TH')}
-                ${e.receiptUrl ? ` · <a href="${e.receiptUrl}" target="_blank" style="color:var(--pp-blue);text-decoration:underline">ดูหลักฐาน</a>` : ''}
               </div>
+              ${e.receiptUrl ? `
+                <a href="${e.receiptUrl}" target="_blank" rel="noopener noreferrer" class="btn-receipt-view" title="เปิดดูหลักฐาน">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                  <span>ดูหลักฐาน</span>
+                </a>` : ''}
             </div>
-            <div style="color:var(--success);font-weight:800;font-variant-numeric:tabular-nums">+฿${fmt(e.amount)}</div>
+            <div style="color:var(--success);font-weight:800;font-variant-numeric:tabular-nums;font-size:0.95rem">฿${fmt(e.amount)}</div>
           </div>`).join('')
       : `<div style="font-size:0.8rem;color:var(--muted);padding:1rem;text-align:center">ไม่มีรายการรายรับ</div>`;
 
@@ -2076,10 +1851,14 @@
               <div style="color:var(--text);font-weight:700">${e.title}</div>
               <div style="color:var(--muted);font-size:0.72rem;margin-top:2px">
                 ${new Date(e.date).toLocaleDateString('th-TH')}
-                ${e.receiptUrl ? ` · <a href="${e.receiptUrl}" target="_blank" style="color:var(--pp-blue);text-decoration:underline">ดูหลักฐาน</a>` : ''}
               </div>
+              ${e.receiptUrl ? `
+                <a href="${e.receiptUrl}" target="_blank" rel="noopener noreferrer" class="btn-receipt-view" title="เปิดดูหลักฐาน">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                  <span>ดูหลักฐาน</span>
+                </a>` : ''}
             </div>
-            <div style="color:var(--danger);font-weight:800;font-variant-numeric:tabular-nums">-฿${fmt(e.amount)}</div>
+            <div style="color:var(--danger);font-weight:800;font-variant-numeric:tabular-nums;font-size:0.95rem">฿${fmt(e.amount)}</div>
           </div>`).join('')
       : `<div style="font-size:0.8rem;color:var(--muted);padding:1rem;text-align:center">ไม่มีรายการใช้จ่าย</div>`;
 
@@ -2114,16 +1893,6 @@
       <div class="treasury-card">
         <div class="treasury-caption">ยอดเงินกองทุนสาขาคงเหลือสุทธิ</div>
         <div class="treasury-total-val">฿${fmt(data.totalBalance)}</div>
-        <div class="treasury-split-grid">
-          <div class="treasury-split-card">
-            <span class="treasury-split-tag">รายรับรวม</span>
-            <span class="treasury-split-num inc">+฿${fmt(data.totalIncome || 0)}</span>
-          </div>
-          <div class="treasury-split-card">
-            <span class="treasury-split-tag">รายจ่ายรวม</span>
-            <span class="treasury-split-num exp">-฿${fmt(data.totalExpense || 0)}</span>
-          </div>
-        </div>
       </div>
 
       <!-- Segmented Sub-tabs -->
@@ -2312,7 +2081,7 @@
     if (!items.length) {
       container.innerHTML = `
         <div class="empty-state">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <img src="assets/kuromi_avatar.png" class="empty-state-avatar" alt="Kuromi" />
           <p>ไม่มีรายการในหมวดนี้</p>
           <small>เมื่อมีรอบเก็บเงินใหม่ รายการจะปรากฏขึ้นที่นี่โดยอัตโนมัติ</small>
         </div>`;
@@ -2432,16 +2201,31 @@
     qrDiv.innerHTML = '';
     try {
       const payload = generatePromptPayPayload(PROMPTPAY_ID, totalAmount);
-      new QRCode(qrDiv, { text: payload, width: 180, height: 180, colorDark: '#090d16', colorLight: '#ffffff' });
+      new QRCode(qrDiv, {
+        text: payload,
+        width: 180,
+        height: 180,
+        colorDark: '#1f142b',
+        colorLight: '#ffffff',
+        correctLevel: (typeof QRCode !== 'undefined' && QRCode.CorrectLevel) ? QRCode.CorrectLevel.M : 0
+      });
       document.getElementById('qrLabel').textContent = `PromptPay · ฿${Number(totalAmount).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+      // Remove default qrcodejs native tooltip
+      setTimeout(() => {
+        qrDiv.removeAttribute('title');
+        const img = qrDiv.querySelector('img');
+        const cvs = qrDiv.querySelector('canvas');
+        if (img) img.removeAttribute('title');
+        if (cvs) cvs.removeAttribute('title');
+      }, 50);
     } catch(e) {
       console.error(e);
       qrDiv.innerHTML = '<div style="width:180px;height:180px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:#999;">QR ไม่พร้อมใช้งาน</div>';
     }
 
     // Reset upload & view
-    document.getElementById('uploadFilename').textContent = '';
-    document.getElementById('slipInput').value = '';
+    resetUploadDropzone();
     document.getElementById('modalContent').style.display = 'block';
     document.getElementById('successState').style.display = 'none';
     const subBtn = document.getElementById('submitBtn');
@@ -2462,24 +2246,12 @@
   // ─── VIRTUAL EXECUTIVE CARD 3D & INTERACTIONS ───
   function initCard3D() {
     const container = document.getElementById('card3dContainer');
-    const flipper = document.getElementById('card3dFlipper');
-    if (!container || !flipper) return;
-
-    // Load saved finish
-    const saved = localStorage.getItem('bec_card_finish') || 'obsidian';
-    setCardFinish(saved, false);
-
-    // Card click flip (unless clicking an inner action button/link)
-    container.addEventListener('click', (e) => {
-      if (e.target.closest('button, .card-embossed-row, .kbank-official-badge, .card-back-account-box, .card-finish-selector, a')) {
-        return;
-      }
-      toggleCardFlip(e);
-    });
+    const card = document.getElementById('mainHeroBankCard');
+    if (!container || !card) return;
 
     // Parallax tilt on mouse/touch
     let rect = null;
-    const updateRect = () => { rect = container.getBoundingClientRect(); };
+    const updateRect = () => { rect = card.getBoundingClientRect(); };
     window.addEventListener('resize', updateRect);
     window.addEventListener('scroll', updateRect, { passive: true });
 
@@ -2491,21 +2263,18 @@
       const px = Math.max(0, Math.min(100, (x / rect.width) * 100));
       const py = Math.max(0, Math.min(100, (y / rect.height) * 100));
 
-      const isFlipped = container.classList.contains('is-flipped');
       const rx = ((y - rect.height / 2) / (rect.height / 2)) * -6.5;
-      const ry = ((x - rect.width / 2) / (rect.width / 2)) * (isFlipped ? -6.5 : 6.5);
+      const ry = ((x - rect.width / 2) / (rect.width / 2)) * 6.5;
 
       container.style.setProperty('--sheen-x', `${px.toFixed(1)}%`);
       container.style.setProperty('--sheen-y', `${py.toFixed(1)}%`);
       
-      flipper.style.transform = isFlipped
-        ? `rotateY(180deg) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`
-        : `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+      card.style.transform = `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
     };
 
     container.addEventListener('mouseenter', () => {
       updateRect();
-      flipper.style.transition = 'transform 100ms ease-out';
+      card.style.transition = 'transform 100ms ease-out';
     });
 
     container.addEventListener('mousemove', (e) => {
@@ -2513,49 +2282,10 @@
     });
 
     container.addEventListener('mouseleave', () => {
-      flipper.style.transition = 'transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1)';
-      const isFlipped = container.classList.contains('is-flipped');
-      flipper.style.transform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
+      card.style.transition = 'transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1)';
+      card.style.transform = 'rotateX(0deg) rotateY(0deg)';
       container.style.setProperty('--sheen-x', '50%');
       container.style.setProperty('--sheen-y', '30%');
-      setTimeout(() => {
-        flipper.style.transition = 'transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1)';
-      }, 450);
-    });
-  }
-
-  function toggleCardFlip(e) {
-    if (e && e.stopPropagation) e.stopPropagation();
-    const container = document.getElementById('card3dContainer');
-    const flipper = document.getElementById('card3dFlipper');
-    if (!container || !flipper) return;
-    const willFlip = !container.classList.contains('is-flipped');
-    container.classList.toggle('is-flipped', willFlip);
-    flipper.style.transform = willFlip ? 'rotateY(180deg)' : 'rotateY(0deg)';
-  }
-
-  function setCardFinish(finish, save = true) {
-    const container = document.getElementById('card3dContainer');
-    if (!container) return;
-    container.setAttribute('data-finish', finish);
-    document.querySelectorAll('.finish-dot').forEach(dot => {
-      dot.classList.toggle('active', dot.classList.contains(`finish-${finish}`));
-    });
-    if (save) {
-      localStorage.setItem('bec_card_finish', finish);
-      const label = finish === 'emerald' ? 'Wisdom Emerald' : finish === 'sapphire' ? 'Midnight Sapphire' : 'Obsidian Titanium';
-      showToast(`สลับลายบัตร: ${label} ✓`);
-    }
-  }
-
-  function copyCardNumber(e) {
-    if (e && e.stopPropagation) e.stopPropagation();
-    const digitsEl = document.getElementById('cardEmbossedDigits');
-    const digits = digitsEl ? digitsEl.textContent.trim() : '6934 •••• •••• 2026';
-    navigator.clipboard.writeText(digits).then(() => {
-      showToast('คัดลอกเลขบัตรเสมือนแล้ว ✓');
-    }).catch(() => {
-      showToast('คัดลอกเลขบัตรแล้ว');
     });
   }
 
@@ -2564,12 +2294,37 @@
     if (modal) modal.classList.remove('open');
     document.body.style.overflow = '';
     currentPayment = null;
+    resetUploadDropzone();
+  }
+
+  function resetUploadDropzone() {
+    const prompt = document.getElementById('uploadPrompt');
+    const attached = document.getElementById('uploadAttached');
+    const dropzone = document.getElementById('uploadArea');
+    const filename = document.getElementById('uploadFilename');
+    const input = document.getElementById('slipInput');
+    
+    if (input) input.value = '';
+    if (filename) filename.textContent = '';
+    if (prompt) prompt.style.display = 'block';
+    if (attached) attached.style.display = 'none';
+    if (dropzone) dropzone.classList.remove('has-file');
   }
 
   function onFileSelect(input) {
-    const file = input.files[0];
+    const file = input.files && input.files[0];
+    const prompt = document.getElementById('uploadPrompt');
+    const attached = document.getElementById('uploadAttached');
+    const dropzone = document.getElementById('uploadArea');
+    const filename = document.getElementById('uploadFilename');
+
     if (file) {
-      document.getElementById('uploadFilename').textContent = file.name;
+      if (filename) filename.textContent = file.name;
+      if (prompt) prompt.style.display = 'none';
+      if (attached) attached.style.display = 'flex';
+      if (dropzone) dropzone.classList.add('has-file');
+    } else {
+      resetUploadDropzone();
     }
   }
 
@@ -2588,8 +2343,8 @@
     try {
       const file = fileInput.files[0];
       
-      // Image Compression
-      const compressedBlob = await new Promise((resolve, reject) => {
+      // Image Compression & Base64 Generation
+      const { compressedBlob, base64Url } = await new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = (event) => {
@@ -2605,29 +2360,52 @@
             
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.7);
+            const base64Url = canvas.toDataURL('image/jpeg', 0.72);
+            canvas.toBlob((blob) => resolve({ compressedBlob: blob, base64Url }), 'image/jpeg', 0.72);
           };
           img.onerror = reject;
         };
         reader.onerror = reject;
       });
 
-      // 1. Upload to Supabase Storage
+      // 1. Upload to Supabase Storage (with Base64 fallback if storage error or bucket missing)
       const paymentId = crypto.randomUUID();
       const fileName = `${currentPayment.eventId}/slip_${paymentId}.jpg`;
-      
-      const { data: uploadData, error: uploadError } = await window.myAppDb.storage
-        .from('slips')
-        .upload(fileName, compressedBlob, { contentType: 'image/jpeg' });
-        
-      if (uploadError) {
-        throw new Error('อัปโหลดรูปลง Supabase ไม่สำเร็จ: ' + uploadError.message);
-      }
-      
-      const { data: { publicUrl } } = window.myAppDb.storage.from('slips').getPublicUrl(fileName);
-      const slipUrl = publicUrl;
+      let slipUrl = null;
 
-      // 2. Write to Firestore
+      try {
+        const { data: uploadData, error: uploadError } = await window.myAppDb.storage
+          .from('slips')
+          .upload(fileName, compressedBlob, { contentType: 'image/jpeg', upsert: true });
+
+        if (!uploadError && uploadData) {
+          const { data: { publicUrl } } = window.myAppDb.storage.from('slips').getPublicUrl(fileName);
+          if (publicUrl) slipUrl = publicUrl;
+        } else {
+          console.warn('Storage upload warning:', uploadError);
+        }
+      } catch (storageErr) {
+        console.warn('Storage error, fallback to base64:', storageErr);
+      }
+
+      // If storage upload fails (e.g. bucket slips does not exist or blocked by policy), fallback to base64 data URL
+      if (!slipUrl) {
+        slipUrl = base64Url;
+      }
+
+      // 2. Ensure user exists in users table (to satisfy foreign key constraint)
+      try {
+        await window.myAppDb.from('users').upsert({
+          email: currentUser.email,
+          name: currentUser.name || 'นิสิตทดสอบระบบ',
+          role: currentUser.role || 'Student',
+          student_id: currentUser.studentId || ''
+        }, { onConflict: 'email' });
+      } catch (userUpsertErr) {
+        console.warn('User upsert check:', userUpsertErr);
+      }
+
+      // 3. Write to Payments table
       try {
         let realName = currentUser.name || '';
         try {
@@ -2680,7 +2458,7 @@
     if (!t) {
       t = document.createElement('div');
       t.id = 'appToast';
-      t.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:#090d16;color:#fff;padding:0.75rem 1.25rem;border-radius:9999px;font-size:0.8rem;font-weight:700;z-index:999;box-shadow:0 10px 25px rgba(0,0,0,0.2);opacity:0;transition:all 200ms ease;pointer-events:none;';
+      t.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:linear-gradient(135deg, #1e112a, #2a163d);color:#fff;padding:0.75rem 1.35rem;border-radius:9999px;font-size:0.8rem;font-weight:700;z-index:999;box-shadow:0 10px 25px rgba(30,17,42,0.35);border:1px solid rgba(244,114,182,0.3);opacity:0;transition:all 200ms ease;pointer-events:none;font-family:inherit;';
       document.body.appendChild(t);
     }
     t.textContent = msg;
