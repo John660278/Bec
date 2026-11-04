@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เข้าสู่ระบบ - BEC BA 69 Financial System</title>
+    <title>เข้าสู่ระบบ - BEC BA 69 Financial Gazette</title>
     
-    <!-- Google Fonts: Cinzel for lining numerals, Playfair Display for luxury serif title, Plus Jakarta Sans & Prompt for UI -->
+    <!-- Google Fonts: Playfair Display for vintage headlines, Cinzel for kraft letterpress, Special Elite for typewriter newsprint, Prompt for Thai UI -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Special+Elite&family=Plus+Jakarta+Sans:wght@500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <script>
         // ถ้าเปิดผ่านแอป LINE ให้บังคับเด้งไป Safari/Chrome อัตโนมัติ
@@ -25,167 +25,341 @@
             padding: 0;
         }
 
+        :root {
+            --sepia-bg:          #e5d7c3;
+            --sepia-paper:       #f5ede1;
+            --sepia-paper-dark:  #d9c8af;
+            --sepia-ink:         #291c13;
+            --sepia-ink-muted:   #5c4533;
+            --sepia-border:      #826349;
+            --sepia-border-light:#bda387;
+            --kraft-bg:          #c59963;
+            --kraft-dark:        #a2743e;
+            --kraft-text:        #18110b;
+        }
+
         html, body {
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            overflow-x: hidden;
             font-family: 'Plus Jakarta Sans', 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #09070c;
-            color: #f1e8f8;
+            background-color: var(--sepia-bg);
+            color: var(--sepia-ink);
         }
 
-        /* ---------- Canvas ---------- */
-        #silkCanvas {
+        /* ─── VINTAGE NEWSPAPER EDITABLE BACKGROUND ─── */
+        .newspaper-container {
             position: absolute;
             inset: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
-
-        /* ---------- Overlays ---------- */
-        .gradient-overlay {
-            position: absolute;
-            inset: 0;
+            overflow: hidden;
             z-index: 1;
-            background: radial-gradient(circle at 85% 15%, rgba(140, 85, 135, 0.28) 0%, transparent 55%),
-                        radial-gradient(circle at 15% 85%, rgba(120, 75, 140, 0.25) 0%, transparent 50%),
-                        linear-gradient(to bottom, rgba(9,7,12,0.4) 0%, transparent 50%, rgba(9,7,12,0.7) 100%);
+            padding: clamp(0.75rem, 2vw, 1.5rem);
+            display: flex;
+            flex-direction: column;
             pointer-events: none;
+            opacity: 0.82;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(200, 160, 120, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(180, 140, 100, 0.18) 0%, transparent 50%),
+                var(--sepia-bg);
         }
 
-        /* Carbon / Dot grid texture with soft edge fade */
-        .texture-overlay {
+        /* News Masthead Top Banner */
+        .news-masthead {
+            border-top: 3px double var(--sepia-ink);
+            border-bottom: 2px solid var(--sepia-ink);
+            padding: 0.4rem 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Special Elite', monospace;
+            font-size: 0.68rem;
+            color: var(--sepia-ink-muted);
+            letter-spacing: 0.05em;
+            margin-bottom: 0.4rem;
+        }
+
+        .news-masthead-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(1.4rem, 4vw, 2.5rem);
+            font-weight: 900;
+            color: var(--sepia-ink);
+            letter-spacing: 0.08em;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .news-sub-banner {
+            border-top: 1px solid var(--sepia-border);
+            border-bottom: 3px double var(--sepia-ink);
+            padding: 0.25rem 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Special Elite', monospace;
+            font-size: 0.62rem;
+            color: var(--sepia-ink-muted);
+            margin-bottom: 1rem;
+        }
+
+        /* Multi-Column Newsprint Grid */
+        .news-columns-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            flex: 1;
+        }
+
+        @media (max-width: 900px) {
+            .news-columns-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .news-col-hide-mobile {
+                display: none;
+            }
+        }
+
+        .news-col {
+            border-right: 1px solid var(--sepia-border-light);
+            padding-right: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .news-col:last-child {
+            border-right: none;
+            padding-right: 0;
+        }
+
+        .news-headline-lead {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(1rem, 2vw, 1.35rem);
+            font-weight: 900;
+            line-height: 1.15;
+            color: var(--sepia-ink);
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+            border-bottom: 1.5px solid var(--sepia-ink);
+            padding-bottom: 0.35rem;
+        }
+
+        .news-subhead {
+            font-family: 'Special Elite', monospace;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--sepia-ink-muted);
+            letter-spacing: 0.02em;
+            line-height: 1.3;
+        }
+
+        .news-paragraph {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 0.78rem;
+            line-height: 1.45;
+            color: var(--sepia-ink);
+            text-align: justify;
+        }
+
+        .news-paragraph strong {
+            font-family: 'Special Elite', monospace;
+            font-size: 0.76rem;
+            letter-spacing: 0.04em;
+        }
+
+        .news-ad-box {
+            border: 2px dashed var(--sepia-border);
+            padding: 0.6rem;
+            background: rgba(245, 237, 225, 0.6);
+            text-align: center;
+        }
+
+        .news-ad-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--sepia-ink);
+            letter-spacing: 0.06em;
+            margin-bottom: 0.2rem;
+        }
+
+        .news-ad-body {
+            font-family: 'Special Elite', monospace;
+            font-size: 0.65rem;
+            line-height: 1.35;
+            color: var(--sepia-ink-muted);
+        }
+
+        .news-ornament {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--sepia-border);
+            letter-spacing: 0.2em;
+            margin: 0.25rem 0;
+        }
+
+        /* ─── VINTAGE AGED PARCHMENT & VIGNETTE OVERLAY ─── */
+        .vintage-vignette-overlay {
             position: absolute;
             inset: 0;
-            z-index: 2;
-            background-image: radial-gradient(rgba(240, 205, 245, 0.05) 1px, transparent 1px);
-            background-size: 7px 7px;
-            mask-image: radial-gradient(circle at 50% 45%, black 45%, transparent 95%);
-            -webkit-mask-image: radial-gradient(circle at 50% 45%, black 45%, transparent 95%);
+            z-index: 5;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(245, 237, 225, 0.4) 0%, rgba(225, 207, 185, 0.7) 50%, rgba(65, 42, 24, 0.88) 100%),
+                linear-gradient(to bottom, rgba(45, 28, 16, 0.35) 0%, transparent 20%, transparent 80%, rgba(45, 28, 16, 0.5) 100%);
             pointer-events: none;
         }
 
-        /* ---------- Center content ---------- */
+        /* Micro Paper Fiber Noise */
+        .paper-grain-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 6;
+            background-image: radial-gradient(rgba(80, 50, 25, 0.07) 1px, transparent 1px);
+            background-size: 5px 5px;
+            pointer-events: none;
+        }
+
+        /* ─── CENTER CONTENT WRAPPER ─── */
         .content-wrapper {
-            position: absolute;
-            inset: 0;
+            position: relative;
             z-index: 20;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 1.5rem 1rem;
-            gap: 2rem;
+            gap: 1.5rem;
         }
 
-        /* ---------- Title ---------- */
+        /* ─── TITLE WITH KRAFT PAPER CUT-OUT STICKERS ─── */
         .main-title {
             text-align: center;
             opacity: 0;
-            transform: translateY(2rem);
-            animation: fadeInUp 1s ease-out 0.2s forwards;
+            transform: translateY(1.5rem);
+            animation: fadeInUp 0.9s ease-out 0.15s forwards;
             user-select: none;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .brand-logo-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 0.65rem;
-        }
-
-        .brand-planet-logo {
-            width: clamp(100px, 15vw, 155px);
-            height: auto;
-            object-fit: contain;
-            filter: drop-shadow(0 0 16px rgba(230, 180, 240, 0.8))
-                    drop-shadow(0 0 32px rgba(210, 150, 230, 0.5));
-            transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), filter 300ms ease;
-            user-select: none;
-            -webkit-user-drag: none;
-        }
-
-        .brand-planet-logo:hover {
-            transform: scale(1.05);
-            filter: drop-shadow(0 0 24px rgba(245, 195, 255, 0.95))
-                    drop-shadow(0 0 45px rgba(225, 165, 245, 0.65));
-        }
-
-        .main-title h1 {
-            font-family: 'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
-            font-size: clamp(3.2rem, 13vw, 8.5rem);
-            font-weight: 600;
-            letter-spacing: -0.01em;
-            line-height: 1;
-            color: #f7e2f5;
-            /* Pure text-shadow completely eliminates browser rectangular tile clipping */
-            text-shadow: 
-                0 0 12px rgba(235, 185, 245, 0.95),
-                0 0 26px rgba(215, 160, 235, 0.75),
-                0 0 50px rgba(185, 120, 215, 0.5),
-                0 0 80px rgba(145, 75, 185, 0.3);
-        }
-
-        .main-title .brand-num {
-            font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+        .vintage-tagline {
+            font-family: 'Special Elite', monospace;
+            font-size: clamp(0.68rem, 1.8vw, 0.8rem);
             font-weight: 700;
-            font-variant-numeric: lining-nums;
-            font-feature-settings: "lnum" 1;
-            letter-spacing: 0.02em;
-        }
-
-        .main-title .subtitle {
-            margin-top: 0.85rem;
-            font-family: 'Plus Jakarta Sans', 'Prompt', sans-serif;
-            font-size: clamp(0.7rem, 2.2vw, 0.88rem);
-            font-weight: 700;
-            letter-spacing: 0.38em;
+            color: #5c412a;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
-            color: #d6bde0;
-            text-shadow: 0 0 12px rgba(225, 175, 235, 0.75), 0 0 25px rgba(205, 145, 225, 0.4);
+            margin-bottom: 0.65rem;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);
         }
 
-        /* ---------- Login Card ---------- */
-        .login-card {
-            opacity: 0;
-            transform: translateY(1.5rem);
-            animation: fadeInUp 1s ease-out 0.6s forwards;
+        /* Kraft Letter Stickers Row */
+        .kraft-stickers-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(8px, 2.2vw, 16px);
+            flex-wrap: wrap;
+            margin: 0.35rem 0 0.85rem;
+        }
 
-            background: rgba(24, 18, 34, 0.68);
-            border: 1.5px solid rgba(225, 185, 235, 0.45);
-            border-radius: 28px;
-            padding: clamp(1.6rem, 4.5vw, 2.25rem) clamp(1.5rem, 5vw, 2.5rem);
-            width: min(390px, 92vw);
-            text-align: center;
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            box-shadow: 0 0 32px rgba(215, 165, 235, 0.22),
-                        0 25px 60px rgba(0, 0, 0, 0.65),
-                        inset 0 0 1px 1px rgba(255, 255, 255, 0.12);
+        .kraft-word {
+            display: inline-flex;
+            gap: clamp(3px, 0.8vw, 6px);
+        }
+
+        .kraft-letter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: clamp(42px, 9.5vw, 68px);
+            height: clamp(50px, 11.5vw, 82px);
+            background: linear-gradient(145deg, #c99e69, #b58750);
+            color: #1a120b;
+            font-family: 'Cinzel', 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: clamp(1.85rem, 5.5vw, 3.2rem);
+            line-height: 1;
+            box-shadow: 
+                2px 4px 8px rgba(35, 20, 10, 0.45),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.3),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.25);
+            border: 1.5px solid #9c703b;
+            user-select: none;
+            transition: transform 180ms ease, box-shadow 180ms ease;
             position: relative;
         }
 
-        .login-card .card-title {
-            font-size: clamp(1.05rem, 3.2vw, 1.2rem);
+        /* Playful Hand-cut Rotations from Reference Image */
+        .k-rot-1 { transform: rotate(-3.5deg) translateY(-2px); border-radius: 6px 4px 8px 5px; }
+        .k-rot-2 { transform: rotate(2.5deg) translateY(1px); border-radius: 5px 8px 4px 6px; }
+        .k-rot-3 { transform: rotate(-1.5deg) translateY(-1px); border-radius: 4px 6px 7px 4px; }
+        .k-rot-4 { transform: rotate(3deg) translateY(2px); border-radius: 8px 5px 5px 7px; }
+        .k-rot-5 { transform: rotate(-2.5deg) translateY(-2px); border-radius: 5px 7px 4px 8px; }
+        .k-rot-6 { transform: rotate(2deg) translateY(1px); border-radius: 7px 4px 8px 5px; background: linear-gradient(145deg, #be915b, #ab7d45); }
+        .k-rot-7 { transform: rotate(-2deg) translateY(-1px); border-radius: 5px 8px 5px 6px; background: linear-gradient(145deg, #be915b, #ab7d45); }
+
+        .kraft-letter:hover {
+            transform: scale(1.08) rotate(0deg);
+            box-shadow: 3px 6px 14px rgba(30, 15, 8, 0.6);
+            z-index: 10;
+        }
+
+        .main-title .subtitle {
+            margin-top: 0.25rem;
+            font-family: 'Special Elite', monospace;
+            font-size: clamp(0.72rem, 2.2vw, 0.88rem);
             font-weight: 700;
-            color: #f1d5e7;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: #4a3421;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+        }
+
+        /* ─── VINTAGE DOCUMENT LOGIN CARD ─── */
+        .login-card {
+            opacity: 0;
+            transform: translateY(1.5rem);
+            animation: fadeInUp 0.9s ease-out 0.45s forwards;
+
+            background: rgba(247, 240, 229, 0.95);
+            border: 2px solid #543b25;
+            border-radius: 20px;
+            padding: clamp(1.6rem, 4.2vw, 2.25rem) clamp(1.4rem, 4.8vw, 2.4rem);
+            width: min(390px, 92vw);
+            text-align: center;
+            box-shadow: 
+                0 20px 48px rgba(35, 20, 10, 0.48),
+                0 4px 12px rgba(0, 0, 0, 0.25),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+            position: relative;
+            outline: 1.5px dashed #8c6d53;
+            outline-offset: -7px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .login-card .card-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(1.15rem, 3.2vw, 1.35rem);
+            font-weight: 800;
+            color: #2b1c11;
             letter-spacing: 0.02em;
-            margin-bottom: 0.35rem;
+            margin-bottom: 0.25rem;
         }
 
         .login-card .card-subtitle {
-            font-size: clamp(0.75rem, 2.2vw, 0.82rem);
+            font-family: 'Special Elite', 'Prompt', monospace;
+            font-size: clamp(0.72rem, 2vw, 0.8rem);
             font-weight: 400;
-            color: #a78fae;
-            letter-spacing: 0.02em;
-            margin-bottom: 1.65rem;
+            color: #634b37;
+            letter-spacing: 0.03em;
+            margin-bottom: 1.45rem;
         }
 
-        /* Google button */
+        /* Vintage Google Button */
         .google-btn-wrapper {
             display: flex;
             justify-content: center;
@@ -196,76 +370,170 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            background: rgba(46, 42, 58, 0.95);
-            color: #ffffff;
-            padding: 12px 28px;
-            border-radius: 9999px;
-            font-family: inherit;
-            font-size: 0.98rem;
-            font-weight: 600;
+            background: #281a11;
+            color: #f7efe4;
+            border: 1.5px solid #735036;
+            border-radius: 14px;
+            padding: 12px 22px;
+            font-family: 'Plus Jakarta Sans', 'Prompt', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 700;
             cursor: pointer;
-            border: 1.5px solid rgba(230, 185, 235, 0.75);
-            box-shadow: 0 0 18px rgba(220, 165, 235, 0.45);
-            transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 14px rgba(40, 26, 17, 0.35);
+            width: 100%;
             user-select: none;
-            text-decoration: none;
         }
 
         .google-login-btn:hover {
-            transform: scale(1.03);
-            border-color: rgba(245, 205, 250, 0.95);
-            box-shadow: 0 0 28px rgba(235, 180, 245, 0.65), 0 4px 14px rgba(0, 0, 0, 0.4);
+            background: #3d281a;
+            border-color: #9c704c;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(40, 26, 17, 0.45);
         }
 
         .google-login-btn:active {
-            transform: scale(0.98);
+            transform: translateY(0);
+            box-shadow: 0 3px 8px rgba(40, 26, 17, 0.3);
+        }
+
+        .google-login-btn svg {
+            flex-shrink: 0;
+        }
+
+        /* Spinner hint */
+        .spinner-wrap {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1rem;
+            font-size: 0.78rem;
+            color: #634b37;
+            font-family: 'Special Elite', monospace;
+        }
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(130, 90, 60, 0.25);
+            border-top-color: #543b25;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }
 
         /* Error message */
         #errorMessage {
             display: none;
             margin-top: 0.85rem;
+            padding: 8px 12px;
+            background: #fde8e8;
+            border: 1px solid #f8b4b4;
+            border-radius: 8px;
+            color: #9b1c1c;
             font-size: 0.78rem;
-            color: #f87171;
             font-weight: 500;
         }
 
-        /* ---------- Loading spinner ---------- */
-        .spinner-wrap {
-            margin-top: 0.85rem;
+        /* ─── TEST ENVIRONMENT QUICK SWITCHER (VINTAGE ARCHIVE STYLE) ─── */
+        .test-switcher-box {
+            margin-top: 1.35rem;
+            padding-top: 1.15rem;
+            border-top: 1.5px dashed #8c6d53;
+        }
+
+        .test-switcher-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .test-switcher-title {
+            font-size: 0.72rem;
+            color: #5a4029;
+            font-family: 'Special Elite', monospace;
+            letter-spacing: 0.04em;
+            font-weight: 700;
+        }
+
+        .test-switcher-badge {
+            font-size: 0.62rem;
+            color: #281a11;
+            background: #dfcca8;
+            border: 1px solid #9e8363;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-family: 'Special Elite', monospace;
+        }
+
+        .btn-test-admin {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1.5px solid #735036;
+            background: linear-gradient(135deg, #3d281a, #281a11);
+            color: #f7efe4;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.45rem;
-            color: #c4a9d4;
-            font-size: 0.75rem;
-            letter-spacing: 0.05em;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(40, 26, 17, 0.3);
+            transition: all 140ms ease;
         }
 
-        .spinner {
-            width: 14px;
-            height: 14px;
-            border: 2px solid rgba(220, 180, 230, 0.25);
-            border-top-color: #f1bed8;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+        .btn-test-admin:hover {
+            background: linear-gradient(135deg, #4d3322, #332014);
+            border-color: #9c704c;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(40, 26, 17, 0.4);
         }
 
-        /* ---------- Keyframes ---------- */
+        .student-select-wrap {
+            position: relative;
+        }
+
+        .student-select-input {
+            width: 100%;
+            padding: 10px 32px 10px 14px;
+            border-radius: 12px;
+            border: 1.5px solid #8c6d53;
+            background: #ebdcc5;
+            color: #281a11;
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: inherit;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+        }
+
+        .student-select-arrow {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #543b25;
+            font-size: 0.72rem;
+        }
+
+        /* Keyframes */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(2rem); }
-            to   { opacity: 1; transform: translateY(0);    }
+            from { opacity: 0; transform: translateY(1.5rem); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
-        }
-
-        @media (min-width: 768px) {
-            .content-wrapper {
-                gap: 2.8rem;
-                padding: 2rem;
-            }
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -275,67 +543,155 @@
 </head>
 <body>
 
-    <!-- Silk Canvas -->
-    <canvas id="silkCanvas"></canvas>
+    <!-- ─── VINTAGE NEWSPAPER REAL EDITABLE BACKGROUND ─── -->
+    <div class="newspaper-container" aria-hidden="true">
+        <!-- Newspaper Top Masthead -->
+        <header class="news-masthead">
+            <div>NO. 69 • VOL. II</div>
+            <div>EST. 2026 • NARESUAN UNIVERSITY</div>
+            <div>PRICE 5 CENTS</div>
+        </header>
 
-    <!-- Dark gradient overlay -->
-    <div class="gradient-overlay"></div>
+        <div class="news-masthead-title">THE BEC GAZETTE & CHRONICLE</div>
 
-    <!-- Micro-dot texture overlay -->
-    <div class="texture-overlay"></div>
-
-    <!-- Main content -->
-    <div class="content-wrapper">
-
-        <!-- Big title with Kuromi Planet Logo -->
-        <div class="main-title">
-            <div class="brand-logo-container">
-                <img src="assets/kuromi_planet_logo.png" class="brand-planet-logo" alt="BEC BA 69 Kuromi Logo" />
-            </div>
-            <h1>BEC BA <span class="brand-num">69</span></h1>
-            <div class="subtitle">FINANCIAL SYSTEM</div>
+        <div class="news-sub-banner">
+            <div>★ OFFICIAL BULLETIN OF COMMERCE & ACCOUNTING ★</div>
+            <div>TRANSPARENCY IN STUDENT TREASURY</div>
+            <div>SPECIAL ARCHIVE EDITION</div>
         </div>
 
-        <!-- Login card -->
-        <div class="login-card">
-            <p class="card-title">ยินดีต้อนรับ</p>
-            <p class="card-subtitle">กรุณายืนยันตัวตนเพื่อเข้าสู่ระบบ</p>
+        <!-- 3 Columns of Authentic Vintage Articles (Fully Editable Text) -->
+        <div class="news-columns-grid">
+            <!-- Column 1 -->
+            <article class="news-col">
+                <h2 class="news-headline-lead">TREASURY ACCORD RATIFIED FOR CLASS 69</h2>
+                <div class="news-subhead">DIGITAL ACCOUNTING SYSTEM COMMENCES FULL OPERATION</div>
+                <p class="news-paragraph">
+                    <strong>PHITSANULOK — </strong>The finance committee of the Business Administration class of 69 announced today the official deployment of the central treasury ledger. Designed with comprehensive ledger oversight, automated payment records, and immediate receipt generation, the portal maintains complete fiscal integrity.
+                </p>
+                <div class="news-ad-box">
+                    <div class="news-ad-title">❖ NOTICE OF AUDIT ❖</div>
+                    <div class="news-ad-body">All collected semester funds are accounted for daily. Verifiable public statements are compiled for student review.</div>
+                </div>
+                <p class="news-paragraph">
+                    Every enrolled member of the branch may inspect balance sheets, monitor disbursement schedules, and confirm transfer verifications at their convenience.
+                </p>
+            </article>
 
-            <!-- Google OAuth -->
+            <!-- Column 2 (Center Behind Card) -->
+            <article class="news-col news-col-center">
+                <h2 class="news-headline-lead">EXECUTIVE DISPATCH: TRANSPARENCY IN COMMERCE</h2>
+                <p class="news-paragraph">
+                    <strong>FACULTY OF BUSINESS — </strong>Representatives from all academic sections assembled to review the new verification matrix. "Every single transaction stands transparent and accountable to the collective assembly," proclaimed the treasurer general.
+                </p>
+                <div class="news-ornament">❖ ────── ❖ ────── ❖</div>
+                <div class="news-ad-box">
+                    <div class="news-ad-title">CLASSIFIED DIRECTORY</div>
+                    <div class="news-ad-body"><strong>WANTED:</strong> Prompt submission of weekly slips. Immediate processing guaranteed via Google Auth.</div>
+                    <div class="news-ad-body" style="margin-top:4px;"><strong>FOUND:</strong> Fully balanced treasury records and certified bank reconciliations.</div>
+                </div>
+                <p class="news-paragraph">
+                    Weekly treasury dispatches will be published directly in the virtual executive hall.
+                </p>
+            </article>
+
+            <!-- Column 3 (Right) -->
+            <article class="news-col news-col-hide-mobile">
+                <h2 class="news-headline-lead">ANNUAL AUDIT PROVES SOUND RESERVES</h2>
+                <div class="news-subhead">CENTRAL FUND RECEPTACLE BALANCES OUT ACCURATELY</div>
+                <p class="news-paragraph">
+                    <strong>ACCOUNTING LEDGER — </strong>Official receipts for all student activities are preserved permanently within the secure database. Automated verification algorithms cross-examine bank transfer timestamps to prevent duplicate submissions.
+                </p>
+                <div class="news-ad-box">
+                    <div class="news-ad-title">PANCAKE BREAKFAST SPECIAL</div>
+                    <div class="news-ad-body">Daily coffee, tea, and warm pastries served for all hard-working treasury auditors. Only $2.49 at the campus parlor.</div>
+                </div>
+                <p class="news-paragraph">
+                    Students experiencing difficulties are advised to confer with branch officers or submit inquiry dispatches via the digital portal.
+                </p>
+            </article>
+        </div>
+    </div>
+
+    <!-- ─── VINTAGE AGED PARCHMENT & VIGNETTE OVERLAY ─── -->
+    <div class="vintage-vignette-overlay"></div>
+    <div class="paper-grain-overlay"></div>
+
+    <!-- ─── CENTER LOGIN CONTENT ─── -->
+    <div class="content-wrapper">
+
+        <!-- Big Title with Scrapbook Kraft Paper Stickers from Reference Image -->
+        <div class="main-title">
+            <div class="vintage-tagline">★ THE OFFICIAL STUDENT ARCHIVE ★</div>
+            
+            <!-- Hand-cut Kraft Paper Letter Badges (Like Image 2) -->
+            <div class="kraft-stickers-row">
+                <!-- Word: BEC -->
+                <div class="kraft-word" title="BEC">
+                    <span class="kraft-letter k-rot-1">B</span>
+                    <span class="kraft-letter k-rot-2">E</span>
+                    <span class="kraft-letter k-rot-3">C</span>
+                </div>
+                <!-- Word: BA -->
+                <div class="kraft-word" title="BA">
+                    <span class="kraft-letter k-rot-4">B</span>
+                    <span class="kraft-letter k-rot-5">A</span>
+                </div>
+                <!-- Number: 69 -->
+                <div class="kraft-word" title="69">
+                    <span class="kraft-letter k-rot-6">6</span>
+                    <span class="kraft-letter k-rot-7">9</span>
+                </div>
+            </div>
+
+            <div class="subtitle">FINANCIAL DISPATCH • NU 69</div>
+        </div>
+
+        <!-- Vintage Document Login Card -->
+        <div class="login-card">
+            <p class="card-title">ยินดีต้อนรับสู่งานการเงิน</p>
+            <p class="card-subtitle">กรุณายืนยันตัวตนเพื่อเข้าสู่สารบบนิสิต</p>
+
+            <!-- Google OAuth Button (Vintage Leather Press Style) -->
             <div class="google-btn-wrapper">
                 <div class="google-login-btn" onclick="signInWithGoogle()">
-                    <svg width="22" height="22" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-                    <span>เข้าสู่ระบบด้วย Google</span>
+                    <svg width="20" height="20" viewBox="0 0 48 48">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    </svg>
+                    <span>เข้าสู่ระบบด้วย Google NU</span>
                 </div>
             </div>
 
             <div class="spinner-wrap" id="loadingHint">
                 <div class="spinner"></div>
-                <span>กำลังเตรียมระบบ...</span>
+                <span>กำลังเปิดสารบบ...</span>
             </div>
 
             <!-- Error -->
             <p id="errorMessage"></p>
 
-            <!-- Test Environment Quick Switcher (เซิฟเวอร์ทดสอบ) -->
-            <div class="test-switcher-box" style="margin-top: 1.35rem; padding-top: 1.15rem; border-top: 1px solid rgba(240, 205, 245, 0.16);">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-                    <span style="font-size:0.72rem; color:rgba(240, 205, 245, 0.85); font-family:sans-serif; letter-spacing:0.04em; font-weight:700;">🧪 โหมดทดสอบ (Test Server)</span>
-                    <span style="font-size:0.62rem; color:#f472b6; background:rgba(244,114,182,0.16); border:1px solid rgba(244,114,182,0.35); padding:2px 8px; border-radius:10px; font-weight:700;">104 บัญชี</span>
+            <!-- Test Environment Quick Switcher (Vintage Archive Roster) -->
+            <div class="test-switcher-box">
+                <div class="test-switcher-header">
+                    <span class="test-switcher-title">[ 🧪 TEST ARCHIVE • SEED ROSTER ]</span>
+                    <span class="test-switcher-badge">104 บัญชี</span>
                 </div>
                 
                 <div style="display:flex; flex-direction:column; gap:9px;">
                     <!-- Admin Shortcut Button -->
-                    <button type="button" onclick="loginAsUser('admin@nu.ac.th', 'แอดมินระบบ', 'Admin', '00000000')" style="width:100%; padding:10px 14px; border-radius:14px; border:1px solid rgba(244, 114, 182, 0.45); background:linear-gradient(135deg, rgba(124, 58, 237, 0.4), rgba(236, 72, 153, 0.3)); color:#ffffff; font-size:0.82rem; font-weight:700; cursor:pointer; font-family:inherit; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow: 0 4px 14px rgba(124,58,237,0.22); transition:all 140ms ease;">
-                        <span>👑 เข้าสู่ระบบ: แอดมิน (Admin Dashboard)</span>
+                    <button type="button" class="btn-test-admin" onclick="loginAsUser('admin@nu.ac.th', 'แอดมินระบบ', 'Admin', '00000000')">
+                        <span>👑 เข้าสู่ระบบ: แอดมิน (Admin Gazette)</span>
                     </button>
                     
                     <!-- Student Selector Dropdown (103 students) -->
-                    <div style="position:relative;">
-                        <select id="studentSelect" onchange="onSelectStudent(this.value)" style="width:100%; padding:10px 32px 10px 14px; border-radius:14px; border:1px solid rgba(244, 114, 182, 0.35); background:#181126; color:#f8fafc; font-size:0.8rem; font-family:inherit; outline:none; cursor:pointer; appearance:none; -webkit-appearance:none; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);">
-                            <option value="" disabled selected>👤 เลือกล็อกอินในชื่อนิสิต (103 คน)...</option>
+                    <div class="student-select-wrap">
+                        <select id="studentSelect" class="student-select-input" onchange="onSelectStudent(this.value)">
+                            <option value="" disabled selected>📜 เลือกล็อกอินในชื่อนิสิต (103 คน)...</option>
                         </select>
-                        <span style="position:absolute; right:14px; top:50%; transform:translateY(-50%); pointer-events:none; color:rgba(244,114,182,0.85); font-size:0.7rem;">▼</span>
+                        <span class="student-select-arrow">▼</span>
                     </div>
                 </div>
             </div>
@@ -343,94 +699,8 @@
 
     </div>
 
-    <!-- Silk Canvas Animation Script -->
+    <!-- Scripts -->
     <script>
-        (function () {
-            const canvas = document.getElementById('silkCanvas');
-            const ctx = canvas.getContext('2d');
-            let time = 0;
-            const speed = 0.02;
-            const scale = 2;
-            const noiseIntensity = 0.8;
-            let animId;
-
-            function resize() {
-                canvas.width  = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            resize();
-            window.addEventListener('resize', resize);
-
-            function noise(x, y) {
-                const G = 2.71828;
-                const rx = G * Math.sin(G * x);
-                const ry = G * Math.sin(G * y);
-                return (rx * ry * (1 + x)) % 1;
-            }
-
-            function animate() {
-                const w = canvas.width;
-                const h = canvas.height;
-
-                // Background gradient with deep obsidian and dark mauve/violet
-                const bg = ctx.createLinearGradient(0, 0, w, h);
-                bg.addColorStop(0,   '#0c0a10');
-                bg.addColorStop(0.35,'#201529');
-                bg.addColorStop(0.7, '#140e1b');
-                bg.addColorStop(1,   '#09070c');
-                ctx.fillStyle = bg;
-                ctx.fillRect(0, 0, w, h);
-
-                // Silk pixels with soft purple/lavender ripples
-                const imgData = ctx.createImageData(w, h);
-                const d = imgData.data;
-                const tOff = speed * time;
-
-                for (let y = 0; y < h; y += 2) {
-                    for (let x = 0; x < w; x += 2) {
-                        const nx = x / w * scale;
-                        const ny = y / h * scale;
-
-                        const pattern = Math.sin(
-                            nx * 3 + Math.sin(ny * 2 + tOff) * 1.5 +
-                            Math.cos(nx * 2 - tOff * 0.7) * 1.2
-                        );
-
-                        const rnd = noise(x, y);
-                        const intensity = Math.max(0, pattern - rnd / 15.0 * noiseIntensity);
-
-                        const r = Math.floor(180 * intensity);
-                        const g = Math.floor(140 * intensity);
-                        const b = Math.floor(205 * intensity);
-
-                        const idx = (y * w + x) * 4;
-                        if (idx < d.length) {
-                            d[idx]     = r;
-                            d[idx + 1] = g;
-                            d[idx + 2] = b;
-                            d[idx + 3] = 255;
-                        }
-                    }
-                }
-                ctx.putImageData(imgData, 0, 0);
-
-                // Radial depth overlay
-                const ov = ctx.createRadialGradient(
-                    w/2, h/2, 0,
-                    w/2, h/2, Math.max(w, h) / 1.5
-                );
-                ov.addColorStop(0, 'rgba(12, 10, 16, 0.2)');
-                ov.addColorStop(1, 'rgba(9, 7, 12, 0.75)');
-                ctx.fillStyle = ov;
-                ctx.fillRect(0, 0, w, h);
-
-                time++;
-                animId = requestAnimationFrame(animate);
-            }
-
-            animate();
-        })();
-
         // Hide the "loading" hint once Google button appears
         window.addEventListener('load', function () {
             setTimeout(function () {
