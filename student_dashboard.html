@@ -209,6 +209,13 @@
       text-overflow: ellipsis;
     }
 
+    .app-bar-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+    }
+
     .btn-icon {
       background: var(--surface-sub);
       border: 1px solid var(--border);
@@ -220,13 +227,133 @@
       justify-content: center;
       color: var(--muted);
       cursor: pointer;
-      transition: all 120ms;
+      transition: all 160ms ease;
+    }
+
+    .btn-icon svg {
+      transition: transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .btn-icon:hover {
+      background: var(--surface-hover);
+      border-color: var(--border-dark);
+      color: var(--text);
+      transform: translateY(-1px);
+    }
+
+    .btn-icon.active {
+      background: #ffffff;
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+    }
+
+    .btn-icon.active svg {
+      transform: rotate(45deg);
+    }
+
+    /* ─── SETTINGS DROPDOWN POPUP MENU ─── */
+    .settings-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 200px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 6px;
+      box-shadow: 0 14px 34px -4px rgba(35, 12, 60, 0.16), 0 4px 12px rgba(0, 0, 0, 0.06);
+      opacity: 0;
+      transform: translateY(-8px) scale(0.96);
+      pointer-events: none;
+      transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .settings-dropdown.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .settings-menu-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 10px;
+      border: none;
+      background: transparent;
+      border-radius: 11px;
+      cursor: pointer;
+      font-family: inherit;
+      text-align: left;
+      transition: all 120ms ease;
+    }
+
+    .settings-menu-item:hover {
+      background: var(--surface-sub);
+    }
+
+    .settings-menu-item.danger:hover {
       background: #fff1f2;
-      border-color: #fecdd3;
-      color: var(--danger);
+    }
+
+    .menu-icon-wrap {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 140ms ease;
+    }
+
+    .theme-icon-wrap {
+      background: rgba(124, 58, 237, 0.1);
+      color: var(--accent);
+    }
+
+    .danger-icon-wrap {
+      background: #ffe4e6;
+      color: #f43f5e;
+    }
+
+    .settings-menu-item:hover .menu-icon-wrap {
+      transform: scale(1.08);
+    }
+
+    .menu-item-text {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .settings-menu-item.danger .menu-item-text span {
+      color: #f43f5e;
+    }
+
+    .menu-item-badge {
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #ec4899, #7c3aed);
+      color: #ffffff;
+      letter-spacing: 0.02em;
+    }
+
+    .settings-menu-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 4px 6px;
     }
 
     /* ─── SCROLLABLE CONTENT ─── */
@@ -1526,9 +1653,46 @@
       </div>
     </div>
     <div class="app-bar-actions">
-      <button class="btn-icon" onclick="logout()" title="ออกจากระบบ">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      <button class="btn-icon" id="btnSettingsMenu" onclick="toggleSettingsMenu(event)" title="การตั้งค่าและธีม" aria-label="Settings">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
       </button>
+
+      <!-- Settings Dropdown Popup Menu -->
+      <div class="settings-dropdown" id="settingsDropdown">
+        <button class="settings-menu-item" onclick="onOpenThemeCustomizer()">
+          <div class="menu-icon-wrap theme-icon-wrap">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
+              <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+              <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle>
+              <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2z"></path>
+            </svg>
+          </div>
+          <div class="menu-item-text">
+            <span>ปรับเปลี่ยนธีม</span>
+            <span class="menu-item-badge">ใหม่</span>
+          </div>
+        </button>
+
+        <div class="settings-menu-divider"></div>
+
+        <button class="settings-menu-item danger" onclick="logout()">
+          <div class="menu-icon-wrap danger-icon-wrap">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+          </div>
+          <div class="menu-item-text">
+            <span>ออกจากระบบ</span>
+          </div>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -2424,6 +2588,48 @@
       t.style.opacity = '0';
       t.style.transform = 'translateX(-50%) translateY(20px)';
     }, 2400);
+  }
+
+  // ─── SETTINGS DROPDOWN POPUP MENU ───
+  function toggleSettingsMenu(e) {
+    if (e) e.stopPropagation();
+    const dropdown = document.getElementById('settingsDropdown');
+    const btn = document.getElementById('btnSettingsMenu');
+    if (!dropdown) return;
+    
+    const isOpen = dropdown.classList.contains('open');
+    if (isOpen) {
+      closeSettingsMenu();
+    } else {
+      dropdown.classList.add('open');
+      if (btn) btn.classList.add('active');
+    }
+  }
+
+  function closeSettingsMenu() {
+    const dropdown = document.getElementById('settingsDropdown');
+    const btn = document.getElementById('btnSettingsMenu');
+    if (dropdown) dropdown.classList.remove('open');
+    if (btn) btn.classList.remove('active');
+  }
+
+  // Click outside to close settings menu
+  document.addEventListener('click', (e) => {
+    const dropdown = document.getElementById('settingsDropdown');
+    const btn = document.getElementById('btnSettingsMenu');
+    if (!dropdown || !dropdown.classList.contains('open')) return;
+    if (!dropdown.contains(e.target) && !btn.contains(e.target)) {
+      closeSettingsMenu();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSettingsMenu();
+  });
+
+  function onOpenThemeCustomizer() {
+    closeSettingsMenu();
+    showToast('กำลังเตรียมระบบเลือกธีมเร็วๆ นี้ ✨');
   }
 
   async function logout() {
