@@ -271,9 +271,9 @@
             align-items: center;
         }
 
-        /* Authentic Die-Cut Letter Stickers (Cropped from Reference Sheet) */
+        /* Authentic Die-Cut Torn Paper Letter & Digit Stickers */
         .kraft-sticker-img {
-            width: clamp(44px, 9.5vw, 68px);
+            width: clamp(44px, 9vw, 66px);
             height: auto;
             display: inline-block;
             filter: drop-shadow(2px 5px 8px rgba(35, 20, 10, 0.48));
@@ -283,35 +283,8 @@
         }
 
         .kraft-sticker-img:hover {
-            transform: scale(1.1) rotate(0deg) !important;
-            filter: drop-shadow(3px 8px 14px rgba(30, 15, 8, 0.65));
-            z-index: 10;
-        }
-
-        /* Kraft Digits 6 and 9 matching authentic sheet texture */
-        .kraft-digit {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: clamp(44px, 9.5vw, 68px);
-            height: clamp(50px, 11vw, 76px);
-            background: #c39762 url('assets/stickers/kraft_patch.png') center/cover no-repeat;
-            color: #1a120b;
-            font-family: 'Cinzel', serif;
-            font-weight: 900;
-            font-size: clamp(1.85rem, 5.5vw, 3.2rem);
-            line-height: 1;
-            border-radius: 4px;
-            border: 1px solid #8e6843;
-            filter: drop-shadow(2px 5px 8px rgba(35, 20, 10, 0.48));
-            user-select: none;
-            cursor: pointer;
-            transition: transform 180ms ease, filter 180ms ease;
-        }
-
-        .kraft-digit:hover {
-            transform: scale(1.1) rotate(0deg) !important;
-            filter: drop-shadow(3px 8px 14px rgba(30, 15, 8, 0.65));
+            transform: scale(1.12) rotate(0deg) !important;
+            filter: drop-shadow(3px 8px 16px rgba(30, 15, 8, 0.65));
             z-index: 10;
         }
 
@@ -775,8 +748,8 @@
                 </div>
                 <!-- Number: 69 -->
                 <div class="kraft-word" title="69">
-                    <span class="kraft-digit k-rot-6">6</span>
-                    <span class="kraft-digit k-rot-7">9</span>
+                    <img src="assets/stickers/6.png" alt="6" class="kraft-sticker-img k-rot-6">
+                    <img src="assets/stickers/9.png" alt="9" class="kraft-sticker-img k-rot-7">
                 </div>
             </div>
 
