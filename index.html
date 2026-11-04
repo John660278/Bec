@@ -260,52 +260,69 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: clamp(8px, 2.2vw, 16px);
+            gap: clamp(8px, 2vw, 16px);
             flex-wrap: wrap;
             margin: 0.35rem 0 0.85rem;
         }
 
         .kraft-word {
             display: inline-flex;
-            gap: clamp(3px, 0.8vw, 6px);
+            gap: clamp(4px, 0.9vw, 8px);
+            align-items: center;
         }
 
-        .kraft-letter {
+        /* Authentic Die-Cut Letter Stickers (Cropped from Reference Sheet) */
+        .kraft-sticker-img {
+            width: clamp(44px, 9.5vw, 68px);
+            height: auto;
+            display: inline-block;
+            filter: drop-shadow(2px 5px 8px rgba(35, 20, 10, 0.48));
+            transition: transform 180ms ease, filter 180ms ease;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        .kraft-sticker-img:hover {
+            transform: scale(1.1) rotate(0deg) !important;
+            filter: drop-shadow(3px 8px 14px rgba(30, 15, 8, 0.65));
+            z-index: 10;
+        }
+
+        /* Kraft Digits 6 and 9 matching authentic sheet texture */
+        .kraft-digit {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: clamp(42px, 9.5vw, 68px);
-            height: clamp(50px, 11.5vw, 82px);
-            background: linear-gradient(145deg, #c99e69, #b58750);
+            width: clamp(44px, 9.5vw, 68px);
+            height: clamp(50px, 11vw, 76px);
+            background: #c39762 url('assets/stickers/kraft_patch.png') center/cover no-repeat;
             color: #1a120b;
-            font-family: 'Cinzel', 'Playfair Display', serif;
+            font-family: 'Cinzel', serif;
             font-weight: 900;
             font-size: clamp(1.85rem, 5.5vw, 3.2rem);
             line-height: 1;
-            box-shadow: 
-                2px 4px 8px rgba(35, 20, 10, 0.45),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.3),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.25);
-            border: 1.5px solid #9c703b;
+            border-radius: 4px;
+            border: 1px solid #8e6843;
+            filter: drop-shadow(2px 5px 8px rgba(35, 20, 10, 0.48));
             user-select: none;
-            transition: transform 180ms ease, box-shadow 180ms ease;
-            position: relative;
+            cursor: pointer;
+            transition: transform 180ms ease, filter 180ms ease;
         }
 
-        /* Playful Hand-cut Rotations from Reference Image */
-        .k-rot-1 { transform: rotate(-3.5deg) translateY(-2px); border-radius: 6px 4px 8px 5px; }
-        .k-rot-2 { transform: rotate(2.5deg) translateY(1px); border-radius: 5px 8px 4px 6px; }
-        .k-rot-3 { transform: rotate(-1.5deg) translateY(-1px); border-radius: 4px 6px 7px 4px; }
-        .k-rot-4 { transform: rotate(3deg) translateY(2px); border-radius: 8px 5px 5px 7px; }
-        .k-rot-5 { transform: rotate(-2.5deg) translateY(-2px); border-radius: 5px 7px 4px 8px; }
-        .k-rot-6 { transform: rotate(2deg) translateY(1px); border-radius: 7px 4px 8px 5px; background: linear-gradient(145deg, #be915b, #ab7d45); }
-        .k-rot-7 { transform: rotate(-2deg) translateY(-1px); border-radius: 5px 8px 5px 6px; background: linear-gradient(145deg, #be915b, #ab7d45); }
-
-        .kraft-letter:hover {
-            transform: scale(1.08) rotate(0deg);
-            box-shadow: 3px 6px 14px rgba(30, 15, 8, 0.6);
+        .kraft-digit:hover {
+            transform: scale(1.1) rotate(0deg) !important;
+            filter: drop-shadow(3px 8px 14px rgba(30, 15, 8, 0.65));
             z-index: 10;
         }
+
+        /* Hand-cut Rotations from Reference Sheet */
+        .k-rot-1 { transform: rotate(-3.5deg) translateY(-2px); }
+        .k-rot-2 { transform: rotate(2.5deg) translateY(1px); }
+        .k-rot-3 { transform: rotate(-1.5deg) translateY(-1px); }
+        .k-rot-4 { transform: rotate(3deg) translateY(2px); }
+        .k-rot-5 { transform: rotate(-2.5deg) translateY(-2px); }
+        .k-rot-6 { transform: rotate(2deg) translateY(1px); }
+        .k-rot-7 { transform: rotate(-2deg) translateY(-1px); }
 
         .main-title .subtitle {
             margin-top: 0.25rem;
@@ -318,88 +335,200 @@
             text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
         }
 
-        /* ─── VINTAGE DOCUMENT LOGIN CARD ─── */
+        /* ─── CLASSIC SEMI-FORMAL LOGIN CERTIFICATE CARD ─── */
         .login-card {
             opacity: 0;
             transform: translateY(1.5rem);
             animation: fadeInUp 0.9s ease-out 0.45s forwards;
 
-            background: rgba(247, 240, 229, 0.95);
-            border: 2px solid #543b25;
-            border-radius: 20px;
-            padding: clamp(1.6rem, 4.2vw, 2.25rem) clamp(1.4rem, 4.8vw, 2.4rem);
-            width: min(390px, 92vw);
+            position: relative;
+            background: #fbf7ee linear-gradient(180deg, #fdfbf5 0%, #f7f1e4 100%);
+            border: 2.5px solid #452e1d;
+            border-radius: 4px;
+            padding: clamp(1.8rem, 4.8vw, 2.4rem) clamp(1.4rem, 4.8vw, 2.2rem);
+            width: min(410px, 94vw);
             text-align: center;
             box-shadow: 
-                0 20px 48px rgba(35, 20, 10, 0.48),
-                0 4px 12px rgba(0, 0, 0, 0.25),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.65);
-            position: relative;
-            outline: 1.5px dashed #8c6d53;
-            outline-offset: -7px;
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+                0 24px 50px rgba(35, 20, 10, 0.45),
+                0 3px 8px rgba(0, 0, 0, 0.22),
+                inset 0 0 0 3.5px #fbf7ee,
+                inset 0 0 0 5px #8c6746;
+        }
+
+        /* Classical Ornamental Corner Accents */
+        .card-corner {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            pointer-events: none;
+        }
+        .corner-tl { top: 8px; left: 8px; border-top: 2px solid #6b4c33; border-left: 2px solid #6b4c33; }
+        .corner-tr { top: 8px; right: 8px; border-top: 2px solid #6b4c33; border-right: 2px solid #6b4c33; }
+        .corner-bl { bottom: 8px; left: 8px; border-bottom: 2px solid #6b4c33; border-left: 2px solid #6b4c33; }
+        .corner-br { bottom: 8px; right: 8px; border-bottom: 2px solid #6b4c33; border-right: 2px solid #6b4c33; }
+
+        /* Card Seal & Crest Header */
+        .card-crest-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 0.65rem;
+        }
+
+        .vintage-crest {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .crest-caption {
+            font-family: 'Special Elite', monospace;
+            font-size: 0.62rem;
+            color: #7a583c;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
         }
 
         .login-card .card-title {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(1.15rem, 3.2vw, 1.35rem);
+            font-family: 'Playfair Display', 'Prompt', Georgia, serif;
+            font-size: clamp(1.2rem, 3.4vw, 1.38rem);
             font-weight: 800;
-            color: #2b1c11;
-            letter-spacing: 0.02em;
-            margin-bottom: 0.25rem;
+            color: #24160e;
+            letter-spacing: 0.01em;
+            margin-bottom: 0.15rem;
+            line-height: 1.3;
         }
 
         .login-card .card-subtitle {
-            font-family: 'Special Elite', 'Prompt', monospace;
-            font-size: clamp(0.72rem, 2vw, 0.8rem);
-            font-weight: 400;
-            color: #634b37;
-            letter-spacing: 0.03em;
-            margin-bottom: 1.45rem;
+            font-family: 'Prompt', -apple-system, sans-serif;
+            font-size: clamp(0.78rem, 2.2vw, 0.86rem);
+            font-weight: 600;
+            color: #5c412b;
+            margin-bottom: 0.55rem;
         }
 
-        /* Vintage Google Button */
+        /* Semi-Formal Status Tag */
+        .card-formal-tag {
+            display: inline-block;
+            font-family: 'Special Elite', 'Prompt', monospace;
+            font-size: 0.65rem;
+            color: #6d4b30;
+            background: #ede0cd;
+            border: 1px solid #a88a6d;
+            border-radius: 3px;
+            padding: 3px 9px;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.85rem;
+        }
+
+        /* Classical Engraved Divider */
+        .card-ornament-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 1.25rem;
+        }
+
+        .card-ornament-divider .divider-line {
+            flex: 1;
+            height: 1px;
+            background: #ba9e83;
+        }
+
+        .card-ornament-divider .divider-mark {
+            font-size: 0.72rem;
+            color: #7a583c;
+        }
+
+        /* Semi-Formal Executive Google Button */
         .google-btn-wrapper {
             display: flex;
             justify-content: center;
         }
 
         .google-login-btn {
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             gap: 12px;
-            background: #281a11;
+            background: linear-gradient(180deg, #2a1b11 0%, #1e130a 100%);
             color: #f7efe4;
-            border: 1.5px solid #735036;
-            border-radius: 14px;
-            padding: 12px 22px;
-            font-family: 'Plus Jakarta Sans', 'Prompt', sans-serif;
-            font-size: 0.88rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 14px rgba(40, 26, 17, 0.35);
+            border: 1.5px solid #8e6843;
+            border-radius: 5px;
+            padding: 10px 16px;
             width: 100%;
+            cursor: pointer;
+            box-shadow: 
+                0 4px 14px rgba(35, 20, 10, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1);
             user-select: none;
+            text-align: left;
         }
 
         .google-login-btn:hover {
-            background: #3d281a;
-            border-color: #9c704c;
+            background: linear-gradient(180deg, #372417 0%, #26180e 100%);
+            border-color: #b5895c;
             color: #ffffff;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 22px rgba(40, 26, 17, 0.45);
+            transform: translateY(-1.5px);
+            box-shadow: 
+                0 7px 20px rgba(35, 20, 10, 0.45),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
         .google-login-btn:active {
             transform: translateY(0);
-            box-shadow: 0 3px 8px rgba(40, 26, 17, 0.3);
+            box-shadow: 0 3px 8px rgba(35, 20, 10, 0.3);
         }
 
-        .google-login-btn svg {
+        .google-icon-box {
+            width: 32px;
+            height: 32px;
+            background: #ffffff;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             flex-shrink: 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .google-btn-text {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .google-btn-primary {
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #fcf8f2;
+            line-height: 1.25;
+        }
+
+        .google-btn-secondary {
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 400;
+            color: #c9b199;
+            line-height: 1.2;
+        }
+
+        .google-btn-arrow {
+            font-size: 1rem;
+            color: #b5895c;
+            font-weight: 700;
+            transition: transform 140ms ease;
+        }
+
+        .google-login-btn:hover .google-btn-arrow {
+            transform: translateX(3px);
+            color: #ffffff;
         }
 
         /* Spinner hint */
@@ -430,69 +559,70 @@
             padding: 8px 12px;
             background: #fde8e8;
             border: 1px solid #f8b4b4;
-            border-radius: 8px;
+            border-radius: 4px;
             color: #9b1c1c;
             font-size: 0.78rem;
             font-weight: 500;
         }
 
-        /* ─── TEST ENVIRONMENT QUICK SWITCHER (VINTAGE ARCHIVE STYLE) ─── */
+        /* ─── TEST ENVIRONMENT QUICK SWITCHER (VINTAGE ARCHIVE ROSTER) ─── */
         .test-switcher-box {
-            margin-top: 1.35rem;
-            padding-top: 1.15rem;
-            border-top: 1.5px dashed #8c6d53;
+            margin-top: 1.25rem;
+            padding-top: 1.1rem;
+            border-top: 1px solid #c9b097;
+            position: relative;
         }
 
         .test-switcher-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.7rem;
         }
 
         .test-switcher-title {
-            font-size: 0.72rem;
-            color: #5a4029;
+            font-size: 0.7rem;
+            color: #523824;
             font-family: 'Special Elite', monospace;
             letter-spacing: 0.04em;
             font-weight: 700;
         }
 
         .test-switcher-badge {
-            font-size: 0.62rem;
-            color: #281a11;
+            font-size: 0.6rem;
+            color: #24160e;
             background: #dfcca8;
             border: 1px solid #9e8363;
-            padding: 2px 8px;
-            border-radius: 10px;
+            padding: 1.5px 7px;
+            border-radius: 3px;
             font-weight: 700;
             font-family: 'Special Elite', monospace;
         }
 
         .btn-test-admin {
             width: 100%;
-            padding: 10px 14px;
-            border-radius: 12px;
+            padding: 9px 12px;
+            border-radius: 5px;
             border: 1.5px solid #735036;
-            background: linear-gradient(135deg, #3d281a, #281a11);
+            background: linear-gradient(180deg, #382416, #26170c);
             color: #f7efe4;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 700;
             cursor: pointer;
-            font-family: inherit;
+            font-family: 'Prompt', sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            box-shadow: 0 4px 12px rgba(40, 26, 17, 0.3);
+            box-shadow: 0 3px 8px rgba(35, 20, 10, 0.28);
             transition: all 140ms ease;
         }
 
         .btn-test-admin:hover {
-            background: linear-gradient(135deg, #4d3322, #332014);
+            background: linear-gradient(180deg, #472f1e, #311e11);
             border-color: #9c704c;
             transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(40, 26, 17, 0.4);
+            box-shadow: 0 5px 12px rgba(35, 20, 10, 0.38);
         }
 
         .student-select-wrap {
@@ -501,24 +631,30 @@
 
         .student-select-input {
             width: 100%;
-            padding: 10px 32px 10px 14px;
-            border-radius: 12px;
-            border: 1.5px solid #8c6d53;
-            background: #ebdcc5;
-            color: #281a11;
-            font-size: 0.8rem;
+            padding: 9px 30px 9px 12px;
+            border-radius: 5px;
+            border: 1.5px solid #8c6a49;
+            background: #f3e9d8;
+            color: #24160e;
+            font-size: 0.78rem;
             font-weight: 600;
-            font-family: inherit;
+            font-family: 'Prompt', sans-serif;
             outline: none;
             cursor: pointer;
             appearance: none;
             -webkit-appearance: none;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+            transition: border-color 140ms ease;
+        }
+
+        .student-select-input:hover, .student-select-input:focus {
+            border-color: #5c3e25;
+            background: #fbf5eb;
         }
 
         .student-select-arrow {
             position: absolute;
-            right: 14px;
+            right: 12px;
             top: 50%;
             transform: translateY(-50%);
             pointer-events: none;
@@ -620,49 +756,89 @@
     <!-- ─── CENTER LOGIN CONTENT ─── -->
     <div class="content-wrapper">
 
-        <!-- Big Title with Scrapbook Kraft Paper Stickers from Reference Image -->
+        <!-- Big Title with Die-Cut Kraft Paper Stickers from Reference Image -->
         <div class="main-title">
             <div class="vintage-tagline">★ THE OFFICIAL STUDENT ARCHIVE ★</div>
             
-            <!-- Hand-cut Kraft Paper Letter Badges (Like Image 2) -->
+            <!-- Authentic Die-Cut Kraft Paper Letter Stickers (Cropped from Reference Sheet) -->
             <div class="kraft-stickers-row">
                 <!-- Word: BEC -->
                 <div class="kraft-word" title="BEC">
-                    <span class="kraft-letter k-rot-1">B</span>
-                    <span class="kraft-letter k-rot-2">E</span>
-                    <span class="kraft-letter k-rot-3">C</span>
+                    <img src="assets/stickers/B.png" alt="B" class="kraft-sticker-img k-rot-1">
+                    <img src="assets/stickers/E.png" alt="E" class="kraft-sticker-img k-rot-2">
+                    <img src="assets/stickers/C.png" alt="C" class="kraft-sticker-img k-rot-3">
                 </div>
                 <!-- Word: BA -->
                 <div class="kraft-word" title="BA">
-                    <span class="kraft-letter k-rot-4">B</span>
-                    <span class="kraft-letter k-rot-5">A</span>
+                    <img src="assets/stickers/B2.png" alt="B" class="kraft-sticker-img k-rot-4">
+                    <img src="assets/stickers/A.png" alt="A" class="kraft-sticker-img k-rot-5">
                 </div>
                 <!-- Number: 69 -->
                 <div class="kraft-word" title="69">
-                    <span class="kraft-letter k-rot-6">6</span>
-                    <span class="kraft-letter k-rot-7">9</span>
+                    <span class="kraft-digit k-rot-6">6</span>
+                    <span class="kraft-digit k-rot-7">9</span>
                 </div>
             </div>
 
             <div class="subtitle">FINANCIAL DISPATCH • NU 69</div>
         </div>
 
-        <!-- Vintage Document Login Card -->
+        <!-- Classic Semi-Formal Certificate Login Card -->
         <div class="login-card">
-            <p class="card-title">ยินดีต้อนรับสู่งานการเงิน</p>
-            <p class="card-subtitle">กรุณายืนยันตัวตนเพื่อเข้าสู่สารบบนิสิต</p>
+            <!-- 4 Classical Ornamental Corner Brackets -->
+            <div class="card-corner corner-tl"></div>
+            <div class="card-corner corner-tr"></div>
+            <div class="card-corner corner-bl"></div>
+            <div class="card-corner corner-br"></div>
 
-            <!-- Google OAuth Button (Vintage Leather Press Style) -->
-            <div class="google-btn-wrapper">
-                <div class="google-login-btn" onclick="signInWithGoogle()">
-                    <svg width="20" height="20" viewBox="0 0 48 48">
-                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            <!-- University Treasury Crest & Seal -->
+            <div class="card-crest-wrapper">
+                <div class="vintage-crest">
+                    <svg width="44" height="44" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Outer dotted ring -->
+                        <circle cx="30" cy="30" r="28" stroke="#8c6a4a" stroke-width="1.2" stroke-dasharray="2.5 2.5"/>
+                        <!-- Inner solid ring -->
+                        <circle cx="30" cy="30" r="24" stroke="#4a3220" stroke-width="1.4"/>
+                        <!-- Treasury balance scales of fiscal integrity -->
+                        <path d="M30 12v36M20 20h20M20 20l-5 10h10l-5-10zm20 0l-5 10h10l-5-10zM24 48h12" stroke="#4a3220" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="30" cy="12" r="2" fill="#4a3220"/>
                     </svg>
-                    <span>เข้าสู่ระบบด้วย Google NU</span>
                 </div>
+                <div class="crest-caption">NARESUAN UNIVERSITY • EST. 1990</div>
+            </div>
+
+            <h1 class="card-title">ระบบสารบบบัญชีและงบประมาณกลาง</h1>
+            <p class="card-subtitle">สาขาวิชาบริหารธุรกิจ รุ่น 69 (BEC NU)</p>
+
+            <!-- Semi-Formal Status Tag -->
+            <div class="card-formal-tag">
+                <span>❖ เอกสารสารบบราชการ • เฉพาะนิสิตและบุคลากร ❖</span>
+            </div>
+
+            <!-- Classical Ornamental Divider -->
+            <div class="card-ornament-divider">
+                <span class="divider-line"></span>
+                <span class="divider-mark">❖</span>
+                <span class="divider-line"></span>
+            </div>
+
+            <!-- Semi-Formal Executive Google Single Sign-On Button -->
+            <div class="google-btn-wrapper">
+                <button type="button" class="google-login-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google NU Mail">
+                    <span class="google-icon-box">
+                        <svg width="20" height="20" viewBox="0 0 48 48">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                        </svg>
+                    </span>
+                    <span class="google-btn-text">
+                        <span class="google-btn-primary">ลงชื่อเข้าใช้ด้วย Google NU</span>
+                        <span class="google-btn-secondary">บัญชีนิสิตและคณาจารย์ (@nu.ac.th)</span>
+                    </span>
+                    <span class="google-btn-arrow">→</span>
+                </button>
             </div>
 
             <div class="spinner-wrap" id="loadingHint">
@@ -676,14 +852,14 @@
             <!-- Test Environment Quick Switcher (Vintage Archive Roster) -->
             <div class="test-switcher-box">
                 <div class="test-switcher-header">
-                    <span class="test-switcher-title">[ 🧪 TEST ARCHIVE • SEED ROSTER ]</span>
+                    <span class="test-switcher-title">[ 🧪 โหมดทดสอบสารบบ • SEED ROSTER ]</span>
                     <span class="test-switcher-badge">104 บัญชี</span>
                 </div>
                 
                 <div style="display:flex; flex-direction:column; gap:9px;">
                     <!-- Admin Shortcut Button -->
                     <button type="button" class="btn-test-admin" onclick="loginAsUser('admin@nu.ac.th', 'แอดมินระบบ', 'Admin', '00000000')">
-                        <span>👑 เข้าสู่ระบบ: แอดมิน (Admin Gazette)</span>
+                        <span>👑 เข้าสู่ระบบ: แอดมิน (Admin Gazette Pass)</span>
                     </button>
                     
                     <!-- Student Selector Dropdown (103 students) -->
