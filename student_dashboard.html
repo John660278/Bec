@@ -2408,8 +2408,8 @@
         <div class="bubble-content">
           <span class="bubble-sparkle">🎨</span>
           <div class="bubble-text">
-            <div class="bubble-title">เปลี่ยนธีมใหม่ตรงนี้น้า! 💜</div>
-            <div class="bubble-sub">มีธีมวินเทจคลาสสิกให้เลือกแล้ว ✨</div>
+            <div class="bubble-title">เปลี่ยนธีมใหม่ตรงนี้น้า! </div>
+            <div class="bubble-sub">มีธีมหลายรูปแบบให้เลือกเด้อพี่น้อง</div>
           </div>
           <button class="bubble-close-btn" onclick="dismissThemePromo(event)" title="ปิดข้อความ">✕</button>
         </div>
@@ -3428,14 +3428,22 @@
 
   // ─── THEME PROMO BUBBLE (OPTION 2) ───
   function initThemePromo() {
-    const seen = localStorage.getItem('bec_theme_promo_seen');
+    // Clear lock during test phase so it always displays for testing
+    localStorage.removeItem('bec_theme_promo_seen');
     const currentTheme = localStorage.getItem('bec_app_theme') || 'kuromi';
     const promoBubble = document.getElementById('themePromoBubble');
     const newBadge = document.getElementById('gearNewBadge');
 
-    if (!seen && currentTheme === 'kuromi') {
-      if (promoBubble) promoBubble.style.display = 'block';
-      if (newBadge) newBadge.style.display = 'inline-block';
+    if (currentTheme === 'kuromi') {
+      if (promoBubble) {
+        promoBubble.style.display = 'block';
+        promoBubble.style.opacity = '1';
+        promoBubble.style.transform = 'translateY(0)';
+      }
+      if (newBadge) {
+        newBadge.style.display = 'inline-block';
+        newBadge.style.opacity = '1';
+      }
     } else {
       if (promoBubble) promoBubble.style.display = 'none';
       if (newBadge) newBadge.style.display = 'none';
@@ -3444,7 +3452,6 @@
 
   function dismissThemePromo(e) {
     if (e) e.stopPropagation();
-    localStorage.setItem('bec_theme_promo_seen', 'true');
     const promoBubble = document.getElementById('themePromoBubble');
     const newBadge = document.getElementById('gearNewBadge');
     if (promoBubble) {
@@ -3476,7 +3483,9 @@
     localStorage.setItem('bec_app_theme', theme);
     document.documentElement.setAttribute('data-theme', theme);
 
-    if (theme === 'vintage') {
+    if (theme === 'kuromi') {
+      initThemePromo();
+    } else if (theme === 'vintage') {
       const promoBubble = document.getElementById('themePromoBubble');
       const newBadge = document.getElementById('gearNewBadge');
       if (promoBubble) promoBubble.style.display = 'none';
