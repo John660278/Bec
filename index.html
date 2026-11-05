@@ -627,38 +627,33 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 6px 18px;
+            padding: 8px;
             background: transparent !important;
-            border: 1.5px solid rgba(255, 255, 255, 0.8) !important;
-            border-radius: 6px;
+            border: none !important;
+            border-radius: 50%;
             box-shadow: none !important;
             outline: none !important;
-            color: #ffffff;
             cursor: pointer;
             user-select: none;
             text-decoration: none;
-            transition: all 180ms ease;
+            transition: transform 180ms ease, filter 180ms ease;
         }
 
         .minecraft-google-btn:hover {
             background: transparent !important;
-            border-color: #86efac !important;
-            transform: scale(1.05);
-            box-shadow: 0 0 14px rgba(74, 222, 128, 0.75) !important;
+            transform: scale(1.15);
+            filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 8px rgba(74, 222, 128, 0.8));
         }
 
         .minecraft-google-btn:active {
-            transform: scale(0.97);
+            transform: scale(0.95);
         }
 
-        .minecraft-btn-label {
-            font-family: 'Prompt', 'Silkscreen', sans-serif;
-            font-size: clamp(0.88rem, 2.3vw, 1.05rem);
-            font-weight: 700;
-            color: #ffffff;
-            text-shadow: 1px 1px 0 #000, 0 0 6px rgba(0, 0, 0, 0.9);
-            letter-spacing: 0.02em;
-            white-space: nowrap;
+        .minecraft-google-btn svg {
+            width: clamp(38px, 6vw, 46px);
+            height: clamp(38px, 6vw, 46px);
+            display: block;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7));
         }
 
         .minecraft-card #errorMessageMinecraft {
@@ -1138,8 +1133,13 @@
         <div class="minecraft-card minecraft-only">
             <div class="minecraft-slot-area">
                 <div class="google-btn-wrapper">
-                    <button type="button" class="minecraft-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google">
-                        <span class="minecraft-btn-label">เข้าสู่ระบบด้วย Google</span>
+                    <button type="button" class="minecraft-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google" title="เข้าสู่ระบบด้วย Google">
+                        <svg width="42" height="42" viewBox="0 0 48 48">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                        </svg>
                     </button>
                 </div>
 
