@@ -627,7 +627,9 @@
       text-shadow: 0 0 8px rgba(244, 114, 182, 0.6), 0 1px 2px rgba(0, 0, 0, 0.4);
     }
 
-    /* ─── VINTAGE THEME OVERRIDES ─── */
+    /* ═══════════════════════════════════════════════════════════
+       VINTAGE NEWSPAPER THEME OVERRIDES (ALL PURPLE REMOVED)
+       ═══════════════════════════════════════════════════════════ */
     [data-theme="vintage"] {
       --bg:           #ede2d1;
       --surface:      #faf4ea;
@@ -647,9 +649,17 @@
 
       --kuromi-purple:#7a4a26;
       --kuromi-dark:  #29180d;
-      --kuromi-pink:  #b3683b;
+      --kuromi-pink:  #9c582f;
       --kuromi-pink-light: #f7ebe1;
       --kuromi-pink-bdr:   #e0c4b0;
+
+      --pp-blue:      #6e4120;
+      --pp-light:     #f4ece1;
+      --pp-border:    #dfcfb7;
+
+      --shadow-subtle: 0 2px 6px rgba(45, 25, 12, 0.05), 0 1px 3px rgba(45, 25, 12, 0.03);
+      --shadow-card:   0 6px 18px -2px rgba(45, 25, 12, 0.08), 0 2px 6px -1px rgba(45, 25, 12, 0.04);
+      --shadow-float:  0 18px 40px -4px rgba(45, 25, 12, 0.22), 0 6px 16px -2px rgba(45, 25, 12, 0.1);
     }
 
     [data-theme="vintage"] body {
@@ -664,9 +674,21 @@
     [data-theme="vintage"] .app-viewport {
       background: #fbf6ee;
       box-shadow: 0 0 60px rgba(45, 25, 12, 0.12);
+      border-color: #dfcfb7;
     }
 
-    /* Vintage Hero Card (Using the new card designed by user) */
+    [data-theme="vintage"] .app-bar {
+      background: rgba(251, 246, 238, 0.92);
+      border-bottom-color: #dfcfb7;
+    }
+
+    [data-theme="vintage"] .brand-emblem {
+      background: linear-gradient(135deg, #382012 0%, #7e4d26 55%, #c99552 100%);
+      box-shadow: 0 3px 10px rgba(70, 40, 20, 0.35);
+      border-color: rgba(200, 150, 80, 0.4);
+    }
+
+    /* Vintage Hero Card (Using the new updated card designed by user) */
     [data-theme="vintage"] .hero-bank-card {
       background: #ede1ce url('assets/card_bg_vintage.png') center center / 100% 100% no-repeat;
       border: 1.5px solid rgba(138, 102, 70, 0.45);
@@ -737,6 +759,239 @@
       background: linear-gradient(135deg, rgba(230, 200, 160, 0.4), rgba(180, 140, 90, 0.25));
       border-color: rgba(140, 106, 73, 0.5);
       color: #3a2211;
+    }
+
+    /* Segmented Switcher & Filter Pills */
+    [data-theme="vintage"] .segmented-switch {
+      background: #eee3d2;
+      border-color: #dfcfb7;
+    }
+
+    [data-theme="vintage"] .seg-tab-btn.active {
+      background: #faf4ea;
+      color: #5a3315;
+      box-shadow: 0 3px 10px rgba(50, 30, 15, 0.12);
+    }
+
+    [data-theme="vintage"] .pill-btn {
+      background: #faf5eb;
+      border-color: #dfcfb7;
+      color: #6e4d30;
+    }
+
+    [data-theme="vintage"] .pill-btn:hover {
+      background: #f3e9db;
+      border-color: #c2ac8e;
+      color: #3d2311;
+    }
+
+    [data-theme="vintage"] .pill-btn.active {
+      background: linear-gradient(180deg, #472914 0%, #2f190a 100%);
+      color: #faf4ea;
+      border-color: #7a4620;
+      box-shadow: 0 3px 10px rgba(45, 25, 12, 0.3);
+    }
+
+    /* Statement Cards */
+    [data-theme="vintage"] .statement-card {
+      background: #faf5ea;
+      border-color: #dfcfb7;
+      box-shadow: 0 2px 8px rgba(45, 25, 12, 0.05);
+    }
+
+    [data-theme="vintage"] .statement-card:hover {
+      border-color: #c2ac8e;
+      box-shadow: 0 5px 16px rgba(45, 25, 12, 0.1);
+    }
+
+    [data-theme="vintage"] .statement-title {
+      color: #24150b;
+    }
+
+    [data-theme="vintage"] .statement-meta {
+      color: #7a593d;
+    }
+
+    [data-theme="vintage"] .statement-amount {
+      color: #24150b;
+    }
+
+    [data-theme="vintage"] .statement-divider {
+      background: #e5d7c3;
+    }
+
+    /* Pay Now & Primary Buttons */
+    [data-theme="vintage"] .btn-pay-now,
+    [data-theme="vintage"] .btn-primary,
+    [data-theme="vintage"] .btn-submit-payment,
+    [data-theme="vintage"] .btn-copy-account {
+      background: linear-gradient(180deg, #442713 0%, #2c170a 100%);
+      border: 1.5px solid #8e6843;
+      color: #faf4ea;
+      box-shadow: 0 3px 10px rgba(45, 25, 12, 0.3);
+    }
+
+    [data-theme="vintage"] .btn-pay-now:hover:not(:disabled),
+    [data-theme="vintage"] .btn-primary:hover:not(:disabled),
+    [data-theme="vintage"] .btn-submit-payment:hover:not(:disabled),
+    [data-theme="vintage"] .btn-copy-account:hover {
+      background: linear-gradient(180deg, #583319 0%, #3a1e0d 100%);
+      border-color: #b5895c;
+      box-shadow: 0 5px 16px rgba(45, 25, 12, 0.42);
+      color: #ffffff;
+    }
+
+    [data-theme="vintage"] .btn-receipt-view {
+      background: #f3e9db;
+      border-color: #dfcfb7;
+      color: #6e4120;
+    }
+
+    [data-theme="vintage"] .btn-receipt-view:hover {
+      background: #faf4ea;
+      border-color: #8e6843;
+      color: #442713;
+      box-shadow: 0 3px 10px rgba(45, 25, 12, 0.15);
+    }
+
+    /* Modal Sheet in Vintage Theme */
+    [data-theme="vintage"] .modal-sheet {
+      background: #faf5eb;
+      border: 1.5px solid #dfcfb7;
+      color: #24150b;
+    }
+
+    [data-theme="vintage"] .sheet-tag {
+      color: #7a4620;
+    }
+
+    [data-theme="vintage"] .modal-title {
+      color: #24150b;
+    }
+
+    [data-theme="vintage"] .modal-amount {
+      color: #24150b;
+    }
+
+    [data-theme="vintage"] .sparkle-stars {
+      color: #a87642;
+      filter: drop-shadow(0 2px 4px rgba(160, 110, 60, 0.3));
+    }
+
+    [data-theme="vintage"] .qr-formal-card {
+      background: #f3e9db;
+      border-color: #dfcfb7;
+      box-shadow: 0 4px 16px rgba(45, 25, 12, 0.07);
+    }
+
+    [data-theme="vintage"] .qr-box-frame {
+      background: #ffffff;
+      border-color: #dfcfb7;
+      box-shadow: 0 3px 12px rgba(45, 25, 12, 0.08);
+    }
+
+    [data-theme="vintage"] .qr-banner {
+      color: #5a351b;
+    }
+
+    [data-theme="vintage"] .qr-banner svg {
+      color: #5a351b;
+    }
+
+    [data-theme="vintage"] .qr-code-wrapper {
+      border-color: #dfcfb7;
+      box-shadow: 0 2px 8px rgba(45, 25, 12, 0.06);
+    }
+
+    [data-theme="vintage"] .slip-upload-dropzone {
+      border-color: #c2ac8e;
+      background: #f4ecdf;
+    }
+
+    [data-theme="vintage"] .slip-upload-dropzone:hover {
+      border-color: #8e6843;
+      background: #eee2d1;
+    }
+
+    [data-theme="vintage"] .slip-upload-dropzone.has-file {
+      border-color: #8e6843;
+      background: #faf4ea;
+      box-shadow: 0 4px 16px rgba(45, 25, 12, 0.1);
+    }
+
+    [data-theme="vintage"] .upload-icon {
+      color: #6e4120;
+    }
+
+    [data-theme="vintage"] .upload-main-text {
+      color: #24150b;
+    }
+
+    [data-theme="vintage"] .upload-sub-text,
+    [data-theme="vintage"] .upload-change-hint {
+      color: #7a593d;
+    }
+
+    /* Treasury Card & Public Board */
+    [data-theme="vintage"] .treasury-card {
+      background: #faf5eb;
+      border: 1.5px solid #dfcfb7;
+      box-shadow: 0 4px 16px rgba(45, 25, 12, 0.06);
+    }
+
+    [data-theme="vintage"] .treasury-caption {
+      color: #7a593d;
+    }
+
+    [data-theme="vintage"] .treasury-total-val {
+      color: #24150b;
+    }
+
+    [data-theme="vintage"] .pb-stat-card {
+      background: #faf5eb;
+      border-color: #dfcfb7;
+      box-shadow: 0 3px 10px rgba(45, 25, 12, 0.05);
+    }
+
+    [data-theme="vintage"] .pb-stat-label {
+      color: #7a593d;
+    }
+
+    [data-theme="vintage"] .pb-matrix-table th {
+      background: #f0e5d5;
+      color: #5c3e25;
+      border-color: #dfcfb7;
+    }
+
+    [data-theme="vintage"] .pb-matrix-table td {
+      border-color: #e5d7c3;
+      color: #24150b;
+    }
+
+    /* Settings dropdown */
+    [data-theme="vintage"] .settings-dropdown {
+      background: #faf5eb;
+      border-color: #dfcfb7;
+      box-shadow: 0 14px 34px -4px rgba(45, 25, 12, 0.22);
+    }
+
+    [data-theme="vintage"] .settings-menu-item:hover {
+      background: #f0e5d5;
+    }
+
+    [data-theme="vintage"] .theme-icon-wrap {
+      background: rgba(142, 104, 67, 0.18);
+      color: #6e4120;
+    }
+
+    [data-theme="vintage"] .menu-item-badge {
+      background: linear-gradient(135deg, #a46733, #683815);
+    }
+
+    [data-theme="vintage"] .btn-icon.active {
+      border-color: #8e6843;
+      color: #543116;
+      box-shadow: 0 0 0 3px rgba(142, 104, 67, 0.18);
     }
 
     /* ─── THEME MODAL STYLING ─── */
