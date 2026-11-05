@@ -572,11 +572,11 @@
         }
 
         .minecraft-title-img {
-            height: clamp(36px, 7.5vw, 52px);
+            height: clamp(40px, 8vw, 56px);
             width: auto;
             max-width: 90vw;
             object-fit: contain;
-            filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.8));
+            filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.85));
         }
 
         .minecraft-title .subtitle {
@@ -595,18 +595,19 @@
             animation: fadeInUp 0.9s ease-out 0.4s forwards;
             position: relative;
             width: min(420px, 92vw);
-            aspect-ratio: 533 / 512;
-            background: url('assets/minecraft/mc_sign_frame.png') no-repeat center center;
+            aspect-ratio: 736 / 414;
+            background: url('assets/minecraft/mc_plank_board.jpg') no-repeat center center;
             background-size: 100% 100%;
-            padding: clamp(142px, 34%, 168px) clamp(30px, 7.5%, 44px) clamp(26px, 6%, 36px) clamp(30px, 7.5%, 44px);
+            padding: clamp(20px, 5vw, 28px) clamp(24px, 6vw, 32px);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            filter: drop-shadow(0 18px 36px rgba(10, 18, 10, 0.65));
-            border: none;
-            box-shadow: none;
+            border-radius: 12px;
+            border: 2px solid #2d180b;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65), inset 0 2px 0 rgba(255, 255, 255, 0.25);
+            box-sizing: border-box;
         }
 
         .minecraft-card .card-title {
@@ -1049,9 +1050,6 @@
 
         <!-- ─── MINECRAFT TITLE (THEME 3) ─── -->
         <div class="minecraft-title minecraft-only">
-            <div class="brand-logo-container">
-                <img src="assets/minecraft/mc_bee.png" alt="Minecraft Bee" class="brand-planet-logo" style="width:52px; height:auto; filter:drop-shadow(0 4px 10px rgba(0,0,0,0.6));">
-            </div>
             <img src="assets/minecraft/mc_title_bec_ba_69.png" alt="BEC BA 69" class="minecraft-title-img">
             <div class="subtitle">FINANCIAL SYSTEM</div>
         </div>
