@@ -1829,18 +1829,31 @@
     }
 
     [data-theme="minecraft"] .success-kuromi-wrapper::after {
-      content: '✓';
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 76px;
-      height: 76px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #2e7d32, #1b5e20);
-      color: #e8f5e9;
-      font-size: 2.2rem;
-      border: 3px double #a5d6a7;
-      box-shadow: 0 4px 16px rgba(46, 125, 50, 0.4);
+      content: '';
+      display: block;
+      width: 140px;
+      height: 199px;
+      background: url('assets/minecraft/mc_cat_flower.png') no-repeat center center / contain;
+      filter: drop-shadow(0 10px 24px rgba(25, 40, 20, 0.22));
+      border: none;
+      box-shadow: none;
+      border-radius: 0;
+      animation: catCelebrateBounce 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes catCelebrateBounce {
+      0% {
+        transform: scale(0.65) translateY(24px);
+        opacity: 0;
+      }
+      60% {
+        transform: scale(1.05) translateY(-6px);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
     }
 
     /* Settings dropdown */
