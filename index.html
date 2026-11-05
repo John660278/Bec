@@ -564,16 +564,16 @@
             text-align: center;
             gap: 0.25rem;
             position: relative;
-            margin-bottom: clamp(1rem, 2.8vh, 1.6rem);
+            margin-bottom: clamp(0.85rem, 2.2vh, 1.4rem);
         }
 
         .minecraft-title-img {
-            width: clamp(260px, 48vw, 460px);
+            width: clamp(340px, 60vw, 560px);
             height: auto;
-            max-width: 92vw;
+            max-width: 94vw;
             object-fit: contain;
             image-rendering: pixelated;
-            filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.85));
+            filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.9));
         }
 
         .minecraft-title .subtitle {
@@ -627,13 +627,9 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            width: auto;
-            max-width: 90%;
-            height: 100%;
-            padding: 4px 14px;
+            padding: 6px 18px;
             background: transparent !important;
-            border: none !important;
+            border: 1.5px solid rgba(255, 255, 255, 0.8) !important;
             border-radius: 6px;
             box-shadow: none !important;
             outline: none !important;
@@ -641,50 +637,28 @@
             cursor: pointer;
             user-select: none;
             text-decoration: none;
-            transition: transform 160ms ease, filter 160ms ease;
+            transition: all 180ms ease;
         }
 
         .minecraft-google-btn:hover {
             background: transparent !important;
-            transform: scale(1.04);
-            filter: drop-shadow(0 0 12px rgba(74, 222, 128, 0.9));
+            border-color: #86efac !important;
+            transform: scale(1.05);
+            box-shadow: 0 0 14px rgba(74, 222, 128, 0.75) !important;
         }
 
         .minecraft-google-btn:active {
             transform: scale(0.97);
         }
 
-        .minecraft-google-btn .google-icon-box {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
-        }
-
-        .minecraft-google-btn .google-btn-text {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            text-align: left;
-            line-height: 1.25;
-        }
-
-        .minecraft-google-btn .google-btn-primary {
+        .minecraft-btn-label {
             font-family: 'Prompt', 'Silkscreen', sans-serif;
-            font-size: clamp(0.85rem, 2.2vw, 1.05rem);
+            font-size: clamp(0.88rem, 2.3vw, 1.05rem);
             font-weight: 700;
             color: #ffffff;
             text-shadow: 1px 1px 0 #000, 0 0 6px rgba(0, 0, 0, 0.9);
             letter-spacing: 0.02em;
-        }
-
-        .minecraft-google-btn .google-btn-secondary {
-            font-family: 'Prompt', 'Silkscreen', monospace, sans-serif;
-            font-size: clamp(0.62rem, 1.6vw, 0.72rem);
-            font-weight: 600;
-            color: #86efac;
-            text-shadow: 1px 1px 0 #000;
-            letter-spacing: 0.04em;
+            white-space: nowrap;
         }
 
         .minecraft-card #errorMessageMinecraft {
@@ -1164,19 +1138,8 @@
         <div class="minecraft-card minecraft-only">
             <div class="minecraft-slot-area">
                 <div class="google-btn-wrapper">
-                    <button type="button" class="minecraft-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google NU Mail">
-                        <span class="google-icon-box">
-                            <svg width="22" height="22" viewBox="0 0 48 48">
-                                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-                            </svg>
-                        </span>
-                        <span class="google-btn-text">
-                            <span class="google-btn-primary">เข้าสู่ระบบด้วย Google</span>
-                            <span class="google-btn-secondary">nu.ac.th เท่านั้น</span>
-                        </span>
+                    <button type="button" class="minecraft-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google">
+                        <span class="minecraft-btn-label">เข้าสู่ระบบด้วย Google</span>
                     </button>
                 </div>
 
