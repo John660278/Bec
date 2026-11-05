@@ -2655,39 +2655,52 @@
   <div class="theme-modal-sheet" onclick="event.stopPropagation()">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.2rem;">
       <div>
-        <h3 style="font-size:1.15rem; font-weight:800; color:var(--text);">ปรับเปลี่ยนธีม (Select Theme)</h3>
-        <p style="font-size:0.75rem; color:var(--muted); margin-top:2px;">เลือกบรรยากาศที่ชอบเพื่อใช้งานในระบบ</p>
+        <h3 style="font-size:1.12rem; font-weight:800; color:var(--text);">ปรับเปลี่ยนธีม (Select Theme)</h3>
+        <p style="font-size:0.75rem; color:var(--muted); margin-top:2px;">เลือกธีมที่ต้องการเพื่อใช้งานในระบบ</p>
       </div>
       <button type="button" class="btn-icon" onclick="closeThemeModal()" aria-label="ปิด">✕</button>
     </div>
 
-    <div style="display:flex; flex-direction:column; gap:0.75rem; margin-bottom:1.25rem;">
+    <div style="display:flex; flex-direction:column; gap:0.75rem;">
       <!-- Option 1: Kuromi Theme -->
       <div class="theme-option-card" id="themeOptKuromi" onclick="selectTheme('kuromi')">
         <div class="theme-preview-box kuromi-preview-box">
-          <span>💜</span>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fbcfe8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2z"/>
+            <circle cx="13.5" cy="6.5" r=".5" fill="#fbcfe8"/>
+            <circle cx="17.5" cy="10.5" r=".5" fill="#fbcfe8"/>
+            <circle cx="8.5" cy="7.5" r=".5" fill="#fbcfe8"/>
+            <circle cx="6.5" cy="12.5" r=".5" fill="#fbcfe8"/>
+          </svg>
         </div>
         <div style="flex:1;">
-          <div style="font-size:0.92rem; font-weight:700; color:var(--text);">คุโรมิ (Kuromi Edition) ✦</div>
-          <div style="font-size:0.74rem; color:var(--muted); margin-top:1px;">สไตล์ดั้งเดิม โทนม่วง-ชมพูพาสเทลสุดน่ารัก</div>
+          <div style="font-size:0.92rem; font-weight:700; color:var(--text);">คุโรมิ (Kuromi Edition)</div>
+          <div style="font-size:0.74rem; color:var(--muted); margin-top:1px;">โทนสีม่วง-ชมพูพาสเทล สไตล์ดั้งเดิม</div>
         </div>
-        <div class="theme-check-badge" id="checkKuromi">✓</div>
+        <div class="theme-check-badge" id="checkKuromi">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
       </div>
 
       <!-- Option 2: Vintage Newspaper Theme -->
       <div class="theme-option-card" id="themeOptVintage" onclick="selectTheme('vintage')">
         <div class="theme-preview-box vintage-preview-box">
-          <span>📜</span>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f7ebe1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/>
+            <path d="M18 14h-8"/>
+            <path d="M15 18h-5"/>
+            <path d="M10 6h8v4h-8V6Z"/>
+          </svg>
         </div>
         <div style="flex:1;">
-          <div style="font-size:0.92rem; font-weight:700; color:var(--text);">หนังสือพิมพ์วินเทจ (Vintage Gazette) 🏛️</div>
-          <div style="font-size:0.74rem; color:var(--muted); margin-top:1px;">โทนกระดาษโบราณสีน้ำตาล พร้อมบัตรคลาสสิกใหม่</div>
+          <div style="font-size:0.92rem; font-weight:700; color:var(--text);">หนังสือพิมพ์วินเทจ (Vintage Gazette)</div>
+          <div style="font-size:0.74rem; color:var(--muted); margin-top:1px;">โทนกระดาษคราฟต์คลาสสิก พร้อมบัตรลายใหม่</div>
         </div>
-        <div class="theme-check-badge" id="checkVintage">✓</div>
+        <div class="theme-check-badge" id="checkVintage">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
       </div>
     </div>
-
-    <button type="button" class="btn btn-primary btn-full" onclick="closeThemeModal()">ตกลง</button>
   </div>
 </div>
 
@@ -3585,13 +3598,16 @@
     }
 
     if (showNotice) {
-      const name = (theme === 'vintage') ? 'หนังสือพิมพ์วินเทจ 📜' : 'คุโรมิ 💜';
-      showToast(`เปลี่ยนเป็นธีม ${name} เรียบร้อยแล้ว ✨`);
+      const name = (theme === 'vintage') ? 'หนังสือพิมพ์วินเทจ' : 'คุโรมิ';
+      showToast(`เปลี่ยนเป็นธีม ${name} เรียบร้อยแล้ว`);
     }
   }
 
   function selectTheme(theme) {
     applyTheme(theme, true);
+    setTimeout(() => {
+      closeThemeModal();
+    }, 180);
   }
 
   function onOpenThemeCustomizer() {
