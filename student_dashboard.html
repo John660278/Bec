@@ -627,6 +627,225 @@
       text-shadow: 0 0 8px rgba(244, 114, 182, 0.6), 0 1px 2px rgba(0, 0, 0, 0.4);
     }
 
+    /* ─── VINTAGE THEME OVERRIDES ─── */
+    [data-theme="vintage"] {
+      --bg:           #ede2d1;
+      --surface:      #faf4ea;
+      --surface-sub:  #f0e5d5;
+      --surface-hover:#e8dac6;
+      --border:       #dfcfb7;
+      --border-dark:  #c2ac8e;
+      
+      --text:         #24150b;
+      --text-sub:     #4d3521;
+      --muted:        #7a593d;
+      --muted-light:  #a68565;
+      
+      --accent:       #6e4120;
+      --accent-hover: #543116;
+      --accent-text:  #ffffff;
+
+      --kuromi-purple:#7a4a26;
+      --kuromi-dark:  #29180d;
+      --kuromi-pink:  #b3683b;
+      --kuromi-pink-light: #f7ebe1;
+      --kuromi-pink-bdr:   #e0c4b0;
+    }
+
+    [data-theme="vintage"] body {
+      background: #ede2d1;
+      background-image: 
+        radial-gradient(rgba(80, 50, 25, 0.08) 1px, transparent 1px),
+        radial-gradient(circle at 15% 15%, rgba(245, 237, 225, 0.8) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(215, 195, 170, 0.6) 0%, transparent 45%);
+      background-size: 6px 6px, auto, auto;
+    }
+
+    [data-theme="vintage"] .app-viewport {
+      background: #fbf6ee;
+      box-shadow: 0 0 60px rgba(45, 25, 12, 0.12);
+    }
+
+    /* Vintage Hero Card (Using the new card designed by user) */
+    [data-theme="vintage"] .hero-bank-card {
+      background: #ede1ce url('assets/card_bg_vintage.png') center center / 100% 100% no-repeat;
+      border: 1.5px solid rgba(138, 102, 70, 0.45);
+      box-shadow: 0 16px 36px -8px rgba(35, 18, 8, 0.42), 0 4px 12px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+      color: #24150b;
+    }
+
+    [data-theme="vintage"] .gold-emv-chip {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    [data-theme="vintage"] .contactless-glyph {
+      color: rgba(60, 35, 15, 0.55);
+    }
+
+    [data-theme="vintage"] .card-specular-light {
+      background: radial-gradient(circle 280px at 50% 30%, rgba(255, 255, 255, 0.35) 0%, rgba(200, 160, 120, 0.15) 50%, transparent 80%);
+      mix-blend-mode: overlay;
+    }
+
+    [data-theme="vintage"] .card-org-tag {
+      color: #3d2614;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
+    }
+
+    [data-theme="vintage"] .card-status-pill {
+      background: rgba(255, 255, 255, 0.72);
+      border-color: rgba(140, 106, 73, 0.35);
+      color: #2b180d;
+      backdrop-filter: blur(8px);
+    }
+
+    [data-theme="vintage"] .embossed-digits {
+      color: #2b180d;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75), 0 -1px 1px rgba(70, 40, 20, 0.5);
+    }
+
+    [data-theme="vintage"] .card-balance-caption {
+      color: #5c3e25;
+      font-weight: 700;
+    }
+
+    [data-theme="vintage"] .card-balance-sum {
+      color: #1f1208;
+    }
+
+    [data-theme="vintage"] .card-balance-currency {
+      color: #5c3e25;
+      font-weight: 700;
+    }
+
+    [data-theme="vintage"] .card-row-bottom {
+      border-top-color: rgba(140, 106, 73, 0.25);
+    }
+
+    [data-theme="vintage"] .card-student-name {
+      color: #1f1208;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    [data-theme="vintage"] .card-student-sub {
+      color: #5c3e25;
+      font-weight: 600;
+    }
+
+    [data-theme="vintage"] .card-holo-emblem {
+      background: linear-gradient(135deg, rgba(230, 200, 160, 0.4), rgba(180, 140, 90, 0.25));
+      border-color: rgba(140, 106, 73, 0.5);
+      color: #3a2211;
+    }
+
+    /* ─── THEME MODAL STYLING ─── */
+    .theme-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 10, 22, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 200ms ease;
+    }
+
+    .theme-modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .theme-modal-sheet {
+      width: 100%;
+      max-width: 440px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 1.5rem;
+      box-shadow: 0 20px 48px -6px rgba(0, 0, 0, 0.25);
+      transform: scale(0.95);
+      transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .theme-modal-backdrop.open .theme-modal-sheet {
+      transform: scale(1);
+    }
+
+    .theme-option-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 14px;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface-sub);
+      cursor: pointer;
+      transition: all 160ms ease;
+      user-select: none;
+    }
+
+    .theme-option-card:hover {
+      border-color: var(--accent);
+      background: var(--surface-hover);
+      transform: translateY(-1px);
+    }
+
+    .theme-option-card.active {
+      border-color: var(--accent);
+      background: #ffffff;
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.12);
+    }
+
+    [data-theme="vintage"] .theme-option-card.active {
+      background: #fffdf9;
+      box-shadow: 0 4px 14px rgba(110, 65, 32, 0.15);
+    }
+
+    .theme-preview-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      flex-shrink: 0;
+    }
+
+    .kuromi-preview-box {
+      background: linear-gradient(135deg, #1e112a, #7c3aed);
+      box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35);
+    }
+
+    .vintage-preview-box {
+      background: linear-gradient(135deg, #422513, #b8864e);
+      box-shadow: 0 2px 8px rgba(90, 50, 25, 0.35);
+    }
+
+    .theme-check-badge {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #ffffff;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .theme-option-card.active .theme-check-badge {
+      display: flex;
+    }
+
     /* ─── RECEIPT PROOF BUTTON ─── */
     .btn-receipt-view {
       display: inline-flex;
@@ -1896,6 +2115,47 @@
   </div>
 </div>
 
+<!-- Theme Selection Modal -->
+<div class="theme-modal-backdrop" id="themeModalBackdrop" onclick="closeThemeModal()">
+  <div class="theme-modal-sheet" onclick="event.stopPropagation()">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.2rem;">
+      <div>
+        <h3 style="font-size:1.15rem; font-weight:800; color:var(--text);">ปรับเปลี่ยนธีม (Select Theme)</h3>
+        <p style="font-size:0.75rem; color:var(--muted); margin-top:2px;">เลือกบรรยากาศที่ชอบเพื่อใช้งานในระบบ</p>
+      </div>
+      <button type="button" class="btn-icon" onclick="closeThemeModal()" aria-label="ปิด">✕</button>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:0.75rem; margin-bottom:1.25rem;">
+      <!-- Option 1: Kuromi Theme -->
+      <div class="theme-option-card" id="themeOptKuromi" onclick="selectTheme('kuromi')">
+        <div class="theme-preview-box kuromi-preview-box">
+          <span>💜</span>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:0.92rem; font-weight:700; color:var(--text);">คุโรมิ (Kuromi Edition) ✦</div>
+          <div style="font-size:0.74rem; color:var(--muted); margin-top:1px;">สไตล์ดั้งเดิม โทนม่วง-ชมพูพาสเทลสุดน่ารัก</div>
+        </div>
+        <div class="theme-check-badge" id="checkKuromi">✓</div>
+      </div>
+
+      <!-- Option 2: Vintage Newspaper Theme -->
+      <div class="theme-option-card" id="themeOptVintage" onclick="selectTheme('vintage')">
+        <div class="theme-preview-box vintage-preview-box">
+          <span>📜</span>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:0.92rem; font-weight:700; color:var(--text);">หนังสือพิมพ์วินเทจ (Vintage Gazette) 🏛️</div>
+          <div style="font-size:0.74rem; color:var(--muted); margin-top:1px;">โทนกระดาษโบราณสีน้ำตาล พร้อมบัตรคลาสสิกใหม่</div>
+        </div>
+        <div class="theme-check-badge" id="checkVintage">✓</div>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-primary btn-full" onclick="closeThemeModal()">ตกลง</button>
+  </div>
+</div>
+
 <!-- Firebase & Supabase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -2627,10 +2887,63 @@
     if (e.key === 'Escape') closeSettingsMenu();
   });
 
+  // ─── THEME MANAGER (KUROMI & VINTAGE) ───
+  function initTheme() {
+    const savedTheme = localStorage.getItem('bec_app_theme') || 'kuromi';
+    applyTheme(savedTheme, false);
+  }
+
+  function applyTheme(theme, showNotice = true) {
+    if (theme !== 'vintage' && theme !== 'kuromi') theme = 'kuromi';
+    localStorage.setItem('bec_app_theme', theme);
+    document.documentElement.setAttribute('data-theme', theme);
+
+    const checkK = document.getElementById('checkKuromi');
+    const checkV = document.getElementById('checkVintage');
+    const optK = document.getElementById('themeOptKuromi');
+    const optV = document.getElementById('themeOptVintage');
+
+    if (checkK && checkV && optK && optV) {
+      if (theme === 'vintage') {
+        checkK.style.display = 'none';
+        checkV.style.display = 'flex';
+        optK.classList.remove('active');
+        optV.classList.add('active');
+      } else {
+        checkK.style.display = 'flex';
+        checkV.style.display = 'none';
+        optK.classList.add('active');
+        optV.classList.remove('active');
+      }
+    }
+
+    if (showNotice) {
+      const name = (theme === 'vintage') ? 'หนังสือพิมพ์วินเทจ 📜' : 'คุโรมิ 💜';
+      showToast(`เปลี่ยนเป็นธีม ${name} เรียบร้อยแล้ว ✨`);
+    }
+  }
+
+  function selectTheme(theme) {
+    applyTheme(theme, true);
+  }
+
   function onOpenThemeCustomizer() {
     closeSettingsMenu();
-    showToast('กำลังเตรียมระบบเลือกธีมเร็วๆ นี้ ✨');
+    const modal = document.getElementById('themeModalBackdrop');
+    if (modal) {
+      modal.classList.add('open');
+      const current = localStorage.getItem('bec_app_theme') || 'kuromi';
+      applyTheme(current, false);
+    }
   }
+
+  function closeThemeModal() {
+    const modal = document.getElementById('themeModalBackdrop');
+    if (modal) modal.classList.remove('open');
+  }
+
+  // Apply theme immediately on load
+  initTheme();
 
   async function logout() {
     if (window.myAppDb && window.myAppDb.auth) {

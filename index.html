@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" data-theme="kuromi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เข้าสู่ระบบ - BEC BA 69 Financial Gazette</title>
+    <title>เข้าสู่ระบบ - BEC BA 69 Financial System</title>
     
-    <!-- Google Fonts: Playfair Display for vintage headlines, Cinzel for kraft letterpress, Special Elite for typewriter newsprint, Prompt for Thai UI -->
+    <!-- Google Fonts: Cinzel, Playfair Display, Plus Jakarta Sans, Prompt, Special Elite -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Special+Elite&family=Plus+Jakarta+Sans:wght@500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
 
     <script>
         // ถ้าเปิดผ่านแอป LINE ให้บังคับเด้งไป Safari/Chrome อัตโนมัติ
@@ -26,6 +26,7 @@
         }
 
         :root {
+            /* Vintage Theme Variables */
             --sepia-bg:          #e5d7c3;
             --sepia-paper:       #f5ede1;
             --sepia-paper-dark:  #d9c8af;
@@ -33,9 +34,6 @@
             --sepia-ink-muted:   #5c4533;
             --sepia-border:      #826349;
             --sepia-border-light:#bda387;
-            --kraft-bg:          #c59963;
-            --kraft-dark:        #a2743e;
-            --kraft-text:        #18110b;
         }
 
         html, body {
@@ -43,162 +41,327 @@
             height: 100%;
             overflow-x: hidden;
             font-family: 'Plus Jakarta Sans', 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--sepia-bg);
-            color: var(--sepia-ink);
+            transition: background-color 300ms ease, color 300ms ease;
         }
 
-        /* ─── VINTAGE NEWSPAPER EDITABLE BACKGROUND ─── */
+        /* ─── THEME 1: KUROMI BASE (DEFAULT) ─── */
+        html[data-theme="kuromi"], html[data-theme="kuromi"] body {
+            background: #09070c;
+            color: #f1e8f8;
+            overflow: hidden;
+        }
+
+        /* ─── THEME 2: VINTAGE BASE ─── */
+        html[data-theme="vintage"], html[data-theme="vintage"] body {
+            background-color: var(--sepia-bg);
+            color: var(--sepia-ink);
+            overflow-y: auto;
+        }
+
+        /* ─── FLOATING THEME SWITCHER PILL (TOP-RIGHT) ─── */
+        .theme-top-bar {
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            z-index: 100;
+        }
+
+        .theme-toggle-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            border-radius: 9999px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+        }
+
+        html[data-theme="kuromi"] .theme-toggle-pill {
+            background: rgba(30, 20, 42, 0.75);
+            border: 1px solid rgba(220, 160, 235, 0.45);
+            color: #f5dcf8;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 12px rgba(180, 100, 220, 0.25);
+        }
+
+        html[data-theme="kuromi"] .theme-toggle-pill:hover {
+            background: rgba(45, 28, 65, 0.9);
+            border-color: rgba(240, 180, 255, 0.7);
+            transform: translateY(-1.5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 18px rgba(210, 130, 240, 0.4);
+        }
+
+        html[data-theme="vintage"] .theme-toggle-pill {
+            background: rgba(248, 240, 228, 0.88);
+            border: 1.5px solid rgba(138, 102, 70, 0.55);
+            color: #3b2413;
+            box-shadow: 0 4px 14px rgba(35, 20, 10, 0.22);
+        }
+
+        html[data-theme="vintage"] .theme-toggle-pill:hover {
+            background: #ffffff;
+            border-color: #8c5d34;
+            transform: translateY(-1.5px);
+            box-shadow: 0 6px 18px rgba(35, 20, 10, 0.32);
+        }
+
+        /* ─── LAYER DISPLAY LOGIC ─── */
+        html[data-theme="kuromi"] .vintage-only { display: none !important; }
+        html[data-theme="vintage"] .kuromi-only { display: none !important; }
+
+        /* ═══════════════════════════════════════════════════════════
+           KUROMI STYLES
+           ═══════════════════════════════════════════════════════════ */
+        #silkCanvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .gradient-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: radial-gradient(circle at 85% 15%, rgba(140, 85, 135, 0.28) 0%, transparent 55%),
+                        radial-gradient(circle at 15% 85%, rgba(120, 75, 140, 0.25) 0%, transparent 50%),
+                        linear-gradient(to bottom, rgba(9,7,12,0.4) 0%, transparent 50%, rgba(9,7,12,0.7) 100%);
+            pointer-events: none;
+        }
+
+        .texture-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background-image: radial-gradient(rgba(240, 205, 245, 0.05) 1px, transparent 1px);
+            background-size: 7px 7px;
+            mask-image: radial-gradient(circle at 50% 45%, black 45%, transparent 95%);
+            -webkit-mask-image: radial-gradient(circle at 50% 45%, black 45%, transparent 95%);
+            pointer-events: none;
+        }
+
+        .kuromi-title {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(2rem);
+            animation: fadeInUp 1s ease-out 0.2s forwards;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .brand-logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0.65rem;
+        }
+
+        .brand-planet-logo {
+            width: clamp(100px, 15vw, 155px);
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 0 16px rgba(230, 180, 240, 0.8))
+                    drop-shadow(0 0 32px rgba(210, 150, 230, 0.5));
+            transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), filter 300ms ease;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .brand-planet-logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 24px rgba(245, 195, 255, 0.95))
+                    drop-shadow(0 0 45px rgba(225, 165, 245, 0.65));
+        }
+
+        .kuromi-title h1 {
+            font-family: 'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
+            font-size: clamp(3.2rem, 13vw, 8.5rem);
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1;
+            color: #f7e2f5;
+            text-shadow: 
+                0 0 12px rgba(235, 185, 245, 0.95),
+                0 0 26px rgba(215, 160, 235, 0.75),
+                0 0 50px rgba(185, 120, 215, 0.5),
+                0 0 80px rgba(145, 75, 185, 0.3);
+        }
+
+        .kuromi-title .brand-num {
+            font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-variant-numeric: lining-nums;
+            letter-spacing: 0.02em;
+        }
+
+        .kuromi-title .subtitle {
+            margin-top: 0.85rem;
+            font-family: 'Plus Jakarta Sans', 'Prompt', sans-serif;
+            font-size: clamp(0.7rem, 2.2vw, 0.88rem);
+            font-weight: 700;
+            letter-spacing: 0.38em;
+            text-transform: uppercase;
+            color: #d6bde0;
+            text-shadow: 0 0 12px rgba(225, 175, 235, 0.75), 0 0 25px rgba(205, 145, 225, 0.4);
+        }
+
+        .kuromi-card {
+            opacity: 0;
+            transform: translateY(1.5rem);
+            animation: fadeInUp 1s ease-out 0.6s forwards;
+
+            background: rgba(24, 18, 34, 0.68);
+            border: 1.5px solid rgba(225, 185, 235, 0.45);
+            border-radius: 28px;
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                        inset 0 0 20px rgba(180, 100, 200, 0.12);
+            padding: 2.25rem 2rem;
+            width: min(390px, 92vw);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .kuromi-card .card-title {
+            font-family: 'Playfair Display', 'Prompt', Georgia, serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #f7e2f5;
+            letter-spacing: 0.02em;
+            margin-bottom: 0.35rem;
+            text-shadow: 0 0 14px rgba(220, 160, 235, 0.65);
+        }
+
+        .kuromi-card .card-subtitle {
+            font-size: 0.82rem;
+            color: #ab92b5;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            margin-bottom: 1.75rem;
+        }
+
+        .kuromi-google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 12px 24px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(220, 160, 235, 0.35);
+            color: #fdf6fe;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+            text-decoration: none;
+        }
+
+        .kuromi-google-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(240, 195, 255, 0.65);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(180, 100, 210, 0.35),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+        }
+
+        .kuromi-google-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           VINTAGE NEWSPAPER STYLES
+           ═══════════════════════════════════════════════════════════ */
         .newspaper-container {
             position: absolute;
             inset: 0;
-            overflow: hidden;
             z-index: 1;
-            padding: clamp(0.75rem, 2vw, 1.5rem);
+            padding: 1.5rem 1.8rem;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
+            gap: 1.5rem;
+            opacity: 0.85;
+            user-select: none;
             pointer-events: none;
-            opacity: 0.82;
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(200, 160, 120, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(180, 140, 100, 0.18) 0%, transparent 50%),
-                var(--sepia-bg);
         }
 
-        /* News Masthead Top Banner */
         .news-masthead {
-            border-top: 3px double var(--sepia-ink);
-            border-bottom: 2px solid var(--sepia-ink);
-            padding: 0.4rem 0.5rem;
+            border-top: 3px double var(--sepia-border);
+            border-bottom: 2px solid var(--sepia-border);
+            padding: 0.4rem 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-family: 'Special Elite', monospace;
-            font-size: 0.68rem;
+            font-size: clamp(0.6rem, 1.4vw, 0.75rem);
             color: var(--sepia-ink-muted);
-            letter-spacing: 0.05em;
-            margin-bottom: 0.4rem;
-        }
-
-        .news-masthead-title {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(1.4rem, 4vw, 2.5rem);
-            font-weight: 900;
-            color: var(--sepia-ink);
-            letter-spacing: 0.08em;
-            text-align: center;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
         }
 
-        .news-sub-banner {
-            border-top: 1px solid var(--sepia-border);
-            border-bottom: 3px double var(--sepia-ink);
-            padding: 0.25rem 0.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-family: 'Special Elite', monospace;
-            font-size: 0.62rem;
-            color: var(--sepia-ink-muted);
-            margin-bottom: 1rem;
+        .news-masthead-title {
+            text-align: center;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(1.8rem, 5vw, 3.4rem);
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            color: var(--sepia-ink);
+            line-height: 1.05;
+            margin: 0.3rem 0;
+            border-bottom: 1px solid var(--sepia-border-light);
+            padding-bottom: 0.3rem;
         }
 
-        /* Multi-Column Newsprint Grid */
         .news-columns-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.25rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
             flex: 1;
         }
 
         @media (max-width: 900px) {
-            .news-columns-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .news-col-hide-mobile {
-                display: none;
-            }
+            .news-columns-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
-        .news-col {
-            border-right: 1px solid var(--sepia-border-light);
-            padding-right: 1.25rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .news-col:last-child {
-            border-right: none;
-            padding-right: 0;
-        }
-
-        .news-headline-lead {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(1rem, 2vw, 1.35rem);
-            font-weight: 900;
-            line-height: 1.15;
-            color: var(--sepia-ink);
-            text-transform: uppercase;
-            letter-spacing: -0.01em;
-            border-bottom: 1.5px solid var(--sepia-ink);
-            padding-bottom: 0.35rem;
-        }
-
-        .news-subhead {
+        .news-column {
             font-family: 'Special Elite', monospace;
             font-size: 0.72rem;
-            font-weight: 700;
+            line-height: 1.6;
             color: var(--sepia-ink-muted);
-            letter-spacing: 0.02em;
-            line-height: 1.3;
-        }
-
-        .news-paragraph {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 0.78rem;
-            line-height: 1.45;
-            color: var(--sepia-ink);
             text-align: justify;
+            border-right: 1px dashed var(--sepia-border-light);
+            padding-right: 1.2rem;
         }
 
-        .news-paragraph strong {
-            font-family: 'Special Elite', monospace;
-            font-size: 0.76rem;
-            letter-spacing: 0.04em;
-        }
+        .news-column:last-child { border-right: none; }
 
-        .news-ad-box {
-            border: 2px dashed var(--sepia-border);
-            padding: 0.6rem;
-            background: rgba(245, 237, 225, 0.6);
-            text-align: center;
-        }
-
-        .news-ad-title {
+        .news-headline {
             font-family: 'Playfair Display', Georgia, serif;
-            font-size: 0.82rem;
+            font-size: 1.05rem;
             font-weight: 800;
             color: var(--sepia-ink);
-            letter-spacing: 0.06em;
-            margin-bottom: 0.2rem;
+            line-height: 1.2;
+            margin-bottom: 0.45rem;
+            text-transform: uppercase;
         }
 
-        .news-ad-body {
-            font-family: 'Special Elite', monospace;
-            font-size: 0.65rem;
-            line-height: 1.35;
-            color: var(--sepia-ink-muted);
-        }
-
-        .news-ornament {
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--sepia-border);
-            letter-spacing: 0.2em;
-            margin: 0.25rem 0;
-        }
-
-        /* ─── VINTAGE AGED PARCHMENT & VIGNETTE OVERLAY ─── */
         .vintage-vignette-overlay {
             position: absolute;
             inset: 0;
@@ -209,7 +372,6 @@
             pointer-events: none;
         }
 
-        /* Micro Paper Fiber Noise */
         .paper-grain-overlay {
             position: absolute;
             inset: 0;
@@ -219,21 +381,7 @@
             pointer-events: none;
         }
 
-        /* ─── CENTER CONTENT WRAPPER ─── */
-        .content-wrapper {
-            position: relative;
-            z-index: 20;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem 1rem;
-            gap: clamp(1rem, 2.5vh, 1.4rem);
-        }
-
-        /* ─── VINTAGE MAIN TITLE (BEC BA 69) ─── */
-        .main-title {
+        .vintage-title {
             text-align: center;
             opacity: 0;
             transform: translateY(1.5rem);
@@ -244,7 +392,7 @@
             align-items: center;
         }
 
-        .main-title h1 {
+        .vintage-title h1 {
             font-family: 'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
             font-size: clamp(3.2rem, 12vw, 7.5rem);
             font-weight: 700;
@@ -256,7 +404,7 @@
                 0 3px 12px rgba(45, 25, 12, 0.3);
         }
 
-        .main-title .brand-num {
+        .vintage-title .brand-num {
             font-family: 'Cinzel', 'Playfair Display', serif;
             font-weight: 800;
             letter-spacing: 0.02em;
@@ -266,7 +414,7 @@
                 0 3px 14px rgba(140, 83, 43, 0.38);
         }
 
-        .main-title .subtitle {
+        .vintage-title .subtitle {
             margin-top: 0.5rem;
             font-family: 'Plus Jakarta Sans', 'Prompt', sans-serif;
             font-size: clamp(0.72rem, 2.2vw, 0.95rem);
@@ -277,8 +425,7 @@
             text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
         }
 
-        /* ─── VINTAGE SCRAPBOOK PARCHMENT FRAME LOGIN CARD ─── */
-        .login-card {
+        .vintage-card {
             opacity: 0;
             transform: translateY(1.5rem);
             animation: fadeInUp 0.9s ease-out 0.4s forwards;
@@ -299,7 +446,7 @@
             box-shadow: none;
         }
 
-        .login-card .card-title {
+        .vintage-card .card-title {
             font-family: 'Playfair Display', 'Prompt', Georgia, serif;
             font-size: clamp(1.35rem, 3.8vw, 1.65rem);
             font-weight: 800;
@@ -310,7 +457,7 @@
             text-shadow: 0 1px 1px rgba(255, 255, 255, 0.45);
         }
 
-        .login-card .card-subtitle {
+        .vintage-card .card-subtitle {
             font-family: 'Prompt', -apple-system, sans-serif;
             font-size: clamp(0.74rem, 2.2vw, 0.85rem);
             font-weight: 600;
@@ -318,14 +465,7 @@
             margin-bottom: 1.05rem;
         }
 
-        /* Google Pill Button - Sized proportionally inside parchment */
-        .google-btn-wrapper {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-        }
-
-        .google-login-btn {
+        .vintage-google-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -337,27 +477,37 @@
             border: 1.5px solid #8e6843;
             color: #faf3e8;
             cursor: pointer;
-            box-shadow: 
-                0 4px 14px rgba(35, 20, 10, 0.35),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 14px rgba(35, 20, 10, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
             transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
             user-select: none;
             text-decoration: none;
         }
 
-        .google-login-btn:hover {
+        .vintage-google-btn:hover {
             background: linear-gradient(180deg, #372417 0%, #26180e 100%);
             border-color: #b5895c;
             transform: translateY(-1.5px);
-            box-shadow: 
-                0 7px 20px rgba(35, 20, 10, 0.45),
-                inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            box-shadow: 0 7px 20px rgba(35, 20, 10, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
             color: #ffffff;
         }
 
-        .google-login-btn:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 6px rgba(35, 20, 10, 0.3);
+        /* ─── SHARED COMMON ELEMENTS ─── */
+        .content-wrapper {
+            position: relative;
+            z-index: 20;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem 1rem;
+            gap: clamp(1rem, 2.5vh, 1.4rem);
+        }
+
+        .google-btn-wrapper {
+            display: flex;
+            justify-content: center;
+            width: 100%;
         }
 
         .google-icon-box {
@@ -372,16 +522,29 @@
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         }
 
+        .google-btn-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            line-height: 1.2;
+        }
+
         .google-btn-primary {
             font-family: 'Prompt', sans-serif;
-            font-size: 0.84rem;
+            font-size: 0.88rem;
             font-weight: 700;
             letter-spacing: 0.01em;
-            color: #fcf8f2;
             white-space: nowrap;
         }
 
-        /* Spinner hint */
+        .google-btn-secondary {
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.65rem;
+            color: #d1b899;
+            font-weight: 400;
+        }
+
         .spinner-wrap {
             display: none;
             align-items: center;
@@ -389,7 +552,6 @@
             gap: 8px;
             margin-top: 0.85rem;
             font-size: 0.78rem;
-            color: #634b37;
             font-family: 'Prompt', sans-serif;
         }
 
@@ -402,7 +564,14 @@
             animation: spin 0.8s linear infinite;
         }
 
-        /* Error message */
+        html[data-theme="kuromi"] .spinner {
+            border: 2px solid rgba(220, 160, 235, 0.25);
+            border-top-color: #f7e2f5;
+        }
+
+        html[data-theme="kuromi"] .spinner-wrap { color: #d6bde0; }
+        html[data-theme="vintage"] .spinner-wrap { color: #634b37; }
+
         #errorMessage {
             display: none;
             margin-top: 0.85rem;
@@ -416,21 +585,31 @@
             font-family: 'Prompt', sans-serif;
         }
 
-        /* ─── TEST ENVIRONMENT QUICK SWITCHER (OUTSIDE CARD) ─── */
+        /* ─── TEST ENVIRONMENT QUICK SWITCHER ─── */
         .test-switcher-box {
             opacity: 0;
             transform: translateY(1.5rem);
             animation: fadeInUp 0.9s ease-out 0.6s forwards;
 
             width: min(390px, 92vw);
-            background: rgba(248, 240, 228, 0.88);
-            border: 1.5px dashed rgba(140, 106, 73, 0.65);
-            border-radius: 22px;
+            border-radius: 20px;
             padding: 12px 16px;
-            box-shadow: 0 8px 22px rgba(35, 20, 10, 0.22);
+            position: relative;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            position: relative;
+            transition: all 260ms ease;
+        }
+
+        html[data-theme="kuromi"] .test-switcher-box {
+            background: rgba(25, 18, 34, 0.72);
+            border: 1.5px dashed rgba(225, 185, 235, 0.45);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+        }
+
+        html[data-theme="vintage"] .test-switcher-box {
+            background: rgba(248, 240, 228, 0.88);
+            border: 1.5px dashed rgba(140, 106, 73, 0.65);
+            box-shadow: 0 8px 22px rgba(35, 20, 10, 0.22);
         }
 
         .test-switcher-header {
@@ -443,30 +622,37 @@
 
         .test-switcher-title {
             font-size: 0.72rem;
-            color: #523824;
             font-family: 'Prompt', sans-serif;
             letter-spacing: 0.02em;
             font-weight: 700;
         }
 
+        html[data-theme="kuromi"] .test-switcher-title { color: #d6bde0; }
+        html[data-theme="vintage"] .test-switcher-title { color: #523824; }
+
         .test-switcher-badge {
             font-size: 0.62rem;
-            color: #24160e;
-            background: #dfcca8;
-            border: 1px solid #9e8363;
             padding: 2px 8px;
             border-radius: 9999px;
             font-weight: 700;
             font-family: 'Prompt', sans-serif;
         }
 
+        html[data-theme="kuromi"] .test-switcher-badge {
+            color: #ffffff;
+            background: linear-gradient(135deg, #ec4899, #7c3aed);
+        }
+
+        html[data-theme="vintage"] .test-switcher-badge {
+            color: #24160e;
+            background: #dfcca8;
+            border: 1px solid #9e8363;
+        }
+
         .btn-test-admin {
             width: 100%;
             padding: 10px 14px;
             border-radius: 9999px;
-            border: 1.5px solid #735036;
-            background: linear-gradient(180deg, #382416, #26170c);
-            color: #f7efe4;
             font-size: 0.82rem;
             font-weight: 700;
             cursor: pointer;
@@ -475,15 +661,33 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            box-shadow: 0 3px 8px rgba(35, 20, 10, 0.28);
             transition: all 140ms ease;
         }
 
-        .btn-test-admin:hover {
+        html[data-theme="kuromi"] .btn-test-admin {
+            background: linear-gradient(180deg, #3d1b4d, #251033);
+            border: 1px solid rgba(220, 160, 235, 0.4);
+            color: #fdf6fe;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+        }
+
+        html[data-theme="kuromi"] .btn-test-admin:hover {
+            background: linear-gradient(180deg, #532468, #331545);
+            border-color: rgba(240, 190, 255, 0.7);
+            transform: translateY(-1px);
+        }
+
+        html[data-theme="vintage"] .btn-test-admin {
+            background: linear-gradient(180deg, #382416, #26170c);
+            border: 1.5px solid #735036;
+            color: #f7efe4;
+            box-shadow: 0 3px 8px rgba(35, 20, 10, 0.28);
+        }
+
+        html[data-theme="vintage"] .btn-test-admin:hover {
             background: linear-gradient(180deg, #472f1e, #311e11);
             border-color: #9c704c;
             transform: translateY(-1px);
-            box-shadow: 0 5px 14px rgba(35, 20, 10, 0.38);
         }
 
         .student-select-wrap {
@@ -494,9 +698,6 @@
             width: 100%;
             padding: 9px 32px 9px 14px;
             border-radius: 9999px;
-            border: 1.5px solid #8c6a49;
-            background: #f3e9d8;
-            color: #24160e;
             font-size: 0.8rem;
             font-weight: 600;
             font-family: 'Prompt', sans-serif;
@@ -504,11 +705,31 @@
             cursor: pointer;
             appearance: none;
             -webkit-appearance: none;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
             transition: all 140ms ease;
         }
 
-        .student-select-input:hover, .student-select-input:focus {
+        html[data-theme="kuromi"] .student-select-input {
+            background: rgba(20, 14, 28, 0.85);
+            border: 1px solid rgba(220, 160, 235, 0.35);
+            color: #f1e8f8;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        html[data-theme="kuromi"] .student-select-input:hover, 
+        html[data-theme="kuromi"] .student-select-input:focus {
+            border-color: rgba(240, 190, 255, 0.65);
+            background: rgba(28, 18, 40, 0.95);
+        }
+
+        html[data-theme="vintage"] .student-select-input {
+            background: #f3e9d8;
+            border: 1.5px solid #8c6a49;
+            color: #24160e;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+        }
+
+        html[data-theme="vintage"] .student-select-input:hover,
+        html[data-theme="vintage"] .student-select-input:focus {
             border-color: #5c3e25;
             background: #fbf5eb;
         }
@@ -519,11 +740,12 @@
             top: 50%;
             transform: translateY(-50%);
             pointer-events: none;
-            color: #543b25;
             font-size: 0.72rem;
         }
 
-        /* Keyframes */
+        html[data-theme="kuromi"] .student-select-arrow { color: #d6bde0; }
+        html[data-theme="vintage"] .student-select-arrow { color: #543b25; }
+
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(1.5rem); }
             to   { opacity: 1; transform: translateY(0); }
@@ -540,9 +762,25 @@
 </head>
 <body>
 
-    <!-- ─── VINTAGE NEWSPAPER REAL EDITABLE BACKGROUND ─── -->
-    <div class="newspaper-container" aria-hidden="true">
-        <!-- Newspaper Top Masthead -->
+    <!-- ─── FLOATING THEME SWITCHER BUTTON ─── -->
+    <div class="theme-top-bar">
+        <button type="button" class="theme-toggle-pill" id="themeToggleBtn" onclick="toggleIndexTheme()" title="แตะเพื่อสลับธีมระหว่าง คุโรมิ และ วินเทจ">
+            <span>🎨</span>
+            <span id="themeToggleText">สลับธีม</span>
+        </button>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         THEME 1: KUROMI BACKGROUND LAYERS
+         ═══════════════════════════════════════════════════════════ -->
+    <canvas id="silkCanvas" class="kuromi-only"></canvas>
+    <div class="gradient-overlay kuromi-only"></div>
+    <div class="texture-overlay kuromi-only"></div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         THEME 2: VINTAGE BACKGROUND LAYERS
+         ═══════════════════════════════════════════════════════════ -->
+    <div class="newspaper-container vintage-only" aria-hidden="true">
         <header class="news-masthead">
             <div>NO. 69 • VOL. II</div>
             <div>EST. 2026 • NARESUAN UNIVERSITY</div>
@@ -551,86 +789,85 @@
 
         <div class="news-masthead-title">THE BEC GAZETTE & CHRONICLE</div>
 
-        <div class="news-sub-banner">
-            <div>★ OFFICIAL BULLETIN OF COMMERCE & ACCOUNTING ★</div>
-            <div>TRANSPARENCY IN STUDENT TREASURY</div>
-            <div>SPECIAL ARCHIVE EDITION</div>
-        </div>
-
-        <!-- 3 Columns of Authentic Vintage Articles (Fully Editable Text) -->
         <div class="news-columns-grid">
-            <!-- Column 1 -->
-            <article class="news-col">
-                <h2 class="news-headline-lead">TREASURY ACCORD RATIFIED FOR CLASS 69</h2>
-                <div class="news-subhead">DIGITAL ACCOUNTING SYSTEM COMMENCES FULL OPERATION</div>
-                <p class="news-paragraph">
-                    <strong>PHITSANULOK — </strong>The finance committee of the Business Administration class of 69 announced today the official deployment of the central treasury ledger. Designed with comprehensive ledger oversight, automated payment records, and immediate receipt generation, the portal maintains complete fiscal integrity.
-                </p>
-                <div class="news-ad-box">
-                    <div class="news-ad-title">❖ NOTICE OF AUDIT ❖</div>
-                    <div class="news-ad-body">All collected semester funds are accounted for daily. Verifiable public statements are compiled for student review.</div>
-                </div>
-                <p class="news-paragraph">
-                    Every enrolled member of the branch may inspect balance sheets, monitor disbursement schedules, and confirm transfer verifications at their convenience.
-                </p>
+            <article class="news-column">
+                <h2 class="news-headline">AUDIT CONFIRMS PERFECT TREASURY RECORD</h2>
+                <p>Naresuan University business administration cohort reports impeccable balance sheets. The student council verified total transparency in class fund collection.</p>
             </article>
-
-            <!-- Column 2 (Center Behind Card) -->
-            <article class="news-col news-col-center">
-                <h2 class="news-headline-lead">EXECUTIVE DISPATCH: TRANSPARENCY IN COMMERCE</h2>
-                <p class="news-paragraph">
-                    <strong>FACULTY OF BUSINESS — </strong>Representatives from all academic sections assembled to review the new verification matrix. "Every single transaction stands transparent and accountable to the collective assembly," proclaimed the treasurer general.
-                </p>
-                <div class="news-ornament">❖ ────── ❖ ────── ❖</div>
-                <div class="news-ad-box">
-                    <div class="news-ad-title">CLASSIFIED DIRECTORY</div>
-                    <div class="news-ad-body"><strong>WANTED:</strong> Prompt submission of weekly slips. Immediate processing guaranteed via Google Auth.</div>
-                    <div class="news-ad-body" style="margin-top:4px;"><strong>FOUND:</strong> Fully balanced treasury records and certified bank reconciliations.</div>
-                </div>
-                <p class="news-paragraph">
-                    Weekly treasury dispatches will be published directly in the virtual executive hall.
-                </p>
+            <article class="news-column">
+                <h2 class="news-headline">NEW FINANCIAL DISPATCH DISCLOSED</h2>
+                <p>Transparent oversight guarantees every single satang is allocated solely towards official cohort academic seminars and educational excursions.</p>
             </article>
-
-            <!-- Column 3 (Right) -->
-            <article class="news-col news-col-hide-mobile">
-                <h2 class="news-headline-lead">ANNUAL AUDIT PROVES SOUND RESERVES</h2>
-                <div class="news-subhead">CENTRAL FUND RECEPTACLE BALANCES OUT ACCURATELY</div>
-                <p class="news-paragraph">
-                    <strong>ACCOUNTING LEDGER — </strong>Official receipts for all student activities are preserved permanently within the secure database. Automated verification algorithms cross-examine bank transfer timestamps to prevent duplicate submissions.
-                </p>
-                <div class="news-ad-box">
-                    <div class="news-ad-title">PANCAKE BREAKFAST SPECIAL</div>
-                    <div class="news-ad-body">Daily coffee, tea, and warm pastries served for all hard-working treasury auditors. Only $2.49 at the campus parlor.</div>
-                </div>
-                <p class="news-paragraph">
-                    Students experiencing difficulties are advised to confer with branch officers or submit inquiry dispatches via the digital portal.
-                </p>
+            <article class="news-column">
+                <h2 class="news-headline">CLASS 69 HONORS TREASURER DEDICATION</h2>
+                <p>Special recognition extended to elected treasurers for their round-the-clock slip verification and automated bank transfer reconciliation.</p>
+            </article>
+            <article class="news-column">
+                <h2 class="news-headline">ACADEMIC EXCELLENCE IN FINANCIAL ETHICS</h2>
+                <p>Scholars maintain that systematic digital accounting represents the golden standard for tertiary student self-governance.</p>
             </article>
         </div>
     </div>
+    <div class="vintage-vignette-overlay vintage-only"></div>
+    <div class="paper-grain-overlay vintage-only"></div>
 
-    <!-- ─── VINTAGE AGED PARCHMENT & VIGNETTE OVERLAY ─── -->
-    <div class="vintage-vignette-overlay"></div>
-    <div class="paper-grain-overlay"></div>
-
-    <!-- ─── CENTER LOGIN CONTENT ─── -->
+    <!-- ═══════════════════════════════════════════════════════════
+         CENTER CONTENT WRAPPER
+         ═══════════════════════════════════════════════════════════ -->
     <div class="content-wrapper">
 
-        <!-- Main Title (BEC BA 69 • FINANCIAL SYSTEM) -->
-        <div class="main-title">
+        <!-- ─── KUROMI TITLE (THEME 1) ─── -->
+        <div class="kuromi-title kuromi-only">
+            <div class="brand-logo-container">
+                <img src="assets/kuromi_planet_logo.png" alt="BEC BA 69 Emblem" class="brand-planet-logo">
+            </div>
             <h1>BEC BA <span class="brand-num">69</span></h1>
             <div class="subtitle">FINANCIAL SYSTEM</div>
         </div>
 
-        <!-- Vintage Scrapbook Parchment Frame Login Card -->
-        <div class="login-card">
+        <!-- ─── VINTAGE TITLE (THEME 2) ─── -->
+        <div class="vintage-title vintage-only">
+            <h1>BEC BA <span class="brand-num">69</span></h1>
+            <div class="subtitle">FINANCIAL SYSTEM</div>
+        </div>
+
+        <!-- ─── KUROMI LOGIN CARD (THEME 1) ─── -->
+        <div class="kuromi-card kuromi-only">
             <h1 class="card-title">ยินดีต้อนรับ</h1>
             <p class="card-subtitle">กรุณายืนยันตัวตนเพื่อเข้าสู่ระบบ</p>
 
-            <!-- Google OAuth Button -->
             <div class="google-btn-wrapper">
-                <button type="button" class="google-login-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google NU Mail">
+                <button type="button" class="kuromi-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google NU Mail">
+                    <span class="google-icon-box">
+                        <svg width="18" height="18" viewBox="0 0 48 48">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                        </svg>
+                    </span>
+                    <span class="google-btn-text">
+                        <span class="google-btn-primary">เข้าสู่ระบบด้วย Google</span>
+                        <span class="google-btn-secondary">nu.ac.th เท่านั้น</span>
+                    </span>
+                </button>
+            </div>
+
+            <div class="spinner-wrap" id="loadingHintKuromi">
+                <div class="spinner"></div>
+                <span>กำลังเปิดระบบ...</span>
+            </div>
+
+            <p id="errorMessageKuromi" style="display:none;"></p>
+        </div>
+
+        <!-- ─── VINTAGE LOGIN CARD (THEME 2) ─── -->
+        <div class="vintage-card vintage-only">
+            <h1 class="card-title">ยินดีต้อนรับ</h1>
+            <p class="card-subtitle">กรุณายืนยันตัวตนเพื่อเข้าสู่ระบบ</p>
+
+            <div class="google-btn-wrapper">
+                <button type="button" class="vintage-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google NU Mail">
                     <span class="google-icon-box">
                         <svg width="18" height="18" viewBox="0 0 48 48">
                             <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -643,16 +880,15 @@
                 </button>
             </div>
 
-            <div class="spinner-wrap" id="loadingHint">
+            <div class="spinner-wrap" id="loadingHintVintage">
                 <div class="spinner"></div>
                 <span>กำลังเปิดระบบ...</span>
             </div>
 
-            <!-- Error -->
-            <p id="errorMessage"></p>
+            <p id="errorMessageVintage" style="display:none;"></p>
         </div>
 
-        <!-- Test Environment Quick Switcher (Placed outside card for test server convenience) -->
+        <!-- ─── TEST ENVIRONMENT QUICK SWITCHER (BOTH THEMES) ─── -->
         <div class="test-switcher-box">
             <div class="test-switcher-header">
                 <span class="test-switcher-title">[ 🧪 โหมดทดสอบสารบบ • SEED ROSTER ]</span>
@@ -677,26 +913,162 @@
 
     </div>
 
-    <!-- Scripts -->
+    <!-- ─── SCRIPTS ─── -->
     <script>
-        // Hide the "loading" hint once Google button appears
+        // ─── THEME MANAGER ───
+        function getAppTheme() {
+            return localStorage.getItem('bec_app_theme') || 'kuromi';
+        }
+
+        function applyAppTheme(theme) {
+            if (theme !== 'vintage' && theme !== 'kuromi') theme = 'kuromi';
+            localStorage.setItem('bec_app_theme', theme);
+            document.documentElement.setAttribute('data-theme', theme);
+
+            const btnText = document.getElementById('themeToggleText');
+            if (btnText) {
+                btnText.textContent = (theme === 'vintage') ? 'ธีม: วินเทจ 📜 (สลับ)' : 'ธีม: คุโรมิ 💜 (สลับ)';
+            }
+
+            if (theme === 'kuromi') {
+                startSilkAnimation();
+            } else {
+                stopSilkAnimation();
+            }
+        }
+
+        function toggleIndexTheme() {
+            const cur = getAppTheme();
+            const next = (cur === 'vintage') ? 'kuromi' : 'vintage';
+            applyAppTheme(next);
+        }
+
+        // ─── SILK CANVAS ANIMATION (KUROMI THEME) ───
+        let animId = null;
+        let time = 0;
+        let silkCanvasInited = false;
+        let ctx = null;
+        let canvas = null;
+
+        function initSilkCanvas() {
+            canvas = document.getElementById('silkCanvas');
+            if (!canvas) return;
+            ctx = canvas.getContext('2d');
+
+            function resize() {
+                canvas.width  = Math.floor(window.innerWidth / 2);
+                canvas.height = Math.floor(window.innerHeight / 2);
+            }
+            window.addEventListener('resize', resize);
+            resize();
+            silkCanvasInited = true;
+        }
+
+        function startSilkAnimation() {
+            if (!silkCanvasInited) initSilkCanvas();
+            if (animId || !canvas || !ctx) return;
+
+            const scale = 3.5;
+            const speed = 0.008;
+            const noiseIntensity = 1.2;
+
+            function noise(x, y) {
+                const G = 2.71828;
+                const rx = G * Math.sin(G * x);
+                const ry = G * Math.sin(G * y);
+                return (rx * ry * (1 + x)) % 1;
+            }
+
+            function loop() {
+                const w = canvas.width;
+                const h = canvas.height;
+
+                const bg = ctx.createLinearGradient(0, 0, w, h);
+                bg.addColorStop(0,   '#0c0a10');
+                bg.addColorStop(0.35,'#201529');
+                bg.addColorStop(0.7, '#140e1b');
+                bg.addColorStop(1,   '#09070c');
+                ctx.fillStyle = bg;
+                ctx.fillRect(0, 0, w, h);
+
+                const imgData = ctx.createImageData(w, h);
+                const d = imgData.data;
+                const tOff = speed * time;
+
+                for (let y = 0; y < h; y += 2) {
+                    for (let x = 0; x < w; x += 2) {
+                        const nx = x / w * scale;
+                        const ny = y / h * scale;
+
+                        const pattern = Math.sin(
+                            nx * 3 + Math.sin(ny * 2 + tOff) * 1.5 +
+                            Math.cos(nx * 2 - tOff * 0.7) * 1.2
+                        );
+
+                        const rnd = noise(x, y);
+                        const intensity = Math.max(0, pattern - rnd / 15.0 * noiseIntensity);
+
+                        const r = Math.floor(180 * intensity);
+                        const g = Math.floor(140 * intensity);
+                        const b = Math.floor(205 * intensity);
+
+                        const idx = (y * w + x) * 4;
+                        if (idx < d.length) {
+                            d[idx]     = r;
+                            d[idx + 1] = g;
+                            d[idx + 2] = b;
+                            d[idx + 3] = 255;
+                        }
+                    }
+                }
+                ctx.putImageData(imgData, 0, 0);
+
+                const ov = ctx.createRadialGradient(
+                    w/2, h/2, 0,
+                    w/2, h/2, Math.max(w, h) / 1.5
+                );
+                ov.addColorStop(0, 'rgba(12, 10, 16, 0.2)');
+                ov.addColorStop(1, 'rgba(9, 7, 12, 0.75)');
+                ctx.fillStyle = ov;
+                ctx.fillRect(0, 0, w, h);
+
+                time++;
+                animId = requestAnimationFrame(loop);
+            }
+
+            loop();
+        }
+
+        function stopSilkAnimation() {
+            if (animId) {
+                cancelAnimationFrame(animId);
+                animId = null;
+            }
+        }
+
+        // Initialize Theme immediately
+        applyAppTheme(getAppTheme());
+
+        // Hide the "loading" hints once loaded
         window.addEventListener('load', function () {
             setTimeout(function () {
-                const hint = document.getElementById('loadingHint');
-                if (hint) hint.style.display = 'none';
+                const h1 = document.getElementById('loadingHintKuromi');
+                const h2 = document.getElementById('loadingHintVintage');
+                if (h1) h1.style.display = 'none';
+                if (h2) h2.style.display = 'none';
             }, 1800);
         });
 
-        // Supabase Auth Logic
+        // Supabase OAuth Login
         async function signInWithGoogle() {
-            const btnWrap = document.querySelector('.google-btn-wrapper');
-            if (btnWrap) btnWrap.style.display = 'none';
+            const btnWraps = document.querySelectorAll('.google-btn-wrapper');
+            btnWraps.forEach(bw => bw.style.display = 'none');
             
-            const loadingHint = document.getElementById('loadingHint');
-            if(loadingHint) {
-                loadingHint.innerHTML = '<div class="spinner"></div><span>กำลังพาท่านไปหน้าล็อกอิน...</span>';
-                loadingHint.style.display = 'flex';
-            }
+            const h1 = document.getElementById('loadingHintKuromi');
+            const h2 = document.getElementById('loadingHintVintage');
+            const html = '<div class="spinner"></div><span>กำลังพาท่านไปหน้าล็อกอิน...</span>';
+            if (h1) { h1.innerHTML = html; h1.style.display = 'flex'; }
+            if (h2) { h2.innerHTML = html; h2.style.display = 'flex'; }
 
             const { error } = await window.myAppDb.auth.signInWithOAuth({
                 provider: 'google',
@@ -707,10 +1079,13 @@
 
             if (error) {
                 console.error('Error logging in:', error.message);
-                if (btnWrap) btnWrap.style.display = 'flex';
-                if(loadingHint) loadingHint.style.display = 'none';
-                document.getElementById('errorMessage').textContent = 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ';
-                document.getElementById('errorMessage').style.display = 'block';
+                btnWraps.forEach(bw => bw.style.display = 'flex');
+                if (h1) h1.style.display = 'none';
+                if (h2) h2.style.display = 'none';
+                const e1 = document.getElementById('errorMessageKuromi');
+                const e2 = document.getElementById('errorMessageVintage');
+                if (e1) { e1.textContent = 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ'; e1.style.display = 'block'; }
+                if (e2) { e2.textContent = 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ'; e2.style.display = 'block'; }
             }
         }
 
@@ -718,14 +1093,12 @@
             const { data: { session } } = await window.myAppDb.auth.getSession();
             
             if (session) {
-                const btnWrap = document.querySelector('.google-btn-wrapper');
-                if (btnWrap) btnWrap.style.display = 'none';
-                
-                const loadingHint = document.getElementById('loadingHint');
-                if(loadingHint) {
-                    loadingHint.innerHTML = '<div class="spinner"></div><span>กำลังตรวจสอบข้อมูล...</span>';
-                    loadingHint.style.display = 'flex';
-                }
+                document.querySelectorAll('.google-btn-wrapper').forEach(bw => bw.style.display = 'none');
+                const hintHtml = '<div class="spinner"></div><span>กำลังตรวจสอบข้อมูล...</span>';
+                const h1 = document.getElementById('loadingHintKuromi');
+                const h2 = document.getElementById('loadingHintVintage');
+                if (h1) { h1.innerHTML = hintHtml; h1.style.display = 'flex'; }
+                if (h2) { h2.innerHTML = hintHtml; h2.style.display = 'flex'; }
 
                 if (typeof handleSupabaseSession === 'function') {
                     handleSupabaseSession(session);
@@ -733,14 +1106,12 @@
             } else {
                 window.myAppDb.auth.onAuthStateChange((event, session) => {
                     if (event === 'SIGNED_IN' && session) {
-                        const btnWrap = document.querySelector('.google-btn-wrapper');
-                        if (btnWrap) btnWrap.style.display = 'none';
-                        
-                        const loadingHint = document.getElementById('loadingHint');
-                        if(loadingHint) {
-                            loadingHint.innerHTML = '<div class="spinner"></div><span>กำลังตรวจสอบข้อมูล...</span>';
-                            loadingHint.style.display = 'flex';
-                        }
+                        document.querySelectorAll('.google-btn-wrapper').forEach(bw => bw.style.display = 'none');
+                        const hintHtml = '<div class="spinner"></div><span>กำลังตรวจสอบข้อมูล...</span>';
+                        const h1 = document.getElementById('loadingHintKuromi');
+                        const h2 = document.getElementById('loadingHintVintage');
+                        if (h1) { h1.innerHTML = hintHtml; h1.style.display = 'flex'; }
+                        if (h2) { h2.innerHTML = hintHtml; h2.style.display = 'flex'; }
                         if (typeof handleSupabaseSession === 'function') {
                             handleSupabaseSession(session);
                         }
