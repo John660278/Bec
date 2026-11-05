@@ -11,6 +11,7 @@ window.loginAsUser = function(email, name, role, studentId) {
         role: role || 'Student',
         studentId: studentId || ''
     };
+    sessionStorage.removeItem('bec_theme_promo_dismissed');
     sessionStorage.setItem('loggedInUser', JSON.stringify(user));
     window.location.href = (role === 'Admin') ? 'admin_dashboard.html' : 'student_dashboard.html';
 };

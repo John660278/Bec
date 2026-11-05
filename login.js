@@ -39,6 +39,7 @@ async function handleSupabaseSession(session) {
         }
 
         // บันทึกข้อมูลลงเครื่องแล้วพาไปหน้า Dashboard ทันที
+        sessionStorage.removeItem('bec_theme_promo_dismissed');
         sessionStorage.setItem('loggedInUser', JSON.stringify({
             email: userEmail,
             name: data.name || userName,

@@ -3427,12 +3427,12 @@
 
   // ─── THEME PROMO BUBBLE (OPTION 2) ───
   function initThemePromo() {
-    const isDismissed = localStorage.getItem('bec_theme_promo_dismissed') === 'true';
+    const isDismissed = sessionStorage.getItem('bec_theme_promo_dismissed') === 'true';
     const currentTheme = localStorage.getItem('bec_app_theme') || 'kuromi';
     const promoBubble = document.getElementById('themePromoBubble');
     const newBadge = document.getElementById('gearNewBadge');
 
-    // Only show if never dismissed and currently on Kuromi theme
+    // Only show if never dismissed during this login session and currently on Kuromi theme
     if (!isDismissed && currentTheme === 'kuromi') {
       if (promoBubble) {
         promoBubble.style.display = 'block';
@@ -3451,8 +3451,8 @@
 
   function dismissThemePromo(e) {
     if (e) e.stopPropagation();
-    // Once user clicks gear icon or dismisses, remember permanently so it never shows again
-    localStorage.setItem('bec_theme_promo_dismissed', 'true');
+    // Once user clicks gear icon or dismisses, remember in sessionStorage for this login session
+    sessionStorage.setItem('bec_theme_promo_dismissed', 'true');
     const promoBubble = document.getElementById('themePromoBubble');
     const newBadge = document.getElementById('gearNewBadge');
     if (promoBubble) {
@@ -3545,6 +3545,7 @@
       await window.myAppDb.auth.signOut();
     }
     sessionStorage.removeItem('loggedInUser');
+    sessionStorage.removeItem('bec_theme_promo_dismissed');
     location.href = 'index.html';
   }
 
