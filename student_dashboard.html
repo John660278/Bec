@@ -252,6 +252,133 @@
       transform: rotate(45deg);
     }
 
+    /* ─── THEME PROMO BADGE & TOOLTIP BUBBLE (OPTION 2) ─── */
+    .btn-icon {
+      position: relative;
+    }
+
+    .gear-new-badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
+      color: #ffffff;
+      font-size: 0.52rem;
+      font-weight: 800;
+      padding: 1.5px 5px;
+      border-radius: 9999px;
+      box-shadow: 0 2px 8px rgba(236, 72, 153, 0.55);
+      letter-spacing: 0.04em;
+      pointer-events: none;
+      animation: gearBadgePulse 2s infinite ease-in-out;
+      z-index: 5;
+      display: none;
+    }
+
+    @keyframes gearBadgePulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 2px 8px rgba(236, 72, 153, 0.55); }
+      50% { transform: scale(1.15); box-shadow: 0 3px 12px rgba(236, 72, 153, 0.85); }
+    }
+
+    .theme-promo-bubble {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      width: 220px;
+      background: #1e112a;
+      border: 1.5px solid #ec4899;
+      border-radius: 14px;
+      padding: 8px 10px 8px 12px;
+      box-shadow: 0 12px 30px -4px rgba(24, 10, 38, 0.55), 0 0 18px rgba(236, 72, 153, 0.3);
+      z-index: 990;
+      cursor: pointer;
+      display: none;
+      animation: bubbleBounceIn 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    @keyframes bubbleBounceIn {
+      0% { opacity: 0; transform: translateY(-8px) scale(0.92); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .theme-promo-bubble:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 34px -4px rgba(24, 10, 38, 0.65), 0 0 24px rgba(236, 72, 153, 0.45);
+    }
+
+    .bubble-arrow-up {
+      position: absolute;
+      top: -7px;
+      right: 12px;
+      width: 12px;
+      height: 12px;
+      background: #1e112a;
+      border-top: 1.5px solid #ec4899;
+      border-left: 1.5px solid #ec4899;
+      transform: rotate(45deg);
+    }
+
+    .bubble-content {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bubble-sparkle {
+      font-size: 1.2rem;
+      filter: drop-shadow(0 2px 4px rgba(236, 72, 153, 0.5));
+      animation: floatSparkle 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatSparkle {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(-3px) rotate(8deg); }
+    }
+
+    .bubble-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .bubble-title {
+      color: #ffffff;
+      font-size: 0.74rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .bubble-sub {
+      color: #fbcfe8;
+      font-size: 0.65rem;
+      font-weight: 500;
+      margin-top: 2px;
+      line-height: 1.2;
+    }
+
+    .bubble-close-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(236, 72, 153, 0.3);
+      color: #f472b6;
+      font-size: 0.75rem;
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .bubble-close-btn:hover {
+      color: #ffffff;
+      background: #ec4899;
+      border-color: #ec4899;
+      transform: scale(1.1);
+    }
+
     /* ─── SETTINGS DROPDOWN POPUP MENU ─── */
     .settings-dropdown {
       position: absolute;
@@ -1127,6 +1254,11 @@
       border-color: #8e6843;
       color: #543116;
       box-shadow: 0 0 0 3px rgba(142, 104, 67, 0.18);
+    }
+
+    [data-theme="vintage"] .gear-new-badge,
+    [data-theme="vintage"] .theme-promo-bubble {
+      display: none !important;
     }
 
     /* ─── THEME MODAL STYLING ─── */
@@ -2267,7 +2399,21 @@
           <circle cx="12" cy="12" r="3"></circle>
           <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
         </svg>
+        <span class="gear-new-badge" id="gearNewBadge">NEW</span>
       </button>
+
+      <!-- Theme Promo Tooltip Bubble (Option 2) -->
+      <div class="theme-promo-bubble" id="themePromoBubble" onclick="openThemeFromBubble(event)" title="คลิกเพื่อลองเปลี่ยนธีม">
+        <div class="bubble-arrow-up"></div>
+        <div class="bubble-content">
+          <span class="bubble-sparkle">🎨</span>
+          <div class="bubble-text">
+            <div class="bubble-title">เปลี่ยนธีมใหม่ตรงนี้น้า! 💜</div>
+            <div class="bubble-sub">มีธีมวินเทจคลาสสิกให้เลือกแล้ว ✨</div>
+          </div>
+          <button class="bubble-close-btn" onclick="dismissThemePromo(event)" title="ปิดข้อความ">✕</button>
+        </div>
+      </div>
 
       <!-- Settings Dropdown Popup Menu -->
       <div class="settings-dropdown" id="settingsDropdown">
@@ -3247,6 +3393,9 @@
     const btn = document.getElementById('btnSettingsMenu');
     if (!dropdown) return;
     
+    // Dismiss promo bubble when user opens settings
+    dismissThemePromo();
+
     const isOpen = dropdown.classList.contains('open');
     if (isOpen) {
       closeSettingsMenu();
@@ -3277,16 +3426,62 @@
     if (e.key === 'Escape') closeSettingsMenu();
   });
 
+  // ─── THEME PROMO BUBBLE (OPTION 2) ───
+  function initThemePromo() {
+    const seen = localStorage.getItem('bec_theme_promo_seen');
+    const currentTheme = localStorage.getItem('bec_app_theme') || 'kuromi';
+    const promoBubble = document.getElementById('themePromoBubble');
+    const newBadge = document.getElementById('gearNewBadge');
+
+    if (!seen && currentTheme === 'kuromi') {
+      if (promoBubble) promoBubble.style.display = 'block';
+      if (newBadge) newBadge.style.display = 'inline-block';
+    } else {
+      if (promoBubble) promoBubble.style.display = 'none';
+      if (newBadge) newBadge.style.display = 'none';
+    }
+  }
+
+  function dismissThemePromo(e) {
+    if (e) e.stopPropagation();
+    localStorage.setItem('bec_theme_promo_seen', 'true');
+    const promoBubble = document.getElementById('themePromoBubble');
+    const newBadge = document.getElementById('gearNewBadge');
+    if (promoBubble) {
+      promoBubble.style.opacity = '0';
+      promoBubble.style.transform = 'translateY(-6px)';
+      setTimeout(() => { promoBubble.style.display = 'none'; }, 200);
+    }
+    if (newBadge) {
+      newBadge.style.opacity = '0';
+      setTimeout(() => { newBadge.style.display = 'none'; }, 200);
+    }
+  }
+
+  function openThemeFromBubble(e) {
+    if (e) e.stopPropagation();
+    dismissThemePromo();
+    onOpenThemeCustomizer();
+  }
+
   // ─── THEME MANAGER (KUROMI & VINTAGE) ───
   function initTheme() {
     const savedTheme = localStorage.getItem('bec_app_theme') || 'kuromi';
     applyTheme(savedTheme, false);
+    initThemePromo();
   }
 
   function applyTheme(theme, showNotice = true) {
     if (theme !== 'vintage' && theme !== 'kuromi') theme = 'kuromi';
     localStorage.setItem('bec_app_theme', theme);
     document.documentElement.setAttribute('data-theme', theme);
+
+    if (theme === 'vintage') {
+      const promoBubble = document.getElementById('themePromoBubble');
+      const newBadge = document.getElementById('gearNewBadge');
+      if (promoBubble) promoBubble.style.display = 'none';
+      if (newBadge) newBadge.style.display = 'none';
+    }
 
     const checkK = document.getElementById('checkKuromi');
     const checkV = document.getElementById('checkVintage');
