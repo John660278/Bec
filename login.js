@@ -2,7 +2,7 @@
  * ฟังก์ชันนี้จะถูกเรียกอัตโนมัติเมื่อผู้ใช้ Login ผ่าน Supabase Auth สำเร็จ
  */
 async function handleSupabaseSession(session) {
-    document.querySelector('.google-btn-wrapper').style.display = 'none';
+    document.querySelectorAll('.google-btn-wrapper').forEach(el => el.style.display = 'none');
     const loadingHints = [
         document.getElementById('loadingHint'),
         document.getElementById('loadingHintKuromi'),
@@ -33,13 +33,13 @@ async function handleSupabaseSession(session) {
         if (error) {
             console.error("Supabase Error:", error);
             showError(`เกิดข้อผิดพลาดจากฐานข้อมูล: ${error.message || 'ไม่สามารถเข้าถึงข้อมูลได้'}`);
-            document.querySelector('.google-btn-wrapper').style.display = 'flex';
+            document.querySelectorAll('.google-btn-wrapper').forEach(el => el.style.display = 'flex');
             loadingHints.forEach(lh => lh.style.display = 'none');
             return;
         }
         if (!data) {
             showError(`ไม่อนุญาตให้เข้าถึง: ไม่พบอีเมล ${userEmail} ในระบบ`);
-            document.querySelector('.google-btn-wrapper').style.display = 'flex';
+            document.querySelectorAll('.google-btn-wrapper').forEach(el => el.style.display = 'flex');
             loadingHints.forEach(lh => lh.style.display = 'none');
             // Sign out completely so they can try again with a different account
             await window.myAppDb.auth.signOut();
@@ -65,7 +65,7 @@ async function handleSupabaseSession(session) {
     } catch (error) {
         console.error("เกิดข้อผิดพลาด:", error);
         showError("การเชื่อมต่อขัดข้อง กรุณาลองใหม่อีกครั้ง");
-        document.querySelector('.google-btn-wrapper').style.display = 'flex';
+        document.querySelectorAll('.google-btn-wrapper').forEach(el => el.style.display = 'flex');
         loadingHints.forEach(lh => lh.style.display = 'none');
     }
 }
