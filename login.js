@@ -3,12 +3,20 @@
  */
 async function handleSupabaseSession(session) {
     document.querySelector('.google-btn-wrapper').style.display = 'none';
-    const loadingHint = document.getElementById('loadingHint');
-    if(loadingHint) {
-        loadingHint.innerHTML = '<div class="spinner"></div><span>กำลังตรวจสอบข้อมูล...</span>';
-        loadingHint.style.display = 'flex';
-    }
-    document.getElementById('errorMessage').style.display = 'none';
+    const loadingHints = [
+        document.getElementById('loadingHint'),
+        document.getElementById('loadingHintKuromi'),
+        document.getElementById('loadingHintVintage'),
+        document.getElementById('loadingHintMinecraft')
+    ].filter(Boolean);
+    loadingHints.forEach(lh => {
+        lh.innerHTML = '<div class="spinner"></div><span>กำลังตรวจสอบข้อมูล...</span>';
+        lh.style.display = 'flex';
+    });
+    ['errorMessage', 'errorMessageKuromi', 'errorMessageVintage', 'errorMessageMinecraft'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
 
     try {
         const userEmail = session.user.email;
@@ -26,13 +34,13 @@ async function handleSupabaseSession(session) {
             console.error("Supabase Error:", error);
             showError(`เกิดข้อผิดพลาดจากฐานข้อมูล: ${error.message || 'ไม่สามารถเข้าถึงข้อมูลได้'}`);
             document.querySelector('.google-btn-wrapper').style.display = 'flex';
-            if(loadingHint) loadingHint.style.display = 'none';
+            loadingHints.forEach(lh => lh.style.display = 'none');
             return;
         }
         if (!data) {
             showError(`ไม่อนุญาตให้เข้าถึง: ไม่พบอีเมล ${userEmail} ในระบบ`);
             document.querySelector('.google-btn-wrapper').style.display = 'flex';
-            if(loadingHint) loadingHint.style.display = 'none';
+            loadingHints.forEach(lh => lh.style.display = 'none');
             // Sign out completely so they can try again with a different account
             await window.myAppDb.auth.signOut();
             return;
@@ -58,12 +66,21 @@ async function handleSupabaseSession(session) {
         console.error("เกิดข้อผิดพลาด:", error);
         showError("การเชื่อมต่อขัดข้อง กรุณาลองใหม่อีกครั้ง");
         document.querySelector('.google-btn-wrapper').style.display = 'flex';
-        if(loadingHint) loadingHint.style.display = 'none';
+        loadingHints.forEach(lh => lh.style.display = 'none');
     }
 }
 
 function showError(message) {
-    const errorDiv = document.getElementById('errorMessage');
-    errorDiv.textContent = message;
-    errorDiv.style.display = 'block';
+    let shown = false;
+    ['errorMessage', 'errorMessageKuromi', 'errorMessageVintage', 'errorMessageMinecraft'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.textContent = message;
+            el.style.display = 'block';
+            shown = true;
+        }
+    });
+    if (!shown) {
+        alert(message);
+    }
 }

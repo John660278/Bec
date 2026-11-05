@@ -1261,6 +1261,501 @@
       display: none !important;
     }
 
+    /* ═══════════════════════════════════════════════════════════
+       MINECRAFT THEME OVERRIDES (EMERALD, OAK & WARM GREENHOUSE)
+       ═══════════════════════════════════════════════════════════ */
+    [data-theme="minecraft"] {
+      --bg:           #ece7dc;
+      --surface:      #faf7f0;
+      --surface-sub:  #ede7da;
+      --surface-hover:#e4dcce;
+      --border:       #d4c8b2;
+      --border-dark:  #b5a58b;
+      
+      --text:         #211913;
+      --text-sub:     #4a3726;
+      --muted:        #715a44;
+      --muted-light:  #99826a;
+      
+      --accent:       #2e7d32;
+      --accent-hover: #236527;
+      --accent-text:  #ffffff;
+
+      --kuromi-purple:#2e7d32;
+      --kuromi-dark:  #1b3b1e;
+      --kuromi-pink:  #388e3c;
+      --kuromi-pink-light: #e8f5e9;
+      --kuromi-pink-bdr:   #a5d6a7;
+
+      --pp-blue:      #2e7d32;
+      --pp-light:     #e8f5e9;
+      --pp-border:    #c8e6c9;
+
+      --shadow-subtle: 0 2px 6px rgba(35, 45, 30, 0.05), 0 1px 3px rgba(35, 45, 30, 0.03);
+      --shadow-card:   0 6px 18px -2px rgba(35, 45, 30, 0.08), 0 2px 6px -1px rgba(35, 45, 30, 0.04);
+      --shadow-float:  0 18px 40px -4px rgba(25, 35, 20, 0.22), 0 6px 16px -2px rgba(25, 35, 20, 0.1);
+    }
+
+    [data-theme="minecraft"] body {
+      background: #ece7dc;
+      background-image: 
+        radial-gradient(rgba(60, 80, 45, 0.08) 1px, transparent 1px),
+        radial-gradient(circle at 15% 15%, rgba(245, 240, 230, 0.8) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(220, 230, 210, 0.5) 0%, transparent 45%);
+      background-size: 8px 8px, auto, auto;
+    }
+
+    [data-theme="minecraft"] .app-viewport {
+      background: #faf7f2;
+      box-shadow: 0 0 60px rgba(25, 35, 20, 0.12);
+      border-color: #d4c8b2;
+    }
+
+    [data-theme="minecraft"] .app-bar {
+      background: rgba(250, 247, 242, 0.94);
+      border-bottom-color: #d4c8b2;
+    }
+
+    [data-theme="minecraft"] .brand-emblem {
+      background: linear-gradient(135deg, #1b3b1e 0%, #2e7d32 60%, #4caf50 100%);
+      box-shadow: 0 3px 10px rgba(46, 125, 50, 0.35);
+      border-color: rgba(165, 214, 167, 0.45);
+    }
+
+    /* Minecraft Hero Card (Cat sunset card) */
+    [data-theme="minecraft"] .hero-bank-card {
+      background: #1e281b url('assets/card_bg_minecraft.png') center center / 100% 100% no-repeat;
+      border: 1.5px solid rgba(80, 110, 60, 0.45);
+      box-shadow: 0 16px 36px -8px rgba(20, 30, 15, 0.45), 0 4px 12px rgba(0, 0, 0, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+      color: #ffffff;
+    }
+
+    [data-theme="minecraft"] .gold-emv-chip {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    [data-theme="minecraft"] .contactless-glyph {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    [data-theme="minecraft"] .card-specular-light {
+      background: radial-gradient(circle 280px at 50% 30%, rgba(255, 255, 255, 0.25) 0%, rgba(180, 220, 160, 0.12) 50%, transparent 80%);
+      mix-blend-mode: overlay;
+    }
+
+    [data-theme="minecraft"] .card-org-tag {
+      color: #ffffff;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.6);
+      font-weight: 700;
+    }
+
+    [data-theme="minecraft"] .card-status-pill {
+      background: rgba(30, 48, 25, 0.82);
+      border: 1px solid rgba(130, 190, 110, 0.55);
+      color: #e8f5e9;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    [data-theme="minecraft"] .pulse-dot {
+      background: #4ade80;
+      box-shadow: 0 0 6px rgba(74, 222, 128, 0.8);
+    }
+
+    [data-theme="minecraft"] .pulse-dot.pulse-amber {
+      background: #f59e0b;
+      box-shadow: 0 0 6px rgba(245, 158, 11, 0.8);
+    }
+
+    [data-theme="minecraft"] .embossed-digits {
+      color: #ffffff;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 2px 6px rgba(0, 0, 0, 0.7);
+    }
+
+    [data-theme="minecraft"] .card-balance-caption {
+      color: rgba(255, 255, 255, 0.9);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+      font-weight: 700;
+    }
+
+    [data-theme="minecraft"] .card-balance-sum {
+      color: #ffffff;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9), 0 2px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    [data-theme="minecraft"] .card-balance-currency {
+      color: rgba(255, 255, 255, 0.9);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+      font-weight: 700;
+    }
+
+    [data-theme="minecraft"] .card-row-bottom {
+      border-top-color: rgba(255, 255, 255, 0.25);
+    }
+
+    [data-theme="minecraft"] .card-student-name {
+      color: #ffffff;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+    }
+
+    [data-theme="minecraft"] .card-student-sub {
+      color: rgba(255, 255, 255, 0.85);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+      font-weight: 600;
+    }
+
+    [data-theme="minecraft"] .card-holo-emblem {
+      background: linear-gradient(135deg, rgba(74, 150, 80, 0.4), rgba(46, 125, 50, 0.25));
+      border-color: rgba(130, 190, 110, 0.5);
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+    }
+
+    /* Segmented Switcher & Filter Pills */
+    [data-theme="minecraft"] .segmented-switch {
+      background: #ede6da;
+      border-color: #d4c8b2;
+    }
+
+    [data-theme="minecraft"] .seg-tab-btn.active {
+      background: #faf7f2;
+      color: #2e7d32;
+      box-shadow: 0 3px 10px rgba(46, 125, 50, 0.15);
+    }
+
+    [data-theme="minecraft"] .pill-btn {
+      background: #faf7f2;
+      border-color: #d4c8b2;
+      color: #55412e;
+    }
+
+    [data-theme="minecraft"] .pill-btn:hover {
+      background: #f0e9dc;
+      border-color: #b5a58b;
+      color: #2e7d32;
+    }
+
+    [data-theme="minecraft"] .pill-btn.active {
+      background: linear-gradient(180deg, #2e7d32 0%, #1b5e20 100%);
+      color: #ffffff;
+      border-color: #1b5e20;
+      box-shadow: 0 3px 10px rgba(46, 125, 50, 0.35);
+    }
+
+    /* Statement Cards */
+    [data-theme="minecraft"] .statement-card {
+      background: #faf7f2;
+      border-color: #d4c8b2;
+      box-shadow: 0 2px 8px rgba(35, 45, 30, 0.05);
+    }
+
+    [data-theme="minecraft"] .statement-card:hover {
+      border-color: #2e7d32;
+      box-shadow: 0 5px 16px rgba(46, 125, 50, 0.12);
+    }
+
+    [data-theme="minecraft"] .statement-title {
+      color: #211913;
+    }
+
+    [data-theme="minecraft"] .statement-meta {
+      color: #715a44;
+    }
+
+    [data-theme="minecraft"] .statement-amount {
+      color: #1b3b1e;
+    }
+
+    [data-theme="minecraft"] .statement-divider {
+      background: #e4dcce;
+    }
+
+    [data-theme="minecraft"] .btn-pay-now,
+    [data-theme="minecraft"] .btn-primary,
+    [data-theme="minecraft"] .btn-submit-payment,
+    [data-theme="minecraft"] .btn-copy-account {
+      background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+      color: #ffffff;
+      border-color: #1b5e20;
+      box-shadow: 0 3px 12px rgba(46, 125, 50, 0.28);
+    }
+
+    [data-theme="minecraft"] .btn-pay-now:hover:not(:disabled),
+    [data-theme="minecraft"] .btn-primary:hover:not(:disabled),
+    [data-theme="minecraft"] .btn-submit-payment:hover:not(:disabled),
+    [data-theme="minecraft"] .btn-copy-account:hover {
+      background: linear-gradient(135deg, #388e3c 0%, #206d27 100%);
+      box-shadow: 0 6px 18px rgba(46, 125, 50, 0.38);
+    }
+
+    [data-theme="minecraft"] .btn-receipt-view {
+      background: #f0e9dc;
+      border-color: #d4c8b2;
+      color: #4a3726;
+    }
+
+    [data-theme="minecraft"] .btn-receipt-view:hover {
+      background: #e4dcce;
+      border-color: #2e7d32;
+      color: #2e7d32;
+    }
+
+    /* Modal Sheet in Minecraft Theme */
+    [data-theme="minecraft"] .modal-sheet {
+      background: #faf7f2;
+      border-color: #d4c8b2;
+      box-shadow: 0 24px 60px -8px rgba(25, 35, 20, 0.3);
+    }
+
+    [data-theme="minecraft"] .sheet-tag {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border-color: #a5d6a7;
+    }
+
+    [data-theme="minecraft"] .modal-title {
+      color: #211913;
+    }
+
+    [data-theme="minecraft"] .modal-amount {
+      color: #1b3b1e;
+    }
+
+    [data-theme="minecraft"] .sparkle-stars {
+      color: #2e7d32;
+    }
+
+    [data-theme="minecraft"] .qr-formal-card {
+      background: #ffffff;
+      border-color: #d4c8b2;
+      box-shadow: 0 4px 16px rgba(35, 45, 30, 0.08);
+    }
+
+    [data-theme="minecraft"] .qr-box-frame {
+      border-color: #2e7d32;
+      box-shadow: 0 4px 18px rgba(46, 125, 50, 0.15);
+    }
+
+    [data-theme="minecraft"] .qr-banner {
+      background: #2e7d32;
+    }
+
+    [data-theme="minecraft"] .qr-banner svg {
+      filter: brightness(0) invert(1);
+    }
+
+    [data-theme="minecraft"] .qr-code-wrapper {
+      border-color: #e4dcce;
+    }
+
+    [data-theme="minecraft"] .slip-upload-dropzone {
+      background: #fbf9f4;
+      border-color: #c4b69d;
+    }
+
+    [data-theme="minecraft"] .slip-upload-dropzone:hover {
+      background: #f3ede0;
+      border-color: #2e7d32;
+    }
+
+    [data-theme="minecraft"] .slip-upload-dropzone.has-file {
+      background: #f1f8f2;
+      border-color: #2e7d32;
+    }
+
+    [data-theme="minecraft"] .upload-icon {
+      color: #2e7d32;
+    }
+
+    [data-theme="minecraft"] .upload-main-text {
+      color: #211913;
+    }
+
+    [data-theme="minecraft"] .upload-sub-text,
+    [data-theme="minecraft"] .upload-change-hint {
+      color: #715a44;
+    }
+
+    [data-theme="minecraft"] .treasury-card {
+      background: linear-gradient(135deg, #fbf7f2 0%, #edf5ee 100%);
+      border-color: #c8e0ca;
+    }
+
+    [data-theme="minecraft"] .treasury-caption {
+      color: #2e7d32;
+    }
+
+    [data-theme="minecraft"] .treasury-total-val {
+      color: #1b3b1e;
+    }
+
+    [data-theme="minecraft"] .pb-stat-card {
+      background: #faf7f2;
+      border-color: #d4c8b2;
+    }
+
+    [data-theme="minecraft"] .pb-stat-label {
+      color: #715a44;
+    }
+
+    [data-theme="minecraft"] .public-subtab-row {
+      border-bottom-color: #d4c8b2;
+    }
+
+    [data-theme="minecraft"] .public-subtab-btn {
+      color: #715a44;
+    }
+
+    [data-theme="minecraft"] .public-subtab-btn:hover {
+      color: #2e7d32;
+    }
+
+    [data-theme="minecraft"] .public-subtab-btn.active {
+      color: #2e7d32;
+      border-bottom-color: #2e7d32;
+    }
+
+    [data-theme="minecraft"] #pbPanel-finance > div {
+      background: #faf7f2;
+      border-color: #d4c8b2;
+    }
+
+    [data-theme="minecraft"] #pbPanel-finance > div > div:first-child {
+      border-bottom-color: #d4c8b2;
+    }
+
+    [data-theme="minecraft"] .matrix-scroll-wrap {
+      border-color: #d4c8b2;
+    }
+
+    [data-theme="minecraft"] .matrix-table th {
+      background: #ede6da;
+      color: #4a3726;
+      border-bottom-color: #d4c8b2;
+    }
+
+    [data-theme="minecraft"] .matrix-table td {
+      border-bottom-color: #ede6da;
+      color: #211913;
+    }
+
+    [data-theme="minecraft"] .matrix-search-input {
+      background: #faf7f2;
+      border-color: #d4c8b2;
+      color: #211913;
+    }
+
+    [data-theme="minecraft"] .matrix-search-input:focus {
+      border-color: #2e7d32;
+      box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+    }
+
+    [data-theme="minecraft"] .matrix-search-icon {
+      color: #715a44;
+    }
+
+    [data-theme="minecraft"] .bank-account-box {
+      background: #f3efe6;
+      border-color: #d4c8b2;
+    }
+
+    [data-theme="minecraft"] .bank-account-num {
+      color: #1b3b1e;
+    }
+
+    [data-theme="minecraft"] .bank-account-label {
+      color: #715a44;
+    }
+
+    /* Empty State & Mascot in Minecraft Theme */
+    [data-theme="minecraft"] .empty-state {
+      background: #faf7f2;
+      border-color: #d4c8b2;
+    }
+
+    [data-theme="minecraft"] .empty-state-avatar {
+      display: none !important;
+    }
+
+    [data-theme="minecraft"] .empty-state::before {
+      content: '';
+      display: block;
+      width: 56px;
+      height: 44px;
+      margin: 0 auto 0.75rem auto;
+      background: url('assets/minecraft/mc_bee.png') no-repeat center center / contain;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.12));
+    }
+
+    [data-theme="minecraft"] .empty-state p {
+      color: #211913;
+    }
+
+    [data-theme="minecraft"] .empty-state small {
+      color: #715a44;
+    }
+
+    [data-theme="minecraft"] .kuromi-qr-peek {
+      display: none !important;
+    }
+
+    [data-theme="minecraft"] .success-kuromi-img {
+      display: none !important;
+    }
+
+    [data-theme="minecraft"] .success-kuromi-wrapper::after {
+      content: '✓';
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2e7d32, #1b5e20);
+      color: #e8f5e9;
+      font-size: 2.2rem;
+      border: 3px double #a5d6a7;
+      box-shadow: 0 4px 16px rgba(46, 125, 50, 0.4);
+    }
+
+    /* Settings dropdown */
+    [data-theme="minecraft"] .settings-dropdown {
+      background: #faf7f2;
+      border-color: #d4c8b2;
+      box-shadow: 0 14px 34px -4px rgba(25, 35, 20, 0.22);
+    }
+
+    [data-theme="minecraft"] .settings-menu-item:hover {
+      background: #ede6da;
+    }
+
+    [data-theme="minecraft"] .theme-icon-wrap {
+      background: rgba(46, 125, 50, 0.15);
+      color: #2e7d32;
+    }
+
+    [data-theme="minecraft"] .menu-item-badge {
+      background: linear-gradient(135deg, #2e7d32, #1b5e20);
+    }
+
+    [data-theme="minecraft"] .btn-icon.active {
+      border-color: #2e7d32;
+      color: #2e7d32;
+      box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.18);
+    }
+
+    [data-theme="minecraft"] .gear-new-badge,
+    [data-theme="minecraft"] .theme-promo-bubble {
+      display: none !important;
+    }
+
+    [data-theme="minecraft"] .theme-option-card.active {
+      background: #ffffff;
+      border-color: #2e7d32;
+      box-shadow: 0 4px 14px rgba(46, 125, 50, 0.18);
+    }
+
     /* ─── THEME MODAL STYLING ─── */
     .theme-modal-backdrop {
       position: fixed;
@@ -1348,6 +1843,12 @@
     .vintage-preview-box {
       background: linear-gradient(135deg, #422513, #b8864e);
       box-shadow: 0 2px 8px rgba(90, 50, 25, 0.35);
+    }
+
+    .minecraft-preview-box {
+      background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 60%, #4caf50 100%);
+      border: 1px solid rgba(165, 214, 167, 0.4);
+      box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
     }
 
     .theme-check-badge {
@@ -2700,6 +3201,22 @@
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
       </div>
+
+      <!-- Option 3: Minecraft Theme -->
+      <div class="theme-option-card" id="themeOptMinecraft" onclick="selectTheme('minecraft')">
+        <div class="theme-preview-box minecraft-preview-box">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e8f5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:0.92rem; font-weight:700; color:var(--text);">มายคราฟ (Minecraft Edition)</div>
+          <div style="font-size:0.74rem; color:var(--muted); margin-top:1px;">โทนอบอุ่นบล็อกไม้และเรือนกระจก พร้อมบัตรน้องแมว</div>
+        </div>
+        <div class="theme-check-badge" id="checkMinecraft">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -3557,7 +4074,7 @@
     onOpenThemeCustomizer();
   }
 
-  // ─── THEME MANAGER (KUROMI & VINTAGE) ───
+  // ─── THEME MANAGER (KUROMI, VINTAGE & MINECRAFT) ───
   function initTheme() {
     const savedTheme = localStorage.getItem('bec_app_theme') || 'kuromi';
     applyTheme(savedTheme, false);
@@ -3565,13 +4082,13 @@
   }
 
   function applyTheme(theme, showNotice = true) {
-    if (theme !== 'vintage' && theme !== 'kuromi') theme = 'kuromi';
+    if (theme !== 'vintage' && theme !== 'kuromi' && theme !== 'minecraft') theme = 'kuromi';
     localStorage.setItem('bec_app_theme', theme);
     document.documentElement.setAttribute('data-theme', theme);
 
     if (theme === 'kuromi') {
       initThemePromo();
-    } else if (theme === 'vintage') {
+    } else {
       const promoBubble = document.getElementById('themePromoBubble');
       const newBadge = document.getElementById('gearNewBadge');
       if (promoBubble) promoBubble.style.display = 'none';
@@ -3580,25 +4097,23 @@
 
     const checkK = document.getElementById('checkKuromi');
     const checkV = document.getElementById('checkVintage');
+    const checkM = document.getElementById('checkMinecraft');
     const optK = document.getElementById('themeOptKuromi');
     const optV = document.getElementById('themeOptVintage');
+    const optM = document.getElementById('themeOptMinecraft');
 
-    if (checkK && checkV && optK && optV) {
-      if (theme === 'vintage') {
-        checkK.style.display = 'none';
-        checkV.style.display = 'flex';
-        optK.classList.remove('active');
-        optV.classList.add('active');
-      } else {
-        checkK.style.display = 'flex';
-        checkV.style.display = 'none';
-        optK.classList.add('active');
-        optV.classList.remove('active');
-      }
-    }
+    if (optK) optK.classList.toggle('active', theme === 'kuromi');
+    if (optV) optV.classList.toggle('active', theme === 'vintage');
+    if (optM) optM.classList.toggle('active', theme === 'minecraft');
+
+    if (checkK) checkK.style.display = (theme === 'kuromi') ? 'flex' : 'none';
+    if (checkV) checkV.style.display = (theme === 'vintage') ? 'flex' : 'none';
+    if (checkM) checkM.style.display = (theme === 'minecraft') ? 'flex' : 'none';
 
     if (showNotice) {
-      const name = (theme === 'vintage') ? 'หนังสือพิมพ์วินเทจ' : 'คุโรมิ';
+      let name = 'คุโรมิ';
+      if (theme === 'vintage') name = 'หนังสือพิมพ์วินเทจ';
+      else if (theme === 'minecraft') name = 'มายคราฟ';
       showToast(`เปลี่ยนเป็นธีม ${name} เรียบร้อยแล้ว`);
     }
   }
