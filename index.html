@@ -232,7 +232,7 @@
             gap: 1.5rem;
         }
 
-        /* ─── TITLE WITH KRAFT PAPER CUT-OUT STICKERS ─── */
+        /* ─── VINTAGE TITLE HIERARCHY (MATCHING KUROMI COMPOSITION) ─── */
         .main-title {
             text-align: center;
             opacity: 0;
@@ -244,112 +244,107 @@
             align-items: center;
         }
 
-        .vintage-tagline {
-            font-family: 'Special Elite', monospace;
-            font-size: clamp(0.68rem, 1.8vw, 0.8rem);
-            font-weight: 700;
-            color: #5c412a;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            margin-bottom: 0.65rem;
-            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);
-        }
-
-        /* Kraft Letter Stickers Row */
-        .kraft-stickers-row {
+        .brand-logo-container {
             display: flex;
-            align-items: center;
             justify-content: center;
-            gap: clamp(8px, 2vw, 16px);
-            flex-wrap: wrap;
-            margin: 0.35rem 0 0.85rem;
-        }
-
-        .kraft-word {
-            display: inline-flex;
-            gap: clamp(4px, 0.9vw, 8px);
             align-items: center;
+            margin-bottom: 0.85rem;
         }
 
-        /* Authentic Die-Cut Torn Paper Letter & Digit Stickers */
-        .kraft-sticker-img {
-            width: clamp(44px, 9vw, 66px);
+        .brand-emblem-logo {
+            width: clamp(110px, 16vw, 155px);
             height: auto;
-            display: inline-block;
-            filter: drop-shadow(2px 5px 8px rgba(35, 20, 10, 0.48));
-            transition: transform 180ms ease, filter 180ms ease;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 18px rgba(45, 25, 12, 0.42));
+            transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), filter 300ms ease;
             user-select: none;
+            -webkit-user-drag: none;
             cursor: pointer;
         }
 
-        .kraft-sticker-img:hover {
-            transform: scale(1.12) rotate(0deg) !important;
-            filter: drop-shadow(3px 8px 16px rgba(30, 15, 8, 0.65));
-            z-index: 10;
+        .brand-emblem-logo:hover {
+            transform: scale(1.06) rotate(1.5deg);
+            filter: drop-shadow(0 12px 26px rgba(40, 20, 8, 0.58));
         }
 
-        /* Hand-cut Rotations from Reference Sheet */
-        .k-rot-1 { transform: rotate(-3.5deg) translateY(-2px); }
-        .k-rot-2 { transform: rotate(2.5deg) translateY(1px); }
-        .k-rot-3 { transform: rotate(-1.5deg) translateY(-1px); }
-        .k-rot-4 { transform: rotate(3deg) translateY(2px); }
-        .k-rot-5 { transform: rotate(-2.5deg) translateY(-2px); }
-        .k-rot-6 { transform: rotate(2deg) translateY(1px); }
-        .k-rot-7 { transform: rotate(-2deg) translateY(-1px); }
+        .main-title h1 {
+            font-family: 'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
+            font-size: clamp(3.2rem, 12vw, 7.5rem);
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            line-height: 1;
+            color: #26160d;
+            text-shadow: 
+                0 1px 0 rgba(255, 255, 255, 0.85),
+                0 3px 12px rgba(45, 25, 12, 0.3);
+        }
+
+        .main-title .brand-num {
+            font-family: 'Cinzel', 'Playfair Display', serif;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            color: #8c532b;
+            text-shadow: 
+                0 1px 0 rgba(255, 255, 255, 0.85),
+                0 3px 14px rgba(140, 83, 43, 0.38);
+        }
 
         .main-title .subtitle {
-            margin-top: 0.25rem;
-            font-family: 'Special Elite', monospace;
-            font-size: clamp(0.72rem, 2.2vw, 0.88rem);
+            margin-top: 0.85rem;
+            font-family: 'Plus Jakarta Sans', 'Prompt', sans-serif;
+            font-size: clamp(0.72rem, 2.2vw, 0.95rem);
             font-weight: 700;
-            letter-spacing: 0.28em;
+            letter-spacing: 0.38em;
             text-transform: uppercase;
-            color: #4a3421;
+            color: #5c3e25;
             text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
         }
 
-        /* ─── VINTAGE TORN PARCHMENT LOGIN CARD ─── */
+        /* ─── MODERN-VINTAGE PARCHMENT GLASS LOGIN CARD ─── */
         .login-card {
             opacity: 0;
             transform: translateY(1.5rem);
-            animation: fadeInUp 0.9s ease-out 0.45s forwards;
+            animation: fadeInUp 0.9s ease-out 0.4s forwards;
 
             position: relative;
-            width: min(450px, 92vw);
-            aspect-ratio: 816 / 648;
-            background: url('assets/login_frame.png') no-repeat center center;
-            background-size: 100% 100%;
-            padding: clamp(52px, 13vw, 76px) clamp(44px, 11vw, 68px) clamp(46px, 12vw, 68px) clamp(44px, 11vw, 68px);
+            width: min(390px, 92vw);
+            padding: 2.25rem 2rem 2rem;
+            border-radius: 28px;
+            background: rgba(248, 240, 228, 0.88);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1.5px solid rgba(138, 102, 70, 0.45);
+            box-shadow: 
+                0 18px 45px rgba(35, 20, 10, 0.28),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                inset 0 0 22px rgba(180, 140, 95, 0.15);
+            text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            filter: drop-shadow(0 20px 42px rgba(25, 14, 7, 0.55));
-            border: none;
-            box-shadow: none;
         }
 
         .login-card .card-title {
             font-family: 'Playfair Display', 'Prompt', Georgia, serif;
-            font-size: clamp(1.35rem, 4vw, 1.7rem);
-            font-weight: 800;
-            color: #24160e;
-            letter-spacing: 0.01em;
-            margin-bottom: 0.25rem;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #26160d;
+            letter-spacing: 0.02em;
+            margin-bottom: 0.35rem;
             line-height: 1.25;
-            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.45);
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
         }
 
         .login-card .card-subtitle {
             font-family: 'Prompt', -apple-system, sans-serif;
-            font-size: clamp(0.76rem, 2.3vw, 0.88rem);
-            font-weight: 600;
-            color: #553a23;
-            margin-bottom: 1.2rem;
+            font-size: 0.84rem;
+            font-weight: 500;
+            color: #634730;
+            letter-spacing: 0.01em;
+            margin-bottom: 1.75rem;
         }
 
-        /* Compact Google Button (Centered & Neatly sized inside parchment) */
+        /* Google Pill Button */
         .google-btn-wrapper {
             display: flex;
             justify-content: center;
@@ -357,59 +352,74 @@
         }
 
         .google-login-btn {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            background: linear-gradient(180deg, #2a1b11 0%, #1e130a 100%);
-            color: #f7efe4;
-            border: 1.5px solid #8e6843;
-            border-radius: 6px;
-            padding: 8px 18px;
-            width: min(230px, 86%);
+            gap: 12px;
+            width: 100%;
+            padding: 12px 24px;
+            border-radius: 9999px;
+            background: linear-gradient(180deg, #2b1a0e 0%, #1b1008 100%);
+            border: 1.5px solid #8c6742;
+            color: #faf3e8;
             cursor: pointer;
             box-shadow: 
-                0 4px 14px rgba(35, 20, 10, 0.35),
-                inset 0 1px 0 rgba(255, 255, 255, 0.12);
-            transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1);
+                0 4px 16px rgba(35, 20, 10, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
             user-select: none;
-            text-align: center;
+            text-decoration: none;
         }
 
         .google-login-btn:hover {
-            background: linear-gradient(180deg, #372417 0%, #26180e 100%);
+            background: linear-gradient(180deg, #382415 0%, #24150b 100%);
             border-color: #b5895c;
-            color: #ffffff;
-            transform: translateY(-1.5px);
+            transform: translateY(-2px);
             box-shadow: 
-                0 7px 20px rgba(35, 20, 10, 0.45),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+                0 8px 24px rgba(35, 20, 10, 0.42),
+                inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            color: #ffffff;
         }
 
         .google-login-btn:active {
             transform: translateY(0);
-            box-shadow: 0 2px 6px rgba(35, 20, 10, 0.3);
+            box-shadow: 0 2px 8px rgba(35, 20, 10, 0.25);
         }
 
         .google-icon-box {
             width: 24px;
             height: 24px;
             background: #ffffff;
-            border-radius: 4px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+        }
+
+        .google-btn-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            line-height: 1.2;
         }
 
         .google-btn-primary {
             font-family: 'Prompt', sans-serif;
-            font-size: 0.82rem;
-            font-weight: 700;
-            color: #fcf8f2;
+            font-size: 0.92rem;
+            font-weight: 600;
             letter-spacing: 0.01em;
+            color: #fcf7ee;
             white-space: nowrap;
+        }
+
+        .google-btn-secondary {
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.68rem;
+            color: #d1b899;
+            font-weight: 400;
         }
 
         /* Spinner hint */
@@ -418,10 +428,10 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            margin-top: 0.85rem;
-            font-size: 0.78rem;
+            margin-top: 1.1rem;
+            font-size: 0.8rem;
             color: #634b37;
-            font-family: 'Special Elite', monospace;
+            font-family: 'Prompt', sans-serif;
         }
 
         .spinner {
@@ -436,14 +446,15 @@
         /* Error message */
         #errorMessage {
             display: none;
-            margin-top: 0.85rem;
-            padding: 8px 12px;
+            margin-top: 1rem;
+            padding: 8px 14px;
             background: #fde8e8;
             border: 1px solid #f8b4b4;
-            border-radius: 4px;
+            border-radius: 6px;
             color: #9b1c1c;
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             font-weight: 500;
+            font-family: 'Prompt', sans-serif;
         }
 
         /* ─── TEST ENVIRONMENT QUICK SWITCHER (OUTSIDE CARD) ─── */
@@ -452,13 +463,14 @@
             transform: translateY(1.5rem);
             animation: fadeInUp 0.9s ease-out 0.6s forwards;
 
-            width: min(390px, 90vw);
-            background: rgba(246, 238, 226, 0.92);
-            border: 1.5px dashed #8c6a49;
-            border-radius: 8px;
-            padding: 10px 14px;
-            box-shadow: 0 6px 16px rgba(35, 20, 10, 0.22);
-            backdrop-filter: blur(8px);
+            width: min(390px, 92vw);
+            background: rgba(248, 240, 228, 0.88);
+            border: 1.5px dashed rgba(140, 106, 73, 0.65);
+            border-radius: 22px;
+            padding: 12px 16px;
+            box-shadow: 0 8px 22px rgba(35, 20, 10, 0.22);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             position: relative;
         }
 
@@ -466,36 +478,37 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.7rem;
+            margin-bottom: 0.65rem;
+            padding: 0 4px;
         }
 
         .test-switcher-title {
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             color: #523824;
-            font-family: 'Special Elite', monospace;
-            letter-spacing: 0.04em;
+            font-family: 'Prompt', sans-serif;
+            letter-spacing: 0.02em;
             font-weight: 700;
         }
 
         .test-switcher-badge {
-            font-size: 0.6rem;
+            font-size: 0.62rem;
             color: #24160e;
             background: #dfcca8;
             border: 1px solid #9e8363;
-            padding: 1.5px 7px;
-            border-radius: 3px;
+            padding: 2px 8px;
+            border-radius: 9999px;
             font-weight: 700;
-            font-family: 'Special Elite', monospace;
+            font-family: 'Prompt', sans-serif;
         }
 
         .btn-test-admin {
             width: 100%;
-            padding: 9px 12px;
-            border-radius: 5px;
+            padding: 10px 14px;
+            border-radius: 9999px;
             border: 1.5px solid #735036;
             background: linear-gradient(180deg, #382416, #26170c);
             color: #f7efe4;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-weight: 700;
             cursor: pointer;
             font-family: 'Prompt', sans-serif;
@@ -511,7 +524,7 @@
             background: linear-gradient(180deg, #472f1e, #311e11);
             border-color: #9c704c;
             transform: translateY(-1px);
-            box-shadow: 0 5px 12px rgba(35, 20, 10, 0.38);
+            box-shadow: 0 5px 14px rgba(35, 20, 10, 0.38);
         }
 
         .student-select-wrap {
@@ -520,12 +533,12 @@
 
         .student-select-input {
             width: 100%;
-            padding: 9px 30px 9px 12px;
-            border-radius: 5px;
+            padding: 9px 32px 9px 14px;
+            border-radius: 9999px;
             border: 1.5px solid #8c6a49;
             background: #f3e9d8;
             color: #24160e;
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             font-weight: 600;
             font-family: 'Prompt', sans-serif;
             outline: none;
@@ -533,7 +546,7 @@
             appearance: none;
             -webkit-appearance: none;
             box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
-            transition: border-color 140ms ease;
+            transition: all 140ms ease;
         }
 
         .student-select-input:hover, .student-select-input:focus {
@@ -543,7 +556,7 @@
 
         .student-select-arrow {
             position: absolute;
-            right: 12px;
+            right: 14px;
             top: 50%;
             transform: translateY(-50%);
             pointer-events: none;
@@ -645,34 +658,16 @@
     <!-- ─── CENTER LOGIN CONTENT ─── -->
     <div class="content-wrapper">
 
-        <!-- Big Title with Die-Cut Kraft Paper Stickers from Reference Image -->
+        <!-- Title (Aligned to Clean Kuromi Composition in Vintage Aesthetic) -->
         <div class="main-title">
-            <div class="vintage-tagline">★ THE OFFICIAL STUDENT ARCHIVE ★</div>
-            
-            <!-- Authentic Die-Cut Kraft Paper Letter Stickers (Cropped from Reference Sheet) -->
-            <div class="kraft-stickers-row">
-                <!-- Word: BEC -->
-                <div class="kraft-word" title="BEC">
-                    <img src="assets/stickers/B.png" alt="B" class="kraft-sticker-img k-rot-1">
-                    <img src="assets/stickers/E.png" alt="E" class="kraft-sticker-img k-rot-2">
-                    <img src="assets/stickers/C.png" alt="C" class="kraft-sticker-img k-rot-3">
-                </div>
-                <!-- Word: BA -->
-                <div class="kraft-word" title="BA">
-                    <img src="assets/stickers/B2.png" alt="B" class="kraft-sticker-img k-rot-4">
-                    <img src="assets/stickers/A.png" alt="A" class="kraft-sticker-img k-rot-5">
-                </div>
-                <!-- Number: 69 -->
-                <div class="kraft-word" title="69">
-                    <img src="assets/stickers/6.png" alt="6" class="kraft-sticker-img k-rot-6">
-                    <img src="assets/stickers/9.png" alt="9" class="kraft-sticker-img k-rot-7">
-                </div>
+            <div class="brand-logo-container">
+                <img src="assets/vintage_seal.svg" alt="BEC BA 69 Emblem" class="brand-emblem-logo">
             </div>
-
-            <div class="subtitle">FINANCIAL DISPATCH • NU 69</div>
+            <h1>BEC BA <span class="brand-num">69</span></h1>
+            <div class="subtitle">FINANCIAL SYSTEM</div>
         </div>
 
-        <!-- Vintage Parchment Login Card with Butterfly & Floral Scrapbook Frame -->
+        <!-- Modern-Vintage Parchment Glass Login Card -->
         <div class="login-card">
             <h1 class="card-title">ยินดีต้อนรับ</h1>
             <p class="card-subtitle">กรุณายืนยันตัวตนเพื่อเข้าสู่ระบบ</p>
@@ -688,7 +683,10 @@
                             <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
                         </svg>
                     </span>
-                    <span class="google-btn-primary">เข้าสู่ระบบด้วย Google NU</span>
+                    <span class="google-btn-text">
+                        <span class="google-btn-primary">เข้าสู่ระบบด้วย Google</span>
+                        <span class="google-btn-secondary">nu.ac.th เท่านั้น</span>
+                    </span>
                 </button>
             </div>
 
