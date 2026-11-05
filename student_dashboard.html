@@ -716,10 +716,21 @@
     }
 
     [data-theme="vintage"] .card-status-pill {
-      background: rgba(255, 255, 255, 0.72);
-      border-color: rgba(140, 106, 73, 0.35);
-      color: #2b180d;
+      background: rgba(226, 208, 185, 0.88);
+      border: 1px solid rgba(138, 102, 70, 0.45);
+      color: #2e1a0d;
       backdrop-filter: blur(8px);
+      box-shadow: 0 2px 6px rgba(45, 25, 12, 0.12);
+    }
+
+    [data-theme="vintage"] .pulse-dot {
+      background: #2e7d32;
+      box-shadow: 0 0 6px rgba(46, 125, 50, 0.6);
+    }
+
+    [data-theme="vintage"] .pulse-dot.pulse-amber {
+      background: #c2410c;
+      box-shadow: 0 0 6px rgba(194, 65, 12, 0.6);
     }
 
     [data-theme="vintage"] .embossed-digits {
@@ -957,15 +968,139 @@
       color: #7a593d;
     }
 
-    [data-theme="vintage"] .pb-matrix-table th {
+    /* Public Board Sub-tabs (รับ-จ่าย & สถานะชำระเงินของนิสิต) */
+    [data-theme="vintage"] .public-subtab-row {
+      background: transparent;
+    }
+
+    [data-theme="vintage"] .public-subtab-btn {
+      background: #faf4ea;
+      border: 1.5px solid #dfcfb7;
+      color: #7a593d;
+      box-shadow: 0 1px 3px rgba(45, 25, 12, 0.04);
+    }
+
+    [data-theme="vintage"] .public-subtab-btn:hover {
+      background: #f3e9db;
+      border-color: #8e6843;
+      color: #382012;
+    }
+
+    [data-theme="vintage"] .public-subtab-btn.active {
+      background: linear-gradient(180deg, #442713 0%, #2c170a 100%) !important;
+      border: 1.5px solid #8e6843 !important;
+      color: #faf4ea !important;
+      box-shadow: 0 3px 10px rgba(45, 25, 12, 0.3) !important;
+    }
+
+    [data-theme="vintage"] #pbPanel-finance > div {
+      background: #faf5eb !important;
+      border-color: #dfcfb7 !important;
+      box-shadow: 0 2px 8px rgba(45, 25, 12, 0.04);
+    }
+
+    [data-theme="vintage"] #pbPanel-finance > div > div:first-child {
+      background: #f3e9db !important;
+      border-bottom-color: #dfcfb7 !important;
+    }
+
+    /* Matrix Table (สถานะชำระเงินของนิสิต) */
+    [data-theme="vintage"] .matrix-scroll-wrap {
+      background: #faf5eb;
+      border-color: #dfcfb7;
+      box-shadow: 0 2px 8px rgba(45, 25, 12, 0.04);
+    }
+
+    [data-theme="vintage"] .matrix-table th {
       background: #f0e5d5;
       color: #5c3e25;
       border-color: #dfcfb7;
     }
 
-    [data-theme="vintage"] .pb-matrix-table td {
+    [data-theme="vintage"] .matrix-table td {
       border-color: #e5d7c3;
       color: #24150b;
+    }
+
+    [data-theme="vintage"] .matrix-search-input {
+      background: #faf5eb;
+      border: 1.5px solid #dfcfb7;
+      color: #24150b;
+    }
+
+    [data-theme="vintage"] .matrix-search-input:focus {
+      border-color: #8e6843;
+      box-shadow: 0 0 0 3px rgba(142, 104, 67, 0.2);
+    }
+
+    [data-theme="vintage"] .matrix-search-icon {
+      color: #8e6843;
+    }
+
+    /* Bank Account Box in Payment Modal */
+    [data-theme="vintage"] .bank-account-box {
+      background: #f4ecdf;
+      border-color: #dfcfb7;
+      box-shadow: 0 2px 8px rgba(45, 25, 12, 0.05);
+    }
+
+    [data-theme="vintage"] .bank-account-num {
+      color: #24150b;
+    }
+
+    [data-theme="vintage"] .bank-account-label {
+      color: #7a593d;
+    }
+
+    /* Empty State & Mascot Removal in Vintage Theme */
+    [data-theme="vintage"] .empty-state {
+      background: #faf5eb;
+      border-color: #dfcfb7;
+    }
+
+    [data-theme="vintage"] .empty-state-avatar {
+      display: none !important;
+    }
+
+    [data-theme="vintage"] .empty-state::before {
+      content: '';
+      display: block;
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 0.75rem auto;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24' fill='none' stroke='%238e6843' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 12h-6l-2 3h-4l-2-3H2'/%3E%3Cpath d='M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z'/%3E%3C/svg%3E") no-repeat center center;
+      opacity: 0.8;
+    }
+
+    [data-theme="vintage"] .empty-state p {
+      color: #382012;
+    }
+
+    [data-theme="vintage"] .empty-state small {
+      color: #7a593d;
+    }
+
+    [data-theme="vintage"] .kuromi-qr-peek {
+      display: none !important;
+    }
+
+    [data-theme="vintage"] .success-kuromi-img {
+      display: none !important;
+    }
+
+    [data-theme="vintage"] .success-kuromi-wrapper::after {
+      content: '✓';
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: #382012;
+      color: #e5c38e;
+      font-size: 2.2rem;
+      border: 3px double #c99552;
+      box-shadow: 0 4px 16px rgba(56, 32, 18, 0.35);
     }
 
     /* Settings dropdown */
