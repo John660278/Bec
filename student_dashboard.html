@@ -2406,7 +2406,6 @@
       <div class="theme-promo-bubble" id="themePromoBubble" onclick="openThemeFromBubble(event)" title="คลิกเพื่อลองเปลี่ยนธีม">
         <div class="bubble-arrow-up"></div>
         <div class="bubble-content">
-          <span class="bubble-sparkle">🎨</span>
           <div class="bubble-text">
             <div class="bubble-title">เปลี่ยนธีมใหม่ตรงนี้น้า! </div>
             <div class="bubble-sub">มีธีมหลายรูปแบบให้เลือกเด้อพี่น้อง</div>
@@ -3428,13 +3427,13 @@
 
   // ─── THEME PROMO BUBBLE (OPTION 2) ───
   function initThemePromo() {
-    // Clear lock during test phase so it always displays for testing
-    localStorage.removeItem('bec_theme_promo_seen');
+    const isDismissed = localStorage.getItem('bec_theme_promo_dismissed') === 'true';
     const currentTheme = localStorage.getItem('bec_app_theme') || 'kuromi';
     const promoBubble = document.getElementById('themePromoBubble');
     const newBadge = document.getElementById('gearNewBadge');
 
-    if (currentTheme === 'kuromi') {
+    // Only show if never dismissed and currently on Kuromi theme
+    if (!isDismissed && currentTheme === 'kuromi') {
       if (promoBubble) {
         promoBubble.style.display = 'block';
         promoBubble.style.opacity = '1';
@@ -3452,6 +3451,8 @@
 
   function dismissThemePromo(e) {
     if (e) e.stopPropagation();
+    // Once user clicks gear icon or dismisses, remember permanently so it never shows again
+    localStorage.setItem('bec_theme_promo_dismissed', 'true');
     const promoBubble = document.getElementById('themePromoBubble');
     const newBadge = document.getElementById('gearNewBadge');
     if (promoBubble) {
