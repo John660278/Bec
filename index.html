@@ -705,7 +705,7 @@
         }
 
         /* ═══════════════════════════════════════════════════════════
-           THEME 4: CLASSIC BLACK STYLES (CINEMATIC BLACK HOLE VIDEO BACKGROUND)
+           THEME 4: CLASSIC BLACK STYLES (UNIVERSAL BLACK HOLE VIDEO BACKGROUND)
            ═══════════════════════════════════════════════════════════ */
         .black-bg-video {
             position: fixed;
@@ -713,12 +713,19 @@
             width: 100vw;
             height: 100vh;
             object-fit: cover;
-            object-position: center;
+            object-position: center center;
             z-index: 0;
             pointer-events: none;
-            filter: brightness(0.8) contrast(1.08);
+            filter: brightness(0.82) contrast(1.08);
             background-color: #060608;
             transition: opacity 400ms ease;
+        }
+
+        /* ปรับจุดโฟกัสบนหน้าจอคอมพิวเตอร์/โน้ตบุ๊ก/ไอแพด ให้เห็นแกนหลุมดำและดาวเคราะห์สวยพอดี */
+        @media (min-width: 768px) and (orientation: landscape) {
+            .black-bg-video {
+                object-position: center 36%;
+            }
         }
 
         #blackholeCanvas {
@@ -728,8 +735,8 @@
         .black-vignette-overlay {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at center, rgba(6, 6, 8, 0.25) 0%, rgba(6, 6, 8, 0.72) 100%),
-                        linear-gradient(to bottom, rgba(6, 6, 8, 0.45) 0%, transparent 40%, rgba(6, 6, 8, 0.8) 100%);
+            background: radial-gradient(circle at center, rgba(6, 6, 8, 0.18) 0%, rgba(6, 6, 8, 0.65) 65%, rgba(6, 6, 8, 0.9) 100%),
+                        linear-gradient(to bottom, rgba(6, 6, 8, 0.45) 0%, transparent 40%, rgba(6, 6, 8, 0.82) 100%);
             z-index: 1;
             pointer-events: none;
         }
@@ -1473,9 +1480,11 @@
     <div class="minecraft-lighting-overlay minecraft-only" aria-hidden="true"></div>
 
     <!-- ═══════════════════════════════════════════════════════════
-         THEME 4: BLACK BACKGROUND LAYERS (RESPONSIVE BLACK HOLE VIDEO)
+         THEME 4: BLACK BACKGROUND LAYERS (UNIVERSAL BLACK HOLE VIDEO)
          ═══════════════════════════════════════════════════════════ -->
-    <video id="blackBgVideo" class="black-bg-video black-only" autoplay loop muted playsinline preload="auto"></video>
+    <video id="blackBgVideo" class="black-bg-video black-only" autoplay loop muted playsinline poster="assets/bg_black_poster.jpg?v=3" preload="auto">
+        <source src="assets/bg_black_video.mp4?v=3" type="video/mp4">
+    </video>
     <div class="black-vignette-overlay black-only" aria-hidden="true"></div>
 
     <!-- ═══════════════════════════════════════════════════════════
@@ -1745,10 +1754,7 @@
 
             if (theme === 'black') {
                 const bgVid = document.getElementById('blackBgVideo');
-                if (bgVid) {
-                    if (!bgVid.src) setupBlackVideo();
-                    bgVid.play().catch(() => {});
-                }
+                if (bgVid) bgVid.play().catch(() => {});
             } else {
                 const bgVid = document.getElementById('blackBgVideo');
                 if (bgVid) bgVid.pause();
@@ -1868,37 +1874,17 @@
             }
         }
 
-        // ─── RESPONSIVE BLACK HOLE VIDEO BACKGROUND (MOBILE VS DESKTOP/IPAD) ───
-        let lastIsMobile = null;
-
-        function setupBlackVideo() {
+        // ─── PLAY BLACK HOLE VIDEO (UNIVERSAL FOR ALL DEVICES) ───
+        function playBlackVideo() {
             const bgVid = document.getElementById('blackBgVideo');
-            if (!bgVid) return;
-
-            const isMobile = window.innerWidth < 768;
-            if (isMobile === lastIsMobile && bgVid.src) return;
-            lastIsMobile = isMobile;
-
-            const targetSrc = isMobile ? 'assets/bg_black_mobile.mp4?v=2' : 'assets/bg_black_desktop.mp4?v=2';
-            const targetPoster = isMobile ? 'assets/bg_black_mobile_poster.jpg?v=2' : 'assets/bg_black_desktop_poster.jpg?v=2';
-
-            bgVid.poster = targetPoster;
-            bgVid.src = targetSrc;
-            bgVid.load();
-
-            if (getAppTheme() === 'black') {
+            if (bgVid && getAppTheme() === 'black') {
                 bgVid.play().catch(() => {});
             }
         }
 
-        window.addEventListener('resize', () => {
-            clearTimeout(window._resizeBlackVidTimer);
-            window._resizeBlackVidTimer = setTimeout(setupBlackVideo, 250);
-        });
-
         // Initialize Theme & Background immediately
         applyAppTheme(getAppTheme());
-        setupBlackVideo();
+        playBlackVideo();
 
         // Hide the "loading" hints once loaded
         window.addEventListener('load', function () {
