@@ -2056,6 +2056,716 @@
       box-shadow: 0 4px 14px rgba(46, 125, 50, 0.18);
     }
 
+    /* ═══════════════════════════════════════════════════════════
+       THEME 4: CLASSIC BLACK (MATTE BLACK TITANIUM & DARK FINTECH)
+       ═══════════════════════════════════════════════════════════ */
+    [data-theme="black"] {
+      --bg:           #060608;
+      --surface:      #0e0e12;
+      --surface-sub:  #16161c;
+      --surface-hover:#1c1c24;
+      --border:       #27272e;
+      --border-dark:  #3f3f46;
+      
+      --text:         #ffffff;
+      --text-sub:     #d4d4d8;
+      --muted:        #a1a1aa;
+      --muted-light:  #71717a;
+      
+      --accent:       #ffffff;
+      --accent-hover: #e4e4e7;
+      --accent-text:  #09090b;
+
+      --kuromi-purple:#27272a;
+      --kuromi-dark:  #09090b;
+      --kuromi-pink:  #ffffff;
+      --kuromi-pink-light: #18181b;
+      --kuromi-pink-bdr:   #3f3f46;
+
+      --pp-blue:      #ffffff;
+      --pp-light:     #18181b;
+      --pp-border:    #3f3f46;
+
+      --kbank-green:  #10b981;
+      --kbank-light:  #141716;
+      --kbank-border: #27272e;
+
+      --success:      #10b981;
+      --success-bg:   #141716;
+      --success-bdr:  #10b981;
+
+      --danger:       #f43f5e;
+      --danger-bg:    #1c1316;
+      --danger-bdr:   #f43f5e;
+
+      --warning:      #f59e0b;
+      --warning-bg:   #1c1813;
+      --warning-bdr:  #f59e0b;
+
+      --shadow-subtle: 0 2px 6px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3);
+      --shadow-card:   0 8px 24px -2px rgba(0, 0, 0, 0.7), 0 2px 8px -1px rgba(0, 0, 0, 0.4);
+      --shadow-float:  0 20px 48px -4px rgba(0, 0, 0, 0.85), 0 8px 20px -2px rgba(0, 0, 0, 0.5);
+    }
+
+    [data-theme="black"] body {
+      background: #060608;
+      background-image: 
+        radial-gradient(ellipse at 80% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 50% 100%, rgba(20, 20, 26, 0.8) 0%, #060608 80%);
+      color: #ffffff;
+    }
+
+    [data-theme="black"] .app-viewport {
+      background: #09090c;
+      box-shadow: 0 0 80px rgba(0, 0, 0, 0.9);
+      border-color: #1c1c22;
+    }
+
+    [data-theme="black"] .top-app-bar,
+    [data-theme="black"] .app-bar {
+      background: rgba(9, 9, 12, 0.94);
+      border-bottom-color: #1c1c22;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    [data-theme="black"] .brand-emblem {
+      background: linear-gradient(135deg, #27272a 0%, #09090b 100%);
+      color: #ffffff;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    [data-theme="black"] .brand-title {
+      color: #ffffff;
+    }
+
+    /* Hide sparkle star in Black theme */
+    [data-theme="black"] .brand-title span,
+    [data-theme="black"] .brand-sparkle {
+      display: none !important;
+    }
+
+    [data-theme="black"] .brand-sub {
+      color: #a1a1aa;
+    }
+
+    [data-theme="black"] .btn-icon {
+      background: #141418;
+      border: 1.5px solid #27272e;
+      color: #e4e4e7;
+    }
+
+    [data-theme="black"] .btn-icon:hover {
+      background: #202026;
+      border-color: rgba(255, 255, 255, 0.35);
+      color: #ffffff;
+    }
+
+    /* Virtual Student Card: "Black Card" (Matte Black Titanium) */
+    [data-theme="black"] .hero-bank-card {
+      background: linear-gradient(135deg, #18181c 0%, #0c0c0e 55%, #151519 100%) !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.18) !important;
+      box-shadow: 0 20px 48px -6px rgba(0, 0, 0, 0.85), 0 6px 16px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+      color: #ffffff !important;
+    }
+
+    /* Platinum / Silver EMV Chip */
+    [data-theme="black"] .gold-emv-chip {
+      background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 45%, #94a3b8 80%, #64748b 100%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.4) !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+      opacity: 1 !important;
+      display: block !important;
+    }
+
+    [data-theme="black"] .gold-emv-chip .chip-line {
+      border-color: rgba(71, 85, 105, 0.55) !important;
+    }
+
+    [data-theme="black"] .contactless-glyph {
+      color: #cbd5e1 !important;
+      opacity: 0.85 !important;
+      display: block !important;
+    }
+
+    [data-theme="black"] .card-specular-light {
+      background: radial-gradient(circle 320px at 65% 25%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 60%, transparent 80%) !important;
+      mix-blend-mode: screen !important;
+    }
+
+    [data-theme="black"] .card-org-tag {
+      color: #a1a1aa !important;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    [data-theme="black"] .card-status-pill {
+      background: rgba(24, 24, 28, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #f4f4f5;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    [data-theme="black"] .pulse-dot {
+      background: #10b981;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
+    }
+
+    [data-theme="black"] .pulse-dot.pulse-amber {
+      background: #f59e0b;
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.8);
+    }
+
+    [data-theme="black"] .embossed-digits {
+      color: #ffffff !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 14px rgba(255, 255, 255, 0.25) !important;
+      letter-spacing: 0.14em !important;
+    }
+
+    [data-theme="black"] .card-balance-caption {
+      color: #a1a1aa !important;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    [data-theme="black"] .card-balance-sum {
+      color: #ffffff !important;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9) !important;
+    }
+
+    [data-theme="black"] .card-balance-currency {
+      color: #a1a1aa !important;
+      font-weight: 600;
+    }
+
+    [data-theme="black"] .card-row-bottom {
+      border-top-color: rgba(255, 255, 255, 0.14) !important;
+    }
+
+    [data-theme="black"] .card-student-name {
+      color: #ffffff !important;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9) !important;
+      letter-spacing: 0.02em;
+    }
+
+    [data-theme="black"] .card-student-sub {
+      color: #a1a1aa !important;
+      font-weight: 500;
+    }
+
+    [data-theme="black"] .card-holo-emblem {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+      border-color: rgba(255, 255, 255, 0.22);
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Segmented Switcher & Filter Pills */
+    [data-theme="black"] .segmented-switch {
+      background: #141418;
+      border: 1.5px solid #27272e;
+      border-radius: 16px;
+      padding: 4px;
+    }
+
+    [data-theme="black"] .seg-tab-btn {
+      color: #a1a1aa;
+      font-weight: 700;
+    }
+
+    [data-theme="black"] .seg-tab-btn:hover {
+      color: #ffffff;
+    }
+
+    [data-theme="black"] .seg-tab-btn.active {
+      background: #27272e;
+      color: #ffffff;
+      font-weight: 800;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    [data-theme="black"] .pill-btn {
+      background: #141418;
+      border: 1.5px solid #27272e;
+      color: #a1a1aa;
+      font-weight: 700;
+      border-radius: 9999px;
+      transition: all 120ms ease;
+    }
+
+    [data-theme="black"] .pill-btn:hover {
+      background: #1e1e24;
+      border-color: rgba(255, 255, 255, 0.35);
+      color: #ffffff;
+    }
+
+    [data-theme="black"] .pill-btn.active {
+      background: #ffffff;
+      color: #09090b;
+      border: 1.5px solid #ffffff;
+      box-shadow: 0 2px 10px rgba(255, 255, 255, 0.25);
+      font-weight: 800;
+    }
+
+    [data-theme="black"] .pill-btn.active:hover {
+      background: #f4f4f5;
+      color: #09090b;
+      border-color: #f4f4f5;
+    }
+
+    [data-theme="black"] .pill-btn:active,
+    [data-theme="black"] .pill-btn.active:active {
+      background: #e4e4e7 !important;
+      color: #09090b !important;
+      border-color: #e4e4e7 !important;
+      transform: scale(0.96);
+    }
+
+    /* Statement Cards */
+    [data-theme="black"] .statement-card {
+      background: #111115;
+      border: 1.5px solid #222228;
+      border-radius: 18px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+    }
+
+    [data-theme="black"] .statement-card:hover {
+      border-color: rgba(255, 255, 255, 0.28);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75);
+    }
+
+    [data-theme="black"] .statement-title {
+      color: #ffffff;
+    }
+
+    [data-theme="black"] .statement-meta {
+      color: #a1a1aa;
+    }
+
+    [data-theme="black"] .statement-amount {
+      color: #ffffff;
+    }
+
+    [data-theme="black"] .statement-divider {
+      background: #222228;
+    }
+
+    [data-theme="black"] .btn-pay-now,
+    [data-theme="black"] .btn-primary,
+    [data-theme="black"] .btn-submit-payment,
+    [data-theme="black"] .btn-copy-account {
+      background: #ffffff;
+      color: #09090b;
+      border: 1.5px solid #ffffff;
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.18);
+      font-weight: 800;
+      transition: all 120ms ease;
+    }
+
+    [data-theme="black"] .btn-pay-now:hover:not(:disabled),
+    [data-theme="black"] .btn-primary:hover:not(:disabled),
+    [data-theme="black"] .btn-submit-payment:hover:not(:disabled),
+    [data-theme="black"] .btn-copy-account:hover {
+      background: #e4e4e7;
+      color: #09090b;
+      border-color: #e4e4e7;
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.28);
+    }
+
+    [data-theme="black"] .btn-pay-now:active:not(:disabled),
+    [data-theme="black"] .btn-primary:active:not(:disabled),
+    [data-theme="black"] .btn-submit-payment:active:not(:disabled),
+    [data-theme="black"] .btn-copy-account:active {
+      background: #d4d4d8 !important;
+      color: #09090b !important;
+      border-color: #d4d4d8 !important;
+      transform: scale(0.97);
+    }
+
+    [data-theme="black"] .btn-receipt-view {
+      background: #18181c;
+      border-color: #27272e;
+      color: #e4e4e7;
+    }
+
+    [data-theme="black"] .btn-receipt-view:hover {
+      background: #24242b;
+      border-color: rgba(255, 255, 255, 0.35);
+      color: #ffffff;
+    }
+
+    /* Modal Sheet in Classic Black Theme */
+    [data-theme="black"] .bottom-sheet,
+    [data-theme="black"] .modal-sheet {
+      background: #0c0c0f;
+      border-color: #27272e;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95);
+      color: #ffffff;
+    }
+
+    [data-theme="black"] .sheet-handle {
+      background: #3f3f46;
+    }
+
+    [data-theme="black"] .sheet-tag {
+      display: none !important;
+    }
+
+    [data-theme="black"] .modal-title {
+      color: #ffffff;
+      margin-top: 0.35rem;
+    }
+
+    [data-theme="black"] .modal-amount {
+      color: #ffffff;
+    }
+
+    [data-theme="black"] .sparkle-stars {
+      display: none !important;
+    }
+
+    [data-theme="black"] .qr-formal-card {
+      background: #121216;
+      border-color: #27272e;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+    }
+
+    [data-theme="black"] .qr-box-frame {
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      padding: 0;
+      max-width: 100%;
+    }
+
+    [data-theme="black"] .qr-banner {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #18181c;
+      color: #ffffff;
+      padding: 6px 18px;
+      border-radius: 9999px;
+      font-size: 0.76rem;
+      letter-spacing: 0.04em;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      margin-bottom: 1rem;
+    }
+
+    [data-theme="black"] .qr-banner svg {
+      display: none !important;
+    }
+
+    /* Pure White Clean QR Box on Pure Pitch-Black Modal */
+    [data-theme="black"] .qr-code-wrapper {
+      background: #ffffff !important;
+      border: none !important;
+      border-radius: 18px !important;
+      padding: 16px !important;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8), 0 0 1px rgba(255, 255, 255, 0.5) !important;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    [data-theme="black"] #qrcode {
+      background: #ffffff;
+      border-radius: 6px;
+      overflow: hidden;
+      display: block;
+    }
+
+    [data-theme="black"] #qrcode img,
+    [data-theme="black"] #qrcode canvas {
+      display: block;
+      margin: 0 auto;
+    }
+
+    [data-theme="black"] .slip-upload-dropzone {
+      background: #121216;
+      border-color: #2e2e36;
+    }
+
+    [data-theme="black"] .slip-upload-dropzone:hover {
+      background: #17171d;
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    [data-theme="black"] .slip-upload-dropzone.has-file {
+      background: #141716;
+      border-color: #10b981;
+    }
+
+    [data-theme="black"] .upload-icon {
+      color: #ffffff;
+    }
+
+    [data-theme="black"] .upload-main-text {
+      color: #ffffff;
+    }
+
+    [data-theme="black"] .upload-sub-text,
+    [data-theme="black"] .upload-change-hint {
+      color: #a1a1aa;
+    }
+
+    [data-theme="black"] .upload-attached-pill {
+      background: #141716;
+      border: 1px solid #10b981;
+      color: #34d399;
+    }
+
+    [data-theme="black"] .upload-filename {
+      color: #ffffff;
+    }
+
+    [data-theme="black"] .bank-account-box {
+      background: #121216;
+      border-color: #27272e;
+    }
+
+    [data-theme="black"] .bank-account-label {
+      color: #a1a1aa;
+    }
+
+    [data-theme="black"] .bank-account-num {
+      color: #ffffff;
+    }
+
+    [data-theme="black"] .bank-beneficiary-sub {
+      color: #a1a1aa;
+    }
+
+    /* Public Board & Treasury in Black Theme */
+    [data-theme="black"] .treasury-card {
+      background: #111115;
+      border: 1.5px solid #27272e;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
+      padding: 1.35rem 1.25rem;
+    }
+
+    [data-theme="black"] .treasury-caption {
+      color: #a1a1aa;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    [data-theme="black"] .treasury-total-val {
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 2.2rem;
+    }
+
+    [data-theme="black"] .pb-stat-card {
+      background: #111115;
+      border: 1.5px solid #222228;
+      border-radius: 16px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+    }
+
+    [data-theme="black"] .pb-stat-label {
+      color: #a1a1aa;
+      font-weight: 700;
+    }
+
+    [data-theme="black"] .public-subtab-row {
+      gap: 8px;
+      margin-bottom: 1.15rem;
+    }
+
+    [data-theme="black"] .public-subtab-btn {
+      background: #141418;
+      border: 1.5px solid #27272e;
+      color: #a1a1aa;
+      border-radius: 9999px;
+      font-weight: 700;
+      transition: all 140ms ease;
+    }
+
+    [data-theme="black"] .public-subtab-btn:hover {
+      background: #1e1e24;
+      border-color: rgba(255, 255, 255, 0.35);
+      color: #ffffff;
+    }
+
+    [data-theme="black"] .public-subtab-btn.active {
+      background: #ffffff !important;
+      border: 1.5px solid #ffffff !important;
+      color: #09090b !important;
+      box-shadow: 0 2px 10px rgba(255, 255, 255, 0.25) !important;
+      font-weight: 800 !important;
+    }
+
+    [data-theme="black"] .public-subtab-btn.active:hover {
+      background: #f4f4f5 !important;
+      border-color: #f4f4f5 !important;
+    }
+
+    [data-theme="black"] #pbPanel-finance > div {
+      background: #111115 !important;
+      border: 1.5px solid #222228 !important;
+      border-radius: 16px !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5) !important;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    [data-theme="black"] #pbPanel-finance > div > div:first-child {
+      background: #18181c !important;
+      border-bottom: 1.5px solid #27272e !important;
+      color: #ffffff !important;
+    }
+
+    [data-theme="black"] .matrix-scroll-wrap {
+      background: #111115;
+      border-color: #222228;
+    }
+
+    [data-theme="black"] .matrix-table th {
+      background: #18181c;
+      color: #ffffff;
+      border-bottom-color: #27272e;
+    }
+
+    [data-theme="black"] .matrix-table td {
+      border-bottom-color: #1e1e24;
+      color: #d4d4d8;
+    }
+
+    [data-theme="black"] .matrix-search-input {
+      background: #141418;
+      border-color: #27272e;
+      color: #ffffff;
+    }
+
+    [data-theme="black"] .matrix-search-input:focus {
+      border-color: rgba(255, 255, 255, 0.45);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12);
+    }
+
+    [data-theme="black"] .matrix-search-icon {
+      color: #a1a1aa;
+    }
+
+    /* Empty State & Mascot in Black Theme */
+    [data-theme="black"] .empty-state {
+      background: #111115;
+      border: 1.5px dashed #27272e;
+      border-radius: 18px;
+    }
+
+    [data-theme="black"] .empty-state-avatar {
+      display: none !important;
+    }
+
+    [data-theme="black"] .empty-state::before {
+      content: '';
+      display: block;
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 0.75rem auto;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'%3E%3C/path%3E%3Cpolyline points='14 2 14 8 20 8'%3E%3C/polyline%3E%3Cline x1='16' y1='13' x2='8' y2='13'%3E%3C/line%3E%3Cline x1='16' y1='17' x2='8' y2='17'%3E%3C/line%3E%3Cpolyline points='10 9 9 9 8 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat center center / contain;
+      opacity: 0.75;
+    }
+
+    [data-theme="black"] .empty-state p {
+      color: #ffffff;
+    }
+
+    [data-theme="black"] .empty-state small {
+      color: #a1a1aa;
+    }
+
+    [data-theme="black"] .kuromi-qr-peek {
+      display: none !important;
+    }
+
+    [data-theme="black"] .success-kuromi-img {
+      display: none !important;
+    }
+
+    [data-theme="black"] .success-kuromi-wrapper::after {
+      content: '';
+      display: block;
+      width: 72px;
+      height: 72px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 11.08V12a10 10 0 1 1-5.93-9.14'%3E%3C/path%3E%3Cpolyline points='22 4 12 14.01 9 11.01'%3E%3C/polyline%3E%3C/svg%3E") no-repeat center center / contain;
+      filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4));
+      border: none;
+      box-shadow: none;
+      border-radius: 0;
+      animation: successPopIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    [data-theme="black"] .success-main-title {
+      color: #ffffff;
+    }
+
+    [data-theme="black"] .success-desc {
+      color: #a1a1aa;
+    }
+
+    /* Settings dropdown in Black Theme */
+    [data-theme="black"] .settings-dropdown {
+      background: #141418;
+      border-color: #27272e;
+      box-shadow: 0 14px 34px -4px rgba(0, 0, 0, 0.7);
+    }
+
+    [data-theme="black"] .settings-menu-item {
+      color: #ffffff;
+    }
+
+    [data-theme="black"] .settings-menu-item:hover {
+      background: #1f1f26;
+    }
+
+    [data-theme="black"] .theme-icon-wrap {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+    }
+
+    [data-theme="black"] .menu-item-badge {
+      background: #27272a;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    [data-theme="black"] .btn-icon.active {
+      border-color: rgba(255, 255, 255, 0.5);
+      color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.15);
+    }
+
+    [data-theme="black"] .gear-new-badge,
+    [data-theme="black"] .theme-promo-bubble {
+      display: none !important;
+    }
+
+    [data-theme="black"] .theme-modal-sheet {
+      background: #0e0e12;
+      border-color: #27272e;
+    }
+
+    [data-theme="black"] .theme-option-card {
+      background: #141418;
+      border-color: #222228;
+    }
+
+    [data-theme="black"] .theme-option-card:hover {
+      background: #1a1a20;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    [data-theme="black"] .theme-option-card.active {
+      background: #1a1a20;
+      border-color: #ffffff;
+    }
+
     /* ─── THEME MODAL STYLING ─── */
     .theme-modal-backdrop {
       position: fixed;
@@ -2149,6 +2859,12 @@
       background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 60%, #4caf50 100%);
       border: 1px solid rgba(165, 214, 167, 0.4);
       box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
+    }
+
+    .black-preview-box {
+      background: linear-gradient(135deg, #27272a 0%, #09090b 100%);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
     }
 
     .theme-check-badge {
@@ -3516,6 +4232,23 @@
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
       </div>
+
+      <!-- Option 4: Classic Black Theme -->
+      <div class="theme-option-card" id="themeOptBlack" onclick="selectTheme('black')">
+        <div class="theme-preview-box black-preview-box">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="2"/>
+            <line x1="2" y1="10" x2="22" y2="10"/>
+          </svg>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:0.92rem; font-weight:700; color:var(--text);">คลาสสิคแบล็ค (Classic Black)</div>
+          <div style="font-size:0.74rem; color:var(--muted); margin-top:1px;">โทนดำด้านแมตต์ไทเทเนียม เรียบหรูสไตล์ Black Card</div>
+        </div>
+        <div class="theme-check-badge" id="checkBlack">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -4398,7 +5131,7 @@
   }
 
   function applyTheme(theme, showNotice = true) {
-    if (theme !== 'vintage' && theme !== 'kuromi' && theme !== 'minecraft') theme = 'kuromi';
+    if (theme !== 'vintage' && theme !== 'kuromi' && theme !== 'minecraft' && theme !== 'black') theme = 'kuromi';
     localStorage.setItem('bec_app_theme', theme);
     document.documentElement.setAttribute('data-theme', theme);
 
@@ -4414,22 +5147,27 @@
     const checkK = document.getElementById('checkKuromi');
     const checkV = document.getElementById('checkVintage');
     const checkM = document.getElementById('checkMinecraft');
+    const checkB = document.getElementById('checkBlack');
     const optK = document.getElementById('themeOptKuromi');
     const optV = document.getElementById('themeOptVintage');
     const optM = document.getElementById('themeOptMinecraft');
+    const optB = document.getElementById('themeOptBlack');
 
     if (optK) optK.classList.toggle('active', theme === 'kuromi');
     if (optV) optV.classList.toggle('active', theme === 'vintage');
     if (optM) optM.classList.toggle('active', theme === 'minecraft');
+    if (optB) optB.classList.toggle('active', theme === 'black');
 
     if (checkK) checkK.style.display = (theme === 'kuromi') ? 'flex' : 'none';
     if (checkV) checkV.style.display = (theme === 'vintage') ? 'flex' : 'none';
     if (checkM) checkM.style.display = (theme === 'minecraft') ? 'flex' : 'none';
+    if (checkB) checkB.style.display = (theme === 'black') ? 'flex' : 'none';
 
     if (showNotice) {
       let name = 'คุโรมิ';
       if (theme === 'vintage') name = 'หนังสือพิมพ์วินเทจ';
       else if (theme === 'minecraft') name = 'มายคราฟ';
+      else if (theme === 'black') name = 'คลาสสิคแบล็ค';
       showToast(`เปลี่ยนเป็นธีม ${name} เรียบร้อยแล้ว`);
     }
   }
