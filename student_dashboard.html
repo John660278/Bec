@@ -2164,7 +2164,7 @@
 
     /* Virtual Student Card: "Black Card" (Matte Black Titanium) */
     [data-theme="black"] .hero-bank-card {
-      background: linear-gradient(135deg, #18181c 0%, #0c0c0e 55%, #151519 100%) !important;
+      background: #0c0c0e url('assets/card_bg_black.png') center center / cover no-repeat !important;
       border: 1.5px solid rgba(255, 255, 255, 0.18) !important;
       box-shadow: 0 20px 48px -6px rgba(0, 0, 0, 0.85), 0 6px 16px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
       color: #ffffff !important;
@@ -5132,30 +5132,9 @@
     initThemePromo();
   }
 
-  let dashboardCardDotsCtrl = null;
-
   function updateDashboardBlackCard(theme) {
     const canvas = document.getElementById('dashboardCardDotCanvas');
-    const card = document.getElementById('mainHeroBankCard');
-    if (!canvas || !card) return;
-
-    if (theme === 'black') {
-      canvas.style.display = 'block';
-      if (!dashboardCardDotsCtrl && typeof window.initBlackCardDots === 'function') {
-        dashboardCardDotsCtrl = window.initBlackCardDots(canvas, card, {
-          hoverSpeed: 1.0,
-          flowSpeed: 0.9,
-          goldPulseInterval: 8.5,
-          goldColor: '#d9c3a0'
-        });
-      }
-    } else {
-      canvas.style.display = 'none';
-      if (dashboardCardDotsCtrl) {
-        dashboardCardDotsCtrl.destroy();
-        dashboardCardDotsCtrl = null;
-      }
-    }
+    if (canvas) canvas.style.display = 'none';
   }
 
   function applyTheme(theme, showNotice = true) {
