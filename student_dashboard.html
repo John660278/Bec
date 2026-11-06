@@ -2543,6 +2543,7 @@
       font-weight: 800;
       color: #1f142b;
       letter-spacing: -0.01em;
+      margin-top: 0.35rem;
     }
 
     .modal-amount-box {
@@ -3264,13 +3265,10 @@
     <!-- Form Content -->
     <div id="modalContent">
       <div class="sheet-head">
-        <div class="sheet-tag">TRANSFER PAYMENT</div>
         <div class="modal-title" id="modalTitle">—</div>
         <div class="modal-amount-box">
           <div class="modal-amount-row">
-            <span class="sparkle-stars left">✦</span>
             <div class="modal-amount" id="modalAmount">฿0.00</div>
-            <span class="sparkle-stars right">✦</span>
           </div>
           <div class="modal-penalty" id="modalPenalty" style="display: none;"></div>
         </div>
@@ -3278,16 +3276,13 @@
 
       <!-- PromptPay & KBANK Card -->
       <div class="qr-formal-card">
-        <div class="qr-box-frame">
-          <div class="qr-banner">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
-            <span id="qrLabel">PromptPay · ฿0.00</span>
-          </div>
+        <div class="qr-banner">
+          <span id="qrLabel">PromptPay · ฿0.00</span>
+        </div>
 
-          <div class="qr-code-wrapper">
-            <img src="assets/kuromi_qr_peek.png" class="kuromi-qr-peek" alt="Kuromi Mascot" />
-            <div id="qrcode"></div>
-          </div>
+        <div class="qr-code-wrapper">
+          <img src="assets/kuromi_qr_peek.png" class="kuromi-qr-peek" alt="Kuromi Mascot" />
+          <div id="qrcode"></div>
         </div>
 
         <div class="bank-account-box">
