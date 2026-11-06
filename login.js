@@ -66,7 +66,7 @@ async function handleSupabaseSession(session) {
             window.location.replace('admin_dashboard.html');
         } else {
             // Maintenance mode: block regular students during live server deployment
-            showError("ระบบปิดปรับปรุงชั่วคราว ถึง 6/11/2569 22:00");
+            showError("ระบบปิดปรับปรุงชั่วคราว ถึงวันที่ 7/11/2569 22:00");
             loadingHints.forEach(lh => lh.style.display = 'none');
             await window.myAppDb.auth.signOut();
             return;

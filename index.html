@@ -625,9 +625,10 @@
         }
 
         /* ═══════════════════════════════════════════════════════════
-           THEME 4: CLASSIC BLACK STYLES (UNIVERSAL BLACK HOLE VIDEO BACKGROUND)
+           THEME 4: CLASSIC BLACK STYLES (PLAIN BLACK BACKGROUND / VIDEO HIDDEN TEMPORARILY)
            ═══════════════════════════════════════════════════════════ */
         .black-bg-video {
+            display: none !important; /* ซ่อนคลิปไว้ก่อนตามที่ผู้ใช้กำหนด (ใช้พื้นหลังสีดำเรียบ) */
             position: fixed;
             inset: 0;
             width: 100vw;
@@ -677,6 +678,7 @@
         }
 
         .black-vignette-overlay {
+            display: none !important; /* ซ่อน overlay ให้เหลือพื้นหลังสีดำเรียบล้วน */
             position: fixed;
             inset: 0;
             background: radial-gradient(circle at center, rgba(6, 6, 8, 0.18) 0%, rgba(6, 6, 8, 0.65) 65%, rgba(6, 6, 8, 0.9) 100%),
@@ -1416,9 +1418,9 @@
     <div class="minecraft-lighting-overlay minecraft-only" aria-hidden="true"></div>
 
     <!-- ═══════════════════════════════════════════════════════════
-         THEME 4: BLACK BACKGROUND LAYERS (UNIVERSAL BLACK HOLE VIDEO)
+         THEME 4: BLACK BACKGROUND LAYERS (VIDEO HIDDEN TEMPORARILY - PLAIN BLACK BG)
          ═══════════════════════════════════════════════════════════ -->
-    <video id="blackBgVideo" class="black-bg-video black-only" 
+    <video id="blackBgVideo" class="black-bg-video black-only" style="display:none !important;"
            autoplay 
            loop 
            muted="muted" 
@@ -1434,10 +1436,10 @@
            tabindex="-1"
            aria-hidden="true"
            poster="assets/bg_black_poster.jpg?v=5" 
-           preload="auto">
+           preload="none">
         <source src="assets/bg_black_video.mp4?v=5" type="video/mp4">
     </video>
-    <div class="black-vignette-overlay black-only" aria-hidden="true"></div>
+    <div class="black-vignette-overlay black-only" style="display:none !important;" aria-hidden="true"></div>
 
     <!-- ═══════════════════════════════════════════════════════════
          CENTER CONTENT WRAPPER
@@ -1488,7 +1490,7 @@
                         <circle cx="12" cy="12" r="10"></circle>
                         <polyline points="12 6 12 12 16 14"></polyline>
                     </svg>
-                    <span>ถึง 6/11/2569 22:00</span>
+                    <span>ถึงวันที่ 7/11/2569 22:00</span>
                 </div>
                 <div class="maintenance-sub">ระบบกำลังเตรียมความพร้อมและเชื่อมต่อฐานข้อมูลจริง<br>จะเปิดให้บริการตามปกติในเวลา 22:00 น.</div>
             </div>
@@ -1535,7 +1537,7 @@
                         <circle cx="12" cy="12" r="10"></circle>
                         <polyline points="12 6 12 12 16 14"></polyline>
                     </svg>
-                    <span>ถึง 6/11/2569 22:00</span>
+                    <span>ถึงวันที่ 7/11/2569 22:00</span>
                 </div>
                 <div class="maintenance-sub">ระบบกำลังเตรียมความพร้อมและเชื่อมต่อฐานข้อมูลจริง<br>จะเปิดให้บริการตามปกติในเวลา 22:00 น.</div>
             </div>
@@ -1577,7 +1579,7 @@
                             <circle cx="12" cy="12" r="10"></circle>
                             <polyline points="12 6 12 12 16 14"></polyline>
                         </svg>
-                        <span>ถึง 6/11/2569 22:00</span>
+                        <span>ถึงวันที่ 7/11/2569 22:00</span>
                     </div>
                     <div class="maintenance-sub">ระบบกำลังเตรียมความพร้อมและเชื่อมต่อฐานข้อมูลจริง<br>จะเปิดให้บริการตามปกติในเวลา 22:00 น.</div>
                 </div>
@@ -1614,7 +1616,7 @@
                         <circle cx="12" cy="12" r="10"></circle>
                         <polyline points="12 6 12 12 16 14"></polyline>
                     </svg>
-                    <span>ถึง 6/11/2569 22:00</span>
+                    <span>ถึงวันที่ 7/11/2569 22:00</span>
                 </div>
                 <div class="maintenance-sub">ระบบกำลังเตรียมความพร้อมและเชื่อมต่อฐานข้อมูลจริง<br>จะเปิดให้บริการตามปกติในเวลา 22:00 น.</div>
             </div>
@@ -1789,53 +1791,14 @@
             }
         }
 
-        // ─── PLAY BLACK HOLE VIDEO (UNIVERSAL SEAMLESS AUTOPLAY BACKGROUND) ───
+        // ─── PLAY BLACK HOLE VIDEO (TEMPORARILY PAUSED / PLAIN BLACK BG ACTIVE) ───
         let blackVideoInteractionArmed = false;
 
         function ensureBlackVideoPlaying() {
+            // ซ่อนคลิปไว้ก่อนชั่วคราวตามที่กำหนด (ใช้พื้นหลังสีดำเรียบ)
             const bgVid = document.getElementById('blackBgVideo');
-            if (!bgVid) return;
-
-            // บังคับปิดเสียงและ inline playback ระดับ JavaScript property ให้เบราว์เซอร์อนุญาต autoplay 100%
-            bgVid.muted = true;
-            bgVid.defaultMuted = true;
-            bgVid.playsInline = true;
-            bgVid.setAttribute('muted', '');
-            bgVid.setAttribute('playsinline', '');
-            bgVid.setAttribute('webkit-playsinline', '');
-
-            if (getAppTheme() !== 'black') {
+            if (bgVid) {
                 try { bgVid.pause(); } catch (e) {}
-                return;
-            }
-
-            const playPromise = bgVid.play();
-            if (playPromise !== undefined) {
-                playPromise.then(function () {
-                    // วิดีโอเล่นสำเร็จอัตโนมัติเป็นพื้นหลัง
-                }).catch(function () {
-                    // หากเบราว์เซอร์ติด Low Power Mode หรือ browser policy บล็อก initial play ชั่วคราว
-                    // ให้เล่นต่อทันทีที่ยูสเซอร์แตะหรือเลื่อนหน้าจอที่ใดก็ได้ 1 ครั้ง แบบไร้รอยต่อ ไร้ปุ่มกด
-                    if (blackVideoInteractionArmed) return;
-                    blackVideoInteractionArmed = true;
-
-                    const resumePlaybackSilently = function () {
-                        if (getAppTheme() === 'black') {
-                            bgVid.muted = true;
-                            bgVid.play().catch(function () {});
-                        }
-                        ['click', 'touchstart', 'touchend', 'pointerdown', 'scroll', 'keydown'].forEach(function (ev) {
-                            window.removeEventListener(ev, resumePlaybackSilently, { capture: true, passive: true });
-                            document.removeEventListener(ev, resumePlaybackSilently, { capture: true, passive: true });
-                        });
-                        blackVideoInteractionArmed = false;
-                    };
-
-                    ['click', 'touchstart', 'touchend', 'pointerdown', 'scroll', 'keydown'].forEach(function (ev) {
-                        window.addEventListener(ev, resumePlaybackSilently, { capture: true, passive: true, once: true });
-                        document.addEventListener(ev, resumePlaybackSilently, { capture: true, passive: true, once: true });
-                    });
-                });
             }
         }
 
@@ -1896,7 +1859,7 @@
 
         // Supabase OAuth Login (Disabled temporarily during maintenance)
         async function signInWithGoogle() {
-            alert('ระบบปิดปรับปรุงชั่วคราว ถึง 6/11/2569 22:00 น.');
+            alert('ระบบปิดปรับปรุงชั่วคราว ถึงวันที่ 7/11/2569 22:00 น.');
             return;
         }
 
