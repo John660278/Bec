@@ -705,19 +705,33 @@
         }
 
         /* ═══════════════════════════════════════════════════════════
-           THEME 4: CLASSIC BLACK STYLES (REAL-TIME SCHWARZSCHILD WEBGL2)
+           THEME 4: CLASSIC BLACK STYLES (CINEMATIC BLACK HOLE VIDEO BACKGROUND)
            ═══════════════════════════════════════════════════════════ */
-        #blackholeCanvas {
+        .black-bg-video {
             position: fixed;
             inset: 0;
             width: 100vw;
             height: 100vh;
+            object-fit: cover;
+            object-position: center;
             z-index: 0;
             pointer-events: none;
+            filter: brightness(0.8) contrast(1.08);
+            background-color: #060608;
+            transition: opacity 400ms ease;
+        }
+
+        #blackholeCanvas {
+            display: none !important;
         }
 
         .black-vignette-overlay {
-            display: none !important;
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(6, 6, 8, 0.25) 0%, rgba(6, 6, 8, 0.72) 100%),
+                        linear-gradient(to bottom, rgba(6, 6, 8, 0.45) 0%, transparent 40%, rgba(6, 6, 8, 0.8) 100%);
+            z-index: 1;
+            pointer-events: none;
         }
 
         .black-title {
@@ -1459,9 +1473,11 @@
     <div class="minecraft-lighting-overlay minecraft-only" aria-hidden="true"></div>
 
     <!-- ═══════════════════════════════════════════════════════════
-         THEME 4: BLACK BACKGROUND LAYERS (PIXEL BLACK HOLE)
+         THEME 4: BLACK BACKGROUND LAYERS (CINEMATIC BLACK HOLE VIDEO)
          ═══════════════════════════════════════════════════════════ -->
-    <canvas id="blackholeCanvas" class="black-only"></canvas>
+    <video id="blackBgVideo" class="black-bg-video black-only" autoplay loop muted playsinline poster="assets/bg_black_poster.jpg" preload="auto">
+        <source src="assets/bg_black_theme.mp4?v=1" type="video/mp4">
+    </video>
     <div class="black-vignette-overlay black-only" aria-hidden="true"></div>
 
     <!-- ═══════════════════════════════════════════════════════════
@@ -1730,8 +1746,11 @@
             }
 
             if (theme === 'black') {
-                startBlackholeAnimation();
+                const bgVid = document.getElementById('blackBgVideo');
+                if (bgVid) bgVid.play().catch(() => {});
             } else {
+                const bgVid = document.getElementById('blackBgVideo');
+                if (bgVid) bgVid.pause();
                 stopBlackholeAnimation();
             }
         }
