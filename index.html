@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" data-theme="black">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เข้าสู่ระบบ - BEC BA 69 Financial System</title>
     
-    <!-- Google Fonts: Cinzel for lining numerals, Playfair Display for luxury serif title, Plus Jakarta Sans & Prompt for UI -->
+    <!-- Google Fonts: Cinzel, Playfair Display, Plus Jakarta Sans, Prompt, Silkscreen, Special Elite, VT323 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&family=Silkscreen:wght@400;700&family=Special+Elite&family=VT323&display=swap" rel="stylesheet">
 
     <script>
         // ถ้าเปิดผ่านแอป LINE ให้บังคับเด้งไป Safari/Chrome อัตโนมัติ
@@ -25,16 +25,153 @@
             padding: 0;
         }
 
+        :root {
+            /* Vintage Theme Variables */
+            --sepia-bg:          #e5d7c3;
+            --sepia-paper:       #f5ede1;
+            --sepia-paper-dark:  #d9c8af;
+            --sepia-ink:         #291c13;
+            --sepia-ink-muted:   #5c4533;
+            --sepia-border:      #826349;
+            --sepia-border-light:#bda387;
+        }
+
         html, body {
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            overflow-x: hidden;
             font-family: 'Plus Jakarta Sans', 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #09070c;
-            color: #f1e8f8;
+            transition: background-color 300ms ease, color 300ms ease;
         }
 
-        /* ---------- Canvas ---------- */
+        /* ─── THEME 4: BLACK BASE (PRIMARY DEFAULT) ─── */
+        html[data-theme="black"], html[data-theme="black"] body {
+            background-color: #060608;
+            color: #f4f4f5;
+            overflow-y: auto;
+        }
+
+        /* ─── THEME 1: KUROMI BASE ─── */
+        html[data-theme="kuromi"], html[data-theme="kuromi"] body {
+            background: #09070c;
+            color: #f1e8f8;
+            overflow: hidden;
+        }
+
+        /* ─── THEME 2: VINTAGE BASE ─── */
+        html[data-theme="vintage"], html[data-theme="vintage"] body {
+            background-color: var(--sepia-bg);
+            color: var(--sepia-ink);
+            overflow-y: auto;
+        }
+
+        /* ─── THEME 3: MINECRAFT BASE ─── */
+        html[data-theme="minecraft"], html[data-theme="minecraft"] body {
+            background-color: #121a12;
+            color: #f1f8f1;
+            overflow-y: auto;
+        }
+
+        /* ─── FLOATING THEME SWITCHER PILL (TOP-RIGHT) ─── */
+        .theme-top-bar {
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            z-index: 100;
+        }
+
+        .theme-toggle-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            border-radius: 9999px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+        }
+
+        html[data-theme="kuromi"] .theme-toggle-pill {
+            background: rgba(30, 20, 42, 0.75);
+            border: 1px solid rgba(220, 160, 235, 0.45);
+            color: #f5dcf8;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 12px rgba(180, 100, 220, 0.25);
+        }
+
+        html[data-theme="kuromi"] .theme-toggle-pill:hover {
+            background: rgba(45, 28, 65, 0.9);
+            border-color: rgba(240, 180, 255, 0.7);
+            transform: translateY(-1.5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 0 18px rgba(210, 130, 240, 0.4);
+        }
+
+        html[data-theme="vintage"] .theme-toggle-pill {
+            background: rgba(248, 240, 228, 0.88);
+            border: 1.5px solid rgba(138, 102, 70, 0.55);
+            color: #3b2413;
+            box-shadow: 0 4px 14px rgba(35, 20, 10, 0.22);
+        }
+
+        html[data-theme="vintage"] .theme-toggle-pill:hover {
+            background: #ffffff;
+            border-color: #8c5d34;
+            transform: translateY(-1.5px);
+            box-shadow: 0 6px 18px rgba(35, 20, 10, 0.32);
+        }
+
+        html[data-theme="minecraft"] .theme-toggle-pill {
+            background: rgba(24, 38, 22, 0.85);
+            border: 1.5px solid rgba(74, 160, 85, 0.55);
+            color: #e8f5e9;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 0 10px rgba(46, 125, 50, 0.25);
+        }
+
+        html[data-theme="minecraft"] .theme-toggle-pill:hover {
+            background: rgba(34, 52, 30, 0.95);
+            border-color: #81c784;
+            transform: translateY(-1.5px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45), 0 0 16px rgba(76, 175, 80, 0.35);
+        }
+
+        html[data-theme="black"] .theme-toggle-pill {
+            background: rgba(18, 18, 22, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            color: #ffffff;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 12px rgba(255, 255, 255, 0.08);
+        }
+
+        html[data-theme="black"] .theme-toggle-pill:hover {
+            background: rgba(32, 32, 38, 0.95);
+            border-color: rgba(255, 255, 255, 0.45);
+            transform: translateY(-1.5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.75), 0 0 16px rgba(255, 255, 255, 0.15);
+        }
+
+        /* ─── LAYER DISPLAY LOGIC (4-WAY THEMES) ─── */
+        html[data-theme="kuromi"] .vintage-only,
+        html[data-theme="kuromi"] .minecraft-only,
+        html[data-theme="kuromi"] .black-only { display: none !important; }
+
+        html[data-theme="vintage"] .kuromi-only,
+        html[data-theme="vintage"] .minecraft-only,
+        html[data-theme="vintage"] .black-only { display: none !important; }
+
+        html[data-theme="minecraft"] .kuromi-only,
+        html[data-theme="minecraft"] .vintage-only,
+        html[data-theme="minecraft"] .black-only { display: none !important; }
+
+        html[data-theme="black"] .kuromi-only,
+        html[data-theme="black"] .vintage-only,
+        html[data-theme="black"] .minecraft-only { display: none !important; }
+
+        /* ═══════════════════════════════════════════════════════════
+           KUROMI STYLES
+           ═══════════════════════════════════════════════════════════ */
         #silkCanvas {
             position: absolute;
             inset: 0;
@@ -43,7 +180,6 @@
             z-index: 0;
         }
 
-        /* ---------- Overlays ---------- */
         .gradient-overlay {
             position: absolute;
             inset: 0;
@@ -54,7 +190,6 @@
             pointer-events: none;
         }
 
-        /* Carbon / Dot grid texture with soft edge fade */
         .texture-overlay {
             position: absolute;
             inset: 0;
@@ -66,21 +201,7 @@
             pointer-events: none;
         }
 
-        /* ---------- Center content ---------- */
-        .content-wrapper {
-            position: absolute;
-            inset: 0;
-            z-index: 20;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem 1rem;
-            gap: 2rem;
-        }
-
-        /* ---------- Title ---------- */
-        .main-title {
+        .kuromi-title {
             text-align: center;
             opacity: 0;
             transform: translateY(2rem);
@@ -115,14 +236,13 @@
                     drop-shadow(0 0 45px rgba(225, 165, 245, 0.65));
         }
 
-        .main-title h1 {
+        .kuromi-title h1 {
             font-family: 'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
             font-size: clamp(3.2rem, 13vw, 8.5rem);
             font-weight: 600;
             letter-spacing: -0.01em;
             line-height: 1;
             color: #f7e2f5;
-            /* Pure text-shadow completely eliminates browser rectangular tile clipping */
             text-shadow: 
                 0 0 12px rgba(235, 185, 245, 0.95),
                 0 0 26px rgba(215, 160, 235, 0.75),
@@ -130,15 +250,14 @@
                 0 0 80px rgba(145, 75, 185, 0.3);
         }
 
-        .main-title .brand-num {
+        .kuromi-title .brand-num {
             font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
             font-weight: 700;
             font-variant-numeric: lining-nums;
-            font-feature-settings: "lnum" 1;
             letter-spacing: 0.02em;
         }
 
-        .main-title .subtitle {
+        .kuromi-title .subtitle {
             margin-top: 0.85rem;
             font-family: 'Plus Jakarta Sans', 'Prompt', sans-serif;
             font-size: clamp(0.7rem, 2.2vw, 0.88rem);
@@ -149,8 +268,7 @@
             text-shadow: 0 0 12px rgba(225, 175, 235, 0.75), 0 0 25px rgba(205, 145, 225, 0.4);
         }
 
-        /* ---------- Login Card ---------- */
-        .login-card {
+        .kuromi-card {
             opacity: 0;
             transform: translateY(1.5rem);
             animation: fadeInUp 1s ease-out 0.6s forwards;
@@ -158,184 +276,1529 @@
             background: rgba(24, 18, 34, 0.68);
             border: 1.5px solid rgba(225, 185, 235, 0.45);
             border-radius: 28px;
-            padding: clamp(1.6rem, 4.5vw, 2.25rem) clamp(1.5rem, 5vw, 2.5rem);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                        inset 0 0 20px rgba(180, 100, 200, 0.12);
+            padding: 2.25rem 2rem;
             width: min(390px, 92vw);
             text-align: center;
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            box-shadow: 0 0 32px rgba(215, 165, 235, 0.22),
-                        0 25px 60px rgba(0, 0, 0, 0.65),
-                        inset 0 0 1px 1px rgba(255, 255, 255, 0.12);
-            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .login-card .card-title {
-            font-size: clamp(1.05rem, 3.2vw, 1.2rem);
+        .kuromi-card .card-title {
+            font-family: 'Playfair Display', 'Prompt', Georgia, serif;
+            font-size: 1.6rem;
             font-weight: 700;
-            color: #f1d5e7;
+            color: #f7e2f5;
             letter-spacing: 0.02em;
             margin-bottom: 0.35rem;
+            text-shadow: 0 0 14px rgba(220, 160, 235, 0.65);
         }
 
-        .login-card .card-subtitle {
-            font-size: clamp(0.75rem, 2.2vw, 0.82rem);
-            font-weight: 400;
-            color: #a78fae;
+        .kuromi-card .card-subtitle {
+            font-size: 0.82rem;
+            color: #ab92b5;
+            font-weight: 500;
             letter-spacing: 0.02em;
-            margin-bottom: 1.65rem;
+            margin-bottom: 1.75rem;
         }
 
-        /* Google button */
-        .google-btn-wrapper {
+        .kuromi-google-btn {
             display: flex;
-            justify-content: center;
-        }
-
-        .google-login-btn {
-            display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
-            background: rgba(46, 42, 58, 0.95);
-            color: #ffffff;
-            padding: 12px 28px;
+            width: 100%;
+            padding: 12px 24px;
             border-radius: 9999px;
-            font-family: inherit;
-            font-size: 0.98rem;
-            font-weight: 600;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(220, 160, 235, 0.35);
+            color: #fdf6fe;
             cursor: pointer;
-            border: 1.5px solid rgba(230, 185, 235, 0.75);
-            box-shadow: 0 0 18px rgba(220, 165, 235, 0.45);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.15);
             transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
             user-select: none;
             text-decoration: none;
         }
 
-        .google-login-btn:hover {
-            transform: scale(1.03);
-            border-color: rgba(245, 205, 250, 0.95);
-            box-shadow: 0 0 28px rgba(235, 180, 245, 0.65), 0 4px 14px rgba(0, 0, 0, 0.4);
+        .kuromi-google-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(240, 195, 255, 0.65);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(180, 100, 210, 0.35),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            color: #ffffff;
         }
 
-        .google-login-btn:active {
-            transform: scale(0.98);
+        .kuromi-google-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
-        /* Error message */
-        #errorMessage {
-            display: none;
-            margin-top: 0.85rem;
-            font-size: 0.78rem;
-            color: #f87171;
-            font-weight: 500;
+        /* ═══════════════════════════════════════════════════════════
+           VINTAGE NEWSPAPER STYLES
+           ═══════════════════════════════════════════════════════════ */
+        .newspaper-container {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            padding: 1.5rem 1.8rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            opacity: 0.85;
+            user-select: none;
+            pointer-events: none;
         }
 
-        /* ---------- Loading spinner ---------- */
-        .spinner-wrap {
-            margin-top: 0.85rem;
+        .news-masthead {
+            border-top: 3px double var(--sepia-border);
+            border-bottom: 2px solid var(--sepia-border);
+            padding: 0.4rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Special Elite', monospace;
+            font-size: clamp(0.6rem, 1.4vw, 0.75rem);
+            color: var(--sepia-ink-muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .news-masthead-title {
+            text-align: center;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(1.8rem, 5vw, 3.4rem);
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            color: var(--sepia-ink);
+            line-height: 1.05;
+            margin: 0.3rem 0;
+            border-bottom: 1px solid var(--sepia-border-light);
+            padding-bottom: 0.3rem;
+        }
+
+        .news-columns-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        @media (max-width: 900px) {
+            .news-columns-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .news-column {
+            font-family: 'Special Elite', monospace;
+            font-size: 0.72rem;
+            line-height: 1.6;
+            color: var(--sepia-ink-muted);
+            text-align: justify;
+            border-right: 1px dashed var(--sepia-border-light);
+            padding-right: 1.2rem;
+        }
+
+        .news-column:last-child { border-right: none; }
+
+        .news-headline {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--sepia-ink);
+            line-height: 1.2;
+            margin-bottom: 0.45rem;
+            text-transform: uppercase;
+        }
+
+        .vintage-vignette-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(245, 237, 225, 0.4) 0%, rgba(225, 207, 185, 0.7) 50%, rgba(65, 42, 24, 0.88) 100%),
+                linear-gradient(to bottom, rgba(45, 28, 16, 0.35) 0%, transparent 20%, transparent 80%, rgba(45, 28, 16, 0.5) 100%);
+            pointer-events: none;
+        }
+
+        .paper-grain-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 6;
+            background-image: radial-gradient(rgba(80, 50, 25, 0.07) 1px, transparent 1px);
+            background-size: 5px 5px;
+            pointer-events: none;
+        }
+
+        .vintage-title {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(1.5rem);
+            animation: fadeInUp 0.9s ease-out 0.15s forwards;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .vintage-title h1 {
+            font-family: 'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
+            font-size: clamp(3.2rem, 12vw, 7.5rem);
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            line-height: 1;
+            color: #26160d;
+            text-shadow: 
+                0 1px 0 rgba(255, 255, 255, 0.85),
+                0 3px 12px rgba(45, 25, 12, 0.3);
+        }
+
+        .vintage-title .brand-num {
+            font-family: 'Cinzel', 'Playfair Display', serif;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            color: #8c532b;
+            text-shadow: 
+                0 1px 0 rgba(255, 255, 255, 0.85),
+                0 3px 14px rgba(140, 83, 43, 0.38);
+        }
+
+        .vintage-title .subtitle {
+            margin-top: 0.5rem;
+            font-family: 'Plus Jakarta Sans', 'Prompt', sans-serif;
+            font-size: clamp(0.72rem, 2.2vw, 0.95rem);
+            font-weight: 700;
+            letter-spacing: 0.38em;
+            text-transform: uppercase;
+            color: #5c3e25;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+        }
+
+        .vintage-card {
+            opacity: 0;
+            transform: translateY(1.5rem);
+            animation: fadeInUp 0.9s ease-out 0.4s forwards;
+
+            position: relative;
+            width: min(440px, 94vw);
+            aspect-ratio: 816 / 648;
+            background: url('assets/login_frame.png') no-repeat center center;
+            background-size: 100% 100%;
+            padding: clamp(54px, 12vw, 76px) clamp(44px, 11vw, 68px) clamp(48px, 12vw, 70px) clamp(44px, 11vw, 68px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            filter: drop-shadow(0 16px 36px rgba(25, 14, 7, 0.5));
+            border: none;
+            box-shadow: none;
+        }
+
+        .vintage-card .card-title {
+            font-family: 'Playfair Display', 'Prompt', Georgia, serif;
+            font-size: clamp(1.35rem, 3.8vw, 1.65rem);
+            font-weight: 800;
+            color: #24160e;
+            letter-spacing: 0.01em;
+            margin-bottom: 0.2rem;
+            line-height: 1.25;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.45);
+        }
+
+        .vintage-card .card-subtitle {
+            font-family: 'Prompt', -apple-system, sans-serif;
+            font-size: clamp(0.74rem, 2.2vw, 0.85rem);
+            font-weight: 600;
+            color: #553a23;
+            margin-bottom: 1.05rem;
+        }
+
+        .vintage-google-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: min(230px, 86%);
+            padding: 9px 18px;
+            border-radius: 9999px;
+            background: linear-gradient(180deg, #2a1b11 0%, #1e130a 100%);
+            border: 1.5px solid #8e6843;
+            color: #faf3e8;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(35, 20, 10, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+            text-decoration: none;
+        }
+
+        .vintage-google-btn:hover {
+            background: linear-gradient(180deg, #372417 0%, #26180e 100%);
+            border-color: #b5895c;
+            transform: translateY(-1.5px);
+            box-shadow: 0 7px 20px rgba(35, 20, 10, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           THEME 3: MINECRAFT STYLES (SUNSET MEADOW & BEES)
+           ═══════════════════════════════════════════════════════════ */
+        .minecraft-bg-ambient {
+            position: fixed;
+            inset: 0;
+            background: url('assets/minecraft/mc_meadow_sunset.jpg') center center / cover no-repeat;
+            filter: blur(24px) brightness(0.7) saturate(1.1);
+            transform: scale(1.08);
+            z-index: 0;
+        }
+
+        .minecraft-bg-scene {
+            position: fixed;
+            inset: 0;
+            background: url('assets/minecraft/mc_meadow_sunset.jpg') center center / cover no-repeat;
+            z-index: 1;
+        }
+
+        @media (max-aspect-ratio: 1/1), (max-width: 768px) {
+            .minecraft-bg-scene {
+                background-size: cover;
+                background-position: 45% center;
+            }
+        }
+
+        .minecraft-lighting-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            background: 
+                radial-gradient(ellipse at 42% 38%, rgba(255, 240, 200, 0.16) 0%, transparent 55%),
+                linear-gradient(to bottom, rgba(15, 20, 28, 0.2) 0%, rgba(12, 18, 14, 0.35) 60%, rgba(8, 14, 10, 0.72) 100%);
+            pointer-events: none;
+        }
+
+        .minecraft-title {
+            opacity: 0;
+            transform: translateY(1.5rem);
+            animation: fadeInUp 0.9s ease-out 0.2s forwards;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.25rem;
+            position: relative;
+            margin-bottom: clamp(0.85rem, 2.2vh, 1.4rem);
+        }
+
+        .minecraft-title-img {
+            width: clamp(340px, 60vw, 560px);
+            height: auto;
+            max-width: 94vw;
+            object-fit: contain;
+            image-rendering: pixelated;
+            filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.9));
+        }
+
+        .minecraft-title .subtitle {
+            display: none; /* Dialog box already contains 'Welcome to financial system ...' */
+        }
+
+        .minecraft-card {
+            opacity: 0;
+            transform: translateY(1.5rem);
+            animation: fadeInUp 0.9s ease-out 0.4s forwards;
+            position: relative;
+            width: clamp(320px, 52vw, 540px);
+            max-width: 94vw;
+            aspect-ratio: 956 / 477;
+            background: url('assets/minecraft/mc_dialog_box.png') no-repeat center center;
+            background-size: 100% 100%;
+            image-rendering: pixelated;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.45rem;
-            color: #c4a9d4;
-            font-size: 0.75rem;
+            border-radius: 0;
+            border: none;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65);
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        .minecraft-card .minecraft-slot-area {
+            position: absolute;
+            top: 30%;
+            bottom: 18%;
+            left: 5%;
+            right: 5%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .minecraft-card .google-btn-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .minecraft-google-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            background: transparent !important;
+            border: none !important;
+            border-radius: 0;
+            box-shadow: none !important;
+            outline: none !important;
+            cursor: pointer;
+            user-select: none;
+            text-decoration: none;
+            transition: transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1), filter 140ms ease;
+        }
+
+        .minecraft-google-btn:hover {
+            background: transparent !important;
+            transform: scale(1.04);
+            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 6px rgba(74, 222, 128, 0.5));
+        }
+
+        .minecraft-google-btn:active {
+            transform: scale(0.96);
+            filter: brightness(0.92);
+        }
+
+        .minecraft-google-btn-img {
+            display: block;
+            width: clamp(170px, 48%, 245px);
+            height: auto;
+            max-height: 85%;
+            object-fit: contain;
+            image-rendering: pixelated;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.75));
+        }
+
+        .minecraft-card #errorMessageMinecraft {
+            font-family: 'Prompt', sans-serif;
+            font-size: clamp(0.72rem, 2vw, 0.82rem);
+            color: #f87171;
+            text-shadow: 1px 1px 0 #000;
+            margin: 0;
+            padding: 4px 8px;
+        }
+
+        .minecraft-card #loadingHintMinecraft {
+            color: #a7f3d0;
+            font-family: 'Prompt', 'Silkscreen', sans-serif;
+            font-size: clamp(0.78rem, 2.2vw, 0.9rem);
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           THEME 4: CLASSIC BLACK STYLES (UNIVERSAL BLACK HOLE VIDEO BACKGROUND)
+           ═══════════════════════════════════════════════════════════ */
+        .black-bg-video {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            object-position: center center;
+            z-index: 0;
+            pointer-events: none;
+            filter: brightness(0.82) contrast(1.08);
+            background-color: #060608;
+            transition: opacity 400ms ease;
+        }
+
+        /* ปรับจุดโฟกัสบนหน้าจอคอมพิวเตอร์/โน้ตบุ๊ก/ไอแพด ให้เห็นแกนหลุมดำและดาวเคราะห์สวยพอดี */
+        @media (min-width: 768px) and (orientation: landscape) {
+            .black-bg-video {
+                object-position: center 36%;
+            }
+        }
+
+        #blackholeCanvas {
+            display: none !important;
+        }
+
+        .black-vignette-overlay {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(6, 6, 8, 0.18) 0%, rgba(6, 6, 8, 0.65) 65%, rgba(6, 6, 8, 0.9) 100%),
+                        linear-gradient(to bottom, rgba(6, 6, 8, 0.45) 0%, transparent 40%, rgba(6, 6, 8, 0.82) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .black-title {
+            opacity: 0;
+            transform: translateY(1.5rem);
+            animation: fadeInUp 0.9s ease-out 0.2s forwards;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.35rem;
+            position: relative;
+            margin-bottom: clamp(0.5rem, 1.5vh, 1rem);
+        }
+
+        .black-title h1 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+        }
+
+        .black-title .brand-num {
+            background: linear-gradient(135deg, #ffffff 30%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .black-title .subtitle {
+            font-family: 'Space Mono', monospace, sans-serif;
+            font-size: clamp(0.68rem, 1.6vw, 0.8rem);
+            color: #a1a1aa;
+            letter-spacing: 0.24em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .black-card {
+            opacity: 0;
+            transform: translateY(1.5rem);
+            animation: fadeInUp 0.9s ease-out 0.4s forwards;
+            position: relative;
+            width: min(390px, 92vw);
+            background: transparent;
+            border: 1.5px solid rgba(255, 255, 255, 0.22);
+            border-radius: 24px;
+            padding: clamp(1.6rem, 4vh, 2.2rem) clamp(1.4rem, 4vw, 2rem);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(0, 0, 0, 0.75);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .black-card .card-title {
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .black-card .card-subtitle {
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.82rem;
+            color: #e4e4e7;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.95);
+        }
+
+        .black-google-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 12px 18px;
+            background: #ffffff;
+            border: 1px solid #ffffff;
+            border-radius: 9999px;
+            color: #09090b;
+            font-family: 'Prompt', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            user-select: none;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45), 0 0 1px rgba(255, 255, 255, 0.8);
+            transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .black-google-btn:hover {
+            background: #f4f4f5;
+            transform: translateY(-1.5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 0 12px rgba(255, 255, 255, 0.35);
+        }
+
+        .black-google-btn:active {
+            transform: translateY(0);
+        }
+
+        .black-card #errorMessageBlack {
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.76rem;
+            color: #f87171;
+            margin-top: 0.85rem;
+            padding: 6px 12px;
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+        }
+
+        .black-card #loadingHintBlack {
+            color: #e4e4e7;
+        }
+
+        /* ─── SHARED COMMON ELEMENTS ─── */
+        .content-wrapper {
+            position: relative;
+            z-index: 20;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem 1rem;
+            gap: clamp(1rem, 2.5vh, 1.4rem);
+        }
+
+        /* ─── SYSTEM MAINTENANCE NOTICE (TEMPORARY FOR PRODUCTION DEPLOYMENT) ─── */
+        .google-btn-wrapper {
+            display: none !important; /* ซ่อนปุ่ม Google Login ชั่วคราว */
+        }
+
+        .maintenance-box {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1.15rem 1rem;
+            border-radius: 18px;
+            gap: 0.65rem;
+            user-select: none;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: transform 180ms ease, box-shadow 180ms ease;
+        }
+
+        .maintenance-box:active {
+            transform: scale(0.99);
+        }
+
+        .maintenance-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.72rem;
+            font-weight: 700;
             letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .maintenance-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            animation: pulseDot 1.8s infinite ease-in-out;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.35; transform: scale(0.85); }
+        }
+
+        .maintenance-title {
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+        }
+
+        .maintenance-time-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: 'Prompt', 'Space Mono', sans-serif;
+            letter-spacing: 0.02em;
+        }
+
+        .maintenance-time-badge svg {
+            flex-shrink: 0;
+        }
+
+        .maintenance-sub {
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.76rem;
+            line-height: 1.5;
+            max-width: 95%;
+        }
+
+        /* Black Theme Maintenance (Primary Default) */
+        html[data-theme="black"] .maintenance-box {
+            background: rgba(18, 18, 22, 0.85);
+            border: 1px solid rgba(251, 191, 36, 0.38);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65), 0 0 20px rgba(245, 158, 11, 0.12);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+        html[data-theme="black"] .maintenance-pill {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.45);
+            color: #fbbf24;
+        }
+        html[data-theme="black"] .maintenance-dot {
+            background: #fbbf24;
+            box-shadow: 0 0 8px #fbbf24;
+        }
+        html[data-theme="black"] .maintenance-title {
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+        }
+        html[data-theme="black"] .maintenance-time-badge {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #fef08a;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        html[data-theme="black"] .maintenance-sub {
+            color: #a1a1aa;
+        }
+
+        /* Kuromi Theme Maintenance */
+        html[data-theme="kuromi"] .maintenance-box {
+            background: rgba(26, 17, 36, 0.85);
+            border: 1px solid rgba(244, 114, 182, 0.45);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65), 0 0 22px rgba(236, 72, 153, 0.2);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+        html[data-theme="kuromi"] .maintenance-pill {
+            background: rgba(236, 72, 153, 0.15);
+            border: 1px solid rgba(236, 72, 153, 0.45);
+            color: #f472b6;
+        }
+        html[data-theme="kuromi"] .maintenance-dot {
+            background: #f472b6;
+            box-shadow: 0 0 8px #f472b6;
+        }
+        html[data-theme="kuromi"] .maintenance-title {
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+        }
+        html[data-theme="kuromi"] .maintenance-time-badge {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(244, 114, 182, 0.35);
+            color: #fbcfe8;
+        }
+        html[data-theme="kuromi"] .maintenance-sub {
+            color: #d8b4e2;
+        }
+
+        /* Vintage Theme Maintenance */
+        html[data-theme="vintage"] .maintenance-box {
+            background: rgba(248, 240, 228, 0.95);
+            border: 1.5px solid #8c6a49;
+            box-shadow: 0 8px 24px rgba(35, 20, 10, 0.18);
+        }
+        html[data-theme="vintage"] .maintenance-pill {
+            background: #eadecd;
+            border: 1px solid #9e8363;
+            color: #432b18;
+        }
+        html[data-theme="vintage"] .maintenance-dot {
+            background: #854d0e;
+            box-shadow: 0 0 6px #854d0e;
+        }
+        html[data-theme="vintage"] .maintenance-title {
+            color: #2b1b10;
+        }
+        html[data-theme="vintage"] .maintenance-time-badge {
+            background: #fbf5eb;
+            border: 1.5px solid #8c6a49;
+            color: #26160b;
+        }
+        html[data-theme="vintage"] .maintenance-sub {
+            color: #5c4028;
+        }
+
+        /* Minecraft Theme Maintenance */
+        html[data-theme="minecraft"] .maintenance-box {
+            background: rgba(20, 32, 20, 0.92);
+            border: 2px solid #388e3c;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 0 16px rgba(74, 222, 128, 0.2);
+        }
+        html[data-theme="minecraft"] .maintenance-pill {
+            background: rgba(46, 125, 50, 0.3);
+            border: 1px solid #4ade80;
+            color: #86efac;
+        }
+        html[data-theme="minecraft"] .maintenance-dot {
+            background: #4ade80;
+            box-shadow: 0 0 8px #4ade80;
+        }
+        html[data-theme="minecraft"] .maintenance-title {
+            color: #ffffff;
+        }
+        html[data-theme="minecraft"] .maintenance-time-badge {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #4ade80;
+            color: #86efac;
+        }
+        html[data-theme="minecraft"] .maintenance-sub {
+            color: #a7f3d0;
+        }
+
+        .google-btn-wrapper {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .google-icon-box {
+            width: 22px;
+            height: 22px;
+            background: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .google-btn-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            line-height: 1.2;
+        }
+
+        .google-btn-primary {
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+        }
+
+        .google-btn-secondary {
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.65rem;
+            color: #d1b899;
+            font-weight: 400;
+        }
+
+        .spinner-wrap {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 0.85rem;
+            font-size: 0.78rem;
+            font-family: 'Prompt', sans-serif;
         }
 
         .spinner {
-            width: 14px;
-            height: 14px;
-            border: 2px solid rgba(220, 180, 230, 0.25);
-            border-top-color: #f1bed8;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(130, 90, 60, 0.25);
+            border-top-color: #543b25;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
 
-        /* ---------- Keyframes ---------- */
+        html[data-theme="kuromi"] .spinner {
+            border: 2px solid rgba(220, 160, 235, 0.25);
+            border-top-color: #f7e2f5;
+        }
+
+        html[data-theme="minecraft"] .spinner {
+            border: 2px solid rgba(134, 239, 172, 0.25);
+            border-top-color: #86efac;
+        }
+
+        html[data-theme="black"] .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #ffffff;
+        }
+
+        html[data-theme="kuromi"] .spinner-wrap { color: #d6bde0; }
+        html[data-theme="vintage"] .spinner-wrap { color: #634b37; }
+        html[data-theme="minecraft"] .spinner-wrap { color: #a7f3d0; }
+        html[data-theme="black"] .spinner-wrap { color: #e4e4e7; }
+
+        #errorMessage {
+            display: none;
+            margin-top: 0.85rem;
+            padding: 6px 12px;
+            background: #fde8e8;
+            border: 1px solid #f8b4b4;
+            border-radius: 6px;
+            color: #9b1c1c;
+            font-size: 0.76rem;
+            font-weight: 500;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        /* ─── TEST ENVIRONMENT QUICK SWITCHER ─── */
+        .test-switcher-box {
+            opacity: 0;
+            transform: translateY(1.5rem);
+            animation: fadeInUp 0.9s ease-out 0.6s forwards;
+
+            width: min(390px, 92vw);
+            border-radius: 20px;
+            padding: 12px 16px;
+            position: relative;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: all 260ms ease;
+        }
+
+        html[data-theme="kuromi"] .test-switcher-box {
+            background: rgba(25, 18, 34, 0.72);
+            border: 1.5px dashed rgba(225, 185, 235, 0.45);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+        }
+
+        html[data-theme="vintage"] .test-switcher-box {
+            background: rgba(248, 240, 228, 0.88);
+            border: 1.5px dashed rgba(140, 106, 73, 0.65);
+            box-shadow: 0 8px 22px rgba(35, 20, 10, 0.22);
+        }
+
+        html[data-theme="minecraft"] .test-switcher-box {
+            background: rgba(20, 32, 20, 0.88);
+            border: 1.5px dashed rgba(90, 160, 90, 0.6);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+        }
+
+        html[data-theme="black"] .test-switcher-box {
+            background: rgba(18, 18, 22, 0.88);
+            border: 1.5px dashed rgba(255, 255, 255, 0.22);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
+        }
+
+        .test-switcher-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.65rem;
+            padding: 0 4px;
+        }
+
+        .test-switcher-title {
+            font-size: 0.72rem;
+            font-family: 'Prompt', sans-serif;
+            letter-spacing: 0.02em;
+            font-weight: 700;
+        }
+
+        html[data-theme="kuromi"] .test-switcher-title { color: #d6bde0; }
+        html[data-theme="vintage"] .test-switcher-title { color: #523824; }
+        html[data-theme="minecraft"] .test-switcher-title { color: #a7f3d0; }
+        html[data-theme="black"] .test-switcher-title { color: #f4f4f5; }
+
+        .test-switcher-badge {
+            font-size: 0.62rem;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        html[data-theme="kuromi"] .test-switcher-badge {
+            color: #ffffff;
+            background: linear-gradient(135deg, #ec4899, #7c3aed);
+        }
+
+        html[data-theme="vintage"] .test-switcher-badge {
+            color: #24160e;
+            background: #dfcca8;
+            border: 1px solid #9e8363;
+        }
+
+        html[data-theme="minecraft"] .test-switcher-badge {
+            color: #d1fae5;
+            background: rgba(46, 125, 50, 0.4);
+            border: 1px solid rgba(110, 231, 183, 0.4);
+        }
+
+        html[data-theme="black"] .test-switcher-badge {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+        }
+
+        .btn-test-admin {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 9999px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Prompt', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 140ms ease;
+        }
+
+        html[data-theme="kuromi"] .btn-test-admin {
+            background: linear-gradient(180deg, #3d1b4d, #251033);
+            border: 1px solid rgba(220, 160, 235, 0.4);
+            color: #fdf6fe;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+        }
+
+        html[data-theme="kuromi"] .btn-test-admin:hover {
+            background: linear-gradient(180deg, #532468, #331545);
+            border-color: rgba(240, 190, 255, 0.7);
+            transform: translateY(-1px);
+        }
+
+        html[data-theme="vintage"] .btn-test-admin {
+            background: linear-gradient(180deg, #382416, #26170c);
+            border: 1.5px solid #735036;
+            color: #f7efe4;
+            box-shadow: 0 3px 8px rgba(35, 20, 10, 0.28);
+        }
+
+        html[data-theme="vintage"] .btn-test-admin:hover {
+            background: linear-gradient(180deg, #472f1e, #311e11);
+            border-color: #9c704c;
+            transform: translateY(-1px);
+        }
+
+        html[data-theme="minecraft"] .btn-test-admin {
+            background: linear-gradient(180deg, #1e3b20, #132415);
+            border: 1.5px solid rgba(74, 160, 85, 0.55);
+            color: #e8f5e9;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+        }
+
+        html[data-theme="minecraft"] .btn-test-admin:hover {
+            background: linear-gradient(180deg, #2e5d32, #1b381e);
+            border-color: #86efac;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        html[data-theme="black"] .btn-test-admin {
+            background: linear-gradient(180deg, #27272a, #18181b);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.45);
+        }
+
+        html[data-theme="black"] .btn-test-admin:hover {
+            background: linear-gradient(180deg, #3f3f46, #27272a);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .student-select-wrap {
+            position: relative;
+        }
+
+        .student-select-input {
+            width: 100%;
+            padding: 9px 32px 9px 14px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: 'Prompt', sans-serif;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            transition: all 140ms ease;
+        }
+
+        html[data-theme="kuromi"] .student-select-input {
+            background: rgba(20, 14, 28, 0.85);
+            border: 1px solid rgba(220, 160, 235, 0.35);
+            color: #f1e8f8;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        html[data-theme="kuromi"] .student-select-input:hover, 
+        html[data-theme="kuromi"] .student-select-input:focus {
+            border-color: rgba(240, 190, 255, 0.65);
+            background: rgba(28, 18, 40, 0.95);
+        }
+
+        html[data-theme="vintage"] .student-select-input {
+            background: #f3e9d8;
+            border: 1.5px solid #8c6a49;
+            color: #24160e;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+        }
+
+        html[data-theme="vintage"] .student-select-input:hover,
+        html[data-theme="vintage"] .student-select-input:focus {
+            border-color: #5c3e25;
+            background: #fbf5eb;
+        }
+
+        html[data-theme="minecraft"] .student-select-input {
+            background: rgba(24, 38, 24, 0.9);
+            border: 1.5px solid rgba(74, 160, 85, 0.5);
+            color: #e8f5e9;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+        }
+
+        html[data-theme="minecraft"] .student-select-input:hover,
+        html[data-theme="minecraft"] .student-select-input:focus {
+            border-color: #86efac;
+            background: rgba(30, 48, 30, 0.95);
+        }
+
+        html[data-theme="black"] .student-select-input {
+            background: rgba(24, 24, 27, 0.9);
+            border: 1.5px solid rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        html[data-theme="black"] .student-select-input:hover,
+        html[data-theme="black"] .student-select-input:focus {
+            border-color: rgba(255, 255, 255, 0.45);
+            background: rgba(34, 34, 38, 0.95);
+        }
+
+        .student-select-arrow {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 0.72rem;
+        }
+
+        html[data-theme="kuromi"] .student-select-arrow { color: #d6bde0; }
+        html[data-theme="vintage"] .student-select-arrow { color: #543b25; }
+        html[data-theme="minecraft"] .student-select-arrow { color: #86efac; }
+        html[data-theme="black"] .student-select-arrow { color: #a1a1aa; }
+
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(2rem); }
-            to   { opacity: 1; transform: translateY(0);    }
+            from { opacity: 0; transform: translateY(1.5rem); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-
-        @media (min-width: 768px) {
-            .content-wrapper {
-                gap: 2.8rem;
-                padding: 2rem;
-            }
-        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="config.js?v=99"></script>
     <script src="login.js?v=99"></script>
+    <script src="test_switcher.js?v=2"></script>
+    <script src="blackhole_webgl.js"></script>
 </head>
 <body>
 
-    <!-- Silk Canvas -->
-    <canvas id="silkCanvas"></canvas>
+    <!-- ─── FLOATING THEME SWITCHER BUTTON ─── -->
+    <div class="theme-top-bar">
+        <button type="button" class="theme-toggle-pill" id="themeToggleBtn" onclick="toggleIndexTheme()" title="แตะเพื่อสลับธีม (คลาสสิคแบล็ค • คุโรมิ • วินเทจ • มายคราฟ)">
+            <span>🎨</span>
+            <span id="themeToggleText">สลับธีม</span>
+        </button>
+    </div>
 
-    <!-- Dark gradient overlay -->
-    <div class="gradient-overlay"></div>
+    <!-- ═══════════════════════════════════════════════════════════
+         THEME 1: KUROMI BACKGROUND LAYERS
+         ═══════════════════════════════════════════════════════════ -->
+    <canvas id="silkCanvas" class="kuromi-only"></canvas>
+    <div class="gradient-overlay kuromi-only"></div>
+    <div class="texture-overlay kuromi-only"></div>
 
-    <!-- Micro-dot texture overlay -->
-    <div class="texture-overlay"></div>
+    <!-- ═══════════════════════════════════════════════════════════
+         THEME 2: VINTAGE BACKGROUND LAYERS
+         ═══════════════════════════════════════════════════════════ -->
+    <div class="newspaper-container vintage-only" aria-hidden="true">
+        <header class="news-masthead">
+            <div>NO. 69 • VOL. II</div>
+            <div>EST. 2026 • NARESUAN UNIVERSITY</div>
+            <div>PRICE 5 CENTS</div>
+        </header>
 
-    <!-- Main content -->
+        <div class="news-masthead-title">THE BEC GAZETTE & CHRONICLE</div>
+
+        <div class="news-columns-grid">
+            <article class="news-column">
+                <h2 class="news-headline">AUDIT CONFIRMS PERFECT TREASURY RECORD</h2>
+                <p>Naresuan University business administration cohort reports impeccable balance sheets. The student council verified total transparency in class fund collection.</p>
+            </article>
+            <article class="news-column">
+                <h2 class="news-headline">NEW FINANCIAL DISPATCH DISCLOSED</h2>
+                <p>Transparent oversight guarantees every single satang is allocated solely towards official cohort academic seminars and educational excursions.</p>
+            </article>
+            <article class="news-column">
+                <h2 class="news-headline">CLASS 69 HONORS TREASURER DEDICATION</h2>
+                <p>Special recognition extended to elected treasurers for their round-the-clock slip verification and automated bank transfer reconciliation.</p>
+            </article>
+            <article class="news-column">
+                <h2 class="news-headline">ACADEMIC EXCELLENCE IN FINANCIAL ETHICS</h2>
+                <p>Scholars maintain that systematic digital accounting represents the golden standard for tertiary student self-governance.</p>
+            </article>
+        </div>
+    </div>
+    <div class="vintage-vignette-overlay vintage-only"></div>
+    <div class="paper-grain-overlay vintage-only"></div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         THEME 3: MINECRAFT BACKGROUND LAYERS (RESPONSIVE GREENHOUSE)
+         ═══════════════════════════════════════════════════════════ -->
+    <div class="minecraft-bg-ambient minecraft-only" aria-hidden="true"></div>
+    <div class="minecraft-bg-scene minecraft-only" aria-hidden="true"></div>
+    <div class="minecraft-lighting-overlay minecraft-only" aria-hidden="true"></div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         THEME 4: BLACK BACKGROUND LAYERS (UNIVERSAL BLACK HOLE VIDEO)
+         ═══════════════════════════════════════════════════════════ -->
+    <video id="blackBgVideo" class="black-bg-video black-only" autoplay loop muted playsinline poster="assets/bg_black_poster.jpg?v=3" preload="auto">
+        <source src="assets/bg_black_video.mp4?v=3" type="video/mp4">
+    </video>
+    <div class="black-vignette-overlay black-only" aria-hidden="true"></div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         CENTER CONTENT WRAPPER
+         ═══════════════════════════════════════════════════════════ -->
     <div class="content-wrapper">
 
-        <!-- Big title with Kuromi Planet Logo -->
-        <div class="main-title">
+        <!-- ─── KUROMI TITLE (THEME 1) ─── -->
+        <div class="kuromi-title kuromi-only">
             <div class="brand-logo-container">
-                <img src="assets/kuromi_planet_logo.png" class="brand-planet-logo" alt="BEC BA 69 Kuromi Logo" />
+                <img src="assets/kuromi_planet_logo.png" alt="BEC BA 69 Emblem" class="brand-planet-logo">
             </div>
             <h1>BEC BA <span class="brand-num">69</span></h1>
             <div class="subtitle">FINANCIAL SYSTEM</div>
         </div>
 
-        <!-- Login card -->
-        <div class="login-card">
-            <p class="card-title">ยินดีต้อนรับ</p>
-            <p class="card-subtitle">กรุณายืนยันตัวตนเพื่อเข้าสู่ระบบ</p>
+        <!-- ─── VINTAGE TITLE (THEME 2) ─── -->
+        <div class="vintage-title vintage-only">
+            <h1>BEC BA <span class="brand-num">69</span></h1>
+            <div class="subtitle">FINANCIAL SYSTEM</div>
+        </div>
 
-            <!-- Google OAuth -->
-            <div class="google-btn-wrapper">
-                <div class="google-login-btn" onclick="signInWithGoogle()">
-                    <svg width="22" height="22" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-                    <span>เข้าสู่ระบบด้วย Google</span>
+        <!-- ─── MINECRAFT TITLE (THEME 3) ─── -->
+        <div class="minecraft-title minecraft-only">
+            <img src="assets/minecraft/mc_title_bec_ba_69.png" alt="BEC BA 69" class="minecraft-title-img">
+            <div class="subtitle">FINANCIAL SYSTEM</div>
+        </div>
+
+        <!-- ─── BLACK TITLE (THEME 4) ─── -->
+        <div class="black-title black-only">
+            <h1>BEC BA <span class="brand-num">69</span></h1>
+            <div class="subtitle">FINANCIAL SYSTEM</div>
+        </div>
+
+        <!-- ─── KUROMI LOGIN CARD (THEME 1) ─── -->
+        <div class="kuromi-card kuromi-only">
+            <h1 class="card-title">แจ้งปรับปรุงระบบ</h1>
+            <p class="card-subtitle">ระบบกองทุนนิสิตสาขาบริหารธุรกิจ (BEC BA 69)</p>
+
+            <!-- ─── MAINTENANCE NOTICE ─── -->
+            <div class="maintenance-box" onclick="onSecretAdminClick()" title="คลิกเพื่อตรวจสอบสถานะ">
+                <div class="maintenance-pill">
+                    <span class="maintenance-dot"></span>
+                    <span>SYSTEM MAINTENANCE</span>
+                </div>
+                <div class="maintenance-title">ปิดปรับปรุงชั่วคราว</div>
+                <div class="maintenance-time-badge">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span>ถึง 6/11/2569 22:00</span>
+                </div>
+                <div class="maintenance-sub">ระบบกำลังเตรียมความพร้อมและเชื่อมต่อฐานข้อมูลจริง<br>จะเปิดให้บริการตามปกติในเวลา 22:00 น.</div>
+            </div>
+
+            <div class="google-btn-wrapper" style="display:none !important;">
+                <button type="button" class="kuromi-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google NU Mail">
+                    <span class="google-icon-box">
+                        <svg width="18" height="18" viewBox="0 0 48 48">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                        </svg>
+                    </span>
+                    <span class="google-btn-text">
+                        <span class="google-btn-primary">เข้าสู่ระบบด้วย Google</span>
+                        <span class="google-btn-secondary">nu.ac.th เท่านั้น</span>
+                    </span>
+                </button>
+            </div>
+
+            <div class="spinner-wrap" id="loadingHintKuromi">
+                <div class="spinner"></div>
+                <span>กำลังเปิดระบบ...</span>
+            </div>
+
+            <p id="errorMessageKuromi" style="display:none;"></p>
+        </div>
+
+        <!-- ─── VINTAGE LOGIN CARD (THEME 2) ─── -->
+        <div class="vintage-card vintage-only">
+            <h1 class="card-title">แจ้งปรับปรุงระบบ</h1>
+            <p class="card-subtitle">ระบบกองทุนนิสิตสาขาบริหารธุรกิจ (BEC BA 69)</p>
+
+            <!-- ─── MAINTENANCE NOTICE ─── -->
+            <div class="maintenance-box" onclick="onSecretAdminClick()" title="คลิกเพื่อตรวจสอบสถานะ">
+                <div class="maintenance-pill">
+                    <span class="maintenance-dot"></span>
+                    <span>SYSTEM MAINTENANCE</span>
+                </div>
+                <div class="maintenance-title">ปิดปรับปรุงชั่วคราว</div>
+                <div class="maintenance-time-badge">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span>ถึง 6/11/2569 22:00</span>
+                </div>
+                <div class="maintenance-sub">ระบบกำลังเตรียมความพร้อมและเชื่อมต่อฐานข้อมูลจริง<br>จะเปิดให้บริการตามปกติในเวลา 22:00 น.</div>
+            </div>
+
+            <div class="google-btn-wrapper" style="display:none !important;">
+                <button type="button" class="vintage-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google NU Mail">
+                    <span class="google-icon-box">
+                        <svg width="18" height="18" viewBox="0 0 48 48">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                        </svg>
+                    </span>
+                    <span class="google-btn-primary">เข้าสู่ระบบด้วย Google</span>
+                </button>
+            </div>
+
+            <div class="spinner-wrap" id="loadingHintVintage">
+                <div class="spinner"></div>
+                <span>กำลังเปิดระบบ...</span>
+            </div>
+
+            <p id="errorMessageVintage" style="display:none;"></p>
+        </div>
+
+        <!-- ─── MINECRAFT LOGIN CARD (THEME 3) ─── -->
+        <div class="minecraft-card minecraft-only">
+            <div class="minecraft-slot-area">
+                <!-- ─── MAINTENANCE NOTICE ─── -->
+                <div class="maintenance-box" onclick="onSecretAdminClick()" title="คลิกเพื่อตรวจสอบสถานะ">
+                    <div class="maintenance-pill">
+                        <span class="maintenance-dot"></span>
+                        <span>SYSTEM MAINTENANCE</span>
+                    </div>
+                    <div class="maintenance-title">ปิดปรับปรุงชั่วคราว</div>
+                    <div class="maintenance-time-badge">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <span>ถึง 6/11/2569 22:00</span>
+                    </div>
+                    <div class="maintenance-sub">ระบบกำลังเตรียมความพร้อมและเชื่อมต่อฐานข้อมูลจริง<br>จะเปิดให้บริการตามปกติในเวลา 22:00 น.</div>
+                </div>
+
+                <div class="google-btn-wrapper" style="display:none !important;">
+                    <button type="button" class="minecraft-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google" title="เข้าสู่ระบบด้วย Google">
+                        <img src="assets/minecraft/mc_google_login_btn.png" alt="Login with Google" class="minecraft-google-btn-img">
+                    </button>
+                </div>
+
+                <div class="spinner-wrap" id="loadingHintMinecraft">
+                    <div class="spinner"></div>
+                    <span>กำลังเปิดระบบ...</span>
+                </div>
+
+                <p id="errorMessageMinecraft" style="display:none;"></p>
+            </div>
+        </div>
+
+        <!-- ─── BLACK LOGIN CARD (THEME 4 - PRIMARY DEFAULT) ─── -->
+        <div class="black-card black-only">
+            <h1 class="card-title">แจ้งปรับปรุงระบบ</h1>
+            <p class="card-subtitle">ระบบกองทุนนิสิตสาขาบริหารธุรกิจ (BEC BA 69)</p>
+
+            <!-- ─── MAINTENANCE NOTICE ─── -->
+            <div class="maintenance-box" onclick="onSecretAdminClick()" title="คลิกเพื่อตรวจสอบสถานะ">
+                <div class="maintenance-pill">
+                    <span class="maintenance-dot"></span>
+                    <span>SYSTEM MAINTENANCE</span>
+                </div>
+                <div class="maintenance-title">ปิดปรับปรุงชั่วคราว</div>
+                <div class="maintenance-time-badge">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span>ถึง 6/11/2569 22:00</span>
+                </div>
+                <div class="maintenance-sub">ระบบกำลังเตรียมความพร้อมและเชื่อมต่อฐานข้อมูลจริง<br>จะเปิดให้บริการตามปกติในเวลา 22:00 น.</div>
+            </div>
+
+            <div class="google-btn-wrapper" style="display:none !important;">
+                <button type="button" class="black-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google NU Mail">
+                    <span class="google-icon-box">
+                        <svg width="18" height="18" viewBox="0 0 48 48">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                        </svg>
+                    </span>
+                    <span class="google-btn-text">
+                        <span class="google-btn-primary" style="color:#09090b;">เข้าสู่ระบบด้วย Google</span>
+                        <span class="google-btn-secondary" style="color:#71717a;">nu.ac.th เท่านั้น</span>
+                    </span>
+                </button>
+            </div>
+
+            <div class="spinner-wrap" id="loadingHintBlack">
+                <div class="spinner"></div>
+                <span>กำลังเปิดระบบ...</span>
+            </div>
+
+            <p id="errorMessageBlack" style="display:none;"></p>
+        </div>
+
+        <!-- ─── TEST ENVIRONMENT QUICK SWITCHER ─── -->
+        <div class="test-switcher-box" id="testSwitcherBox" style="display:none;">
+            <div class="test-switcher-header">
+                <span class="test-switcher-title">[ 🧪 โหมดทดสอบสารบบ • SEED ROSTER ]</span>
+                <span class="test-switcher-badge">104 บัญชี</span>
+            </div>
+            
+            <div style="display:flex; flex-direction:column; gap:8px;">
+                <!-- Admin Shortcut Button -->
+                <button type="button" class="btn-test-admin" onclick="loginAsUser('admin@nu.ac.th', 'แอดมินระบบ', 'Admin', '00000000')">
+                    <span>👑 เข้าสู่ระบบ: แอดมิน (Admin Quick Login)</span>
+                </button>
+                
+                <!-- Student Selector Dropdown (103 students) -->
+                <div class="student-select-wrap">
+                    <select id="studentSelect" class="student-select-input" onchange="onSelectStudent(this.value)">
+                        <option value="" disabled selected>📜 เลือกล็อกอินในชื่อนิสิต (103 คน)...</option>
+                    </select>
+                    <span class="student-select-arrow">▼</span>
                 </div>
             </div>
-
-            <div class="spinner-wrap" id="loadingHint">
-                <div class="spinner"></div>
-                <span>กำลังเตรียมระบบ...</span>
-            </div>
-
-            <!-- Error -->
-            <p id="errorMessage"></p>
         </div>
 
     </div>
 
-    <!-- Silk Canvas Animation Script -->
+    <!-- ─── SCRIPTS ─── -->
     <script>
-        (function () {
-            const canvas = document.getElementById('silkCanvas');
-            const ctx = canvas.getContext('2d');
-            let time = 0;
-            const speed = 0.02;
-            const scale = 2;
-            const noiseIntensity = 0.8;
-            let animId;
+        // ─── THEME MANAGER ───
+        function getAppTheme() {
+            if (!localStorage.getItem('bec_theme_v2_initialized')) {
+                localStorage.setItem('bec_app_theme', 'black');
+                localStorage.setItem('bec_theme_v2_initialized', 'true');
+            }
+            return localStorage.getItem('bec_app_theme') || 'black';
+        }
+
+        function applyAppTheme(theme) {
+            if (theme !== 'black' && theme !== 'kuromi' && theme !== 'vintage' && theme !== 'minecraft') theme = 'black';
+            localStorage.setItem('bec_app_theme', theme);
+            document.documentElement.setAttribute('data-theme', theme);
+
+            const btnText = document.getElementById('themeToggleText');
+            if (btnText) {
+                if (theme === 'vintage') {
+                    btnText.textContent = 'ธีม: วินเทจ 📜 (สลับ)';
+                } else if (theme === 'minecraft') {
+                    btnText.textContent = 'ธีม: มายคราฟ 🌿 (สลับ)';
+                } else if (theme === 'kuromi') {
+                    btnText.textContent = 'ธีม: คุโรมิ 💜 (สลับ)';
+                } else {
+                    btnText.textContent = 'ธีม: คลาสสิคแบล็ค 🪐 (สลับ)';
+                }
+            }
+
+            if (theme === 'kuromi') {
+                startSilkAnimation();
+            } else {
+                stopSilkAnimation();
+            }
+
+            if (theme === 'black') {
+                const bgVid = document.getElementById('blackBgVideo');
+                if (bgVid) bgVid.play().catch(() => {});
+            } else {
+                const bgVid = document.getElementById('blackBgVideo');
+                if (bgVid) bgVid.pause();
+            }
+        }
+
+        function toggleIndexTheme() {
+            const cur = getAppTheme();
+            let next = 'black';
+            if (cur === 'black') next = 'kuromi';
+            else if (cur === 'kuromi') next = 'vintage';
+            else if (cur === 'vintage') next = 'minecraft';
+            else next = 'black';
+            applyAppTheme(next);
+        }
+
+        // ─── SILK CANVAS ANIMATION (KUROMI THEME) ───
+        let animId = null;
+        let time = 0;
+        let silkCanvasInited = false;
+        let ctx = null;
+        let canvas = null;
+
+        function initSilkCanvas() {
+            canvas = document.getElementById('silkCanvas');
+            if (!canvas) return;
+            ctx = canvas.getContext('2d');
 
             function resize() {
-                canvas.width  = window.innerWidth;
-                canvas.height = window.innerHeight;
+                canvas.width  = Math.floor(window.innerWidth / 2);
+                canvas.height = Math.floor(window.innerHeight / 2);
             }
-            resize();
             window.addEventListener('resize', resize);
+            resize();
+            silkCanvasInited = true;
+        }
+
+        function startSilkAnimation() {
+            if (!silkCanvasInited) initSilkCanvas();
+            if (animId || !canvas || !ctx) return;
+
+            const scale = 3.5;
+            const speed = 0.008;
+            const noiseIntensity = 1.2;
 
             function noise(x, y) {
                 const G = 2.71828;
@@ -344,11 +1807,10 @@
                 return (rx * ry * (1 + x)) % 1;
             }
 
-            function animate() {
+            function loop() {
                 const w = canvas.width;
                 const h = canvas.height;
 
-                // Background gradient with deep obsidian and dark mauve/violet
                 const bg = ctx.createLinearGradient(0, 0, w, h);
                 bg.addColorStop(0,   '#0c0a10');
                 bg.addColorStop(0.35,'#201529');
@@ -357,7 +1819,6 @@
                 ctx.fillStyle = bg;
                 ctx.fillRect(0, 0, w, h);
 
-                // Silk pixels with soft purple/lavender ripples
                 const imgData = ctx.createImageData(w, h);
                 const d = imgData.data;
                 const tOff = speed * time;
@@ -390,7 +1851,6 @@
                 }
                 ctx.putImageData(imgData, 0, 0);
 
-                // Radial depth overlay
                 const ov = ctx.createRadialGradient(
                     w/2, h/2, 0,
                     w/2, h/2, Math.max(w, h) / 1.5
@@ -401,59 +1861,84 @@
                 ctx.fillRect(0, 0, w, h);
 
                 time++;
-                animId = requestAnimationFrame(animate);
+                animId = requestAnimationFrame(loop);
             }
 
-            animate();
-        })();
+            loop();
+        }
 
-        // Hide the "loading" hint once Google button appears
+        function stopSilkAnimation() {
+            if (animId) {
+                cancelAnimationFrame(animId);
+                animId = null;
+            }
+        }
+
+        // ─── PLAY BLACK HOLE VIDEO (UNIVERSAL FOR ALL DEVICES) ───
+        function playBlackVideo() {
+            const bgVid = document.getElementById('blackBgVideo');
+            if (bgVid && getAppTheme() === 'black') {
+                bgVid.play().catch(() => {});
+            }
+        }
+
+        // Initialize Theme & Background immediately
+        applyAppTheme(getAppTheme());
+        playBlackVideo();
+
+        // Hide the "loading" hints once loaded
         window.addEventListener('load', function () {
             setTimeout(function () {
-                const hint = document.getElementById('loadingHint');
-                if (hint) hint.style.display = 'none';
+                const h1 = document.getElementById('loadingHintKuromi');
+                const h2 = document.getElementById('loadingHintVintage');
+                const h3 = document.getElementById('loadingHintMinecraft');
+                const h4 = document.getElementById('loadingHintBlack');
+                if (h1) h1.style.display = 'none';
+                if (h2) h2.style.display = 'none';
+                if (h3) h3.style.display = 'none';
+                if (h4) h4.style.display = 'none';
             }, 1800);
         });
 
-        // Supabase Auth Logic
-        async function signInWithGoogle() {
-            const btnWrap = document.querySelector('.google-btn-wrapper');
-            if (btnWrap) btnWrap.style.display = 'none';
-            
-            const loadingHint = document.getElementById('loadingHint');
-            if(loadingHint) {
-                loadingHint.innerHTML = '<div class="spinner"></div><span>กำลังพาท่านไปหน้าล็อกอิน...</span>';
-                loadingHint.style.display = 'flex';
-            }
+        // ─── QA TEST SWITCHER / ADMIN ACCESS ───
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('admin') || urlParams.has('dev') || urlParams.has('test') || urlParams.has('qa')) {
+            const sw = document.getElementById('testSwitcherBox');
+            if (sw) sw.style.display = 'block';
+        }
 
-            const { error } = await window.myAppDb.auth.signInWithOAuth({
-                provider: 'google',
-                options: {
-                    redirectTo: window.location.origin
+        let adminSecretClicks = 0;
+        function onSecretAdminClick() {
+            adminSecretClicks++;
+            if (adminSecretClicks >= 5) {
+                const sw = document.getElementById('testSwitcherBox');
+                if (sw) {
+                    sw.style.display = 'block';
+                    sw.scrollIntoView({ behavior: 'smooth' });
                 }
-            });
-
-            if (error) {
-                console.error('Error logging in:', error.message);
-                if (btnWrap) btnWrap.style.display = 'flex';
-                if(loadingHint) loadingHint.style.display = 'none';
-                document.getElementById('errorMessage').textContent = 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ';
-                document.getElementById('errorMessage').style.display = 'block';
             }
+        }
+
+        // Supabase OAuth Login (Disabled temporarily during maintenance)
+        async function signInWithGoogle() {
+            alert('ระบบปิดปรับปรุงชั่วคราว ถึง 6/11/2569 22:00 น.');
+            return;
         }
 
         window.addEventListener('load', async () => {
             const { data: { session } } = await window.myAppDb.auth.getSession();
             
             if (session) {
-                const btnWrap = document.querySelector('.google-btn-wrapper');
-                if (btnWrap) btnWrap.style.display = 'none';
-                
-                const loadingHint = document.getElementById('loadingHint');
-                if(loadingHint) {
-                    loadingHint.innerHTML = '<div class="spinner"></div><span>กำลังตรวจสอบข้อมูล...</span>';
-                    loadingHint.style.display = 'flex';
-                }
+                document.querySelectorAll('.google-btn-wrapper').forEach(bw => bw.style.display = 'none');
+                const hintHtml = '<div class="spinner"></div><span>กำลังตรวจสอบข้อมูล...</span>';
+                const h1 = document.getElementById('loadingHintKuromi');
+                const h2 = document.getElementById('loadingHintVintage');
+                const h3 = document.getElementById('loadingHintMinecraft');
+                const h4 = document.getElementById('loadingHintBlack');
+                if (h1) { h1.innerHTML = hintHtml; h1.style.display = 'flex'; }
+                if (h2) { h2.innerHTML = hintHtml; h2.style.display = 'flex'; }
+                if (h3) { h3.innerHTML = hintHtml; h3.style.display = 'flex'; }
+                if (h4) { h4.innerHTML = hintHtml; h4.style.display = 'flex'; }
 
                 if (typeof handleSupabaseSession === 'function') {
                     handleSupabaseSession(session);
@@ -461,14 +1946,16 @@
             } else {
                 window.myAppDb.auth.onAuthStateChange((event, session) => {
                     if (event === 'SIGNED_IN' && session) {
-                        const btnWrap = document.querySelector('.google-btn-wrapper');
-                        if (btnWrap) btnWrap.style.display = 'none';
-                        
-                        const loadingHint = document.getElementById('loadingHint');
-                        if(loadingHint) {
-                            loadingHint.innerHTML = '<div class="spinner"></div><span>กำลังตรวจสอบข้อมูล...</span>';
-                            loadingHint.style.display = 'flex';
-                        }
+                        document.querySelectorAll('.google-btn-wrapper').forEach(bw => bw.style.display = 'none');
+                        const hintHtml = '<div class="spinner"></div><span>กำลังตรวจสอบข้อมูล...</span>';
+                        const h1 = document.getElementById('loadingHintKuromi');
+                        const h2 = document.getElementById('loadingHintVintage');
+                        const h3 = document.getElementById('loadingHintMinecraft');
+                        const h4 = document.getElementById('loadingHintBlack');
+                        if (h1) { h1.innerHTML = hintHtml; h1.style.display = 'flex'; }
+                        if (h2) { h2.innerHTML = hintHtml; h2.style.display = 'flex'; }
+                        if (h3) { h3.innerHTML = hintHtml; h3.style.display = 'flex'; }
+                        if (h4) { h4.innerHTML = hintHtml; h4.style.display = 'flex'; }
                         if (typeof handleSupabaseSession === 'function') {
                             handleSupabaseSession(session);
                         }
