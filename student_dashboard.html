@@ -815,6 +815,11 @@
       border-color: rgba(200, 150, 80, 0.4);
     }
 
+    [data-theme="vintage"] .brand-title span,
+    [data-theme="vintage"] .brand-sparkle {
+      display: none !important;
+    }
+
     /* Vintage Hero Card (Using the new updated card designed by user) */
     [data-theme="vintage"] .hero-bank-card {
       background: #ede1ce url('assets/card_bg_vintage.png') center center / 100% 100% no-repeat;
@@ -1436,6 +1441,11 @@
       font-size: 0.86rem;
       letter-spacing: 0.06em;
       color: #211913;
+    }
+
+    [data-theme="minecraft"] .brand-title span,
+    [data-theme="minecraft"] .brand-sparkle {
+      display: none !important;
     }
 
     [data-theme="minecraft"] .btn-icon {
@@ -3185,7 +3195,7 @@
     <div class="app-brand">
       <div class="brand-emblem" title="BEC BA NU 69 ✦ Kuromi Edition">NU</div>
       <div class="brand-info">
-        <div class="brand-title">BEC BA 69 <span style="color:var(--kuromi-pink);font-size:0.78rem;font-weight:700;">✦</span></div>
+        <div class="brand-title">BEC BA 69 <span class="brand-sparkle" style="color:var(--kuromi-pink);font-size:0.78rem;font-weight:700;">✦</span></div>
         <div class="brand-sub">กองทุนนิสิตสาขาบริหารธุรกิจ</div>
       </div>
     </div>
