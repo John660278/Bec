@@ -827,12 +827,99 @@
       display: none !important;
     }
 
-    /* Vintage Hero Card (Uses exact same typography, chip & components as Kuromi) */
+    /* Vintage Hero Card (Faithful to classic espresso brown & kraft parchment aesthetic) */
     [data-theme="vintage"] .hero-bank-card {
-      background: #ede1ce url('assets/card_bg_vintage.png?v=69') center center / cover no-repeat !important;
+      background: #ede1ce url('assets/card_bg_vintage.png?v=70') center center / cover no-repeat !important;
       border: 1.5px solid rgba(138, 102, 70, 0.45) !important;
       box-shadow: 0 16px 36px -8px rgba(35, 18, 8, 0.42), 0 4px 12px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.6) !important;
+      color: #1f1208 !important;
+    }
+
+    [data-theme="vintage"] .gold-emv-chip {
+      background: linear-gradient(135deg, #f7df83 0%, #caa03c 50%, #875c12 100%) !important;
+      border: 1px solid rgba(138, 102, 70, 0.55) !important;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.75), 0 2px 5px rgba(50, 30, 15, 0.25) !important;
+    }
+
+    [data-theme="vintage"] .gold-emv-chip .chip-line {
+      background: rgba(70, 42, 20, 0.35) !important;
+    }
+
+    [data-theme="vintage"] .contactless-glyph {
+      color: rgba(70, 42, 20, 0.65) !important;
+    }
+
+    [data-theme="vintage"] .card-specular-light {
+      background: radial-gradient(circle 280px at 50% 30%, rgba(255, 255, 255, 0.35) 0%, rgba(200, 160, 120, 0.15) 50%, transparent 80%) !important;
+      mix-blend-mode: overlay !important;
+    }
+
+    [data-theme="vintage"] .card-org-tag {
+      color: #2b180d !important;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7) !important;
+    }
+
+    [data-theme="vintage"] .card-status-pill {
+      background: rgba(226, 208, 185, 0.88) !important;
+      border: 1px solid rgba(138, 102, 70, 0.45) !important;
+      color: #2e1a0d !important;
+      backdrop-filter: blur(8px) !important;
+      box-shadow: 0 2px 6px rgba(45, 25, 12, 0.12) !important;
+    }
+
+    [data-theme="vintage"] .pulse-dot {
+      background: #2e7d32 !important;
+      box-shadow: 0 0 6px rgba(46, 125, 50, 0.6) !important;
+    }
+
+    [data-theme="vintage"] .pulse-dot.pulse-amber {
+      background: #c2410c !important;
+      box-shadow: 0 0 6px rgba(194, 65, 12, 0.6) !important;
+    }
+
+    [data-theme="vintage"] .embossed-digits {
+      color: #201206 !important;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8), 0 -1px 1px rgba(70, 40, 20, 0.5) !important;
+    }
+
+    [data-theme="vintage"] .card-balance-caption {
+      color: #5c3e25 !important;
+      font-weight: 700 !important;
+    }
+
+    [data-theme="vintage"] .card-balance-sum {
+      color: #1f1208 !important;
+    }
+
+    [data-theme="vintage"] .card-balance-currency {
+      color: #5c3e25 !important;
+      font-weight: 700 !important;
+    }
+
+    [data-theme="vintage"] .card-row-bottom {
+      border-top: 1px solid rgba(140, 106, 73, 0.35) !important;
+    }
+
+    [data-theme="vintage"] .card-student-name {
+      color: #1f1208 !important;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+    }
+
+    [data-theme="vintage"] .card-student-sub {
+      color: #5c3e25 !important;
+      font-weight: 600 !important;
+    }
+
+    [data-theme="vintage"] .card-holo-emblem {
+      background: linear-gradient(135deg, rgba(200, 175, 145, 0.85) 0%, rgba(175, 145, 115, 0.75) 100%) !important;
+      border: 1px solid rgba(150, 120, 90, 0.5) !important;
+      box-shadow: 0 2px 6px rgba(45, 25, 12, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.5) !important;
+      backdrop-filter: blur(8px) !important;
+    }
+
+    [data-theme="vintage"] .card-holo-emblem .holo-text {
       color: #ffffff !important;
+      text-shadow: 0 1px 2px rgba(40, 20, 5, 0.6) !important;
     }
 
     /* Segmented Switcher & Filter Pills */
