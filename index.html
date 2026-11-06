@@ -715,10 +715,34 @@
             object-fit: cover;
             object-position: center center;
             z-index: 0;
-            pointer-events: none;
+            pointer-events: none !important;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            touch-action: none !important;
             filter: brightness(0.82) contrast(1.08);
             background-color: #060608;
             transition: opacity 400ms ease;
+        }
+
+        /* ซ่อนปุ่ม Play / Controls ของ WebKit / Safari / Android ทุกชนิด ให้เป็นพื้นหลัง 100% ไร้ปุ่มกด */
+        .black-bg-video::-webkit-media-controls,
+        .black-bg-video::-webkit-media-controls-enclosure,
+        .black-bg-video::-webkit-media-controls-panel,
+        .black-bg-video::-webkit-media-controls-play-button,
+        .black-bg-video::-webkit-media-controls-start-playback-button,
+        .black-bg-video::-webkit-media-controls-overlay-play-button,
+        .black-bg-video::-webkit-media-controls-current-time-display,
+        .black-bg-video::-webkit-media-controls-time-remaining-display,
+        .black-bg-video::-webkit-media-controls-timeline,
+        .black-bg-video::-webkit-media-controls-volume-slider,
+        .black-bg-video::-webkit-media-controls-fullscreen-button {
+            display: none !important;
+            -webkit-appearance: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            width: 0 !important;
+            height: 0 !important;
         }
 
         /* ปรับจุดโฟกัสบนหน้าจอคอมพิวเตอร์/โน้ตบุ๊ก/ไอแพด ให้เห็นแกนหลุมดำและดาวเคราะห์สวยพอดี */
@@ -1482,8 +1506,24 @@
     <!-- ═══════════════════════════════════════════════════════════
          THEME 4: BLACK BACKGROUND LAYERS (UNIVERSAL BLACK HOLE VIDEO)
          ═══════════════════════════════════════════════════════════ -->
-    <video id="blackBgVideo" class="black-bg-video black-only" autoplay loop muted playsinline poster="assets/bg_black_poster.jpg?v=3" preload="auto">
-        <source src="assets/bg_black_video.mp4?v=3" type="video/mp4">
+    <video id="blackBgVideo" class="black-bg-video black-only" 
+           autoplay 
+           loop 
+           muted="muted" 
+           muted 
+           playsinline 
+           webkit-playsinline 
+           x5-playsinline
+           x5-video-player-type="h5-page"
+           x5-video-player-fullscreen="false"
+           disablepictureinpicture 
+           disableremoteplayback 
+           controlslist="nodownload noplaybackrate nofullscreen noremoteplayback"
+           tabindex="-1"
+           aria-hidden="true"
+           poster="assets/bg_black_poster.jpg?v=5" 
+           preload="auto">
+        <source src="assets/bg_black_video.mp4?v=5" type="video/mp4">
     </video>
     <div class="black-vignette-overlay black-only" aria-hidden="true"></div>
 
@@ -1753,8 +1793,7 @@
             }
 
             if (theme === 'black') {
-                const bgVid = document.getElementById('blackBgVideo');
-                if (bgVid) bgVid.play().catch(() => {});
+                ensureBlackVideoPlaying();
             } else {
                 const bgVid = document.getElementById('blackBgVideo');
                 if (bgVid) bgVid.pause();
@@ -1874,17 +1913,77 @@
             }
         }
 
-        // ─── PLAY BLACK HOLE VIDEO (UNIVERSAL FOR ALL DEVICES) ───
-        function playBlackVideo() {
+        // ─── PLAY BLACK HOLE VIDEO (UNIVERSAL SEAMLESS AUTOPLAY BACKGROUND) ───
+        let blackVideoInteractionArmed = false;
+
+        function ensureBlackVideoPlaying() {
             const bgVid = document.getElementById('blackBgVideo');
-            if (bgVid && getAppTheme() === 'black') {
-                bgVid.play().catch(() => {});
+            if (!bgVid) return;
+
+            // บังคับปิดเสียงและ inline playback ระดับ JavaScript property ให้เบราว์เซอร์อนุญาต autoplay 100%
+            bgVid.muted = true;
+            bgVid.defaultMuted = true;
+            bgVid.playsInline = true;
+            bgVid.setAttribute('muted', '');
+            bgVid.setAttribute('playsinline', '');
+            bgVid.setAttribute('webkit-playsinline', '');
+
+            if (getAppTheme() !== 'black') {
+                try { bgVid.pause(); } catch (e) {}
+                return;
+            }
+
+            const playPromise = bgVid.play();
+            if (playPromise !== undefined) {
+                playPromise.then(function () {
+                    // วิดีโอเล่นสำเร็จอัตโนมัติเป็นพื้นหลัง
+                }).catch(function () {
+                    // หากเบราว์เซอร์ติด Low Power Mode หรือ browser policy บล็อก initial play ชั่วคราว
+                    // ให้เล่นต่อทันทีที่ยูสเซอร์แตะหรือเลื่อนหน้าจอที่ใดก็ได้ 1 ครั้ง แบบไร้รอยต่อ ไร้ปุ่มกด
+                    if (blackVideoInteractionArmed) return;
+                    blackVideoInteractionArmed = true;
+
+                    const resumePlaybackSilently = function () {
+                        if (getAppTheme() === 'black') {
+                            bgVid.muted = true;
+                            bgVid.play().catch(function () {});
+                        }
+                        ['click', 'touchstart', 'touchend', 'pointerdown', 'scroll', 'keydown'].forEach(function (ev) {
+                            window.removeEventListener(ev, resumePlaybackSilently, { capture: true, passive: true });
+                            document.removeEventListener(ev, resumePlaybackSilently, { capture: true, passive: true });
+                        });
+                        blackVideoInteractionArmed = false;
+                    };
+
+                    ['click', 'touchstart', 'touchend', 'pointerdown', 'scroll', 'keydown'].forEach(function (ev) {
+                        window.addEventListener(ev, resumePlaybackSilently, { capture: true, passive: true, once: true });
+                        document.addEventListener(ev, resumePlaybackSilently, { capture: true, passive: true, once: true });
+                    });
+                });
             }
         }
 
+        // เมื่อแท็กวิดีโอมีข้อมูลพร้อมหรือเปลี่ยนหน้าจอ
+        const bgVidElem = document.getElementById('blackBgVideo');
+        if (bgVidElem) {
+            bgVidElem.addEventListener('canplay', function () {
+                if (getAppTheme() === 'black') ensureBlackVideoPlaying();
+            }, { once: true });
+            bgVidElem.addEventListener('loadeddata', function () {
+                if (getAppTheme() === 'black') ensureBlackVideoPlaying();
+            }, { once: true });
+        }
+
+        // เมื่อสลับแท็บไปแล้วสลับกลับมา ให้เล่นต่อทันที
+        document.addEventListener('visibilitychange', function () {
+            if (!document.hidden && getAppTheme() === 'black') {
+                ensureBlackVideoPlaying();
+            }
+        });
+
         // Initialize Theme & Background immediately
         applyAppTheme(getAppTheme());
-        playBlackVideo();
+        ensureBlackVideoPlaying();
 
         // Hide the "loading" hints once loaded
         window.addEventListener('load', function () {
