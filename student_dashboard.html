@@ -2171,9 +2171,14 @@
 
     /* Virtual Student Card: "Black Card" (Matte Black Titanium) */
     [data-theme="black"] .hero-bank-card {
-      background: #050507 url('assets/card_bg_black.png') center center / cover no-repeat !important;
-      border: 1.5px solid rgba(255, 255, 255, 0.16) !important;
-      box-shadow: 0 24px 64px -8px rgba(0, 0, 0, 0.95), 0 8px 24px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+      background: #09090c url('assets/card_bg_black.png') center center / cover no-repeat !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.18) !important;
+      box-shadow: 
+        0 24px 56px -10px rgba(0, 0, 0, 0.98),
+        0 10px 24px -4px rgba(0, 0, 0, 0.9),
+        0 0 32px -4px rgba(255, 255, 255, 0.06),
+        inset 0 1.5px 1px rgba(255, 255, 255, 0.28),
+        inset 0 -1.5px 2px rgba(0, 0, 0, 0.8) !important;
       color: #ffffff !important;
     }
 
@@ -2197,7 +2202,16 @@
     }
 
     [data-theme="black"] .card-specular-light {
-      display: none !important;
+      display: block !important;
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(circle 340px at 62% 22%, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.04) 50%, transparent 75%),
+        linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, 0.03) 40%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.03) 60%, transparent 80%) !important;
+      mix-blend-mode: screen !important;
+      opacity: 0.95 !important;
+      pointer-events: none;
+      z-index: 1;
     }
 
     [data-theme="black"] .card-org-tag {
