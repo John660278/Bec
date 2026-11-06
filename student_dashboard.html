@@ -1030,7 +1030,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: url('assets/vintage_newspaper_bg.jpg') center top / cover no-repeat;
+      background: url('assets/vintage_newspaper_bg.jpg') center top / 100% auto no-repeat;
       opacity: 0.20;
       filter: sepia(0.3) contrast(1.1) brightness(0.98);
       pointer-events: none;
@@ -1073,32 +1073,69 @@
     }
 
     [data-theme="vintage"] .slip-upload-dropzone {
-      border-color: #c2ac8e;
-      background: #f4ecdf;
+      position: relative;
+      background-color: #f6efe2;
+      border: 1.5px dashed #c2ac8e;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    [data-theme="vintage"] .slip-upload-dropzone::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('assets/vintage_newspaper_bg.jpg');
+      background-position: center var(--newspaper-offset, -700px);
+      background-size: var(--newspaper-width, 100%) auto;
+      background-repeat: no-repeat;
+      opacity: 0.20;
+      filter: sepia(0.3) contrast(1.1) brightness(0.98);
+      pointer-events: none;
+      z-index: 0;
     }
 
     [data-theme="vintage"] .slip-upload-dropzone:hover {
       border-color: #8e6843;
-      background: #eee2d1;
+      background-color: #f0e6d6;
     }
 
     [data-theme="vintage"] .slip-upload-dropzone.has-file {
       border-color: #8e6843;
-      background: #faf4ea;
-      box-shadow: 0 4px 16px rgba(45, 25, 12, 0.1);
+      border-style: solid;
+      background-color: #faf4ea;
+      box-shadow: 0 4px 16px rgba(45, 25, 12, 0.12);
+    }
+
+    [data-theme="vintage"] .upload-prompt,
+    [data-theme="vintage"] .upload-attached {
+      position: relative;
+      z-index: 1;
     }
 
     [data-theme="vintage"] .upload-icon {
-      color: #6e4120;
+      color: #4a2810;
+      background: rgba(253, 249, 240, 0.92);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.65rem auto;
+      border: 1px solid #d8c5ab;
+      box-shadow: 0 2px 6px rgba(45, 25, 12, 0.08);
     }
 
     [data-theme="vintage"] .upload-main-text {
-      color: #24150b;
+      color: #211208;
+      font-weight: 800;
+      letter-spacing: -0.01em;
     }
 
     [data-theme="vintage"] .upload-sub-text,
     [data-theme="vintage"] .upload-change-hint {
-      color: #7a593d;
+      color: #5c381c;
+      font-weight: 600;
     }
 
     /* Treasury Card & Public Board */
@@ -4035,7 +4072,23 @@
 
     document.getElementById('paymentModal').classList.add('open');
     document.body.style.overflow = 'hidden';
+    setTimeout(updateVintageNewspaperAlignment, 50);
+    setTimeout(updateVintageNewspaperAlignment, 200);
   }
+
+  function updateVintageNewspaperAlignment() {
+    const card1 = document.querySelector('.qr-formal-card');
+    const card2 = document.querySelector('.slip-upload-dropzone');
+    if (card1 && card2) {
+      const offset = card2.offsetTop - card1.offsetTop;
+      const width = card1.offsetWidth;
+      if (offset > 0 && width > 0) {
+        card2.style.setProperty('--newspaper-offset', `-${offset}px`);
+        card2.style.setProperty('--newspaper-width', `${width}px`);
+      }
+    }
+  }
+  window.addEventListener('resize', updateVintageNewspaperAlignment);
 
   function copyBankAccount(e) {
     if (e && e.stopPropagation) e.stopPropagation();
@@ -4086,6 +4139,7 @@
     } else {
       resetUploadDropzone();
     }
+    setTimeout(updateVintageNewspaperAlignment, 30);
   }
 
   // ─── SUBMIT SLIP ───
