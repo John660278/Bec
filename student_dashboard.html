@@ -1463,19 +1463,37 @@
       color: #5a3d28;
       font-weight: 700;
       border-radius: 9999px;
+      transition: all 120ms ease;
     }
 
     [data-theme="minecraft"] .pill-btn:hover {
       background: #f4efe6;
-      border-color: #2e7d32;
+      border-color: #81c784;
       color: #1b5e20;
     }
 
     [data-theme="minecraft"] .pill-btn.active {
+      background: linear-gradient(180deg, #b7e4c7 0%, #a3d9a5 100%);
+      color: #144918;
+      border: 1.5px solid #81c784;
+      box-shadow: 0 2px 8px rgba(46, 125, 50, 0.16);
+      font-weight: 800;
+    }
+
+    [data-theme="minecraft"] .pill-btn.active:hover {
       background: linear-gradient(180deg, #2e7d32 0%, #1b5e20 100%);
       color: #ffffff;
       border-color: #144918;
-      box-shadow: 0 3px 10px rgba(46, 125, 50, 0.35);
+      box-shadow: 0 4px 14px rgba(46, 125, 50, 0.35);
+    }
+
+    [data-theme="minecraft"] .pill-btn:active,
+    [data-theme="minecraft"] .pill-btn.active:active {
+      background: #144918 !important;
+      color: #ffffff !important;
+      border-color: #0b2e0e !important;
+      box-shadow: 0 2px 6px rgba(20, 73, 24, 0.4) !important;
+      transform: scale(0.96);
     }
 
     /* Statement Cards */
@@ -1511,18 +1529,33 @@
     [data-theme="minecraft"] .btn-primary,
     [data-theme="minecraft"] .btn-submit-payment,
     [data-theme="minecraft"] .btn-copy-account {
-      background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
-      color: #ffffff;
-      border-color: #1b5e20;
-      box-shadow: 0 3px 12px rgba(46, 125, 50, 0.28);
+      background: linear-gradient(135deg, #b7e4c7 0%, #a3d9a5 100%);
+      color: #144918;
+      border: 1.5px solid #81c784;
+      box-shadow: 0 3px 10px rgba(46, 125, 50, 0.15);
+      font-weight: 700;
+      transition: all 120ms ease;
     }
 
     [data-theme="minecraft"] .btn-pay-now:hover:not(:disabled),
     [data-theme="minecraft"] .btn-primary:hover:not(:disabled),
     [data-theme="minecraft"] .btn-submit-payment:hover:not(:disabled),
     [data-theme="minecraft"] .btn-copy-account:hover {
-      background: linear-gradient(135deg, #388e3c 0%, #206d27 100%);
-      box-shadow: 0 6px 18px rgba(46, 125, 50, 0.38);
+      background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+      color: #ffffff;
+      border-color: #144918;
+      box-shadow: 0 6px 18px rgba(46, 125, 50, 0.35);
+    }
+
+    [data-theme="minecraft"] .btn-pay-now:active:not(:disabled),
+    [data-theme="minecraft"] .btn-primary:active:not(:disabled),
+    [data-theme="minecraft"] .btn-submit-payment:active:not(:disabled),
+    [data-theme="minecraft"] .btn-copy-account:active {
+      background: #144918 !important;
+      color: #ffffff !important;
+      border-color: #0b2e0e !important;
+      box-shadow: 0 2px 6px rgba(20, 73, 24, 0.4) !important;
+      transform: scale(0.97);
     }
 
     [data-theme="minecraft"] .btn-receipt-view {
@@ -1710,15 +1743,32 @@
 
     [data-theme="minecraft"] .public-subtab-btn:hover {
       background: #f4efe6;
-      border-color: #2e7d32;
+      border-color: #81c784;
       color: #1b5e20;
     }
 
     [data-theme="minecraft"] .public-subtab-btn.active {
+      background: linear-gradient(180deg, #b7e4c7 0%, #a3d9a5 100%) !important;
+      border: 1.5px solid #81c784 !important;
+      color: #144918 !important;
+      box-shadow: 0 2px 8px rgba(46, 125, 50, 0.16) !important;
+      font-weight: 800 !important;
+    }
+
+    [data-theme="minecraft"] .public-subtab-btn.active:hover {
       background: linear-gradient(180deg, #2e7d32 0%, #1b5e20 100%) !important;
-      border: 1.5px solid #144918 !important;
+      border-color: #144918 !important;
       color: #ffffff !important;
       box-shadow: 0 4px 14px rgba(46, 125, 50, 0.35) !important;
+    }
+
+    [data-theme="minecraft"] .public-subtab-btn:active,
+    [data-theme="minecraft"] .public-subtab-btn.active:active {
+      background: #144918 !important;
+      color: #ffffff !important;
+      border-color: #0b2e0e !important;
+      box-shadow: 0 2px 6px rgba(20, 73, 24, 0.4) !important;
+      transform: scale(0.96);
     }
 
     [data-theme="minecraft"] #pbPanel-finance > div {
