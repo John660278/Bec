@@ -1000,11 +1000,12 @@
     }
 
     [data-theme="vintage"] .sheet-tag {
-      color: #7a4620;
+      display: none !important;
     }
 
     [data-theme="vintage"] .modal-title {
       color: #24150b;
+      margin-top: 0.35rem;
     }
 
     [data-theme="vintage"] .modal-amount {
@@ -1012,8 +1013,7 @@
     }
 
     [data-theme="vintage"] .sparkle-stars {
-      color: #a87642;
-      filter: drop-shadow(0 2px 4px rgba(160, 110, 60, 0.3));
+      display: none !important;
     }
 
     [data-theme="vintage"] .qr-formal-card {
@@ -1023,17 +1023,21 @@
     }
 
     [data-theme="vintage"] .qr-box-frame {
-      background: #ffffff;
-      border-color: #dfcfb7;
-      box-shadow: 0 3px 12px rgba(45, 25, 12, 0.08);
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      padding: 0;
+      max-width: 100%;
     }
 
     [data-theme="vintage"] .qr-banner {
       color: #5a351b;
+      margin-bottom: 0.85rem;
     }
 
     [data-theme="vintage"] .qr-banner svg {
-      color: #5a351b;
+      display: none !important;
     }
 
     [data-theme="vintage"] .qr-code-wrapper {
@@ -2525,6 +2529,7 @@
     }
 
     .sheet-tag {
+      display: none;
       font-size: 0.72rem;
       font-weight: 800;
       letter-spacing: 0.12em;
@@ -2556,6 +2561,7 @@
     }
 
     .sparkle-stars {
+      display: none;
       color: #ec4899;
       font-size: 1.15rem;
       user-select: none;
@@ -2605,31 +2611,33 @@
     }
 
     .qr-box-frame {
-      background: #ffffff;
-      padding: 1.15rem 1.25rem 1.25rem;
-      border-radius: 18px;
-      border: 1px solid #ede4f9;
-      box-shadow: 0 4px 18px rgba(124, 58, 237, 0.06);
+      background: transparent;
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
       display: flex;
       flex-direction: column;
       align-items: center;
       position: relative;
       width: 100%;
-      max-width: 290px;
+      max-width: 100%;
     }
 
     .qr-banner {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       font-size: 0.82rem;
       font-weight: 800;
       color: #7c3aed;
       letter-spacing: 0.02em;
-      margin-bottom: 1.15rem;
+      margin-bottom: 0.85rem;
     }
 
     .qr-banner svg {
+      display: none;
       color: #7c3aed;
     }
 
