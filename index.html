@@ -1473,11 +1473,9 @@
     <div class="minecraft-lighting-overlay minecraft-only" aria-hidden="true"></div>
 
     <!-- ═══════════════════════════════════════════════════════════
-         THEME 4: BLACK BACKGROUND LAYERS (CINEMATIC BLACK HOLE VIDEO)
+         THEME 4: BLACK BACKGROUND LAYERS (RESPONSIVE BLACK HOLE VIDEO)
          ═══════════════════════════════════════════════════════════ -->
-    <video id="blackBgVideo" class="black-bg-video black-only" autoplay loop muted playsinline poster="assets/bg_black_poster.jpg" preload="auto">
-        <source src="assets/bg_black_theme.mp4?v=1" type="video/mp4">
-    </video>
+    <video id="blackBgVideo" class="black-bg-video black-only" autoplay loop muted playsinline preload="auto"></video>
     <div class="black-vignette-overlay black-only" aria-hidden="true"></div>
 
     <!-- ═══════════════════════════════════════════════════════════
@@ -1747,11 +1745,13 @@
 
             if (theme === 'black') {
                 const bgVid = document.getElementById('blackBgVideo');
-                if (bgVid) bgVid.play().catch(() => {});
+                if (bgVid) {
+                    if (!bgVid.src) setupBlackVideo();
+                    bgVid.play().catch(() => {});
+                }
             } else {
                 const bgVid = document.getElementById('blackBgVideo');
                 if (bgVid) bgVid.pause();
-                stopBlackholeAnimation();
             }
         }
 
@@ -1868,31 +1868,37 @@
             }
         }
 
-        // ─── PROCEDURAL WEBGL2 SCHWARZSCHILD BLACK HOLE (BLACK THEME) ───
-        let bhController = null;
+        // ─── RESPONSIVE BLACK HOLE VIDEO BACKGROUND (MOBILE VS DESKTOP/IPAD) ───
+        let lastIsMobile = null;
 
-        function startBlackholeAnimation() {
-            if (bhController) return;
-            const canvas = document.getElementById('blackholeCanvas');
-            if (!canvas) return;
-            if (typeof initBlackHoleBackground === 'function') {
-                bhController = initBlackHoleBackground(canvas, {
-                    spinSpeed: 1.0,
-                    diskBrightness: 1.15,
-                    bloomStrength: 0.9
-                });
+        function setupBlackVideo() {
+            const bgVid = document.getElementById('blackBgVideo');
+            if (!bgVid) return;
+
+            const isMobile = window.innerWidth < 768;
+            if (isMobile === lastIsMobile && bgVid.src) return;
+            lastIsMobile = isMobile;
+
+            const targetSrc = isMobile ? 'assets/bg_black_mobile.mp4?v=2' : 'assets/bg_black_desktop.mp4?v=2';
+            const targetPoster = isMobile ? 'assets/bg_black_mobile_poster.jpg?v=2' : 'assets/bg_black_desktop_poster.jpg?v=2';
+
+            bgVid.poster = targetPoster;
+            bgVid.src = targetSrc;
+            bgVid.load();
+
+            if (getAppTheme() === 'black') {
+                bgVid.play().catch(() => {});
             }
         }
 
-        function stopBlackholeAnimation() {
-            if (bhController) {
-                bhController.destroy();
-                bhController = null;
-            }
-        }
+        window.addEventListener('resize', () => {
+            clearTimeout(window._resizeBlackVidTimer);
+            window._resizeBlackVidTimer = setTimeout(setupBlackVideo, 250);
+        });
 
-        // Initialize Theme immediately
+        // Initialize Theme & Background immediately
         applyAppTheme(getAppTheme());
+        setupBlackVideo();
 
         // Hide the "loading" hints once loaded
         window.addEventListener('load', function () {
