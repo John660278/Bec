@@ -512,7 +512,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      background: #181126 url('assets/card_bg_kuromi.png') center center / cover no-repeat;
+      background: #181126 url('assets/card_bg_kuromi.png?v=69') center center / cover no-repeat;
       border: 1.5px solid rgba(244, 114, 182, 0.45);
       box-shadow: 0 16px 36px -8px rgba(24, 10, 38, 0.5), 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.25);
       isolation: isolate;
@@ -827,102 +827,12 @@
       display: none !important;
     }
 
-    /* Vintage Hero Card (Using the new updated card designed by user) */
+    /* Vintage Hero Card (Uses exact same typography, chip & components as Kuromi) */
     [data-theme="vintage"] .hero-bank-card {
-      background: #ede1ce url('assets/card_bg_vintage.png') center center / cover no-repeat;
-      border: 1.5px solid rgba(138, 102, 70, 0.45);
-      box-shadow: 0 16px 36px -8px rgba(35, 18, 8, 0.42), 0 4px 12px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.6);
-      color: #24150b;
-    }
-
-    [data-theme="vintage"] .gold-emv-chip {
-      opacity: 1;
-      pointer-events: auto;
-      background: linear-gradient(135deg, #f7df83 0%, #caa03c 50%, #875c12 100%);
-      border: 1px solid rgba(138, 102, 70, 0.55);
-      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.75), 0 2px 5px rgba(50, 30, 15, 0.25);
-    }
-
-    [data-theme="vintage"] .gold-emv-chip .chip-line {
-      background: rgba(70, 42, 20, 0.35);
-    }
-
-    [data-theme="vintage"] .contactless-glyph {
-      opacity: 1;
-      pointer-events: auto;
-      color: rgba(70, 42, 20, 0.65);
-    }
-
-    [data-theme="vintage"] .card-specular-light {
-      background: radial-gradient(circle 280px at 50% 30%, rgba(255, 255, 255, 0.35) 0%, rgba(200, 160, 120, 0.15) 50%, transparent 80%);
-      mix-blend-mode: overlay;
-    }
-
-    [data-theme="vintage"] .card-org-tag {
-      color: #3d2614;
-      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
-    }
-
-    [data-theme="vintage"] .card-status-pill {
-      background: rgba(226, 208, 185, 0.88);
-      border: 1px solid rgba(138, 102, 70, 0.45);
-      color: #2e1a0d;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 2px 6px rgba(45, 25, 12, 0.12);
-    }
-
-    [data-theme="vintage"] .pulse-dot {
-      background: #2e7d32;
-      box-shadow: 0 0 6px rgba(46, 125, 50, 0.6);
-    }
-
-    [data-theme="vintage"] .pulse-dot.pulse-amber {
-      background: #c2410c;
-      box-shadow: 0 0 6px rgba(194, 65, 12, 0.6);
-    }
-
-    [data-theme="vintage"] .embossed-digits {
-      color: #2b180d;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75), 0 -1px 1px rgba(70, 40, 20, 0.5);
-    }
-
-    [data-theme="vintage"] .card-balance-caption {
-      color: #5c3e25;
-      font-weight: 700;
-    }
-
-    [data-theme="vintage"] .card-balance-sum {
-      color: #1f1208;
-    }
-
-    [data-theme="vintage"] .card-balance-currency {
-      color: #5c3e25;
-      font-weight: 700;
-    }
-
-    [data-theme="vintage"] .card-row-bottom {
-      border-top-color: rgba(140, 106, 73, 0.25);
-    }
-
-    [data-theme="vintage"] .card-student-name {
-      color: #1f1208;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-    }
-
-    [data-theme="vintage"] .card-student-sub {
-      color: #5c3e25;
-      font-weight: 600;
-    }
-
-    [data-theme="vintage"] .card-holo-emblem {
-      background: linear-gradient(135deg, rgba(235, 210, 175, 0.85), rgba(200, 165, 120, 0.7));
-      border: 1px solid rgba(140, 106, 73, 0.55);
-      box-shadow: 0 2px 6px rgba(45, 25, 12, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.6);
-    }
-
-    [data-theme="vintage"] .card-holo-emblem .holo-text {
-      color: #3d2412;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+      background: #ede1ce url('assets/card_bg_vintage.png?v=69') center center / cover no-repeat !important;
+      border: 1.5px solid rgba(138, 102, 70, 0.45) !important;
+      box-shadow: 0 16px 36px -8px rgba(35, 18, 8, 0.42), 0 4px 12px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.6) !important;
+      color: #ffffff !important;
     }
 
     /* Segmented Switcher & Filter Pills */
@@ -1481,105 +1391,12 @@
       color: #1b5e20;
     }
 
-    /* Minecraft Hero Card (Cat sunset card) */
+    /* Minecraft Hero Card (Uses exact same typography, chip & components as Kuromi) */
     [data-theme="minecraft"] .hero-bank-card {
-      background: #1e281b linear-gradient(to right, rgba(0, 0, 0, 0.38) 0%, rgba(0, 0, 0, 0.18) 45%, rgba(0, 0, 0, 0.04) 70%, transparent 100%), url('assets/card_bg_minecraft.png') center center / cover no-repeat;
-      border: 1.5px solid rgba(130, 190, 110, 0.5);
-      box-shadow: 0 16px 36px -8px rgba(20, 30, 15, 0.55), 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.35);
-      color: #ffffff;
-    }
-
-    [data-theme="minecraft"] .gold-emv-chip {
-      opacity: 1;
-      pointer-events: auto;
-      background: linear-gradient(135deg, #fce96a 0%, #d4a520 50%, #946914 100%);
-      border: 1px solid rgba(255, 255, 255, 0.45);
-      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8), 0 2px 6px rgba(0, 0, 0, 0.4);
-    }
-
-    [data-theme="minecraft"] .contactless-glyph {
-      opacity: 1;
-      pointer-events: auto;
-      color: rgba(255, 255, 255, 0.95);
-      filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.85));
-    }
-
-    [data-theme="minecraft"] .card-specular-light {
-      background: radial-gradient(circle 280px at 50% 30%, rgba(255, 255, 255, 0.25) 0%, rgba(180, 220, 160, 0.12) 50%, transparent 80%);
-      mix-blend-mode: overlay;
-    }
-
-    [data-theme="minecraft"] .card-org-tag {
-      color: #ffffff;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.6);
-      font-weight: 700;
-    }
-
-    [data-theme="minecraft"] .card-status-pill {
-      background: rgba(30, 48, 25, 0.82);
-      border: 1px solid rgba(130, 190, 110, 0.55);
-      color: #e8f5e9;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    [data-theme="minecraft"] .pulse-dot {
-      background: #4ade80;
-      box-shadow: 0 0 6px rgba(74, 222, 128, 0.8);
-    }
-
-    [data-theme="minecraft"] .pulse-dot.pulse-amber {
-      background: #f59e0b;
-      box-shadow: 0 0 6px rgba(245, 158, 11, 0.8);
-    }
-
-    [data-theme="minecraft"] .embossed-digits {
-      color: #ffffff;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 2px 6px rgba(0, 0, 0, 0.7);
-    }
-
-    [data-theme="minecraft"] .card-balance-caption {
-      color: rgba(255, 255, 255, 0.9);
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-      font-weight: 700;
-    }
-
-    [data-theme="minecraft"] .card-balance-sum {
-      color: #ffffff;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9), 0 2px 8px rgba(0, 0, 0, 0.6);
-    }
-
-    [data-theme="minecraft"] .card-balance-currency {
-      color: rgba(255, 255, 255, 0.9);
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-      font-weight: 700;
-    }
-
-    [data-theme="minecraft"] .card-row-bottom {
-      border-top-color: rgba(255, 255, 255, 0.25);
-    }
-
-    [data-theme="minecraft"] .card-student-name {
-      color: #ffffff;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
-    }
-
-    [data-theme="minecraft"] .card-student-sub {
-      color: rgba(255, 255, 255, 0.85);
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-      font-weight: 600;
-    }
-
-    [data-theme="minecraft"] .card-holo-emblem {
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.4) 0%, rgba(16, 185, 129, 0.45) 100%);
-      border: 1px solid rgba(134, 239, 172, 0.65);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.4);
-      backdrop-filter: blur(8px);
-    }
-
-    [data-theme="minecraft"] .card-holo-emblem .holo-text {
-      color: #ffffff;
-      text-shadow: 0 0 8px rgba(74, 222, 128, 0.8), 0 1px 2px rgba(0, 0, 0, 0.7);
+      background: #1e281b url('assets/card_bg_minecraft.png?v=69') center center / cover no-repeat !important;
+      border: 1.5px solid rgba(80, 110, 60, 0.45) !important;
+      box-shadow: 0 16px 36px -8px rgba(20, 30, 15, 0.45), 0 4px 12px rgba(0, 0, 0, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.5) !important;
+      color: #ffffff !important;
     }
 
     /* Segmented Switcher & Filter Pills */
@@ -2199,7 +2016,7 @@
 
     /* Virtual Student Card: "Black Card" (Matte Black Titanium) */
     [data-theme="black"] .hero-bank-card {
-      background: #09090c url('assets/card_bg_black.png') center center / cover no-repeat !important;
+      background: #09090c url('assets/card_bg_black.png?v=69') center center / cover no-repeat !important;
       border: 1.5px solid rgba(255, 255, 255, 0.18) !important;
       box-shadow: 
         0 24px 56px -10px rgba(0, 0, 0, 0.98),
