@@ -9,7 +9,8 @@ window.loginAsUser = function(email, name, role, studentId) {
         email: email,
         name: name,
         role: role || 'Student',
-        studentId: studentId || ''
+        studentId: studentId || '',
+        theme: localStorage.getItem('bec_app_theme') || 'black'
     };
     sessionStorage.removeItem('bec_theme_promo_dismissed');
     sessionStorage.setItem('loggedInUser', JSON.stringify(user));

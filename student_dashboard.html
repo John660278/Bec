@@ -4259,6 +4259,17 @@
     if (!raw) { location.href = 'index.html'; return; }
     currentUser = JSON.parse(raw);
 
+    // Fetch latest user profile / theme from database in background
+    if (window.myAppDb && currentUser.email) {
+      window.myAppDb.from('users').select('theme').eq('email', currentUser.email).maybeSingle().then(({ data }) => {
+        if (data && data.theme && data.theme !== localStorage.getItem('bec_app_theme')) {
+          currentUser.theme = data.theme;
+          sessionStorage.setItem('loggedInUser', JSON.stringify(currentUser));
+          applyTheme(data.theme, false);
+        }
+      }).catch(err => console.warn('Background theme sync:', err));
+    }
+
     if (currentUser.role === 'Admin') {
       location.href = 'admin_dashboard.html'; return;
     }
@@ -5106,11 +5117,17 @@
 
   // ─── THEME MANAGER (BLACK, KUROMI, VINTAGE & MINECRAFT) ───
   function initTheme() {
-    if (!localStorage.getItem('bec_theme_v2_initialized')) {
-      localStorage.setItem('bec_app_theme', 'black');
-      localStorage.setItem('bec_theme_v2_initialized', 'true');
+    let savedTheme = 'black';
+    if (currentUser && currentUser.theme) {
+      savedTheme = currentUser.theme;
+      localStorage.setItem('bec_app_theme', savedTheme);
+    } else {
+      if (!localStorage.getItem('bec_theme_v2_initialized')) {
+        localStorage.setItem('bec_app_theme', 'black');
+        localStorage.setItem('bec_theme_v2_initialized', 'true');
+      }
+      savedTheme = localStorage.getItem('bec_app_theme') || 'black';
     }
-    const savedTheme = localStorage.getItem('bec_app_theme') || 'black';
     applyTheme(savedTheme, false);
     initThemePromo();
   }
@@ -5163,8 +5180,38 @@
     }
   }
 
+  // ป้องกันการสลับเล่นรัวๆ ด้วย Debounce และอัปเดตลงคอลัมน์ theme แถวเดียว ไม่บันทึกซ้ำซ้อน
+  let themeDebounceTimer = null;
+  function saveUserThemeToDatabase(theme) {
+    if (!currentUser || !currentUser.email) return;
+
+    currentUser.theme = theme;
+    sessionStorage.setItem('loggedInUser', JSON.stringify(currentUser));
+
+    clearTimeout(themeDebounceTimer);
+    themeDebounceTimer = setTimeout(async () => {
+      try {
+        if (window.myAppDb) {
+          const { error } = await window.myAppDb
+            .from('users')
+            .update({ theme: theme })
+            .eq('email', currentUser.email);
+
+          if (error) {
+            console.warn('Could not sync theme to database:', error.message);
+          } else {
+            console.log('✓ Theme synced to database:', theme);
+          }
+        }
+      } catch (err) {
+        console.warn('Theme sync error:', err);
+      }
+    }, 600); // 600ms debounce
+  }
+
   function selectTheme(theme) {
     applyTheme(theme, true);
+    saveUserThemeToDatabase(theme);
     setTimeout(() => {
       closeThemeModal();
     }, 180);

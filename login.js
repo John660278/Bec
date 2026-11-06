@@ -47,6 +47,10 @@ async function handleSupabaseSession(session) {
             return;
         }
 
+        // บันทึกธีมที่ผู้ใช้เลือกไว้จากฐานข้อมูลลงเครื่อง
+        const userTheme = data.theme || data.preferred_theme || 'black';
+        localStorage.setItem('bec_app_theme', userTheme);
+
         // บันทึกข้อมูลลงเครื่องแล้วพาไปหน้า Dashboard ทันที
         sessionStorage.removeItem('bec_theme_promo_dismissed');
         sessionStorage.setItem('loggedInUser', JSON.stringify({
@@ -54,7 +58,8 @@ async function handleSupabaseSession(session) {
             name: data.name || userName,
             picture: userPicture,
             role: data.role,
-            studentId: data.student_id
+            studentId: data.student_id,
+            theme: userTheme
         }));
 
         if (data.role === 'Admin') { 
