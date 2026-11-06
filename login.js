@@ -7,13 +7,14 @@ async function handleSupabaseSession(session) {
         document.getElementById('loadingHint'),
         document.getElementById('loadingHintKuromi'),
         document.getElementById('loadingHintVintage'),
-        document.getElementById('loadingHintMinecraft')
+        document.getElementById('loadingHintMinecraft'),
+        document.getElementById('loadingHintBlack')
     ].filter(Boolean);
     loadingHints.forEach(lh => {
         lh.innerHTML = '<div class="spinner"></div><span>กำลังตรวจสอบข้อมูล...</span>';
         lh.style.display = 'flex';
     });
-    ['errorMessage', 'errorMessageKuromi', 'errorMessageVintage', 'errorMessageMinecraft'].forEach(id => {
+    ['errorMessage', 'errorMessageKuromi', 'errorMessageVintage', 'errorMessageMinecraft', 'errorMessageBlack'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.style.display = 'none';
     });
@@ -59,20 +60,23 @@ async function handleSupabaseSession(session) {
         if (data.role === 'Admin') { 
             window.location.replace('admin_dashboard.html');
         } else {
-            window.location.replace('student_dashboard.html');
+            // Maintenance mode: block regular students during live server deployment
+            showError("ระบบปิดปรับปรุงชั่วคราว ถึง 6/11/2569 22:00");
+            loadingHints.forEach(lh => lh.style.display = 'none');
+            await window.myAppDb.auth.signOut();
+            return;
         }
 
     } catch (error) {
         console.error("เกิดข้อผิดพลาด:", error);
         showError("การเชื่อมต่อขัดข้อง กรุณาลองใหม่อีกครั้ง");
-        document.querySelectorAll('.google-btn-wrapper').forEach(el => el.style.display = 'flex');
         loadingHints.forEach(lh => lh.style.display = 'none');
     }
 }
 
 function showError(message) {
     let shown = false;
-    ['errorMessage', 'errorMessageKuromi', 'errorMessageVintage', 'errorMessageMinecraft'].forEach(id => {
+    ['errorMessage', 'errorMessageKuromi', 'errorMessageVintage', 'errorMessageMinecraft', 'errorMessageBlack'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
             el.textContent = message;

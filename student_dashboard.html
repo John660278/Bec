@@ -5106,6 +5106,10 @@
 
   // ─── THEME MANAGER (BLACK, KUROMI, VINTAGE & MINECRAFT) ───
   function initTheme() {
+    if (!localStorage.getItem('bec_theme_v2_initialized')) {
+      localStorage.setItem('bec_app_theme', 'black');
+      localStorage.setItem('bec_theme_v2_initialized', 'true');
+    }
     const savedTheme = localStorage.getItem('bec_app_theme') || 'black';
     applyTheme(savedTheme, false);
     initThemePromo();

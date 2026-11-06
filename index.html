@@ -854,6 +854,202 @@
             gap: clamp(1rem, 2.5vh, 1.4rem);
         }
 
+        /* ─── SYSTEM MAINTENANCE NOTICE (TEMPORARY FOR PRODUCTION DEPLOYMENT) ─── */
+        .google-btn-wrapper {
+            display: none !important; /* ซ่อนปุ่ม Google Login ชั่วคราว */
+        }
+
+        .maintenance-box {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1.15rem 1rem;
+            border-radius: 18px;
+            gap: 0.65rem;
+            user-select: none;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: transform 180ms ease, box-shadow 180ms ease;
+        }
+
+        .maintenance-box:active {
+            transform: scale(0.99);
+        }
+
+        .maintenance-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .maintenance-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            animation: pulseDot 1.8s infinite ease-in-out;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.35; transform: scale(0.85); }
+        }
+
+        .maintenance-title {
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+        }
+
+        .maintenance-time-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: 'Prompt', 'Space Mono', sans-serif;
+            letter-spacing: 0.02em;
+        }
+
+        .maintenance-time-badge svg {
+            flex-shrink: 0;
+        }
+
+        .maintenance-sub {
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.76rem;
+            line-height: 1.5;
+            max-width: 95%;
+        }
+
+        /* Black Theme Maintenance (Primary Default) */
+        html[data-theme="black"] .maintenance-box {
+            background: rgba(18, 18, 22, 0.85);
+            border: 1px solid rgba(251, 191, 36, 0.38);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65), 0 0 20px rgba(245, 158, 11, 0.12);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+        html[data-theme="black"] .maintenance-pill {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.45);
+            color: #fbbf24;
+        }
+        html[data-theme="black"] .maintenance-dot {
+            background: #fbbf24;
+            box-shadow: 0 0 8px #fbbf24;
+        }
+        html[data-theme="black"] .maintenance-title {
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+        }
+        html[data-theme="black"] .maintenance-time-badge {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #fef08a;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        html[data-theme="black"] .maintenance-sub {
+            color: #a1a1aa;
+        }
+
+        /* Kuromi Theme Maintenance */
+        html[data-theme="kuromi"] .maintenance-box {
+            background: rgba(26, 17, 36, 0.85);
+            border: 1px solid rgba(244, 114, 182, 0.45);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65), 0 0 22px rgba(236, 72, 153, 0.2);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+        html[data-theme="kuromi"] .maintenance-pill {
+            background: rgba(236, 72, 153, 0.15);
+            border: 1px solid rgba(236, 72, 153, 0.45);
+            color: #f472b6;
+        }
+        html[data-theme="kuromi"] .maintenance-dot {
+            background: #f472b6;
+            box-shadow: 0 0 8px #f472b6;
+        }
+        html[data-theme="kuromi"] .maintenance-title {
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+        }
+        html[data-theme="kuromi"] .maintenance-time-badge {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(244, 114, 182, 0.35);
+            color: #fbcfe8;
+        }
+        html[data-theme="kuromi"] .maintenance-sub {
+            color: #d8b4e2;
+        }
+
+        /* Vintage Theme Maintenance */
+        html[data-theme="vintage"] .maintenance-box {
+            background: rgba(248, 240, 228, 0.95);
+            border: 1.5px solid #8c6a49;
+            box-shadow: 0 8px 24px rgba(35, 20, 10, 0.18);
+        }
+        html[data-theme="vintage"] .maintenance-pill {
+            background: #eadecd;
+            border: 1px solid #9e8363;
+            color: #432b18;
+        }
+        html[data-theme="vintage"] .maintenance-dot {
+            background: #854d0e;
+            box-shadow: 0 0 6px #854d0e;
+        }
+        html[data-theme="vintage"] .maintenance-title {
+            color: #2b1b10;
+        }
+        html[data-theme="vintage"] .maintenance-time-badge {
+            background: #fbf5eb;
+            border: 1.5px solid #8c6a49;
+            color: #26160b;
+        }
+        html[data-theme="vintage"] .maintenance-sub {
+            color: #5c4028;
+        }
+
+        /* Minecraft Theme Maintenance */
+        html[data-theme="minecraft"] .maintenance-box {
+            background: rgba(20, 32, 20, 0.92);
+            border: 2px solid #388e3c;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 0 16px rgba(74, 222, 128, 0.2);
+        }
+        html[data-theme="minecraft"] .maintenance-pill {
+            background: rgba(46, 125, 50, 0.3);
+            border: 1px solid #4ade80;
+            color: #86efac;
+        }
+        html[data-theme="minecraft"] .maintenance-dot {
+            background: #4ade80;
+            box-shadow: 0 0 8px #4ade80;
+        }
+        html[data-theme="minecraft"] .maintenance-title {
+            color: #ffffff;
+        }
+        html[data-theme="minecraft"] .maintenance-time-badge {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #4ade80;
+            color: #86efac;
+        }
+        html[data-theme="minecraft"] .maintenance-sub {
+            color: #a7f3d0;
+        }
+
         .google-btn-wrapper {
             display: flex;
             justify-content: center;
@@ -1302,10 +1498,27 @@
 
         <!-- ─── KUROMI LOGIN CARD (THEME 1) ─── -->
         <div class="kuromi-card kuromi-only">
-            <h1 class="card-title">ยินดีต้อนรับ</h1>
-            <p class="card-subtitle">กรุณายืนยันตัวตนเพื่อเข้าสู่ระบบ</p>
+            <h1 class="card-title">แจ้งปรับปรุงระบบ</h1>
+            <p class="card-subtitle">ระบบกองทุนนิสิตสาขาบริหารธุรกิจ (BEC BA 69)</p>
 
-            <div class="google-btn-wrapper">
+            <!-- ─── MAINTENANCE NOTICE ─── -->
+            <div class="maintenance-box" onclick="onSecretAdminClick()" title="คลิกเพื่อตรวจสอบสถานะ">
+                <div class="maintenance-pill">
+                    <span class="maintenance-dot"></span>
+                    <span>SYSTEM MAINTENANCE</span>
+                </div>
+                <div class="maintenance-title">ปิดปรับปรุงชั่วคราว</div>
+                <div class="maintenance-time-badge">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span>ถึง 6/11/2569 22:00</span>
+                </div>
+                <div class="maintenance-sub">ระบบกำลังเตรียมความพร้อมและเชื่อมต่อฐานข้อมูลจริง<br>จะเปิดให้บริการตามปกติในเวลา 22:00 น.</div>
+            </div>
+
+            <div class="google-btn-wrapper" style="display:none !important;">
                 <button type="button" class="kuromi-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google NU Mail">
                     <span class="google-icon-box">
                         <svg width="18" height="18" viewBox="0 0 48 48">
@@ -1332,10 +1545,27 @@
 
         <!-- ─── VINTAGE LOGIN CARD (THEME 2) ─── -->
         <div class="vintage-card vintage-only">
-            <h1 class="card-title">ยินดีต้อนรับ</h1>
-            <p class="card-subtitle">กรุณายืนยันตัวตนเพื่อเข้าสู่ระบบ</p>
+            <h1 class="card-title">แจ้งปรับปรุงระบบ</h1>
+            <p class="card-subtitle">ระบบกองทุนนิสิตสาขาบริหารธุรกิจ (BEC BA 69)</p>
 
-            <div class="google-btn-wrapper">
+            <!-- ─── MAINTENANCE NOTICE ─── -->
+            <div class="maintenance-box" onclick="onSecretAdminClick()" title="คลิกเพื่อตรวจสอบสถานะ">
+                <div class="maintenance-pill">
+                    <span class="maintenance-dot"></span>
+                    <span>SYSTEM MAINTENANCE</span>
+                </div>
+                <div class="maintenance-title">ปิดปรับปรุงชั่วคราว</div>
+                <div class="maintenance-time-badge">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span>ถึง 6/11/2569 22:00</span>
+                </div>
+                <div class="maintenance-sub">ระบบกำลังเตรียมความพร้อมและเชื่อมต่อฐานข้อมูลจริง<br>จะเปิดให้บริการตามปกติในเวลา 22:00 น.</div>
+            </div>
+
+            <div class="google-btn-wrapper" style="display:none !important;">
                 <button type="button" class="vintage-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google NU Mail">
                     <span class="google-icon-box">
                         <svg width="18" height="18" viewBox="0 0 48 48">
@@ -1360,7 +1590,24 @@
         <!-- ─── MINECRAFT LOGIN CARD (THEME 3) ─── -->
         <div class="minecraft-card minecraft-only">
             <div class="minecraft-slot-area">
-                <div class="google-btn-wrapper">
+                <!-- ─── MAINTENANCE NOTICE ─── -->
+                <div class="maintenance-box" onclick="onSecretAdminClick()" title="คลิกเพื่อตรวจสอบสถานะ">
+                    <div class="maintenance-pill">
+                        <span class="maintenance-dot"></span>
+                        <span>SYSTEM MAINTENANCE</span>
+                    </div>
+                    <div class="maintenance-title">ปิดปรับปรุงชั่วคราว</div>
+                    <div class="maintenance-time-badge">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <span>ถึง 6/11/2569 22:00</span>
+                    </div>
+                    <div class="maintenance-sub">ระบบกำลังเตรียมความพร้อมและเชื่อมต่อฐานข้อมูลจริง<br>จะเปิดให้บริการตามปกติในเวลา 22:00 น.</div>
+                </div>
+
+                <div class="google-btn-wrapper" style="display:none !important;">
                     <button type="button" class="minecraft-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google" title="เข้าสู่ระบบด้วย Google">
                         <img src="assets/minecraft/mc_google_login_btn.png" alt="Login with Google" class="minecraft-google-btn-img">
                     </button>
@@ -1375,12 +1622,29 @@
             </div>
         </div>
 
-        <!-- ─── BLACK LOGIN CARD (THEME 4) ─── -->
+        <!-- ─── BLACK LOGIN CARD (THEME 4 - PRIMARY DEFAULT) ─── -->
         <div class="black-card black-only">
-            <h1 class="card-title">ยินดีต้อนรับ</h1>
-            <p class="card-subtitle">กรุณายืนยันตัวตนเพื่อเข้าสู่ระบบ</p>
+            <h1 class="card-title">แจ้งปรับปรุงระบบ</h1>
+            <p class="card-subtitle">ระบบกองทุนนิสิตสาขาบริหารธุรกิจ (BEC BA 69)</p>
 
-            <div class="google-btn-wrapper">
+            <!-- ─── MAINTENANCE NOTICE ─── -->
+            <div class="maintenance-box" onclick="onSecretAdminClick()" title="คลิกเพื่อตรวจสอบสถานะ">
+                <div class="maintenance-pill">
+                    <span class="maintenance-dot"></span>
+                    <span>SYSTEM MAINTENANCE</span>
+                </div>
+                <div class="maintenance-title">ปิดปรับปรุงชั่วคราว</div>
+                <div class="maintenance-time-badge">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span>ถึง 6/11/2569 22:00</span>
+                </div>
+                <div class="maintenance-sub">ระบบกำลังเตรียมความพร้อมและเชื่อมต่อฐานข้อมูลจริง<br>จะเปิดให้บริการตามปกติในเวลา 22:00 น.</div>
+            </div>
+
+            <div class="google-btn-wrapper" style="display:none !important;">
                 <button type="button" class="black-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google NU Mail">
                     <span class="google-icon-box">
                         <svg width="18" height="18" viewBox="0 0 48 48">
@@ -1406,7 +1670,7 @@
         </div>
 
         <!-- ─── TEST ENVIRONMENT QUICK SWITCHER ─── -->
-        <div class="test-switcher-box">
+        <div class="test-switcher-box" id="testSwitcherBox" style="display:none;">
             <div class="test-switcher-header">
                 <span class="test-switcher-title">[ 🧪 โหมดทดสอบสารบบ • SEED ROSTER ]</span>
                 <span class="test-switcher-badge">104 บัญชี</span>
@@ -1434,6 +1698,10 @@
     <script>
         // ─── THEME MANAGER ───
         function getAppTheme() {
+            if (!localStorage.getItem('bec_theme_v2_initialized')) {
+                localStorage.setItem('bec_app_theme', 'black');
+                localStorage.setItem('bec_theme_v2_initialized', 'true');
+            }
             return localStorage.getItem('bec_app_theme') || 'black';
         }
 
@@ -1621,44 +1889,29 @@
             }, 1800);
         });
 
-        // Supabase OAuth Login
-        async function signInWithGoogle() {
-            const btnWraps = document.querySelectorAll('.google-btn-wrapper');
-            btnWraps.forEach(bw => bw.style.display = 'none');
-            
-            const h1 = document.getElementById('loadingHintKuromi');
-            const h2 = document.getElementById('loadingHintVintage');
-            const h3 = document.getElementById('loadingHintMinecraft');
-            const h4 = document.getElementById('loadingHintBlack');
-            const html = '<div class="spinner"></div><span>กำลังพาท่านไปหน้าล็อกอิน...</span>';
-            if (h1) { h1.innerHTML = html; h1.style.display = 'flex'; }
-            if (h2) { h2.innerHTML = html; h2.style.display = 'flex'; }
-            if (h3) { h3.innerHTML = html; h3.style.display = 'flex'; }
-            if (h4) { h4.innerHTML = html; h4.style.display = 'flex'; }
+        // ─── QA TEST SWITCHER / ADMIN ACCESS ───
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('admin') || urlParams.has('dev') || urlParams.has('test') || urlParams.has('qa')) {
+            const sw = document.getElementById('testSwitcherBox');
+            if (sw) sw.style.display = 'block';
+        }
 
-            const { error } = await window.myAppDb.auth.signInWithOAuth({
-                provider: 'google',
-                options: {
-                    redirectTo: window.location.origin
+        let adminSecretClicks = 0;
+        function onSecretAdminClick() {
+            adminSecretClicks++;
+            if (adminSecretClicks >= 5) {
+                const sw = document.getElementById('testSwitcherBox');
+                if (sw) {
+                    sw.style.display = 'block';
+                    sw.scrollIntoView({ behavior: 'smooth' });
                 }
-            });
-
-            if (error) {
-                console.error('Error logging in:', error.message);
-                btnWraps.forEach(bw => bw.style.display = 'flex');
-                if (h1) h1.style.display = 'none';
-                if (h2) h2.style.display = 'none';
-                if (h3) h3.style.display = 'none';
-                if (h4) h4.style.display = 'none';
-                const e1 = document.getElementById('errorMessageKuromi');
-                const e2 = document.getElementById('errorMessageVintage');
-                const e3 = document.getElementById('errorMessageMinecraft');
-                const e4 = document.getElementById('errorMessageBlack');
-                if (e1) { e1.textContent = 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ'; e1.style.display = 'block'; }
-                if (e2) { e2.textContent = 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ'; e2.style.display = 'block'; }
-                if (e3) { e3.textContent = 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ'; e3.style.display = 'block'; }
-                if (e4) { e4.textContent = 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ'; e4.style.display = 'block'; }
             }
+        }
+
+        // Supabase OAuth Login (Disabled temporarily during maintenance)
+        async function signInWithGoogle() {
+            alert('ระบบปิดปรับปรุงชั่วคราว ถึง 6/11/2569 22:00 น.');
+            return;
         }
 
         window.addEventListener('load', async () => {
