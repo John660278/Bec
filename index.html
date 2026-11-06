@@ -705,7 +705,7 @@
         }
 
         /* ═══════════════════════════════════════════════════════════
-           THEME 4: CLASSIC BLACK STYLES (PIXEL BLACK HOLE & MATTE BLACK)
+           THEME 4: CLASSIC BLACK STYLES (REAL-TIME SCHWARZSCHILD WEBGL2)
            ═══════════════════════════════════════════════════════════ */
         #blackholeCanvas {
             position: fixed;
@@ -713,18 +713,11 @@
             width: 100vw;
             height: 100vh;
             z-index: 0;
-            image-rendering: pixelated;
-            image-rendering: -moz-crisp-edges;
-            image-rendering: crisp-edges;
             pointer-events: none;
         }
 
         .black-vignette-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 1;
-            background: radial-gradient(circle at 75% 28%, transparent 20%, rgba(6, 6, 8, 0.45) 60%, rgba(6, 6, 8, 0.92) 100%);
-            pointer-events: none;
+            display: none !important;
         }
 
         .black-title {
@@ -1220,6 +1213,7 @@
     <script src="config.js?v=99"></script>
     <script src="login.js?v=99"></script>
     <script src="test_switcher.js?v=2"></script>
+    <script src="blackhole_webgl.js"></script>
 </head>
 <body>
 
@@ -1604,182 +1598,26 @@
             }
         }
 
-        // ─── PROCEDURAL PIXEL BLACK HOLE (BLACK THEME) ───
-        let bhAnimId = null;
-        let bhTime = 0;
-        let bhCanvasInited = false;
-        let bhDisplayCanvas = null;
-        let bhDisplayCtx = null;
-        let bhOffscreen = null;
-        let bhOffCtx = null;
-        const BH_VW = 360;
-        const BH_VH = 240;
-        const bhStars = [];
-        const bhParticles = [];
-
-        function initBlackholeCanvas() {
-            bhDisplayCanvas = document.getElementById('blackholeCanvas');
-            if (!bhDisplayCanvas) return;
-            bhDisplayCtx = bhDisplayCanvas.getContext('2d');
-
-            bhOffscreen = document.createElement('canvas');
-            bhOffscreen.width = BH_VW;
-            bhOffscreen.height = BH_VH;
-            bhOffCtx = bhOffscreen.getContext('2d', { alpha: false });
-
-            // Initialize background stars
-            bhStars.length = 0;
-            for (let i = 0; i < 90; i++) {
-                bhStars.push({
-                    x: Math.random() * BH_VW,
-                    y: Math.random() * BH_VH,
-                    brightness: Math.random() * 0.7 + 0.3,
-                    twinkleSpeed: Math.random() * 0.04 + 0.01,
-                    phase: Math.random() * Math.PI * 2
-                });
-            }
-
-            // Initialize accretion disk particles
-            bhParticles.length = 0;
-            const PARTICLE_COUNT = 480;
-            for (let i = 0; i < PARTICLE_COUNT; i++) {
-                const r = 24 + Math.pow(Math.random(), 1.6) * 68;
-                const theta = Math.random() * Math.PI * 2;
-                const speed = (0.018 + (1 / Math.sqrt(r)) * 0.22);
-                bhParticles.push({
-                    r,
-                    theta,
-                    speed,
-                    size: Math.random() < 0.22 ? 2 : 1,
-                    baseBrightness: Math.random() * 0.5 + 0.5,
-                    zNoise: (Math.random() - 0.5) * 3
-                });
-            }
-
-            function resizeBh() {
-                if (!bhDisplayCanvas) return;
-                bhDisplayCanvas.width = window.innerWidth;
-                bhDisplayCanvas.height = window.innerHeight;
-                if (bhDisplayCtx) bhDisplayCtx.imageSmoothingEnabled = false;
-            }
-            window.addEventListener('resize', resizeBh);
-            resizeBh();
-            bhCanvasInited = true;
-        }
+        // ─── PROCEDURAL WEBGL2 SCHWARZSCHILD BLACK HOLE (BLACK THEME) ───
+        let bhController = null;
 
         function startBlackholeAnimation() {
-            if (!bhCanvasInited) initBlackholeCanvas();
-            if (bhAnimId || !bhDisplayCanvas || !bhDisplayCtx) return;
-
-            function renderFrame() {
-                bhTime += 1;
-
-                // Center black hole in upper-right / edge of viewport
-                const bhX = BH_VW * 0.74;
-                const bhY = BH_VH * 0.28;
-                const R_SHADOW = 22;
-
-                // Deep cosmic background
-                bhOffCtx.fillStyle = '#060608';
-                bhOffCtx.fillRect(0, 0, BH_VW, BH_VH);
-
-                // 1. Stars with slight lensing deflection
-                for (let s of bhStars) {
-                    s.phase += s.twinkleSpeed;
-                    const b = (Math.sin(s.phase) * 0.3 + 0.7) * s.brightness;
-                    const dx = s.x - bhX;
-                    const dy = s.y - bhY;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < R_SHADOW + 2) continue;
-
-                    const v = Math.floor(b * 220);
-                    bhOffCtx.fillStyle = `rgb(${v},${v},${Math.min(255, v + 20)})`;
-                    bhOffCtx.fillRect(Math.floor(s.x), Math.floor(s.y), 1, 1);
-                }
-
-                // 2. Gravitational Lensing Halo (Upper & Lower Warped Einstein Rings)
-                for (let angle = 0; angle < Math.PI * 2; angle += 0.035) {
-                    const warpAngle = angle + bhTime * 0.008;
-                    // Upper vertical halo
-                    for (let layer = 0; layer < 4; layer++) {
-                        const lr = R_SHADOW + 6 + layer * 3.5;
-                        const hx = bhX + Math.sin(warpAngle) * (lr * 0.95);
-                        const hy = bhY - Math.abs(Math.cos(warpAngle)) * (lr * 1.55);
-                        const beam = (Math.sin(warpAngle) + 1.2) / 2.2;
-                        const br = Math.floor((180 - layer * 35) * beam);
-                        if (br > 25) {
-                            bhOffCtx.fillStyle = `rgb(${br},${br},${Math.min(255, br + 10)})`;
-                            bhOffCtx.fillRect(Math.floor(hx), Math.floor(hy), 1, 1);
-                        }
-                    }
-                    // Lower vertical faint halo
-                    for (let layer = 0; layer < 3; layer++) {
-                        const lr = R_SHADOW + 6 + layer * 3;
-                        const hx = bhX + Math.sin(warpAngle) * (lr * 0.9);
-                        const hy = bhY + Math.abs(Math.cos(warpAngle)) * (lr * 1.25);
-                        const beam = (Math.sin(warpAngle) + 1.2) / 2.5;
-                        const br = Math.floor((120 - layer * 35) * beam);
-                        if (br > 20) {
-                            bhOffCtx.fillStyle = `rgb(${br},${br},${br})`;
-                            bhOffCtx.fillRect(Math.floor(hx), Math.floor(hy), 1, 1);
-                        }
-                    }
-                }
-
-                // 3. Swirling Accretion Disk Particles
-                for (let p of bhParticles) {
-                    p.theta += p.speed;
-                    const cosT = Math.cos(p.theta);
-                    const sinT = Math.sin(p.theta);
-                    const tilt = 0.32;
-                    const px = bhX + cosT * p.r;
-                    const py = bhY + sinT * p.r * tilt + p.zNoise;
-
-                    const dist = Math.sqrt((px - bhX) * (px - bhX) + (py - bhY) * (py - bhY));
-                    if (dist < R_SHADOW && sinT < 0) continue;
-
-                    const doppler = (cosT + 1.1) / 2.1;
-                    const heat = Math.min(1.5, 32 / p.r);
-                    const intensity = Math.min(255, Math.floor(p.baseBrightness * doppler * heat * 255));
-
-                    if (intensity > 25) {
-                        const r = intensity;
-                        const g = intensity;
-                        const b = Math.min(255, intensity + 8);
-                        bhOffCtx.fillStyle = `rgb(${r},${g},${b})`;
-                        bhOffCtx.fillRect(Math.floor(px), Math.floor(py), p.size, p.size);
-                    }
-                }
-
-                // 4. Photon Sphere (Inner high-intensity glowing ring)
-                for (let a = 0; a < Math.PI * 2; a += 0.05) {
-                    const rx = bhX + Math.cos(a) * (R_SHADOW + 1.5);
-                    const ry = bhY + Math.sin(a) * (R_SHADOW + 1.5);
-                    const beam = (Math.cos(a) + 1.2) / 2.2;
-                    const glow = Math.floor(255 * beam);
-                    bhOffCtx.fillStyle = `rgb(${glow},${glow},${glow})`;
-                    bhOffCtx.fillRect(Math.floor(rx), Math.floor(ry), 1, 1);
-                }
-
-                // 5. The Event Horizon Void (Pure Black Singularity)
-                bhOffCtx.fillStyle = '#000000';
-                bhOffCtx.beginPath();
-                bhOffCtx.arc(bhX, bhY, R_SHADOW, 0, Math.PI * 2);
-                bhOffCtx.fill();
-
-                // Blit onto main canvas pixelated
-                bhDisplayCtx.drawImage(bhOffscreen, 0, 0, bhDisplayCanvas.width, bhDisplayCanvas.height);
-
-                bhAnimId = requestAnimationFrame(renderFrame);
+            if (bhController) return;
+            const canvas = document.getElementById('blackholeCanvas');
+            if (!canvas) return;
+            if (typeof initBlackHoleBackground === 'function') {
+                bhController = initBlackHoleBackground(canvas, {
+                    spinSpeed: 1.0,
+                    diskBrightness: 1.15,
+                    bloomStrength: 0.9
+                });
             }
-
-            bhAnimId = requestAnimationFrame(renderFrame);
         }
 
         function stopBlackholeAnimation() {
-            if (bhAnimId) {
-                cancelAnimationFrame(bhAnimId);
-                bhAnimId = null;
+            if (bhController) {
+                bhController.destroy();
+                bhController = null;
             }
         }
 
