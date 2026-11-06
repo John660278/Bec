@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th" data-theme="kuromi">
+<html lang="th" data-theme="black">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,7 +44,14 @@
             transition: background-color 300ms ease, color 300ms ease;
         }
 
-        /* ─── THEME 1: KUROMI BASE (DEFAULT) ─── */
+        /* ─── THEME 4: BLACK BASE (PRIMARY DEFAULT) ─── */
+        html[data-theme="black"], html[data-theme="black"] body {
+            background-color: #060608;
+            color: #f4f4f5;
+            overflow-y: auto;
+        }
+
+        /* ─── THEME 1: KUROMI BASE ─── */
         html[data-theme="kuromi"], html[data-theme="kuromi"] body {
             background: #09070c;
             color: #f1e8f8;
@@ -62,13 +69,6 @@
         html[data-theme="minecraft"], html[data-theme="minecraft"] body {
             background-color: #121a12;
             color: #f1f8f1;
-            overflow-y: auto;
-        }
-
-        /* ─── THEME 4: BLACK BASE ─── */
-        html[data-theme="black"], html[data-theme="black"] body {
-            background-color: #060608;
-            color: #f4f4f5;
             overflow-y: auto;
         }
 
@@ -1208,7 +1208,7 @@
 
     <!-- ─── FLOATING THEME SWITCHER BUTTON ─── -->
     <div class="theme-top-bar">
-        <button type="button" class="theme-toggle-pill" id="themeToggleBtn" onclick="toggleIndexTheme()" title="แตะเพื่อสลับธีม (คุโรมิ • วินเทจ • มายคราฟ)">
+        <button type="button" class="theme-toggle-pill" id="themeToggleBtn" onclick="toggleIndexTheme()" title="แตะเพื่อสลับธีม (คลาสสิคแบล็ค • คุโรมิ • วินเทจ • มายคราฟ)">
             <span>🎨</span>
             <span id="themeToggleText">สลับธีม</span>
         </button>
@@ -1434,11 +1434,11 @@
     <script>
         // ─── THEME MANAGER ───
         function getAppTheme() {
-            return localStorage.getItem('bec_app_theme') || 'kuromi';
+            return localStorage.getItem('bec_app_theme') || 'black';
         }
 
         function applyAppTheme(theme) {
-            if (theme !== 'vintage' && theme !== 'kuromi' && theme !== 'minecraft' && theme !== 'black') theme = 'kuromi';
+            if (theme !== 'black' && theme !== 'kuromi' && theme !== 'vintage' && theme !== 'minecraft') theme = 'black';
             localStorage.setItem('bec_app_theme', theme);
             document.documentElement.setAttribute('data-theme', theme);
 
@@ -1448,10 +1448,10 @@
                     btnText.textContent = 'ธีม: วินเทจ 📜 (สลับ)';
                 } else if (theme === 'minecraft') {
                     btnText.textContent = 'ธีม: มายคราฟ 🌿 (สลับ)';
-                } else if (theme === 'black') {
-                    btnText.textContent = 'ธีม: แบล็ค 🌑 (สลับ)';
-                } else {
+                } else if (theme === 'kuromi') {
                     btnText.textContent = 'ธีม: คุโรมิ 💜 (สลับ)';
+                } else {
+                    btnText.textContent = 'ธีม: คลาสสิคแบล็ค 🪐 (สลับ)';
                 }
             }
 
@@ -1470,11 +1470,11 @@
 
         function toggleIndexTheme() {
             const cur = getAppTheme();
-            let next = 'kuromi';
-            if (cur === 'kuromi') next = 'vintage';
+            let next = 'black';
+            if (cur === 'black') next = 'kuromi';
+            else if (cur === 'kuromi') next = 'vintage';
             else if (cur === 'vintage') next = 'minecraft';
-            else if (cur === 'minecraft') next = 'black';
-            else next = 'kuromi';
+            else next = 'black';
             applyAppTheme(next);
         }
 

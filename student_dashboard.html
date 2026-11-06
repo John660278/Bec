@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" data-theme="black">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
@@ -752,6 +752,11 @@
       letter-spacing: 0.14em;
       color: #ffffff;
       text-shadow: 0 0 8px rgba(244, 114, 182, 0.6), 0 1px 2px rgba(0, 0, 0, 0.4);
+    }
+
+    [data-theme="kuromi"] .gear-new-badge,
+    [data-theme="kuromi"] .theme-promo-bubble {
+      display: none !important;
     }
 
     /* ═══════════════════════════════════════════════════════════
@@ -2741,9 +2746,45 @@
       box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.15);
     }
 
-    [data-theme="black"] .gear-new-badge,
+    [data-theme="black"] .gear-new-badge {
+      background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
+      color: #ffffff;
+      box-shadow: 0 2px 10px rgba(236, 72, 153, 0.65);
+    }
+
     [data-theme="black"] .theme-promo-bubble {
-      display: none !important;
+      background: #141418;
+      border: 1.5px solid #ec4899;
+      box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.85), 0 0 22px rgba(236, 72, 153, 0.35);
+    }
+
+    [data-theme="black"] .theme-promo-bubble:hover {
+      box-shadow: 0 18px 40px -4px rgba(0, 0, 0, 0.95), 0 0 28px rgba(236, 72, 153, 0.5);
+    }
+
+    [data-theme="black"] .bubble-arrow-up {
+      background: #141418;
+      border-top: 1.5px solid #ec4899;
+      border-left: 1.5px solid #ec4899;
+    }
+
+    [data-theme="black"] .bubble-title {
+      color: #ffffff;
+    }
+
+    [data-theme="black"] .bubble-sub {
+      color: #fbcfe8;
+    }
+
+    [data-theme="black"] .bubble-close-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(236, 72, 153, 0.4);
+      color: #f472b6;
+    }
+
+    [data-theme="black"] .bubble-close-btn:hover {
+      background: rgba(236, 72, 153, 0.25);
+      color: #ffffff;
     }
 
     [data-theme="black"] .theme-modal-sheet {
@@ -4179,7 +4220,27 @@
     </div>
 
     <div style="display:flex; flex-direction:column; gap:0.75rem;">
-      <!-- Option 1: Kuromi Theme -->
+      <!-- Option 1: Classic Black Theme (Default) -->
+      <div class="theme-option-card" id="themeOptBlack" onclick="selectTheme('black')">
+        <div class="theme-preview-box black-preview-box">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="2"/>
+            <line x1="2" y1="10" x2="22" y2="10"/>
+          </svg>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:0.92rem; font-weight:700; color:var(--text); display:flex; align-items:center; gap:6px;">
+            คลาสสิคแบล็ค (Classic Black)
+            <span style="font-size:0.65rem; font-weight:700; padding:2px 6px; border-radius:999px; background:rgba(236,72,153,0.18); color:#f472b6; border:1px solid rgba(236,72,153,0.35);">หลัก</span>
+          </div>
+          <div style="font-size:0.74rem; color:var(--muted); margin-top:1px;">โทนดำด้านแมตต์ไทเทเนียม เรียบหรูสไตล์ Black Card</div>
+        </div>
+        <div class="theme-check-badge" id="checkBlack">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+      </div>
+
+      <!-- Option 2: Kuromi Theme -->
       <div class="theme-option-card" id="themeOptKuromi" onclick="selectTheme('kuromi')">
         <div class="theme-preview-box kuromi-preview-box">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fbcfe8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -4199,7 +4260,7 @@
         </div>
       </div>
 
-      <!-- Option 2: Vintage Newspaper Theme -->
+      <!-- Option 3: Vintage Newspaper Theme -->
       <div class="theme-option-card" id="themeOptVintage" onclick="selectTheme('vintage')">
         <div class="theme-preview-box vintage-preview-box">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f7ebe1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -4218,7 +4279,7 @@
         </div>
       </div>
 
-      <!-- Option 3: Minecraft Theme -->
+      <!-- Option 4: Minecraft Theme -->
       <div class="theme-option-card" id="themeOptMinecraft" onclick="selectTheme('minecraft')">
         <div class="theme-preview-box minecraft-preview-box">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e8f5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -4230,23 +4291,6 @@
           <div style="font-size:0.74rem; color:var(--muted); margin-top:1px;">โทนอบอุ่นบล็อกไม้และเรือนกระจก พร้อมบัตรน้องแมว</div>
         </div>
         <div class="theme-check-badge" id="checkMinecraft">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
-      </div>
-
-      <!-- Option 4: Classic Black Theme -->
-      <div class="theme-option-card" id="themeOptBlack" onclick="selectTheme('black')">
-        <div class="theme-preview-box black-preview-box">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="5" width="20" height="14" rx="2"/>
-            <line x1="2" y1="10" x2="22" y2="10"/>
-          </svg>
-        </div>
-        <div style="flex:1;">
-          <div style="font-size:0.92rem; font-weight:700; color:var(--text);">คลาสสิคแบล็ค (Classic Black)</div>
-          <div style="font-size:0.74rem; color:var(--muted); margin-top:1px;">โทนดำด้านแมตต์ไทเทเนียม เรียบหรูสไตล์ Black Card</div>
-        </div>
-        <div class="theme-check-badge" id="checkBlack">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
       </div>
@@ -5081,12 +5125,12 @@
   // ─── THEME PROMO BUBBLE (OPTION 2) ───
   function initThemePromo() {
     const isDismissed = sessionStorage.getItem('bec_theme_promo_dismissed') === 'true';
-    const currentTheme = localStorage.getItem('bec_app_theme') || 'kuromi';
+    const currentTheme = localStorage.getItem('bec_app_theme') || 'black';
     const promoBubble = document.getElementById('themePromoBubble');
     const newBadge = document.getElementById('gearNewBadge');
 
-    // Only show if never dismissed during this login session and currently on Kuromi theme
-    if (!isDismissed && currentTheme === 'kuromi') {
+    // Only show if never dismissed during this login session and currently on Classic Black theme
+    if (!isDismissed && currentTheme === 'black') {
       if (promoBubble) {
         promoBubble.style.display = 'block';
         promoBubble.style.opacity = '1';
@@ -5125,9 +5169,9 @@
     onOpenThemeCustomizer();
   }
 
-  // ─── THEME MANAGER (KUROMI, VINTAGE & MINECRAFT) ───
+  // ─── THEME MANAGER (BLACK, KUROMI, VINTAGE & MINECRAFT) ───
   function initTheme() {
-    const savedTheme = localStorage.getItem('bec_app_theme') || 'kuromi';
+    const savedTheme = localStorage.getItem('bec_app_theme') || 'black';
     applyTheme(savedTheme, false);
     initThemePromo();
   }
@@ -5138,12 +5182,12 @@
   }
 
   function applyTheme(theme, showNotice = true) {
-    if (theme !== 'vintage' && theme !== 'kuromi' && theme !== 'minecraft' && theme !== 'black') theme = 'kuromi';
+    if (theme !== 'black' && theme !== 'kuromi' && theme !== 'vintage' && theme !== 'minecraft') theme = 'black';
     localStorage.setItem('bec_app_theme', theme);
     document.documentElement.setAttribute('data-theme', theme);
     updateDashboardBlackCard(theme);
 
-    if (theme === 'kuromi') {
+    if (theme === 'black') {
       initThemePromo();
     } else {
       const promoBubble = document.getElementById('themePromoBubble');
@@ -5172,10 +5216,10 @@
     if (checkB) checkB.style.display = (theme === 'black') ? 'flex' : 'none';
 
     if (showNotice) {
-      let name = 'คุโรมิ';
-      if (theme === 'vintage') name = 'หนังสือพิมพ์วินเทจ';
+      let name = 'คลาสสิคแบล็ค';
+      if (theme === 'kuromi') name = 'คุโรมิ';
+      else if (theme === 'vintage') name = 'หนังสือพิมพ์วินเทจ';
       else if (theme === 'minecraft') name = 'มายคราฟ';
-      else if (theme === 'black') name = 'คลาสสิคแบล็ค';
       showToast(`เปลี่ยนเป็นธีม ${name} เรียบร้อยแล้ว`);
     }
   }
@@ -5192,7 +5236,7 @@
     const modal = document.getElementById('themeModalBackdrop');
     if (modal) {
       modal.classList.add('open');
-      const current = localStorage.getItem('bec_app_theme') || 'kuromi';
+      const current = localStorage.getItem('bec_app_theme') || 'black';
       applyTheme(current, false);
     }
   }
