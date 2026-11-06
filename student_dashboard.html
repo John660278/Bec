@@ -1017,9 +1017,24 @@
     }
 
     [data-theme="vintage"] .qr-formal-card {
-      background: #f3e9db;
-      border-color: #dfcfb7;
-      box-shadow: 0 4px 16px rgba(45, 25, 12, 0.07);
+      position: relative;
+      background-color: #f6efe2;
+      border: 1.5px solid #d2bfa5;
+      border-radius: 22px;
+      box-shadow: 0 4px 18px rgba(45, 25, 12, 0.09);
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    [data-theme="vintage"] .qr-formal-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('assets/vintage_newspaper_bg.jpg') center top / cover no-repeat;
+      opacity: 0.20;
+      filter: sepia(0.3) contrast(1.1) brightness(0.98);
+      pointer-events: none;
+      z-index: 0;
     }
 
     [data-theme="vintage"] .qr-box-frame {
@@ -1032,8 +1047,17 @@
     }
 
     [data-theme="vintage"] .qr-banner {
-      color: #5a351b;
+      color: #382012;
+      background: rgba(253, 249, 240, 0.94);
+      padding: 5px 18px;
+      border-radius: 9999px;
+      border: 1px solid #d8c5ab;
+      box-shadow: 0 2px 6px rgba(45, 25, 12, 0.08);
+      font-weight: 800;
+      letter-spacing: 0.03em;
       margin-bottom: 0.85rem;
+      position: relative;
+      z-index: 1;
     }
 
     [data-theme="vintage"] .qr-banner svg {
@@ -1041,8 +1065,11 @@
     }
 
     [data-theme="vintage"] .qr-code-wrapper {
-      border-color: #dfcfb7;
-      box-shadow: 0 2px 8px rgba(45, 25, 12, 0.06);
+      background: #ffffff;
+      border: 1.5px solid #d8c5ab;
+      box-shadow: 0 3px 12px rgba(45, 25, 12, 0.09);
+      position: relative;
+      z-index: 1;
     }
 
     [data-theme="vintage"] .slip-upload-dropzone {
@@ -1170,17 +1197,41 @@
 
     /* Bank Account Box in Payment Modal */
     [data-theme="vintage"] .bank-account-box {
-      background: #f4ecdf;
-      border-color: #dfcfb7;
-      box-shadow: 0 2px 8px rgba(45, 25, 12, 0.05);
+      background: #faf4e8;
+      border: 1.5px solid #d4c1a7;
+      box-shadow: 0 3px 10px rgba(45, 25, 12, 0.08);
+      position: relative;
+      z-index: 1;
     }
 
     [data-theme="vintage"] .bank-account-num {
-      color: #24150b;
+      color: #211208;
+      font-weight: 800;
     }
 
     [data-theme="vintage"] .bank-account-label {
-      color: #7a593d;
+      color: #633f23;
+      font-weight: 800;
+    }
+
+    [data-theme="vintage"] .bank-beneficiary-sub {
+      color: #24150b;
+      font-weight: 700;
+      background: rgba(253, 249, 240, 0.94);
+      padding: 6px 14px;
+      border-radius: 12px;
+      border: 1px solid #d8c5ab;
+      box-shadow: 0 2px 6px rgba(45, 25, 12, 0.06);
+      display: inline-block;
+      margin-top: 0.85rem;
+      position: relative;
+      z-index: 1;
+      line-height: 1.45;
+    }
+
+    [data-theme="vintage"] .bank-beneficiary-sub span {
+      color: #0b5934 !important;
+      font-weight: 800 !important;
     }
 
     /* Empty State & Mascot Removal in Vintage Theme */
