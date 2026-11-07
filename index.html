@@ -1430,7 +1430,7 @@
     <div class="content-wrapper">
 
         <!-- ─── KUROMI TITLE (THEME 1) ─── -->
-        <div class="kuromi-title kuromi-only">
+        <div class="kuromi-title kuromi-only" onclick="onSecretAdminClick()" style="cursor: default;">
             <div class="brand-logo-container">
                 <img src="assets/kuromi_planet_logo.png" alt="BEC BA 69 Emblem" class="brand-planet-logo">
             </div>
@@ -1439,46 +1439,29 @@
         </div>
 
         <!-- ─── VINTAGE TITLE (THEME 2) ─── -->
-        <div class="vintage-title vintage-only">
+        <div class="vintage-title vintage-only" onclick="onSecretAdminClick()" style="cursor: default;">
             <h1>BEC BA <span class="brand-num">69</span></h1>
             <div class="subtitle">FINANCIAL SYSTEM</div>
         </div>
 
         <!-- ─── MINECRAFT TITLE (THEME 3) ─── -->
-        <div class="minecraft-title minecraft-only">
+        <div class="minecraft-title minecraft-only" onclick="onSecretAdminClick()" style="cursor: default;">
             <img src="assets/minecraft/mc_title_bec_ba_69.png" alt="BEC BA 69" class="minecraft-title-img">
             <div class="subtitle">FINANCIAL SYSTEM</div>
         </div>
 
         <!-- ─── BLACK TITLE (THEME 4) ─── -->
-        <div class="black-title black-only">
+        <div class="black-title black-only" onclick="onSecretAdminClick()" style="cursor: default;">
             <h1>BEC BA <span class="brand-num">69</span></h1>
             <div class="subtitle">FINANCIAL SYSTEM</div>
         </div>
 
         <!-- ─── KUROMI LOGIN CARD (THEME 1) ─── -->
         <div class="kuromi-card kuromi-only">
-            <h1 class="card-title">แจ้งปรับปรุงระบบ</h1>
+            <h1 class="card-title">เข้าสู่ระบบ</h1>
             <p class="card-subtitle">ระบบกองทุนนิสิตสาขาบริหารธุรกิจ (BEC BA 69)</p>
 
-            <!-- ─── MAINTENANCE NOTICE ─── -->
-            <div class="maintenance-box" onclick="onSecretAdminClick()" title="คลิกเพื่อตรวจสอบสถานะ">
-                <div class="maintenance-pill">
-                    <span class="maintenance-dot"></span>
-                    <span>SYSTEM MAINTENANCE</span>
-                </div>
-                <div class="maintenance-title">ปิดปรับปรุงชั่วคราว</div>
-                <div class="maintenance-time-badge">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                    </svg>
-                    <span>ถึงวันที่ 7/11/2569 22:00</span>
-                </div>
-                <div class="maintenance-sub">ระบบกำลังเตรียมความพร้อมและเชื่อมต่อฐานข้อมูลจริง<br>จะเปิดให้บริการตามปกติในเวลา 22:00 น.</div>
-            </div>
-
-            <div class="google-btn-wrapper" style="display:none !important;">
+            <div class="google-btn-wrapper">
                 <button type="button" class="kuromi-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google NU Mail">
                     <span class="google-icon-box">
                         <svg width="18" height="18" viewBox="0 0 48 48">
@@ -1505,27 +1488,10 @@
 
         <!-- ─── VINTAGE LOGIN CARD (THEME 2) ─── -->
         <div class="vintage-card vintage-only">
-            <h1 class="card-title">แจ้งปรับปรุงระบบ</h1>
+            <h1 class="card-title">เข้าสู่ระบบ</h1>
             <p class="card-subtitle">ระบบกองทุนนิสิตสาขาบริหารธุรกิจ (BEC BA 69)</p>
 
-            <!-- ─── MAINTENANCE NOTICE ─── -->
-            <div class="maintenance-box" onclick="onSecretAdminClick()" title="คลิกเพื่อตรวจสอบสถานะ">
-                <div class="maintenance-pill">
-                    <span class="maintenance-dot"></span>
-                    <span>SYSTEM MAINTENANCE</span>
-                </div>
-                <div class="maintenance-title">ปิดปรับปรุงชั่วคราว</div>
-                <div class="maintenance-time-badge">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                    </svg>
-                    <span>ถึงวันที่ 7/11/2569 22:00</span>
-                </div>
-                <div class="maintenance-sub">ระบบกำลังเตรียมความพร้อมและเชื่อมต่อฐานข้อมูลจริง<br>จะเปิดให้บริการตามปกติในเวลา 22:00 น.</div>
-            </div>
-
-            <div class="google-btn-wrapper" style="display:none !important;">
+            <div class="google-btn-wrapper">
                 <button type="button" class="vintage-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google NU Mail">
                     <span class="google-icon-box">
                         <svg width="18" height="18" viewBox="0 0 48 48">
@@ -1550,24 +1516,7 @@
         <!-- ─── MINECRAFT LOGIN CARD (THEME 3) ─── -->
         <div class="minecraft-card minecraft-only">
             <div class="minecraft-slot-area">
-                <!-- ─── MAINTENANCE NOTICE ─── -->
-                <div class="maintenance-box" onclick="onSecretAdminClick()" title="คลิกเพื่อตรวจสอบสถานะ">
-                    <div class="maintenance-pill">
-                        <span class="maintenance-dot"></span>
-                        <span>SYSTEM MAINTENANCE</span>
-                    </div>
-                    <div class="maintenance-title">ปิดปรับปรุงชั่วคราว</div>
-                    <div class="maintenance-time-badge">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
-                        </svg>
-                        <span>ถึงวันที่ 7/11/2569 22:00</span>
-                    </div>
-                    <div class="maintenance-sub">ระบบกำลังเตรียมความพร้อมและเชื่อมต่อฐานข้อมูลจริง<br>จะเปิดให้บริการตามปกติในเวลา 22:00 น.</div>
-                </div>
-
-                <div class="google-btn-wrapper" style="display:none !important;">
+                <div class="google-btn-wrapper">
                     <button type="button" class="minecraft-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google" title="เข้าสู่ระบบด้วย Google">
                         <img src="assets/minecraft/mc_google_login_btn.png" alt="Login with Google" class="minecraft-google-btn-img">
                     </button>
@@ -1584,27 +1533,10 @@
 
         <!-- ─── BLACK LOGIN CARD (THEME 4 - PRIMARY DEFAULT) ─── -->
         <div class="black-card black-only">
-            <h1 class="card-title">แจ้งปรับปรุงระบบ</h1>
+            <h1 class="card-title">เข้าสู่ระบบ</h1>
             <p class="card-subtitle">ระบบกองทุนนิสิตสาขาบริหารธุรกิจ (BEC BA 69)</p>
 
-            <!-- ─── MAINTENANCE NOTICE ─── -->
-            <div class="maintenance-box" onclick="onSecretAdminClick()" title="คลิกเพื่อตรวจสอบสถานะ">
-                <div class="maintenance-pill">
-                    <span class="maintenance-dot"></span>
-                    <span>SYSTEM MAINTENANCE</span>
-                </div>
-                <div class="maintenance-title">ปิดปรับปรุงชั่วคราว</div>
-                <div class="maintenance-time-badge">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                    </svg>
-                    <span>ถึงวันที่ 7/11/2569 22:00</span>
-                </div>
-                <div class="maintenance-sub">ระบบกำลังเตรียมความพร้อมและเชื่อมต่อฐานข้อมูลจริง<br>จะเปิดให้บริการตามปกติในเวลา 22:00 น.</div>
-            </div>
-
-            <div class="google-btn-wrapper" style="display:none !important;">
+            <div class="google-btn-wrapper">
                 <button type="button" class="black-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google NU Mail">
                     <span class="google-icon-box">
                         <svg width="18" height="18" viewBox="0 0 48 48">
@@ -1663,7 +1595,7 @@
         }
 
         function applyAppTheme(theme) {
-            theme = 'black'; // หน้าเข้าสู่ระบบและปิดปรับปรุงใช้ธีมคลาสสิคแบล็ค (วิดีโอหลุมดำ) 100%
+            theme = 'black'; // หน้าเข้าสู่ระบบใช้ธีมคลาสสิคแบล็ค (พื้นหลังแอนิเมชันหลุมดำ) 100%
             document.documentElement.setAttribute('data-theme', 'black');
 
             stopSilkAnimation();
@@ -1840,10 +1772,47 @@
             }
         }
 
-        // Supabase OAuth Login (Disabled temporarily during maintenance)
+        // Supabase OAuth Login
         async function signInWithGoogle() {
-            alert('ระบบปิดปรับปรุงชั่วคราว ถึงวันที่ 7/11/2569 22:00 น.');
-            return;
+            const btnWraps = document.querySelectorAll('.google-btn-wrapper');
+            btnWraps.forEach(bw => bw.style.display = 'none');
+
+            const hintHtml = '<div class="spinner"></div><span>กำลังพาท่านไปหน้าล็อกอิน...</span>';
+            const h1 = document.getElementById('loadingHintKuromi');
+            const h2 = document.getElementById('loadingHintVintage');
+            const h3 = document.getElementById('loadingHintMinecraft');
+            const h4 = document.getElementById('loadingHintBlack');
+            if (h1) { h1.innerHTML = hintHtml; h1.style.display = 'flex'; }
+            if (h2) { h2.innerHTML = hintHtml; h2.style.display = 'flex'; }
+            if (h3) { h3.innerHTML = hintHtml; h3.style.display = 'flex'; }
+            if (h4) { h4.innerHTML = hintHtml; h4.style.display = 'flex'; }
+
+            const { error } = await window.myAppDb.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.origin
+                }
+            });
+
+            if (error) {
+                console.error('Error logging in:', error.message);
+                btnWraps.forEach(bw => bw.style.display = 'flex');
+                if (h1) h1.style.display = 'none';
+                if (h2) h2.style.display = 'none';
+                if (h3) h3.style.display = 'none';
+                if (h4) h4.style.display = 'none';
+
+                const errKuromi = document.getElementById('errorMessageKuromi');
+                const errVintage = document.getElementById('errorMessageVintage');
+                const errMinecraft = document.getElementById('errorMessageMinecraft');
+                const errBlack = document.getElementById('errorMessageBlack');
+                [errKuromi, errVintage, errMinecraft, errBlack].forEach(e => {
+                    if (e) {
+                        e.textContent = 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ: ' + error.message;
+                        e.style.display = 'block';
+                    }
+                });
+            }
         }
 
         window.addEventListener('load', async () => {
