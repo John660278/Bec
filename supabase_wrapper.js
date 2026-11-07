@@ -57,9 +57,12 @@ function convertKeysToCamel(obj, table) {
         if (newObj.studentEmail) newObj.email = newObj.studentEmail;
         if (newObj.studentName) newObj.name = newObj.studentName;
         if (newObj.id) newObj.paymentId = newObj.id;
-        // The HTML dashboard wants to show event title but calls it eventId in the table HTML
-        // Let's overwrite eventId with eventTitle if it exists so it renders nicely!
-        // Actually, it uses eventId in syncStudentMatrix too! We must keep eventId as the UUID.
+        if (newObj.slip_url) newObj.slipUrl = newObj.slip_url;
+        if (!newObj.slipUrl && obj.slip_url) newObj.slipUrl = obj.slip_url;
+    }
+    if (table === 'incomes' || table === 'expenses') {
+        if (newObj.receipt_url) newObj.receiptUrl = newObj.receipt_url;
+        if (!newObj.receiptUrl && obj.receipt_url) newObj.receiptUrl = obj.receipt_url;
     }
     if (table === 'events') {
         if (newObj.id) newObj.eventId = newObj.id;
