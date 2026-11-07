@@ -1584,7 +1584,11 @@
         totalBalance: totalBalance
       };
 
-      await db.collection('system_stats').doc('overview').set(newStats, { merge: true });
+      try {
+        await db.collection('system_stats').doc('overview').set(newStats, { merge: true });
+      } catch (errSet) {
+        console.warn("Could not save stats to DB, but returning calculated stats:", errSet);
+      }
       return newStats;
     } catch(e) {
       console.error("Sync stats error:", e);
