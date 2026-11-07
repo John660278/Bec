@@ -625,10 +625,9 @@
         }
 
         /* ═══════════════════════════════════════════════════════════
-           THEME 4: CLASSIC BLACK STYLES (PLAIN BLACK BACKGROUND / VIDEO HIDDEN TEMPORARILY)
+           THEME 4: CLASSIC BLACK STYLES (UNIVERSAL BLACK HOLE VIDEO BACKGROUND)
            ═══════════════════════════════════════════════════════════ */
         .black-bg-video {
-            display: none !important; /* ซ่อนคลิปไว้ก่อนตามที่ผู้ใช้กำหนด (ใช้พื้นหลังสีดำเรียบ) */
             position: fixed;
             inset: 0;
             width: 100vw;
@@ -678,7 +677,6 @@
         }
 
         .black-vignette-overlay {
-            display: none !important; /* ซ่อน overlay ให้เหลือพื้นหลังสีดำเรียบล้วน */
             position: fixed;
             inset: 0;
             background: radial-gradient(circle at center, rgba(6, 6, 8, 0.18) 0%, rgba(6, 6, 8, 0.65) 65%, rgba(6, 6, 8, 0.9) 100%),
@@ -1418,9 +1416,10 @@
     <div class="minecraft-lighting-overlay minecraft-only" aria-hidden="true"></div>
 
     <!-- ═══════════════════════════════════════════════════════════
-         THEME 4: BLACK BACKGROUND LAYERS (VIDEO HIDDEN TEMPORARILY - PLAIN BLACK BG)
+         THEME 4: BLACK BACKGROUND LAYERS (UNIVERSAL BLACK HOLE VIDEO BACKGROUND)
          ═══════════════════════════════════════════════════════════ -->
-    <video id="blackBgVideo" class="black-bg-video black-only" style="display:none !important;"
+    <video id="blackBgVideo" class="black-bg-video black-only" 
+           src="assets/bg_black_video.mp4?v=6"
            autoplay 
            loop 
            muted="muted" 
@@ -1435,11 +1434,11 @@
            controlslist="nodownload noplaybackrate nofullscreen noremoteplayback"
            tabindex="-1"
            aria-hidden="true"
-           poster="assets/bg_black_poster.jpg?v=5" 
-           preload="none">
-        <source src="assets/bg_black_video.mp4?v=5" type="video/mp4">
+           poster="assets/bg_black_poster.jpg?v=6" 
+           preload="auto">
+        <source src="assets/bg_black_video.mp4?v=6" type="video/mp4">
     </video>
-    <div class="black-vignette-overlay black-only" style="display:none !important;" aria-hidden="true"></div>
+    <div class="black-vignette-overlay black-only" aria-hidden="true"></div>
 
     <!-- ═══════════════════════════════════════════════════════════
          CENTER CONTENT WRAPPER
@@ -1791,26 +1790,110 @@
             }
         }
 
-        // ─── PLAY BLACK HOLE VIDEO (TEMPORARILY PAUSED / PLAIN BLACK BG ACTIVE) ───
+        // ─── PLAY BLACK HOLE VIDEO (TRUE BACKGROUND: SEAMLESS AUTOPLAY + INFINITE ZERO-STUTTER LOOP) ───
+        let intentionalPause = false;
         let blackVideoInteractionArmed = false;
 
         function ensureBlackVideoPlaying() {
-            // ซ่อนคลิปไว้ก่อนชั่วคราวตามที่กำหนด (ใช้พื้นหลังสีดำเรียบ)
             const bgVid = document.getElementById('blackBgVideo');
-            if (bgVid) {
+            if (!bgVid) return;
+
+            // 1. Force all critical DOM properties for 100% compliant background video
+            bgVid.muted = true;
+            bgVid.defaultMuted = true;
+            bgVid.playsInline = true;
+            bgVid.loop = true;
+            bgVid.playbackRate = 1.0;
+            bgVid.setAttribute('muted', '');
+            bgVid.setAttribute('playsinline', '');
+            bgVid.setAttribute('webkit-playsinline', '');
+            bgVid.setAttribute('loop', '');
+
+            if (getAppTheme() !== 'black') {
+                intentionalPause = true;
                 try { bgVid.pause(); } catch (e) {}
+                return;
+            }
+
+            intentionalPause = false;
+
+            const playPromise = bgVid.play();
+            if (playPromise !== undefined) {
+                playPromise.then(function () {
+                    // Autoplay succeeded
+                }).catch(function () {
+                    // Browser policy / Low Power Mode blocked initial play before gesture
+                    // Listen to any tap or scroll on the window and start playing silently
+                    if (blackVideoInteractionArmed) return;
+                    blackVideoInteractionArmed = true;
+
+                    const resumePlaybackSilently = function () {
+                        if (getAppTheme() === 'black') {
+                            bgVid.muted = true;
+                            bgVid.defaultMuted = true;
+                            bgVid.playsInline = true;
+                            bgVid.loop = true;
+                            const p = bgVid.play();
+                            if (p && typeof p.catch === 'function') p.catch(function () {});
+                        }
+                        ['touchstart', 'touchend', 'click', 'pointerdown', 'scroll', 'keydown'].forEach(function (ev) {
+                            window.removeEventListener(ev, resumePlaybackSilently, { capture: true, passive: true });
+                            document.removeEventListener(ev, resumePlaybackSilently, { capture: true, passive: true });
+                        });
+                        blackVideoInteractionArmed = false;
+                    };
+
+                    ['touchstart', 'touchend', 'click', 'pointerdown', 'scroll', 'keydown'].forEach(function (ev) {
+                        window.addEventListener(ev, resumePlaybackSilently, { capture: true, passive: true, once: true });
+                        document.addEventListener(ev, resumePlaybackSilently, { capture: true, passive: true, once: true });
+                    });
+                });
             }
         }
 
-        // เมื่อแท็กวิดีโอมีข้อมูลพร้อมหรือเปลี่ยนหน้าจอ
+        // ─── TRIPLE-LOCK INFINITE LOOP PROTECTION ───
+        // ป้องกันอาการเล่นจนจบคลิป (6 วินาที) แล้วหยุดนิ่ง โดยการวนลูปแบบไร้รอยต่อ 100%
         const bgVidElem = document.getElementById('blackBgVideo');
         if (bgVidElem) {
+            bgVidElem.muted = true;
+            bgVidElem.defaultMuted = true;
+            bgVidElem.playsInline = true;
+            bgVidElem.loop = true;
+
+            // ล็อกที่ 1: วนลูปก่อนถึงจุดจบ 0.12 วินาที ป้องกันเบราว์เซอร์ตัดเข้าสู่สถานะ 'ended' / หยุดค้าง
+            bgVidElem.addEventListener('timeupdate', function () {
+                if (bgVidElem.duration && bgVidElem.currentTime >= bgVidElem.duration - 0.12) {
+                    bgVidElem.currentTime = 0;
+                    const p = bgVidElem.play();
+                    if (p && typeof p.catch === 'function') p.catch(function () {});
+                }
+            });
+
+            // ล็อกที่ 2: Event 'ended' Fallback หาก timeupdate พลาดเฟรม ให้รีสตาร์ทเล่นใหม่ทันที
+            bgVidElem.addEventListener('ended', function () {
+                bgVidElem.currentTime = 0;
+                const p = bgVidElem.play();
+                if (p && typeof p.catch === 'function') p.catch(function () {});
+            });
+
+            // ล็อกที่ 3: Event 'pause' Protection หากเบราว์เซอร์แอบสั่งหยุด ให้สั่งเล่นต่อทันที
+            bgVidElem.addEventListener('pause', function () {
+                if (!intentionalPause && getAppTheme() === 'black' && !document.hidden) {
+                    const p = bgVidElem.play();
+                    if (p && typeof p.catch === 'function') p.catch(function () {});
+                }
+            });
+
+            // ตรวจสอบเมื่อมีข้อมูลพร้อมเล่น
             bgVidElem.addEventListener('canplay', function () {
                 if (getAppTheme() === 'black') ensureBlackVideoPlaying();
-            }, { once: true });
+            });
             bgVidElem.addEventListener('loadeddata', function () {
                 if (getAppTheme() === 'black') ensureBlackVideoPlaying();
-            }, { once: true });
+            });
+            bgVidElem.addEventListener('loadedmetadata', function () {
+                if (getAppTheme() === 'black') ensureBlackVideoPlaying();
+            });
         }
 
         // เมื่อสลับแท็บไปแล้วสลับกลับมา ให้เล่นต่อทันที
