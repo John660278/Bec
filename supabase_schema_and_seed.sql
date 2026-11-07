@@ -15,11 +15,24 @@ CREATE TABLE IF NOT EXISTS public.users (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- เพิ่มคอลัมน์ theme หากตาราง users มีอยู่แล้ว
+-- อัปเกรดคอลัมน์ของ users อัตโนมัติ (กรณีตารางมีอยู่เดิม)
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS name TEXT DEFAULT '';
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS role TEXT DEFAULT 'Student';
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS student_id TEXT DEFAULT '';
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS theme TEXT DEFAULT 'black';
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW();
+
+-- รับประกันว่า email มี Unique Constraint
 DO $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='theme') THEN
-        ALTER TABLE public.users ADD COLUMN theme TEXT DEFAULT 'black';
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint WHERE conname = 'users_email_key'
+    ) THEN
+        BEGIN
+            ALTER TABLE public.users ADD CONSTRAINT users_email_key UNIQUE (email);
+        EXCEPTION WHEN OTHERS THEN
+            NULL;
+        END;
     END IF;
 END $$;
 
@@ -31,6 +44,11 @@ CREATE TABLE IF NOT EXISTS public.events (
     due_date TEXT DEFAULT '',
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+ALTER TABLE public.events ADD COLUMN IF NOT EXISTS title TEXT DEFAULT '';
+ALTER TABLE public.events ADD COLUMN IF NOT EXISTS base_amount NUMERIC DEFAULT 0;
+ALTER TABLE public.events ADD COLUMN IF NOT EXISTS due_date TEXT DEFAULT '';
+ALTER TABLE public.events ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW();
 
 -- 3. สร้างตาราง PAYMENTS (รายการชำระเงินและสลิปของนิสิต)
 CREATE TABLE IF NOT EXISTS public.payments (
@@ -49,6 +67,19 @@ CREATE TABLE IF NOT EXISTS public.payments (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS event_id TEXT DEFAULT '';
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS event_title TEXT DEFAULT '';
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS student_email TEXT DEFAULT '';
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS student_name TEXT DEFAULT '';
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS student_id TEXT DEFAULT '';
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS amount NUMERIC DEFAULT 0;
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS paid_amount NUMERIC DEFAULT 0;
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS penalty NUMERIC DEFAULT 0;
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'Pending';
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS slip_url TEXT DEFAULT '';
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS paid_at TIMESTAMPTZ DEFAULT NOW();
+ALTER TABLE public.payments ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW();
+
 -- 4. สร้างตาราง INCOMES (รายรับกองทุนสาขา)
 CREATE TABLE IF NOT EXISTS public.incomes (
     id TEXT PRIMARY KEY,
@@ -59,6 +90,12 @@ CREATE TABLE IF NOT EXISTS public.incomes (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+ALTER TABLE public.incomes ADD COLUMN IF NOT EXISTS title TEXT DEFAULT '';
+ALTER TABLE public.incomes ADD COLUMN IF NOT EXISTS amount NUMERIC DEFAULT 0;
+ALTER TABLE public.incomes ADD COLUMN IF NOT EXISTS receipt_url TEXT DEFAULT '';
+ALTER TABLE public.incomes ADD COLUMN IF NOT EXISTS timestamp TEXT DEFAULT '';
+ALTER TABLE public.incomes ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW();
+
 -- 5. สร้างตาราง EXPENSES (รายจ่ายกองทุนสาขา)
 CREATE TABLE IF NOT EXISTS public.expenses (
     id TEXT PRIMARY KEY,
@@ -68,6 +105,12 @@ CREATE TABLE IF NOT EXISTS public.expenses (
     timestamp TEXT DEFAULT '',
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+ALTER TABLE public.expenses ADD COLUMN IF NOT EXISTS title TEXT DEFAULT '';
+ALTER TABLE public.expenses ADD COLUMN IF NOT EXISTS amount NUMERIC DEFAULT 0;
+ALTER TABLE public.expenses ADD COLUMN IF NOT EXISTS receipt_url TEXT DEFAULT '';
+ALTER TABLE public.expenses ADD COLUMN IF NOT EXISTS timestamp TEXT DEFAULT '';
+ALTER TABLE public.expenses ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ DEFAULT NOW();
 
 -- 6. สร้างตาราง SYSTEM_STATS (ยอดเงินสรุปกองทุนและสถิติภาพรวม)
 CREATE TABLE IF NOT EXISTS public.system_stats (
@@ -82,12 +125,26 @@ CREATE TABLE IF NOT EXISTS public.system_stats (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- อัปเกรดคอลัมน์ของ system_stats อัตโนมัติ (กรณีตารางมีอยู่เดิมแต่ยังไม่มี unpaid_count หรือคอลัมน์อื่นๆ)
+ALTER TABLE public.system_stats ADD COLUMN IF NOT EXISTS total_income NUMERIC DEFAULT 0;
+ALTER TABLE public.system_stats ADD COLUMN IF NOT EXISTS total_expense NUMERIC DEFAULT 0;
+ALTER TABLE public.system_stats ADD COLUMN IF NOT EXISTS total_balance NUMERIC DEFAULT 0;
+ALTER TABLE public.system_stats ADD COLUMN IF NOT EXISTS total_paid_payments NUMERIC DEFAULT 0;
+ALTER TABLE public.system_stats ADD COLUMN IF NOT EXISTS pending_count INTEGER DEFAULT 0;
+ALTER TABLE public.system_stats ADD COLUMN IF NOT EXISTS unpaid_count INTEGER DEFAULT 0;
+ALTER TABLE public.system_stats ADD COLUMN IF NOT EXISTS paid_count INTEGER DEFAULT 0;
+ALTER TABLE public.system_stats ADD COLUMN IF NOT EXISTS events_count INTEGER DEFAULT 0;
+ALTER TABLE public.system_stats ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW();
+
 -- 7. สร้างตาราง STUDENT_MATRIX (ตารางสรุปสถานะการชำระทุกรอบของนิสิตทุกคน)
 CREATE TABLE IF NOT EXISTS public.student_matrix (
     id TEXT PRIMARY KEY DEFAULT 'current',
     matrix JSONB DEFAULT '{}'::jsonb,
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+ALTER TABLE public.student_matrix ADD COLUMN IF NOT EXISTS matrix JSONB DEFAULT '{}'::jsonb;
+ALTER TABLE public.student_matrix ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW();
 
 -- ==============================================================================
 -- 🔐 ROW LEVEL SECURITY (RLS) & ACCESS POLICIES
