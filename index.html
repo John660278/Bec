@@ -633,8 +633,26 @@
         }
 
         /* ═══════════════════════════════════════════════════════════
-           THEME 4: CLASSIC BLACK STYLES (UNIVERSAL BLACK HOLE VIDEO BACKGROUND)
+           THEME 4: CLASSIC BLACK STYLES (UNIVERSAL BLACK HOLE BACKGROUND)
            ═══════════════════════════════════════════════════════════ */
+        .black-bg-poster {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #060608;
+            background-image: url('assets/bg_black_poster.jpg?v=8');
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: 0;
+            pointer-events: none !important;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            touch-action: none !important;
+            filter: brightness(0.82) contrast(1.08);
+        }
+
         .black-bg-video {
             position: fixed;
             inset: 0;
@@ -642,14 +660,14 @@
             height: 100vh;
             object-fit: cover;
             object-position: center center;
-            z-index: 0;
+            z-index: 1;
             pointer-events: none !important;
             user-select: none !important;
             -webkit-user-select: none !important;
             touch-action: none !important;
             filter: brightness(0.82) contrast(1.08);
-            background-color: #060608;
-            transition: opacity 400ms ease;
+            background-color: transparent;
+            transition: opacity 500ms ease;
         }
 
         /* ซ่อนปุ่ม Play / Controls ของ WebKit / Safari / Android ทุกชนิด ให้เป็นพื้นหลัง 100% ไร้ปุ่มกด */
@@ -675,6 +693,9 @@
 
         /* ปรับจุดโฟกัสบนหน้าจอคอมพิวเตอร์/โน้ตบุ๊ก/ไอแพด ให้เห็นแกนหลุมดำและดาวเคราะห์สวยพอดี */
         @media (min-width: 768px) and (orientation: landscape) {
+            .black-bg-poster {
+                background-position: center 36%;
+            }
             .black-bg-video {
                 object-position: center 36%;
             }
@@ -984,27 +1005,24 @@
     <div class="minecraft-lighting-overlay minecraft-only" aria-hidden="true"></div>
 
     <!-- ═══════════════════════════════════════════════════════════
-         THEME 4: BLACK BACKGROUND LAYERS (UNIVERSAL BLACK HOLE VIDEO BACKGROUND)
+         THEME 4: BLACK BACKGROUND LAYERS (UNIVERSAL BLACK HOLE BACKGROUND)
          ═══════════════════════════════════════════════════════════ -->
+    <div id="blackBgPoster" class="black-bg-poster black-only" aria-hidden="true"></div>
     <video id="blackBgVideo" class="black-bg-video black-only" 
-           src="assets/bg_black_video.mp4?v=7"
-           autoplay 
            loop 
            muted="muted" 
            muted 
            playsinline 
            webkit-playsinline 
            x5-playsinline
-           x5-video-player-type="h5-page"
-           x5-video-player-fullscreen="false"
            disablepictureinpicture 
            disableremoteplayback 
            controlslist="nodownload noplaybackrate nofullscreen noremoteplayback"
            tabindex="-1"
            aria-hidden="true"
-           poster="assets/bg_black_poster.jpg?v=7" 
-           preload="auto">
-        <source src="assets/bg_black_video.mp4?v=7" type="video/mp4">
+           preload="auto"
+           style="display: none; opacity: 0;">
+        <source src="assets/bg_black_video.mp4?v=8" type="video/mp4">
     </video>
     <div class="black-vignette-overlay black-only" aria-hidden="true"></div>
 
@@ -1176,8 +1194,12 @@
                 ensureBlackVideoPlaying();
             } else {
                 const bgVid = document.getElementById('blackBgVideo');
-                if (bgVid && typeof bgVid.pause === 'function') {
-                    try { bgVid.pause(); } catch (e) {}
+                if (bgVid) {
+                    bgVid.style.display = 'none';
+                    bgVid.style.opacity = '0';
+                    if (typeof bgVid.pause === 'function') {
+                        try { bgVid.pause(); } catch (e) {}
+                    }
                 }
             }
         }
@@ -1286,8 +1308,16 @@
             }
         }
 
-        // ─── AMBIENT BLACK HOLE BACKGROUND (SILKY SMOOTH 30FPS HARDWARE ACCELERATED VIDEO) ───
+        // ─── AMBIENT BLACK HOLE BACKGROUND (30FPS HARDWARE VIDEO + ZERO-PLAY-BUTTON FALLBACK) ───
         let blackVideoInteractionArmed = false;
+
+        function showAndPlayBlackVideo(vid) {
+            if (!vid) return;
+            vid.style.display = 'block';
+            requestAnimationFrame(function () {
+                vid.style.opacity = '1';
+            });
+        }
 
         function ensureBlackVideoPlaying() {
             if (getAppTheme() !== 'black') return;
@@ -1300,10 +1330,16 @@
             bgVid.loop = true;
 
             const p = bgVid.play();
-            if (p && typeof p.catch === 'function') {
-                p.catch(function () {
-                    // Browser policy / iOS Low Power Mode blocked autoplay before user gesture
-                    // Attach one-time listener to start playback silently on first tap/scroll
+            if (p !== undefined) {
+                p.then(function () {
+                    // Autoplay succeeded (Desktop, Laptop, Android, iOS without Low Power Mode)
+                    showAndPlayBlackVideo(bgVid);
+                }).catch(function () {
+                    // iOS Low Power Mode (โหมดประหยัดพลังงาน) หรือ Browser บล็อก autoplay
+                    // ซ่อนแท็ก video เพื่อไม่ให้ WebKit วาดปุ่ม Play Icon ทับบนการ์ดล็อกอิน 100%
+                    bgVid.style.display = 'none';
+                    bgVid.style.opacity = '0';
+
                     if (blackVideoInteractionArmed) return;
                     blackVideoInteractionArmed = true;
 
@@ -1315,8 +1351,10 @@
                                 v.playsInline = true;
                                 v.loop = true;
                                 const playPromise = v.play();
-                                if (playPromise && typeof playPromise.catch === 'function') {
-                                    playPromise.catch(function () {});
+                                if (playPromise && typeof playPromise.then === 'function') {
+                                    playPromise.then(function () {
+                                        showAndPlayBlackVideo(v);
+                                    }).catch(function () {});
                                 }
                             }
                         }
