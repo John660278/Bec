@@ -523,6 +523,8 @@
     .table-scroll {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
+      position: relative;
+      container-type: inline-size;
     }
 
     table.formal-table {
@@ -530,6 +532,11 @@
       border-collapse: collapse;
       font-size: 0.82rem;
       min-width: 650px;
+    }
+
+    table.formal-table td.empty-state-cell {
+      padding: 0 !important;
+      border-bottom: none !important;
     }
 
     table.formal-table th {
@@ -763,17 +770,30 @@
       margin-bottom: 0.5rem;
     }
 
-    /* ─── EMPTY STATE ─── */
+    /* ─── EMPTY STATE (ALWAYS CENTERED IN VISIBLE VIEWPORT) ─── */
     .empty-state {
       text-align: center;
-      padding: 3rem 1rem;
+      padding: 3.5rem 1rem;
       color: var(--muted);
+      position: sticky;
+      left: 0;
+      width: 100%;
+      width: 100cqw;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      pointer-events: none;
     }
 
     .empty-state p {
       font-size: 0.88rem;
       font-weight: 700;
       color: var(--text);
+      margin: 0;
+      text-align: center;
     }
 
     /* ─── SLIP INSPECTION LIGHTBOX MODAL ─── */
@@ -1758,7 +1778,31 @@
         location.href = 'index.html';
       }
     });
+
+    window.addEventListener('resize', updateEmptyStateAlignment);
+    window.addEventListener('orientationchange', () => setTimeout(updateEmptyStateAlignment, 120));
+    if (window.ResizeObserver) {
+      const ro = new ResizeObserver(() => updateEmptyStateAlignment());
+      document.querySelectorAll('.table-scroll').forEach(w => ro.observe(w));
+    }
   });
+
+  // ─── EMPTY STATE ALIGNMENT (CENTER IN VISIBLE VIEWPORT) ───
+  function updateEmptyStateAlignment() {
+    requestAnimationFrame(() => {
+      document.querySelectorAll('.table-scroll').forEach(wrap => {
+        const emptyEl = wrap.querySelector('.empty-state');
+        if (emptyEl) {
+          const w = wrap.clientWidth;
+          if (w > 0) {
+            emptyEl.style.width = w + 'px';
+            emptyEl.style.position = 'sticky';
+            emptyEl.style.left = '0';
+          }
+        }
+      });
+    });
+  }
 
   // ─── NAVIGATION ───
   function switchView(viewId, el) {
@@ -1773,6 +1817,8 @@
     if (viewId === 'events') fetchEventsData();
     if (viewId === 'payments') fetchPaymentsData();
     if (viewId === 'matrix' && !matrixFetched) fetchMatrixData();
+
+    setTimeout(updateEmptyStateAlignment, 60);
   }
 
   // ─── TOAST ───
@@ -1871,7 +1917,8 @@
           `<th style="text-align:${i > 1 ? 'center' : 'left'}">${h}</th>`).join('');
 
         if (rows.length === 0) {
-          tBody.innerHTML = `<tr><td colspan="${headers.length}"><div class="empty-state"><p>ยังไม่มีข้อมูลนิสิต</p></div></td></tr>`;
+          tBody.innerHTML = `<tr><td colspan="${headers.length}" class="empty-state-cell"><div class="empty-state"><p>ยังไม่มีข้อมูลนิสิต</p></div></td></tr>`;
+          updateEmptyStateAlignment();
         } else {
           tBody.innerHTML = rows.map(row => `
             <tr>
@@ -1887,11 +1934,13 @@
             </tr>`).join('');
         }
       } else {
-        tBody.innerHTML = `<tr><td><div class="empty-state"><p>ไม่พบข้อมูล</p></div></td></tr>`;
+        tBody.innerHTML = `<tr><td colspan="100" class="empty-state-cell"><div class="empty-state"><p>ไม่พบข้อมูล</p></div></td></tr>`;
+        updateEmptyStateAlignment();
       }
     } catch (e) {
       console.error(e);
-      tBody.innerHTML = `<tr><td><div class="empty-state"><p style="color:var(--danger)">เชื่อมต่อล้มเหลว</p></div></td></tr>`;
+      tBody.innerHTML = `<tr><td colspan="100" class="empty-state-cell"><div class="empty-state"><p style="color:var(--danger)">เชื่อมต่อล้มเหลว</p></div></td></tr>`;
+      updateEmptyStateAlignment();
     }
   }
 
@@ -1956,8 +2005,11 @@
       document.getElementById('statTotal').textContent = Number(balance).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
       const tbody = document.getElementById('overviewPendingBody');
+      const scrollWrap = tbody ? tbody.closest('.table-scroll') : null;
       if (paySnap.empty) {
-        tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><p>ไม่มีสลิปรอการตรวจสอบ</p></div></td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="empty-state-cell"><div class="empty-state"><p>ไม่มีสลิปรอการตรวจสอบ</p></div></td></tr>`;
+        if (scrollWrap) scrollWrap.scrollLeft = 0;
+        updateEmptyStateAlignment();
       } else {
         tbody.innerHTML = paySnap.docs.map(doc => {
           const p = doc.data();
@@ -2084,11 +2136,13 @@
           </tr>`;
         }).join('');
       } else {
-        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><p>ยังไม่มีรอบเก็บเงิน</p></div></td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-state-cell"><div class="empty-state"><p>ยังไม่มีรอบเก็บเงิน</p></div></td></tr>`;
+        updateEmptyStateAlignment();
       }
     } catch(e) {
       console.error(e);
-      tbody.innerHTML = `<tr><td colspan="5" style="color:var(--danger);font-size:0.78rem">เชื่อมต่อไม่ได้</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" class="empty-state-cell"><div class="empty-state"><p style="color:var(--danger)">เชื่อมต่อไม่ได้</p></div></td></tr>`;
+      updateEmptyStateAlignment();
     }
   }
 
@@ -2229,7 +2283,8 @@
   function renderPaymentsTable(list) {
     const tbody = document.getElementById('paymentsTableBody');
     if (list.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><p>ไม่มีรายการที่ค้นหา</p></div></td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="8" class="empty-state-cell"><div class="empty-state"><p>ไม่มีรายการที่ค้นหา</p></div></td></tr>`;
+      updateEmptyStateAlignment();
       return;
     }
     tbody.innerHTML = list.map(p => {
