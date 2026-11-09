@@ -984,12 +984,28 @@
     <div class="minecraft-lighting-overlay minecraft-only" aria-hidden="true"></div>
 
     <!-- ═══════════════════════════════════════════════════════════
-         THEME 4: BLACK BACKGROUND LAYERS (UNIVERSAL SEAMLESS ANIMATED BLACK HOLE)
+         THEME 4: BLACK BACKGROUND LAYERS (UNIVERSAL BLACK HOLE VIDEO BACKGROUND)
          ═══════════════════════════════════════════════════════════ -->
-    <img id="blackBgVideo" class="black-bg-video black-only" 
-         src="assets/bg_black_video.webp?v=1" 
-         alt="" 
-         aria-hidden="true">
+    <video id="blackBgVideo" class="black-bg-video black-only" 
+           src="assets/bg_black_video.mp4?v=7"
+           autoplay 
+           loop 
+           muted="muted" 
+           muted 
+           playsinline 
+           webkit-playsinline 
+           x5-playsinline
+           x5-video-player-type="h5-page"
+           x5-video-player-fullscreen="false"
+           disablepictureinpicture 
+           disableremoteplayback 
+           controlslist="nodownload noplaybackrate nofullscreen noremoteplayback"
+           tabindex="-1"
+           aria-hidden="true"
+           poster="assets/bg_black_poster.jpg?v=7" 
+           preload="auto">
+        <source src="assets/bg_black_video.mp4?v=7" type="video/mp4">
+    </video>
     <div class="black-vignette-overlay black-only" aria-hidden="true"></div>
 
     <!-- ═══════════════════════════════════════════════════════════
@@ -1270,12 +1286,52 @@
             }
         }
 
-        // ─── AMBIENT BLACK HOLE BACKGROUND (ANIMATED WEBP: 100% AUTOPLAY, INFINITE LOOP, ZERO PLAY BUTTON) ───
+        // ─── AMBIENT BLACK HOLE BACKGROUND (SILKY SMOOTH 30FPS HARDWARE ACCELERATED VIDEO) ───
+        let blackVideoInteractionArmed = false;
+
         function ensureBlackVideoPlaying() {
             if (getAppTheme() !== 'black') return;
             const bgVid = document.getElementById('blackBgVideo');
-            if (bgVid && typeof bgVid.play === 'function') {
-                try { bgVid.play().catch(function () {}); } catch (e) {}
+            if (!bgVid || typeof bgVid.play !== 'function') return;
+
+            bgVid.muted = true;
+            bgVid.defaultMuted = true;
+            bgVid.playsInline = true;
+            bgVid.loop = true;
+
+            const p = bgVid.play();
+            if (p && typeof p.catch === 'function') {
+                p.catch(function () {
+                    // Browser policy / iOS Low Power Mode blocked autoplay before user gesture
+                    // Attach one-time listener to start playback silently on first tap/scroll
+                    if (blackVideoInteractionArmed) return;
+                    blackVideoInteractionArmed = true;
+
+                    const resumePlaybackSilently = function () {
+                        if (getAppTheme() === 'black') {
+                            const v = document.getElementById('blackBgVideo');
+                            if (v && typeof v.play === 'function') {
+                                v.muted = true;
+                                v.playsInline = true;
+                                v.loop = true;
+                                const playPromise = v.play();
+                                if (playPromise && typeof playPromise.catch === 'function') {
+                                    playPromise.catch(function () {});
+                                }
+                            }
+                        }
+                        ['touchstart', 'touchend', 'click', 'pointerdown', 'scroll', 'keydown'].forEach(function (ev) {
+                            window.removeEventListener(ev, resumePlaybackSilently, { capture: true, passive: true });
+                            document.removeEventListener(ev, resumePlaybackSilently, { capture: true, passive: true });
+                        });
+                        blackVideoInteractionArmed = false;
+                    };
+
+                    ['touchstart', 'touchend', 'click', 'pointerdown', 'scroll', 'keydown'].forEach(function (ev) {
+                        window.addEventListener(ev, resumePlaybackSilently, { capture: true, passive: true, once: true });
+                        document.addEventListener(ev, resumePlaybackSilently, { capture: true, passive: true, once: true });
+                    });
+                });
             }
         }
 
@@ -1290,12 +1346,24 @@
                 bgVidElem.currentTime = 0;
                 bgVidElem.play().catch(function () {});
             });
+
+            bgVidElem.addEventListener('canplay', function () {
+                if (getAppTheme() === 'black') ensureBlackVideoPlaying();
+            });
+            bgVidElem.addEventListener('loadeddata', function () {
+                if (getAppTheme() === 'black') ensureBlackVideoPlaying();
+            });
         }
 
         // เมื่อสลับแท็บไปแล้วสลับกลับมา
         document.addEventListener('visibilitychange', function () {
             if (!document.hidden && getAppTheme() === 'black') {
                 ensureBlackVideoPlaying();
+            } else if (document.hidden) {
+                const bgVid = document.getElementById('blackBgVideo');
+                if (bgVid && typeof bgVid.pause === 'function') {
+                    try { bgVid.pause(); } catch (e) {}
+                }
             }
         });
 
