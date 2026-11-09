@@ -1630,7 +1630,12 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js?v=99"></script>
 <script src="supabase_wrapper.js?v=99"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="xlsx.bundle.js?v=1"></script>
+<script>
+  if (!window.XLSX) {
+    document.write('<script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"><\/script>');
+  }
+</script>
 
 <script>
   let currentUser = null;
@@ -2569,6 +2574,60 @@
           { wch: 28 }, // คอลัมน์ B: ชื่อ-นามสกุล
           ...events.map(ev => ({ wch: Math.max((ev.title || '').length * 2, 16) })) // คอลัมน์ C เป็นต้นไป
         ];
+
+        // 1. หัวตาราง (Row 0): หนา (Bold) และจัดกึ่งกลางเฉพาะรอบกิจกรรม (คอลัมน์ C เป็นต้นไป)
+        for (let C = 0; C < headers.length; ++C) {
+          const headerCell = ws[XLSX.utils.encode_cell({ r: 0, c: C })];
+          if (headerCell) {
+            headerCell.s = {
+              font: { bold: true },
+              alignment: C >= 2 ? { horizontal: 'center', vertical: 'center' } : { vertical: 'center' }
+            };
+          }
+        }
+
+        // 2. ข้อมูลนิสิต (Row 1 ถึง Row N):
+        // ช่องจำนวนเงิน และคำว่า "ค้างชำระ" ให้อยู่ตรงกลางของช่อง (คอลัมน์ C เป็นต้นไป)
+        // และคำว่า "ค้างชำระ" ขอเป็นตัวอักษรสีแดง
+        for (let R = 1; R <= rows.length; ++R) {
+          for (let C = 2; C < headers.length; ++C) {
+            const cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
+            const cell = ws[cellAddress];
+            if (!cell) continue;
+
+            if (cell.v === 'ค้างชำระ') {
+              cell.s = {
+                alignment: {
+                  horizontal: 'center',
+                  vertical: 'center'
+                },
+                font: {
+                  color: { rgb: 'FFFF0000' },
+                  bold: true
+                }
+              };
+            } else if (cell.v === 'รอตรวจสอบ') {
+              cell.s = {
+                alignment: {
+                  horizontal: 'center',
+                  vertical: 'center'
+                },
+                font: {
+                  color: { rgb: 'FFD97706' },
+                  bold: true
+                }
+              };
+            } else {
+              // ช่องจำนวนเงิน (ตัวเลข) จัดให้อยู่ตรงกลางของช่อง
+              cell.s = {
+                alignment: {
+                  horizontal: 'center',
+                  vertical: 'center'
+                }
+              };
+            }
+          }
+        }
 
         XLSX.utils.book_append_sheet(wb, ws, "ตารางเช็คยอด");
         XLSX.writeFile(wb, filename);
