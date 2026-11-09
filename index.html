@@ -925,224 +925,6 @@
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* ─── DIRECT STUDENT ID LOGIN STYLES ─── */
-        .login-divider {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
-            margin: 1rem 0 0.85rem;
-        }
-        .login-divider::before,
-        .login-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-        }
-        .login-divider span {
-            font-size: 0.72rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-family: 'Prompt', sans-serif;
-            white-space: nowrap;
-        }
-
-        /* Common direct login form */
-        .direct-login-form {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 9px;
-        }
-        .direct-input-wrap {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 0 12px;
-            border-radius: 12px;
-            transition: all 140ms ease;
-            box-sizing: border-box;
-        }
-        .direct-input-icon {
-            flex-shrink: 0;
-            opacity: 0.65;
-        }
-        .direct-login-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            outline: none;
-            padding: 10px 0;
-            font-size: 0.85rem;
-            font-family: 'Prompt', sans-serif;
-            min-width: 0;
-        }
-        .btn-direct-login {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            width: 100%;
-            padding: 9px 16px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            cursor: pointer;
-            border: none;
-            font-family: 'Prompt', sans-serif;
-            transition: transform 120ms ease, opacity 120ms ease, box-shadow 120ms ease;
-        }
-        .btn-direct-login:active {
-            transform: scale(0.98);
-        }
-        .btn-admin-shortcut {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 0.72rem;
-            font-weight: 600;
-            margin-top: 4px;
-            font-family: 'Prompt', sans-serif;
-            text-align: center;
-            transition: all 120ms ease;
-            opacity: 0.8;
-            padding: 4px 8px;
-        }
-        .btn-admin-shortcut:hover {
-            opacity: 1;
-            text-decoration: underline;
-        }
-
-        /* Black Theme (Primary Default) */
-        html[data-theme="black"] .login-divider::before,
-        html[data-theme="black"] .login-divider::after {
-            background: rgba(255, 255, 255, 0.12);
-        }
-        html[data-theme="black"] .login-divider span {
-            color: #a1a1aa;
-        }
-        html[data-theme="black"] .direct-input-wrap {
-            background: rgba(24, 24, 27, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.16);
-            color: #ffffff;
-        }
-        html[data-theme="black"] .direct-input-wrap:focus-within {
-            border-color: #ffffff;
-            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
-        }
-        html[data-theme="black"] .direct-login-input {
-            color: #ffffff;
-        }
-        html[data-theme="black"] .direct-login-input::placeholder {
-            color: #71717a;
-        }
-        html[data-theme="black"] .btn-direct-login {
-            background: #ffffff;
-            color: #09090b;
-        }
-        html[data-theme="black"] .btn-direct-login:hover {
-            background: #f4f4f5;
-            box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
-        }
-        html[data-theme="black"] .btn-admin-shortcut {
-            color: #a1a1aa;
-        }
-        html[data-theme="black"] .btn-admin-shortcut:hover {
-            color: #fbbf24;
-        }
-
-        /* Kuromi Theme */
-        html[data-theme="kuromi"] .login-divider::before,
-        html[data-theme="kuromi"] .login-divider::after {
-            background: rgba(244, 114, 182, 0.3);
-        }
-        html[data-theme="kuromi"] .login-divider span {
-            color: #f472b6;
-        }
-        html[data-theme="kuromi"] .direct-input-wrap {
-            background: rgba(255, 255, 255, 0.88);
-            border: 1px solid rgba(244, 114, 182, 0.45);
-            color: #1f142b;
-        }
-        html[data-theme="kuromi"] .direct-input-wrap:focus-within {
-            border-color: #ec4899;
-            box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.2);
-        }
-        html[data-theme="kuromi"] .direct-login-input {
-            color: #1f142b;
-        }
-        html[data-theme="kuromi"] .direct-login-input::placeholder {
-            color: #a998c2;
-        }
-        html[data-theme="kuromi"] .btn-direct-login {
-            background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
-            color: #ffffff;
-            box-shadow: 0 4px 14px rgba(236, 72, 153, 0.35);
-        }
-        html[data-theme="kuromi"] .btn-admin-shortcut {
-            color: #7c3aed;
-        }
-
-        /* Vintage Theme */
-        html[data-theme="vintage"] .login-divider::before,
-        html[data-theme="vintage"] .login-divider::after {
-            background: #c7b299;
-        }
-        html[data-theme="vintage"] .login-divider span {
-            color: #795548;
-        }
-        html[data-theme="vintage"] .direct-input-wrap {
-            background: #fdfbf7;
-            border: 1px solid #c7b299;
-            color: #2b1810;
-        }
-        html[data-theme="vintage"] .direct-input-wrap:focus-within {
-            border-color: #5d4037;
-        }
-        html[data-theme="vintage"] .direct-login-input {
-            color: #2b1810;
-        }
-        html[data-theme="vintage"] .direct-login-input::placeholder {
-            color: #8d6e63;
-        }
-        html[data-theme="vintage"] .btn-direct-login {
-            background: #2b1810;
-            color: #fdfbf7;
-        }
-        html[data-theme="vintage"] .btn-admin-shortcut {
-            color: #5d4037;
-        }
-
-        /* Minecraft Theme */
-        html[data-theme="minecraft"] .login-divider::before,
-        html[data-theme="minecraft"] .login-divider::after {
-            background: #3f6212;
-        }
-        html[data-theme="minecraft"] .login-divider span {
-            color: #a3e635;
-        }
-        html[data-theme="minecraft"] .direct-input-wrap {
-            background: rgba(0, 0, 0, 0.7);
-            border: 2px solid #4d7c0f;
-            border-radius: 4px;
-            color: #ffffff;
-        }
-        html[data-theme="minecraft"] .direct-login-input {
-            color: #ffffff;
-        }
-        html[data-theme="minecraft"] .direct-login-input::placeholder {
-            color: #86efac;
-        }
-        html[data-theme="minecraft"] .btn-direct-login {
-            background: #65a30d;
-            border-radius: 4px;
-            color: #ffffff;
-        }
-        html[data-theme="minecraft"] .btn-admin-shortcut {
-            color: #facc15;
-        }
-
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -1264,24 +1046,6 @@
                 </button>
             </div>
 
-            <div class="login-divider">
-                <span>หรือ เข้าสู่ระบบด้วยรหัสนิสิต</span>
-            </div>
-
-            <div class="direct-login-form">
-                <div class="direct-input-wrap">
-                    <svg class="direct-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                    <input type="text" class="direct-login-input" placeholder="กรอกรหัสนิสิต 8 หลัก หรือ อีเมล" autocomplete="username" onkeydown="if(event.key==='Enter')handleDirectLogin(this.closest('.direct-login-form').querySelector('.btn-direct-login'))" />
-                </div>
-                <button type="button" class="btn-direct-login" onclick="handleDirectLogin(this)">
-                    <span>เข้าสู่ระบบ</span>
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                </button>
-                <div style="display:flex; justify-content:center;">
-                    <button type="button" class="btn-admin-shortcut" onclick="handleAdminQuickLogin()">🔑 เข้าสู่ระบบเหรัญญิก (Admin)</button>
-                </div>
-            </div>
-
             <div class="spinner-wrap" id="loadingHintKuromi">
                 <div class="spinner"></div>
                 <span>กำลังเปิดระบบ...</span>
@@ -1309,24 +1073,6 @@
                 </button>
             </div>
 
-            <div class="login-divider">
-                <span>หรือ เข้าสู่ระบบด้วยรหัสนิสิต</span>
-            </div>
-
-            <div class="direct-login-form">
-                <div class="direct-input-wrap">
-                    <svg class="direct-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                    <input type="text" class="direct-login-input" placeholder="กรอกรหัสนิสิต 8 หลัก หรือ อีเมล" autocomplete="username" onkeydown="if(event.key==='Enter')handleDirectLogin(this.closest('.direct-login-form').querySelector('.btn-direct-login'))" />
-                </div>
-                <button type="button" class="btn-direct-login" onclick="handleDirectLogin(this)">
-                    <span>เข้าสู่ระบบ</span>
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                </button>
-                <div style="display:flex; justify-content:center;">
-                    <button type="button" class="btn-admin-shortcut" onclick="handleAdminQuickLogin()">🔑 เข้าสู่ระบบเหรัญญิก (Admin)</button>
-                </div>
-            </div>
-
             <div class="spinner-wrap" id="loadingHintVintage">
                 <div class="spinner"></div>
                 <span>กำลังเปิดระบบ...</span>
@@ -1342,22 +1088,6 @@
                     <button type="button" class="minecraft-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google" title="เข้าสู่ระบบด้วย Google">
                         <img src="assets/minecraft/mc_google_login_btn.png" alt="Login with Google" class="minecraft-google-btn-img">
                     </button>
-                </div>
-
-                <div class="login-divider">
-                    <span>หรือ เข้าด้วยรหัสนิสิต</span>
-                </div>
-
-                <div class="direct-login-form">
-                    <div class="direct-input-wrap">
-                        <input type="text" class="direct-login-input" placeholder="รหัสนิสิต 8 หลัก" autocomplete="username" onkeydown="if(event.key==='Enter')handleDirectLogin(this.closest('.direct-login-form').querySelector('.btn-direct-login'))" />
-                    </div>
-                    <button type="button" class="btn-direct-login" onclick="handleDirectLogin(this)">
-                        <span>เข้าสู่ระบบ</span>
-                    </button>
-                    <div style="display:flex; justify-content:center;">
-                        <button type="button" class="btn-admin-shortcut" onclick="handleAdminQuickLogin()">🔑 เข้าสู่ระบบเหรัญญิก</button>
-                    </div>
                 </div>
 
                 <div class="spinner-wrap" id="loadingHintMinecraft">
@@ -1389,24 +1119,6 @@
                         <span class="google-btn-secondary" style="color:#71717a;">nu.ac.th เท่านั้น</span>
                     </span>
                 </button>
-            </div>
-
-            <div class="login-divider">
-                <span>หรือ เข้าสู่ระบบด้วยรหัสนิสิต</span>
-            </div>
-
-            <div class="direct-login-form">
-                <div class="direct-input-wrap">
-                    <svg class="direct-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                    <input type="text" class="direct-login-input" placeholder="กรอกรหัสนิสิต 8 หลัก หรือ อีเมล" autocomplete="username" onkeydown="if(event.key==='Enter')handleDirectLogin(this.closest('.direct-login-form').querySelector('.btn-direct-login'))" />
-                </div>
-                <button type="button" class="btn-direct-login" onclick="handleDirectLogin(this)">
-                    <span>เข้าสู่ระบบ</span>
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                </button>
-                <div style="display:flex; justify-content:center;">
-                    <button type="button" class="btn-admin-shortcut" onclick="handleAdminQuickLogin()">🔑 เข้าสู่ระบบเหรัญญิก (Admin)</button>
-                </div>
             </div>
 
             <div class="spinner-wrap" id="loadingHintBlack">
@@ -1609,66 +1321,45 @@
             const btnWraps = document.querySelectorAll('.google-btn-wrapper');
             btnWraps.forEach(bw => bw.style.display = 'none');
 
-            const hintHtml = '<div class="spinner"></div><span>กำลังพาท่านไปหน้าล็อกอิน Google...</span>';
-            const hintIds = ['loadingHintKuromi', 'loadingHintVintage', 'loadingHintMinecraft', 'loadingHintBlack'];
-            hintIds.forEach(id => {
-                const h = document.getElementById(id);
-                if (h) { h.innerHTML = hintHtml; h.style.display = 'flex'; }
+            const hintHtml = '<div class="spinner"></div><span>กำลังพาท่านไปหน้าล็อกอิน...</span>';
+            const h1 = document.getElementById('loadingHintKuromi');
+            const h2 = document.getElementById('loadingHintVintage');
+            const h3 = document.getElementById('loadingHintMinecraft');
+            const h4 = document.getElementById('loadingHintBlack');
+            if (h1) { h1.innerHTML = hintHtml; h1.style.display = 'flex'; }
+            if (h2) { h2.innerHTML = hintHtml; h2.style.display = 'flex'; }
+            if (h3) { h3.innerHTML = hintHtml; h3.style.display = 'flex'; }
+            if (h4) { h4.innerHTML = hintHtml; h4.style.display = 'flex'; }
+
+            const { error } = await window.myAppDb.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.origin
+                }
             });
 
-            // Fallback timeout in case OAuth is blocked or user cancels
-            const fallbackTimer = setTimeout(() => {
+            if (error) {
+                console.error('Error logging in:', error.message);
                 btnWraps.forEach(bw => bw.style.display = 'flex');
-                hintIds.forEach(id => {
-                    const h = document.getElementById(id);
-                    if (h) h.style.display = 'none';
-                });
-            }, 10000);
+                if (h1) h1.style.display = 'none';
+                if (h2) h2.style.display = 'none';
+                if (h3) h3.style.display = 'none';
+                if (h4) h4.style.display = 'none';
 
-            try {
-                const { error } = await window.myAppDb.auth.signInWithOAuth({
-                    provider: 'google',
-                    options: {
-                        redirectTo: window.location.origin
+                const errKuromi = document.getElementById('errorMessageKuromi');
+                const errVintage = document.getElementById('errorMessageVintage');
+                const errMinecraft = document.getElementById('errorMessageMinecraft');
+                const errBlack = document.getElementById('errorMessageBlack');
+                [errKuromi, errVintage, errMinecraft, errBlack].forEach(e => {
+                    if (e) {
+                        e.textContent = 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ: ' + error.message;
+                        e.style.display = 'block';
                     }
                 });
-
-                if (error) {
-                    clearTimeout(fallbackTimer);
-                    console.error('Error logging in:', error.message);
-                    btnWraps.forEach(bw => bw.style.display = 'flex');
-                    hintIds.forEach(id => {
-                        const h = document.getElementById(id);
-                        if (h) h.style.display = 'none';
-                    });
-                    showError('Google Sign-In ขัดข้อง (' + error.message + ') — ท่านสามารถพิมพ์รหัสนิสิตเข้าสู่ระบบได้ทันที');
-                }
-            } catch (err) {
-                clearTimeout(fallbackTimer);
-                console.error(err);
-                btnWraps.forEach(bw => bw.style.display = 'flex');
-                hintIds.forEach(id => {
-                    const h = document.getElementById(id);
-                    if (h) h.style.display = 'none';
-                });
-                showError('ไม่สามารถเปิดหน้าต่าง Google ได้ — กรุณาพิมพ์รหัสนิสิตเข้าสู่ระบบด้านล่างได้ทันที');
             }
         }
 
         window.addEventListener('load', async () => {
-            // Check for OAuth error in URL hash / params (e.g. Google Error 400 or policy block)
-            const hash = window.location.hash || '';
-            const search = window.location.search || '';
-            if (hash.includes('error') || search.includes('error')) {
-                const params = new URLSearchParams(hash.replace('#', '?') || search);
-                const desc = params.get('error_description') || params.get('error') || 'Google แจ้งเตือนข้อผิดพลาดในการเชื่อมต่อ (Error 400)';
-                console.warn('OAuth redirect error:', desc);
-                showError('⚠️ Google แจ้งเตือนข้อผิดพลาด: มหาวิทยาลัยจำกัดสิทธิ์ Google Sign-in ชั่วคราว — กรุณาใช้รหัสนิสิต 8 หลักเข้าสู่ระบบด้านล่างได้ทันที');
-                if (window.history && window.history.replaceState) {
-                    window.history.replaceState(null, '', window.location.pathname);
-                }
-            }
-
             const { data: { session } } = await window.myAppDb.auth.getSession();
             
             if (session) {
