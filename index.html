@@ -11,6 +11,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&family=Silkscreen:wght@400;700&family=Special+Elite&family=VT323&display=swap" rel="stylesheet">
 
     <script>
+        // โหลดธีมที่จำไว้ในเครื่องทันทีตั้งแต่ก่อนเรนเดอร์หน้าจอ (ป้องกันหน้ากระพริบ)
+        try {
+            var savedTheme = localStorage.getItem('bec_app_theme');
+            if (savedTheme && ['black', 'kuromi', 'vintage', 'minecraft'].indexOf(savedTheme) !== -1) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+        } catch (e) {}
+
         // ถ้าเปิดผ่านแอป LINE ให้บังคับเด้งไป Safari/Chrome อัตโนมัติ
         if (navigator.userAgent.indexOf("Line") > -1) {
             if (window.location.search.indexOf("openExternalBrowser=1") === -1) {
@@ -1126,18 +1134,37 @@
 
     <!-- ─── SCRIPTS ─── -->
     <script>
-        // ─── THEME MANAGER ───
-        // ─── THEME MANAGER (LOCKED TO CLASSIC BLACK FOR LOGIN / MAINTENANCE) ───
+        // ─── THEME MANAGER (จดจำธีมของเครื่องตามที่เลือกไว้ในแดชบอร์ด) ───
         function getAppTheme() {
+            try {
+                const saved = localStorage.getItem('bec_app_theme');
+                if (saved && ['black', 'kuromi', 'vintage', 'minecraft'].includes(saved)) {
+                    return saved;
+                }
+            } catch (e) {}
             return 'black';
         }
 
         function applyAppTheme(theme) {
-            theme = 'black'; // หน้าเข้าสู่ระบบใช้ธีมคลาสสิคแบล็ค (พื้นหลังแอนิเมชันหลุมดำ) 100%
-            document.documentElement.setAttribute('data-theme', 'black');
+            if (!['black', 'kuromi', 'vintage', 'minecraft'].includes(theme)) {
+                theme = 'black';
+            }
+            document.documentElement.setAttribute('data-theme', theme);
 
-            stopSilkAnimation();
-            ensureBlackVideoPlaying();
+            if (theme === 'kuromi') {
+                startSilkAnimation();
+            } else {
+                stopSilkAnimation();
+            }
+
+            if (theme === 'black') {
+                ensureBlackVideoPlaying();
+            } else {
+                const bgVid = document.getElementById('blackBgVideo');
+                if (bgVid && typeof bgVid.pause === 'function') {
+                    try { bgVid.pause(); } catch (e) {}
+                }
+            }
         }
 
 
@@ -1246,7 +1273,7 @@
 
         // ─── AMBIENT BLACK HOLE BACKGROUND (ANIMATED WEBP: 100% AUTOPLAY, INFINITE LOOP, ZERO PLAY BUTTON) ───
         function ensureBlackVideoPlaying() {
-            // Animated WebP Background: ทำงานอัตโนมัติ 100% ตลอดกาล ไม่ติดปัญหา Low Power Mode บน iOS/iPadOS และไม่มีปุ่มกดรบกวน
+            if (getAppTheme() !== 'black') return;
             const bgVid = document.getElementById('blackBgVideo');
             if (bgVid && typeof bgVid.play === 'function') {
                 try { bgVid.play().catch(function () {}); } catch (e) {}
@@ -1275,7 +1302,6 @@
 
         // Initialize Theme & Background immediately
         applyAppTheme(getAppTheme());
-        ensureBlackVideoPlaying();
 
         // Hide the "loading" hints once loaded
         window.addEventListener('load', function () {
