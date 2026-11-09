@@ -2506,17 +2506,21 @@
   }
 
   async function exportStudentExcel() {
-    showToast('กำลังเตรียมไฟล์ Excel ตารางเช็คยอด...');
+    showToast('กำลังเตรียมไฟล์ Excel รวมตารางเช็คยอดและรายการใช้จ่าย...');
     try {
-      const [usersSnap, evSnap, paySnap] = await Promise.all([
+      const [usersSnap, evSnap, paySnap, incSnap, expSnap] = await Promise.all([
         db.collection('users').where('role', '==', 'Student').get(),
         db.collection('events').get(),
-        db.collection('payments').get()
+        db.collection('payments').get(),
+        db.collection('incomes').get(),
+        db.collection('expenses').get()
       ]);
 
       const students = usersSnap.docs.map(d => ({ ...d.data(), docId: d.id }));
       const events = evSnap.docs.map(d => ({ ...d.data(), docId: d.id, eventId: d.data().eventId || d.id }));
       const payments = paySnap.docs.map(d => ({ ...d.data(), docId: d.id }));
+      const incomes = incSnap.docs.map(d => ({ ...d.data(), docId: d.id }));
+      const expenses = expSnap.docs.map(d => ({ ...d.data(), docId: d.id }));
 
       // เรียงลำดับรอบเก็บเงินตามวันเวลาที่สร้าง จากเก่าสุดไปใหม่สุด (ล่าสุด)
       events.sort((a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0));
@@ -2524,15 +2528,15 @@
       // เรียงลำดับนิสิตตามรหัสนิสิต (67xxxxxx, 68xxxxxx)
       students.sort((a, b) => (a.studentId || '').localeCompare(b.studentId || '', undefined, { numeric: true }));
 
-      // แถว A (คอลัมน์ A): รหัสนิสิต
-      // แถว B (คอลัมน์ B): ชื่อ-นามสกุล
-      // แถว C เป็นต้นไป (คอลัมน์ C onwards): รอบเก็บเงินต่าง ๆ จนถึงรอบล่าสุด
-      const headers = ['รหัสนิสิต', 'ชื่อ-นามสกุล'];
+      // ═══════════════════════════════════════════════════════════
+      // แผ่นงานที่ 1: ตารางเช็คยอด (Sheet 1: Matrix Ledger)
+      // ═══════════════════════════════════════════════════════════
+      const headers1 = ['รหัสนิสิต', 'ชื่อ-นามสกุล'];
       events.forEach(ev => {
-        headers.push(ev.title || 'รอบเก็บเงิน');
+        headers1.push(ev.title || 'รอบเก็บเงิน');
       });
 
-      const rows = students.map(stu => {
+      const rows1 = students.map(stu => {
         const row = [
           stu.studentId || '-',
           stu.name || '-'
@@ -2562,22 +2566,82 @@
         return row;
       });
 
-      const filename = `ตารางเช็คยอด_BEC_BA_69_${formatDateForFile()}.xlsx`;
+      // ═══════════════════════════════════════════════════════════
+      // แผ่นงานที่ 2: รายการใช้จ่ายเงินของสาขา (Sheet 2: Branch Finance)
+      // แถว A: รายการใช้จ่าย, แถว B: จำนวนเงิน (ตัวเข้ม), แถว C: ยอดเงินคงเหลือ
+      // ═══════════════════════════════════════════════════════════
+      const financeItems = [];
+
+      // 1. รวมยอดเงินกองทุนนิสิตที่ชำระแล้วตามแต่ละรอบกิจกรรม
+      const eventPaidMap = {};
+      payments.forEach(p => {
+        if (p.status === 'Paid') {
+          const evKey = p.eventId || 'other';
+          const amt = Number(p.paidAmount || p.totalAmount || p.amount || 0);
+          eventPaidMap[evKey] = (eventPaidMap[evKey] || 0) + amt;
+        }
+      });
+
+      events.forEach(ev => {
+        const targetEvId = ev.eventId || ev.docId;
+        const totalPaid = eventPaidMap[targetEvId] || eventPaidMap[ev.docId] || 0;
+        if (totalPaid > 0) {
+          financeItems.push({
+            date: ev.createdAt || '',
+            title: `เงินกองทุนนิสิต - ${ev.title || 'รอบเก็บเงิน'}`,
+            amount: totalPaid,
+            type: 'income'
+          });
+        }
+      });
+
+      // 2. รายการรายรับ (เงินสนับสนุน/สปอนเซอร์)
+      incomes.forEach(inc => {
+        financeItems.push({
+          date: inc.date || inc.createdAt || inc.timestamp || '',
+          title: inc.source || inc.title || 'รายรับเงินสนับสนุน',
+          amount: Number(inc.amount || 0),
+          type: 'income'
+        });
+      });
+
+      // 3. รายการรายจ่าย (ค่าใช้จ่ายกิจกรรมสาขา) - บันทึกเป็นยอดลบเพื่อให้สูตร =SUM(B2:B999) คำนวณหักลบยอดคงเหลือถูกต้อง
+      expenses.forEach(exp => {
+        financeItems.push({
+          date: exp.date || exp.createdAt || exp.timestamp || '',
+          title: exp.title || 'รายจ่ายกิจกรรมสาขา',
+          amount: -Math.abs(Number(exp.amount || 0)),
+          type: 'expense'
+        });
+      });
+
+      // เรียงลำดับรายการตามวันเวลาจากเก่าไปใหม่
+      financeItems.sort((a, b) => new Date(a.date || 0) - new Date(b.date || 0));
+
+      const headers2 = ['รายการใช้จ่าย', 'จำนวนเงิน', 'ยอดเงินคงเหลือ'];
+      const rows2 = financeItems.map(item => [
+        item.title,
+        item.amount,
+        '' // เว้นช่อง C2 ไว้สำหรับสูตรคำนวณ =SUM(B2:B999)
+      ]);
+
+      const filename = `สรุปบัญชีและตารางเช็คยอด_BEC_BA_69_${formatDateForFile()}.xlsx`;
 
       if (window.XLSX) {
         const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
 
-        // กำหนดความกว้างคอลัมน์ให้อ่านง่ายพอดีตัวอักษร
-        ws['!cols'] = [
+        // ────────── สร้าง Sheet 1: ตารางเช็คยอด ──────────
+        const ws1 = XLSX.utils.aoa_to_sheet([headers1, ...rows1]);
+
+        ws1['!cols'] = [
           { wch: 16 }, // คอลัมน์ A: รหัสนิสิต
           { wch: 28 }, // คอลัมน์ B: ชื่อ-นามสกุล
           ...events.map(ev => ({ wch: Math.max((ev.title || '').length * 2, 16) })) // คอลัมน์ C เป็นต้นไป
         ];
 
-        // 1. หัวตาราง (Row 0): หนา (Bold) และจัดกึ่งกลางเฉพาะรอบกิจกรรม (คอลัมน์ C เป็นต้นไป)
-        for (let C = 0; C < headers.length; ++C) {
-          const headerCell = ws[XLSX.utils.encode_cell({ r: 0, c: C })];
+        // สไตล์ Sheet 1 หัวตาราง
+        for (let C = 0; C < headers1.length; ++C) {
+          const headerCell = ws1[XLSX.utils.encode_cell({ r: 0, c: C })];
           if (headerCell) {
             headerCell.s = {
               font: { bold: true },
@@ -2586,56 +2650,95 @@
           }
         }
 
-        // 2. ข้อมูลนิสิต (Row 1 ถึง Row N):
-        // ช่องจำนวนเงิน และคำว่า "ค้างชำระ" ให้อยู่ตรงกลางของช่อง (คอลัมน์ C เป็นต้นไป)
-        // และคำว่า "ค้างชำระ" ขอเป็นตัวอักษรสีแดง
-        for (let R = 1; R <= rows.length; ++R) {
-          for (let C = 2; C < headers.length; ++C) {
+        // สไตล์ Sheet 1 ข้อมูลนิสิต
+        for (let R = 1; R <= rows1.length; ++R) {
+          for (let C = 2; C < headers1.length; ++C) {
             const cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
-            const cell = ws[cellAddress];
+            const cell = ws1[cellAddress];
             if (!cell) continue;
 
             if (cell.v === 'ค้างชำระ') {
               cell.s = {
-                alignment: {
-                  horizontal: 'center',
-                  vertical: 'center'
-                },
-                font: {
-                  color: { rgb: 'FFFF0000' },
-                  bold: true
-                }
+                alignment: { horizontal: 'center', vertical: 'center' },
+                font: { color: { rgb: 'FFFF0000' }, bold: true }
               };
             } else if (cell.v === 'รอตรวจสอบ') {
               cell.s = {
-                alignment: {
-                  horizontal: 'center',
-                  vertical: 'center'
-                },
-                font: {
-                  color: { rgb: 'FFD97706' },
-                  bold: true
-                }
+                alignment: { horizontal: 'center', vertical: 'center' },
+                font: { color: { rgb: 'FFD97706' }, bold: true }
               };
             } else {
-              // ช่องจำนวนเงิน (ตัวเลข) จัดให้อยู่ตรงกลางของช่อง
               cell.s = {
-                alignment: {
-                  horizontal: 'center',
-                  vertical: 'center'
-                }
+                alignment: { horizontal: 'center', vertical: 'center' }
               };
             }
           }
         }
 
-        XLSX.utils.book_append_sheet(wb, ws, "ตารางเช็คยอด");
+        // ────────── สร้าง Sheet 2: รายการใช้จ่าย ──────────
+        const ws2 = XLSX.utils.aoa_to_sheet([headers2, ...rows2]);
+
+        ws2['!cols'] = [
+          { wch: 45 }, // คอลัมน์ A: รายการใช้จ่าย
+          { wch: 20 }, // คอลัมน์ B: จำนวนเงิน
+          { wch: 22 }  // คอลัมน์ C: ยอดเงินคงเหลือ
+        ];
+
+        // สไตล์ Sheet 2 หัวตาราง (Row 0)
+        const h2_A = ws2['A1'];
+        if (h2_A) h2_A.s = { font: { bold: true }, alignment: { vertical: 'center' } };
+
+        const h2_B = ws2['B1'];
+        if (h2_B) h2_B.s = { font: { bold: true }, alignment: { horizontal: 'right', vertical: 'center' } };
+
+        const h2_C = ws2['C1'];
+        if (h2_C) h2_C.s = { font: { bold: true, sz: 11 }, alignment: { horizontal: 'center', vertical: 'center' } };
+
+        // สไตล์ Sheet 2 ข้อมูลรายรับ-รายจ่าย (Row 1 ถึง Row N)
+        for (let R = 1; R <= rows2.length; ++R) {
+          const item = financeItems[R - 1];
+          const cellA = ws2[XLSX.utils.encode_cell({ r: R, c: 0 })];
+          if (cellA) {
+            cellA.s = { alignment: { vertical: 'center' } };
+          }
+
+          const cellB = ws2[XLSX.utils.encode_cell({ r: R, c: 1 })];
+          if (cellB) {
+            const isInc = item && item.type === 'income';
+            cellB.z = '#,##0.00';
+            cellB.s = {
+              font: {
+                bold: true,
+                color: { rgb: isInc ? 'FF16A34A' : 'FFFF0000' } // รายรับตัวเลขสีเขียว รายจ่ายตัวเลขสีแดง
+              },
+              alignment: { horizontal: 'right', vertical: 'center' }
+            };
+          }
+        }
+
+        // เซลล์ C2: ใส่สูตร =SUM(B2:B999) คำนวณยอดเงินคงเหลือ
+        const calculatedBalance = financeItems.reduce((acc, it) => acc + it.amount, 0);
+        ws2['C2'] = {
+          t: 'n',
+          f: 'SUM(B2:B999)',
+          v: calculatedBalance,
+          z: '#,##0.00',
+          s: {
+            font: { bold: true, sz: 12 },
+            alignment: { horizontal: 'center', vertical: 'center' }
+          }
+        };
+
+        // เพิ่มแผ่นงานทั้ง 2 แผ่นลงในไฟล์เดียวกัน (เหมือนกดปุ่ม + ใน Excel)
+        XLSX.utils.book_append_sheet(wb, ws1, "ตารางเช็คยอด");
+        XLSX.utils.book_append_sheet(wb, ws2, "รายการใช้จ่าย");
+
         XLSX.writeFile(wb, filename);
         showToast('ดาวน์โหลดไฟล์ Excel เรียบร้อยแล้ว');
       } else {
         // Fallback เป็น CSV เข้ารหัส UTF-8 BOM สำหรับเปิดใน Excel
-        const csvRows = [headers, ...rows].map(r => r.map(csvCell).join(',')).join('\r\n');
-        downloadCSV(`ตารางเช็คยอด_BEC_BA_69_${formatDateForFile()}.csv`, csvRows);
+        const csvRows1 = [headers1, ...rows1].map(r => r.map(csvCell).join(',')).join('\r\n');
+        downloadCSV(`ตารางเช็คยอด_BEC_BA_69_${formatDateForFile()}.csv`, csvRows1);
         showToast('ดาวน์โหลดไฟล์เรียบร้อยแล้ว');
       }
     } catch (e) {
