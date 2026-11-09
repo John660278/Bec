@@ -829,6 +829,90 @@
       gap: 0.5rem;
     }
 
+    /* ─── EXPORT MODAL STYLES ─── */
+    .export-dialog {
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      max-width: 580px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: var(--shadow-float);
+      position: relative;
+      border: 1px solid var(--border);
+    }
+
+    .export-option-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem 1.25rem;
+      background: #fafbfc;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.85rem;
+      transition: all 140ms ease;
+    }
+
+    .export-option-card:hover {
+      border-color: var(--accent);
+      background: #ffffff;
+      box-shadow: var(--shadow-card);
+    }
+
+    .export-card-info {
+      text-align: left;
+      flex: 1;
+    }
+
+    .export-card-title {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.25rem;
+      flex-wrap: wrap;
+    }
+
+    .export-card-desc {
+      font-size: 0.76rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .export-all-box {
+      margin-top: 1.25rem;
+      padding-top: 1.1rem;
+      border-top: 1px dashed var(--border-dark);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .export-notice {
+      font-size: 0.72rem;
+      color: var(--muted);
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 0.85rem;
+      text-align: left;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 480px) {
+      .export-option-card {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .export-option-card button {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
     /* ─── TOAST NOTIFICATION ─── */
     #toast {
       position: fixed;
@@ -1039,6 +1123,13 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
         รายรับ / รายจ่าย
       </div>
+
+      <div class="nav-header-label" style="margin-top:0.75rem;">ส่งมอบงาน</div>
+
+      <div class="nav-link nav-item" onclick="openExportModal()" style="color:var(--accent); font-weight:700;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        ส่งออก Excel (Handover)
+      </div>
     </nav>
 
     <div class="sidebar-user">
@@ -1066,6 +1157,10 @@
           <p>สรุปยอดกองทุน ธุรกรรม และการตรวจสอบสลิปประจำรุ่น</p>
         </div>
         <div class="page-action-row">
+          <button class="btn btn-ghost" onclick="openExportModal()" title="ส่งออกไฟล์ Excel สำหรับส่งมอบงาน">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            ส่งออก Excel
+          </button>
           <button class="btn btn-ghost" onclick="switchView('finance', document.querySelector('[data-view=finance]'))">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
             บันทึกรับ-จ่าย
@@ -1200,10 +1295,16 @@
           <h1>ตรวจสอบสลิปโอนเงิน</h1>
           <p>ตรวจสอบหลักฐานและอนุมัติยอดการชำระเงินของนิสิต</p>
         </div>
-        <button class="btn btn-ghost" onclick="fetchPaymentsData()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
-          รีเฟรชข้อมูล
-        </button>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+          <button class="btn btn-ghost" onclick="fetchPaymentsData()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+            รีเฟรชข้อมูล
+          </button>
+          <button class="btn btn-ghost" onclick="openExportModal()" title="ส่งออกประวัติสลิปทั้งหมดเป็น Excel">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            ส่งออกสลิป Excel
+          </button>
+        </div>
       </div>
 
       <div style="margin-bottom: 1rem;">
@@ -1246,10 +1347,16 @@
           <h1>ตารางเช็คยอดนิสิต (Matrix)</h1>
           <p>สรุปการชำระเงินของนิสิตทุกคนเทียบกับรอบเก็บเงินทั้งหมด</p>
         </div>
-        <button class="btn btn-ghost" onclick="syncStudentMatrix(true)" id="btnSyncMatrix">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
-          รีเฟรชและคำนวณใหม่
-        </button>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+          <button class="btn btn-ghost" onclick="syncStudentMatrix(true)" id="btnSyncMatrix">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+            รีเฟรชตาราง
+          </button>
+          <button class="btn btn-primary" onclick="openExportModal()" title="ส่งออกตารางเช็คยอดนิสิตเป็น Excel สำหรับส่งมอบงาน">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            ส่งออกตาราง Excel
+          </button>
+        </div>
       </div>
 
       <div class="ledger-container">
@@ -1276,6 +1383,10 @@
           <h1>รายรับ / รายจ่าย</h1>
           <p>บันทึกเงินสนับสนุน เงินสปอนเซอร์ และค่าใช้จ่ายกิจกรรมสาขา</p>
         </div>
+        <button class="btn btn-ghost" onclick="openExportModal()" title="ส่งออกสมุดบัญชีรายรับ-รายจ่ายเป็น Excel">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          ส่งออกบัญชี Excel
+        </button>
       </div>
 
       <div class="filter-tabs" style="margin-bottom: 1.5rem;">
@@ -1388,6 +1499,90 @@
     </div>
     <div class="lightbox-footer" id="slipModalFooter">
       <button class="btn btn-ghost btn-sm" onclick="closeSlipModal()">ปิด</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── DATA EXPORT & HANDOVER MODAL ─── -->
+<div class="lightbox-modal" id="exportModal" onclick="closeExportModal(event)">
+  <div class="export-dialog" onclick="event.stopPropagation()">
+    <div class="lightbox-header">
+      <div style="display:flex;align-items:center;gap:0.6rem;">
+        <div style="width:34px;height:34px;border-radius:10px;background:#f3e8ff;color:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </div>
+        <div>
+          <div class="lightbox-title" style="font-size:0.95rem;">ชุดส่งออกข้อมูลการเงิน (Handover Kit)</div>
+          <div style="font-size:0.72rem;color:var(--muted);font-weight:500;">ส่งมอบงานเหรัญญิกรุ่นถัดไป หรือสำรองไฟล์ตาราง Excel</div>
+        </div>
+      </div>
+      <button class="btn-ghost btn-sm" onclick="closeExportModal()" style="font-size:1.1rem;padding:0.2rem 0.5rem;">✕</button>
+    </div>
+
+    <div class="lightbox-body" style="text-align:left;padding:1.25rem;">
+      <!-- Option 1: Student Matrix -->
+      <div class="export-option-card">
+        <div class="export-card-info">
+          <div class="export-card-title">
+            <span>📊 ตารางเช็คยอดนิสิตทุกคน (Matrix Ledger)</span>
+            <span class="badge" style="background:#fdf2f8;color:#ec4899;border:1px solid #fbcfe8;font-size:0.65rem;padding:2px 8px;border-radius:9999px;">แนะนำสำหรับเหรัญญิก</span>
+          </div>
+          <div class="export-card-desc">
+            สรุปรายชื่อนิสิตครบ 103 คน พร้อมยอดชำระแต่ละรอบกิจกรรม ยอดค้างชำระ และสถานะรายคน พร้อมคำนวณผลรวมอัตโนมัติ
+          </div>
+        </div>
+        <button class="btn btn-primary btn-sm" id="btnExportMatrix" onclick="exportStudentMatrixCSV()" style="white-space:nowrap;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          ดาวน์โหลด
+        </button>
+      </div>
+
+      <!-- Option 2: Finance Ledger -->
+      <div class="export-option-card">
+        <div class="export-card-info">
+          <div class="export-card-title">
+            <span>💰 สมุดบัญชีรายรับ - รายจ่ายกองทุนสาขา</span>
+          </div>
+          <div class="export-card-desc">
+            บันทึกการเงินเข้า-ออกกองทุนทั้งหมด เรียงตามวันเวลา พร้อมยอดคงเหลือสะสมสุทธิ และลิงก์สลิปหลักฐาน
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="btnExportFinance" onclick="exportFinanceLedgerCSV()" style="white-space:nowrap;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          ดาวน์โหลด
+        </button>
+      </div>
+
+      <!-- Option 3: All Transactions -->
+      <div class="export-option-card">
+        <div class="export-card-info">
+          <div class="export-card-title">
+            <span>🧾 ประวัติธุรกรรมการชำระเงินทุกรายการ</span>
+          </div>
+          <div class="export-card-desc">
+            รายการส่งสลิปของนิสิตทุกรายการ พร้อมยอดเงิน ค่าปรับ วันที่ชำระ สถานะอนุมัติ และลิงก์สลิป
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="btnExportPayments" onclick="exportPaymentsHistoryCSV()" style="white-space:nowrap;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          ดาวน์โหลด
+        </button>
+      </div>
+
+      <div class="export-all-box">
+        <button class="btn btn-primary" id="btnExportAll" onclick="exportAllHandoverPackage()" style="width:100%;justify-content:center;padding:0.75rem 1rem;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          ดาวน์โหลดทั้ง 3 ไฟล์ครบชุด (One-Click Handover)
+        </button>
+
+        <div class="export-notice">
+          <strong>💡 เคล็ดลับการเปิดไฟล์:</strong> ไฟล์ทั้งหมดเข้ารหัสด้วย UTF-8 with BOM สามารถเปิดด้วย <strong>Microsoft Excel (Windows & Mac)</strong> หรือ <strong>Google Sheets</strong> ได้ทันที โดยภาษาไทยจะแสดงผลถูกต้องคมชัด ไม่เป็นภาษาต่างดาว
+        </div>
+      </div>
+    </div>
+
+    <div class="lightbox-footer">
+      <button class="btn btn-ghost btn-sm" onclick="closeExportModal()">ปิดหน้าต่าง</button>
     </div>
   </div>
 </div>
@@ -2194,6 +2389,370 @@
       showToast('เชื่อมต่อล้มเหลว: ' + e.message);
     }
     finally { if (btn) { btn.disabled = false; btn.textContent = 'บันทึกรายรับ'; } }
+  }
+
+  // ─── EXPORT & HANDOVER TOOL (EXCEL / CSV) ───
+  function openExportModal() {
+    const modal = document.getElementById('exportModal');
+    if (modal) modal.classList.add('open');
+  }
+
+  function closeExportModal(e) {
+    if (e && e.target !== e.currentTarget && e.target.tagName !== 'BUTTON') return;
+    const modal = document.getElementById('exportModal');
+    if (modal) modal.classList.remove('open');
+  }
+
+  function formatDateForFile(d = new Date()) {
+    const pad = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
+  }
+
+  function formatDateTime(val) {
+    if (!val) return '-';
+    const d = new Date(val);
+    if (isNaN(d.getTime())) return String(val);
+    const pad = n => String(n).padStart(2, '0');
+    return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+
+  function csvCell(val) {
+    if (val === null || val === undefined) return '""';
+    let str = String(val).trim().replace(/"/g, '""');
+    return `"${str}"`;
+  }
+
+  function downloadCSV(filename, csvContent) {
+    const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  async function exportStudentMatrixCSV() {
+    const btn = document.getElementById('btnExportMatrix');
+    const origText = btn ? btn.innerHTML : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'กำลังส่งออก...'; }
+
+    try {
+      showToast('กำลังประมวลผลตารางนิสิต...');
+      const [usersSnap, evSnap, paySnap] = await Promise.all([
+        db.collection('users').where('role', '==', 'Student').get(),
+        db.collection('events').get(),
+        db.collection('payments').get()
+      ]);
+
+      const students = usersSnap.docs.map(d => d.data());
+      const events = evSnap.docs.map(d => d.data());
+      const payments = paySnap.docs.map(d => d.data());
+
+      events.sort((a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0));
+      students.sort((a, b) => (a.studentId || '').localeCompare(b.studentId || '', undefined, { numeric: true }));
+
+      const headers = ['ลำดับ', 'รหัสนิสิต', 'ชื่อ-นามสกุล', 'อีเมล'];
+      events.forEach(ev => {
+        headers.push(`${ev.title} (฿${Number(ev.baseAmount || 0).toLocaleString()})`);
+      });
+      headers.push('จำนวนรอบที่ค้างชำระ (รอบ)', 'ยอดค้างชำระรวม (บาท)', 'ยอดชำระแล้วรวม (บาท)', 'สถานะภาพรวม');
+
+      const csvRows = [];
+      csvRows.push(headers.map(csvCell).join(','));
+
+      const eventTotals = new Array(events.length).fill(0);
+      let grandTotalUnpaidCount = 0;
+      let grandTotalUnpaidAmount = 0;
+      let grandTotalPaidAmount = 0;
+
+      students.forEach((stu, idx) => {
+        let unpaidCount = 0;
+        let unpaidAmount = 0;
+        let paidTotal = 0;
+        const rowData = [
+          idx + 1,
+          stu.studentId || '-',
+          stu.name || '-',
+          stu.email || '-'
+        ];
+
+        events.forEach((ev, evIdx) => {
+          const userPays = payments.filter(p =>
+            ((p.email && p.email === stu.email) || (p.studentId && stu.studentId && p.studentId === stu.studentId)) &&
+            (p.eventId === ev.eventId || p.eventId === ev.id)
+          );
+          const paidPay = userPays.find(p => p.status === 'Paid');
+          const pendingPay = userPays.find(p => p.status === 'Pending');
+          const pay = paidPay || pendingPay || userPays[0];
+
+          if (pay && pay.status === 'Paid') {
+            const amount = Number(pay.paidAmount || pay.totalAmount || ev.baseAmount || 0);
+            paidTotal += amount;
+            eventTotals[evIdx] += amount;
+            rowData.push(amount.toFixed(2));
+          } else if (pay && pay.status === 'Pending') {
+            unpaidCount++;
+            unpaidAmount += Number(ev.baseAmount || 0);
+            rowData.push('รอตรวจสอบ');
+          } else {
+            unpaidCount++;
+            unpaidAmount += Number(ev.baseAmount || 0);
+            rowData.push('ค้างชำระ');
+          }
+        });
+
+        grandTotalUnpaidCount += unpaidCount;
+        grandTotalUnpaidAmount += unpaidAmount;
+        grandTotalPaidAmount += paidTotal;
+
+        rowData.push(unpaidCount);
+        rowData.push(unpaidAmount.toFixed(2));
+        rowData.push(paidTotal.toFixed(2));
+        rowData.push(unpaidCount === 0 ? 'ชำระครบถ้วน' : `ค้างชำระ ${unpaidCount} รอบ`);
+
+        csvRows.push(rowData.map(csvCell).join(','));
+      });
+
+      // Total Row
+      const totalRow = ['รวมทั้งสิ้น', '-', '-', '-'];
+      eventTotals.forEach(tot => totalRow.push(tot.toFixed(2)));
+      totalRow.push(grandTotalUnpaidCount);
+      totalRow.push(grandTotalUnpaidAmount.toFixed(2));
+      totalRow.push(grandTotalPaidAmount.toFixed(2));
+      totalRow.push('-');
+      csvRows.push(totalRow.map(csvCell).join(','));
+
+      const filename = `ตารางเช็คยอดกองทุน_BEC_BA_69_${formatDateForFile()}.csv`;
+      downloadCSV(filename, csvRows.join('\r\n'));
+      showToast('✓ ดาวน์โหลดตารางเช็คยอดนิสิตสำเร็จ');
+    } catch (e) {
+      console.error('exportStudentMatrixCSV error:', e);
+      showToast('เกิดข้อผิดพลาดในการส่งออกข้อมูล');
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = origText; }
+    }
+  }
+
+  async function exportFinanceLedgerCSV() {
+    const btn = document.getElementById('btnExportFinance');
+    const origText = btn ? btn.innerHTML : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'กำลังส่งออก...'; }
+
+    try {
+      showToast('กำลังประมวลผลบัญชีรายรับ-รายจ่าย...');
+      const [expSnap, incSnap, paySnap] = await Promise.all([
+        db.collection('expenses').get(),
+        db.collection('incomes').get(),
+        db.collection('payments').where('status', '==', 'Paid').get()
+      ]);
+
+      const items = [];
+
+      // 1. Paid student payments
+      paySnap.docs.forEach(d => {
+        const p = d.data();
+        const dateVal = p.paidAt || p.createdAt || '';
+        items.push({
+          date: dateVal,
+          type: 'รายรับ (เงินกองทุนนิสิต)',
+          title: `${p.eventTitle || 'กองทุนสาขา'} - ${p.name || ''} (${p.studentId || p.email || ''})`,
+          income: Number(p.paidAmount || p.amount || 0),
+          expense: 0,
+          receiptUrl: p.slipUrl || ''
+        });
+      });
+
+      // 2. Incomes
+      incSnap.docs.forEach(d => {
+        const inc = d.data();
+        const dateVal = inc.date || inc.timestamp || inc.createdAt || '';
+        items.push({
+          date: dateVal,
+          type: 'รายรับ (เงินสนับสนุน/สปอนเซอร์)',
+          title: inc.source || inc.title || 'รายรับอื่นๆ',
+          income: Number(inc.amount || 0),
+          expense: 0,
+          receiptUrl: inc.receiptUrl || ''
+        });
+      });
+
+      // 3. Expenses
+      expSnap.docs.forEach(d => {
+        const exp = d.data();
+        const dateVal = exp.date || exp.timestamp || exp.createdAt || '';
+        items.push({
+          date: dateVal,
+          type: 'รายจ่าย (กิจกรรมสาขา)',
+          title: exp.title || 'รายจ่าย',
+          income: 0,
+          expense: Number(exp.amount || 0),
+          receiptUrl: exp.receiptUrl || ''
+        });
+      });
+
+      // Sort chronological (oldest to newest) to calculate running balance
+      items.sort((a, b) => new Date(a.date || 0) - new Date(b.date || 0));
+
+      const headers = [
+        'ลำดับ',
+        'วันเวลา',
+        'ประเภทรายการ',
+        'รายละเอียดรายการ',
+        'รายรับ (บาท)',
+        'รายจ่าย (บาท)',
+        'ยอดเงินคงเหลือสะสม (บาท)',
+        'ลิงก์หลักฐาน/สลิป'
+      ];
+
+      const csvRows = [];
+      csvRows.push(headers.map(csvCell).join(','));
+
+      let runningBalance = 0;
+      let totalIncome = 0;
+      let totalExpense = 0;
+
+      items.forEach((item, idx) => {
+        runningBalance += (item.income - item.expense);
+        totalIncome += item.income;
+        totalExpense += item.expense;
+
+        const rowData = [
+          idx + 1,
+          formatDateTime(item.date),
+          item.type,
+          item.title,
+          item.income > 0 ? item.income.toFixed(2) : '0.00',
+          item.expense > 0 ? item.expense.toFixed(2) : '0.00',
+          runningBalance.toFixed(2),
+          item.receiptUrl || '-'
+        ];
+        csvRows.push(rowData.map(csvCell).join(','));
+      });
+
+      // Summary row
+      csvRows.push([
+        'รวมทั้งสิ้น',
+        '-',
+        '-',
+        'สรุปยอดรวมกองทุนสาขา',
+        totalIncome.toFixed(2),
+        totalExpense.toFixed(2),
+        runningBalance.toFixed(2),
+        '-'
+      ].map(csvCell).join(','));
+
+      const filename = `สมุดบัญชีรายรับรายจ่าย_BEC_BA_69_${formatDateForFile()}.csv`;
+      downloadCSV(filename, csvRows.join('\r\n'));
+      showToast('✓ ดาวน์โหลดสมุดบัญชีรายรับ-รายจ่ายสำเร็จ');
+    } catch (e) {
+      console.error('exportFinanceLedgerCSV error:', e);
+      showToast('เกิดข้อผิดพลาดในการส่งออกข้อมูล');
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = origText; }
+    }
+  }
+
+  async function exportPaymentsHistoryCSV() {
+    const btn = document.getElementById('btnExportPayments');
+    const origText = btn ? btn.innerHTML : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'กำลังส่งออก...'; }
+
+    try {
+      showToast('กำลังประมวลผลประวัติการชำระเงิน...');
+      const snap = await db.collection('payments').orderBy('paidAt', 'desc').get().catch(() => db.collection('payments').get());
+      const payments = snap.docs.map(d => d.data());
+
+      payments.sort((a, b) => new Date(b.paidAt || b.createdAt || 0) - new Date(a.paidAt || a.createdAt || 0));
+
+      const headers = [
+        'ลำดับ',
+        'วันเวลาที่โอนเงิน',
+        'รหัสนิสิต',
+        'ชื่อ-นามสกุล',
+        'อีเมล',
+        'รอบกิจกรรม',
+        'ยอดที่ชำระ (บาท)',
+        'ค่าปรับ (บาท)',
+        'สถานะการชำระ',
+        'ลิงก์สลิปโอนเงิน',
+        'รหัสอ้างอิงธุรกรรม'
+      ];
+
+      const csvRows = [];
+      csvRows.push(headers.map(csvCell).join(','));
+
+      let totalPaid = 0;
+      let totalPending = 0;
+
+      payments.forEach((p, idx) => {
+        const amount = Number(p.paidAmount || p.amount || 0);
+        if (p.status === 'Paid') totalPaid += amount;
+        else totalPending += amount;
+
+        const rowData = [
+          idx + 1,
+          formatDateTime(p.paidAt || p.createdAt),
+          p.studentId || '-',
+          p.name || '-',
+          p.email || '-',
+          p.eventTitle || p.eventId || '-',
+          amount.toFixed(2),
+          Number(p.penalty || 0).toFixed(2),
+          p.status === 'Paid' ? 'ชำระแล้ว (อนุมัติ)' : (p.status === 'Pending' ? 'รอตรวจสอบ' : p.status),
+          p.slipUrl || '-',
+          p.paymentId || p.id || '-'
+        ];
+        csvRows.push(rowData.map(csvCell).join(','));
+      });
+
+      // Summary row
+      csvRows.push([
+        'รวมทั้งสิ้น',
+        '-',
+        '-',
+        `รวมทั้งหมด ${payments.length} รายการ`,
+        '-',
+        `ชำระแล้ว: ฿${totalPaid.toFixed(2)} | รอตรวจ: ฿${totalPending.toFixed(2)}`,
+        totalPaid.toFixed(2),
+        '-',
+        '-',
+        '-',
+        '-'
+      ].map(csvCell).join(','));
+
+      const filename = `ประวัติการชำระเงินทั้งหมด_BEC_BA_69_${formatDateForFile()}.csv`;
+      downloadCSV(filename, csvRows.join('\r\n'));
+      showToast('✓ ดาวน์โหลดประวัติการชำระเงินสำเร็จ');
+    } catch (e) {
+      console.error('exportPaymentsHistoryCSV error:', e);
+      showToast('เกิดข้อผิดพลาดในการส่งออกข้อมูล');
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = origText; }
+    }
+  }
+
+  async function exportAllHandoverPackage() {
+    const btn = document.getElementById('btnExportAll');
+    const origText = btn ? btn.innerHTML : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'กำลังเตรียมดาวน์โหลดครบชุด...'; }
+
+    try {
+      showToast('📥 เริ่มดาวน์โหลดชุดข้อมูลส่งมอบงานครบทั้ง 3 ไฟล์...');
+      await exportStudentMatrixCSV();
+      await new Promise(r => setTimeout(r, 600));
+      await exportFinanceLedgerCSV();
+      await new Promise(r => setTimeout(r, 600));
+      await exportPaymentsHistoryCSV();
+      showToast('✅ ดาวน์โหลดชุดส่งมอบงานครบทั้ง 3 ไฟล์เรียบร้อยแล้ว!');
+    } catch (e) {
+      console.error('exportAllHandoverPackage error:', e);
+      showToast('เกิดข้อผิดพลาดในการดาวน์โหลดชุดรวม');
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = origText; }
+    }
   }
 
   // ─── UTILS ───
