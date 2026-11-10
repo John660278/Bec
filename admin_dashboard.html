@@ -1233,7 +1233,7 @@
       <div class="brand-logo-mark">NU</div>
       <div class="brand-texts">
         <div class="brand-name">BEC BA 69</div>
-        <div class="brand-badge">Treasury Console</div>
+        <div class="brand-badge">ระบบแอดมิน</div>
       </div>
     </div>
 
@@ -1269,7 +1269,7 @@
 
       <div class="nav-link nav-item" onclick="exportStudentExcel()" style="font-weight:700; color:var(--text);">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        ส่งออก Excel
+        ดาวน์โหลด Excel
       </div>
     </nav>
 
@@ -1296,20 +1296,6 @@
         <div class="page-title-group">
           <h1>ภาพรวมการเงินสาขา</h1>
           <p>สรุปยอดกองทุน ธุรกรรม และการตรวจสอบสลิปประจำรุ่น</p>
-        </div>
-        <div class="page-action-row">
-          <button class="btn btn-ghost" onclick="exportStudentExcel()" title="ส่งออกไฟล์ Excel ตารางเช็คยอดนิสิต">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            ส่งออก Excel
-          </button>
-          <button class="btn btn-ghost" onclick="switchView('finance', document.querySelector('[data-view=finance]'))">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-            บันทึกรับ-จ่าย
-          </button>
-          <button class="btn btn-primary" onclick="switchView('events', document.querySelector('[data-view=events]'))">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            สร้างรอบใหม่
-          </button>
         </div>
       </div>
 
@@ -1436,14 +1422,10 @@
           <h1>ตรวจสอบสลิปโอนเงิน</h1>
           <p>ตรวจสอบหลักฐานและอนุมัติยอดการชำระเงินของนิสิต</p>
         </div>
-        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+        <div>
           <button class="btn btn-ghost" onclick="fetchPaymentsData()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
             รีเฟรชข้อมูล
-          </button>
-          <button class="btn btn-ghost" onclick="exportStudentExcel()" title="ส่งออกไฟล์ Excel ตารางเช็คยอดนิสิต">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            ส่งออก Excel
           </button>
         </div>
       </div>
@@ -1488,14 +1470,10 @@
           <h1>ตารางเช็คยอดนิสิต (Matrix)</h1>
           <p>สรุปการชำระเงินของนิสิตทุกคนเทียบกับรอบเก็บเงินทั้งหมด</p>
         </div>
-        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+        <div>
           <button class="btn btn-ghost" onclick="syncStudentMatrix(true)" id="btnSyncMatrix">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
             รีเฟรชตาราง
-          </button>
-          <button class="btn btn-primary" onclick="exportStudentExcel()" title="ส่งออกตารางเช็คยอดนิสิตเป็นไฟล์ Excel">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            ส่งออก Excel
           </button>
         </div>
       </div>
@@ -1524,10 +1502,6 @@
           <h1>รายรับ / รายจ่าย</h1>
           <p>บันทึกเงินสนับสนุน เงินสปอนเซอร์ และค่าใช้จ่ายกิจกรรมสาขา</p>
         </div>
-        <button class="btn btn-ghost" onclick="exportStudentExcel()" title="ส่งออกตารางเช็คยอดนิสิตเป็นไฟล์ Excel">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          ส่งออก Excel
-        </button>
       </div>
 
       <div class="filter-tabs" style="margin-bottom: 1.5rem;">
