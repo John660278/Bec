@@ -8,7 +8,7 @@ window.myAppDb = window.supabase.createClient(window.SUPABASE_URL, window.SUPABA
 window.MAINTENANCE_CONFIG = {
     enabled: true,
     title: 'ปิดปรับปรุงชั่วคราว',
-    subtitle: 'ระบบกำลังดำเนินการปรับปรุงระบบความปลอดภัย',
+    subtitle: 'กำลังปรับเปลี่ยนระบบdatabaseอยู่เด้อพี่น้อง',
     reopenDate: 'วันที่ 11 พ.ย.',
     reopenTime: '11:11 น.'
 };
