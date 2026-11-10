@@ -949,10 +949,223 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        /* ─── MAINTENANCE MODE STYLES ─── */
+        body.in-maintenance .google-btn-wrapper {
+            display: none !important;
+        }
+
+        .maintenance-box {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            text-align: center;
+            gap: 0.65rem;
+            animation: fadeInUp 0.4s ease forwards;
+        }
+
+        body.in-maintenance .maintenance-box {
+            display: flex !important;
+        }
+
+        body.admin-unlocked .google-btn-wrapper {
+            display: flex !important;
+        }
+
+        body.admin-unlocked .maintenance-box {
+            display: none !important;
+        }
+
+        .maintenance-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 4px 14px;
+            border-radius: 9999px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulseDot 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.35; transform: scale(0.75); }
+        }
+
+        .maintenance-title {
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .maintenance-time-card {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.82rem;
+            line-height: 1.35;
+            width: 100%;
+            max-width: 320px;
+            box-sizing: border-box;
+        }
+
+        .maintenance-time-card strong {
+            font-weight: 700;
+        }
+
+        .btn-admin-bypass {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.72rem;
+            text-decoration: underline;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+            margin-top: 4px;
+            padding: 4px 8px;
+        }
+
+        .btn-admin-bypass:hover {
+            opacity: 0.9;
+        }
+
+        /* THEME 4: BLACK MAINTENANCE */
+        .black-card .maintenance-pill {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.35);
+        }
+        .black-card .pulse-dot {
+            background: #f59e0b;
+            box-shadow: 0 0 8px #f59e0b;
+        }
+        .black-card .maintenance-title {
+            color: #e4e4e7;
+        }
+        .black-card .maintenance-time-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #d4d4d8;
+        }
+        .black-card .maintenance-time-card strong {
+            color: #fbbf24;
+        }
+        .black-card .btn-admin-bypass {
+            color: #a1a1aa;
+        }
+
+        /* THEME 1: KUROMI MAINTENANCE */
+        .kuromi-card .maintenance-pill {
+            background: rgba(236, 72, 153, 0.2);
+            color: #f472b6;
+            border: 1px solid rgba(236, 72, 153, 0.4);
+        }
+        .kuromi-card .pulse-dot {
+            background: #ec4899;
+            box-shadow: 0 0 8px #ec4899;
+        }
+        .kuromi-card .maintenance-title {
+            color: #fce7f3;
+        }
+        .kuromi-card .maintenance-time-card {
+            background: rgba(42, 22, 61, 0.6);
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            color: #fdf2f8;
+        }
+        .kuromi-card .maintenance-time-card strong {
+            color: #f472b6;
+        }
+        .kuromi-card .btn-admin-bypass {
+            color: #f472b6;
+        }
+
+        /* THEME 2: VINTAGE MAINTENANCE */
+        .vintage-card .maintenance-pill {
+            background: rgba(120, 53, 15, 0.15);
+            color: #78350f;
+            border: 1px solid rgba(120, 53, 15, 0.35);
+            font-family: 'Special Elite', 'Prompt', serif;
+        }
+        .vintage-card .pulse-dot {
+            background: #b45309;
+        }
+        .vintage-card .maintenance-title {
+            color: #292524;
+            font-family: 'Playfair Display', 'Prompt', serif;
+            font-weight: 700;
+        }
+        .vintage-card .maintenance-time-card {
+            background: rgba(245, 240, 230, 0.7);
+            border: 1px dashed #78350f;
+            color: #44403c;
+        }
+        .vintage-card .maintenance-time-card strong {
+            color: #78350f;
+        }
+        .vintage-card .btn-admin-bypass {
+            color: #78350f;
+        }
+
+        /* THEME 3: MINECRAFT MAINTENANCE */
+        .minecraft-card .maintenance-box {
+            gap: 4px;
+            padding: 4px;
+        }
+        .minecraft-card .maintenance-pill {
+            background: #2b1d0c;
+            color: #facc15;
+            border: 2px solid #5c3c10;
+            font-family: 'Silkscreen', 'VT323', monospace;
+            font-size: 0.7rem;
+            padding: 2px 10px;
+        }
+        .minecraft-card .pulse-dot {
+            background: #ef4444;
+            border-radius: 0;
+        }
+        .minecraft-card .maintenance-title {
+            color: #ffffff;
+            font-family: 'Silkscreen', 'Prompt', monospace;
+            font-size: 0.75rem;
+            text-shadow: 2px 2px 0 #000;
+        }
+        .minecraft-card .maintenance-time-card {
+            background: #18140f;
+            border: 2px solid #3d2d1d;
+            color: #e2e8f0;
+            font-family: 'Silkscreen', 'Prompt', monospace;
+            font-size: 0.68rem;
+            padding: 4px 8px;
+        }
+        .minecraft-card .maintenance-time-card strong {
+            color: #facc15;
+        }
+        .minecraft-card .btn-admin-bypass {
+            color: #94a3b8;
+            font-family: 'Silkscreen', monospace;
+            font-size: 0.65rem;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="config.js?v=99"></script>
-    <script src="login.js?v=99"></script>
+    <script src="config.js?v=101"></script>
+    <script src="login.js?v=101"></script>
 </head>
 <body>
 
@@ -1076,6 +1289,18 @@
                 </button>
             </div>
 
+            <div class="maintenance-box">
+                <div class="maintenance-pill">
+                    <span class="pulse-dot"></span>
+                    <span>ปิดปรับปรุงชั่วคราว</span>
+                </div>
+                <div class="maintenance-title">ระบบกำลังอัปเดตความปลอดภัย</div>
+                <div class="maintenance-time-card">
+                    <span>เปิดให้บริการอีกครั้ง:<br><strong>วันที่ 11 พ.ย. เวลา 11:11 น.</strong></span>
+                </div>
+                <button type="button" onclick="toggleAdminLogin()" class="btn-admin-bypass">สำหรับผู้ดูแลระบบ</button>
+            </div>
+
             <div class="spinner-wrap" id="loadingHintKuromi">
                 <div class="spinner"></div>
                 <span>กำลังเปิดระบบ...</span>
@@ -1103,6 +1328,18 @@
                 </button>
             </div>
 
+            <div class="maintenance-box">
+                <div class="maintenance-pill">
+                    <span class="pulse-dot"></span>
+                    <span>ปิดปรับปรุงชั่วคราว</span>
+                </div>
+                <div class="maintenance-title">ระบบกำลังอัปเดตความปลอดภัย</div>
+                <div class="maintenance-time-card">
+                    <span>เปิดให้บริการอีกครั้ง:<br><strong>วันที่ 11 พ.ย. เวลา 11:11 น.</strong></span>
+                </div>
+                <button type="button" onclick="toggleAdminLogin()" class="btn-admin-bypass">สำหรับผู้ดูแลระบบ</button>
+            </div>
+
             <div class="spinner-wrap" id="loadingHintVintage">
                 <div class="spinner"></div>
                 <span>กำลังเปิดระบบ...</span>
@@ -1118,6 +1355,18 @@
                     <button type="button" class="minecraft-google-btn" onclick="signInWithGoogle()" aria-label="เข้าสู่ระบบด้วย Google" title="เข้าสู่ระบบด้วย Google">
                         <img src="assets/minecraft/mc_google_login_btn.png" alt="Login with Google" class="minecraft-google-btn-img">
                     </button>
+                </div>
+
+                <div class="maintenance-box">
+                    <div class="maintenance-pill">
+                        <span class="pulse-dot"></span>
+                        <span>ปิดปรับปรุงชั่วคราว</span>
+                    </div>
+                    <div class="maintenance-title">ระบบกำลังอัปเดตความปลอดภัย</div>
+                    <div class="maintenance-time-card">
+                        <span>เปิดอีกครั้ง:<br><strong>11 พ.ย. 11:11 น.</strong></span>
+                    </div>
+                    <button type="button" onclick="toggleAdminLogin()" class="btn-admin-bypass">สำหรับผู้ดูแลระบบ</button>
                 </div>
 
                 <div class="spinner-wrap" id="loadingHintMinecraft">
@@ -1149,6 +1398,18 @@
                         <span class="google-btn-secondary" style="color:#71717a;">nu.ac.th เท่านั้น</span>
                     </span>
                 </button>
+            </div>
+
+            <div class="maintenance-box">
+                <div class="maintenance-pill">
+                    <span class="pulse-dot"></span>
+                    <span>ปิดปรับปรุงชั่วคราว</span>
+                </div>
+                <div class="maintenance-title">ระบบกำลังอัปเดตความปลอดภัย</div>
+                <div class="maintenance-time-card">
+                    <span>เปิดให้บริการอีกครั้ง:<br><strong>วันที่ 11 พ.ย. เวลา 11:11 น.</strong></span>
+                </div>
+                <button type="button" onclick="toggleAdminLogin()" class="btn-admin-bypass">สำหรับผู้ดูแลระบบ</button>
             </div>
 
             <div class="spinner-wrap" id="loadingHintBlack">
@@ -1464,10 +1725,49 @@
             }
         }
 
+        // ─── MAINTENANCE MODE LOGIC ───
+        function checkMaintenance() {
+            const isMaintenance = window.MAINTENANCE_CONFIG && window.MAINTENANCE_CONFIG.enabled;
+            const urlParams = new URLSearchParams(window.location.search);
+            const adminParam = urlParams.get('admin');
+
+            if (isMaintenance) {
+                document.body.classList.add('in-maintenance');
+                if (adminParam === '1' || adminParam === 'true') {
+                    document.body.classList.add('admin-unlocked');
+                }
+            }
+        }
+
+        function toggleAdminLogin() {
+            document.body.classList.add('admin-unlocked');
+        }
+
+        // Run immediately when script evaluates
+        checkMaintenance();
+
         window.addEventListener('load', async () => {
+            checkMaintenance();
+
             const { data: { session } } = await window.myAppDb.auth.getSession();
             
             if (session) {
+                // If in maintenance mode, check if this user is Admin
+                if (window.MAINTENANCE_CONFIG && window.MAINTENANCE_CONFIG.enabled) {
+                    try {
+                        const userEmail = session.user.email;
+                        const { data } = await window.myAppDb.from('users').select('role').eq('email', userEmail).maybeSingle();
+                        if (!data || data.role !== 'Admin') {
+                            await window.myAppDb.auth.signOut();
+                            sessionStorage.removeItem('loggedInUser');
+                            return;
+                        }
+                    } catch (e) {
+                        console.error("Maintenance check error:", e);
+                        return;
+                    }
+                }
+
                 document.querySelectorAll('.google-btn-wrapper').forEach(bw => bw.style.display = 'none');
                 const hintHtml = '<div class="spinner"></div><span>กำลังตรวจสอบข้อมูล...</span>';
                 const h1 = document.getElementById('loadingHintKuromi');
@@ -1483,8 +1783,25 @@
                     handleSupabaseSession(session);
                 }
             } else {
-                window.myAppDb.auth.onAuthStateChange((event, session) => {
+                window.myAppDb.auth.onAuthStateChange(async (event, session) => {
                     if (event === 'SIGNED_IN' && session) {
+                        if (window.MAINTENANCE_CONFIG && window.MAINTENANCE_CONFIG.enabled) {
+                            try {
+                                const userEmail = session.user.email;
+                                const { data } = await window.myAppDb.from('users').select('role').eq('email', userEmail).maybeSingle();
+                                if (!data || data.role !== 'Admin') {
+                                    await window.myAppDb.auth.signOut();
+                                    sessionStorage.removeItem('loggedInUser');
+                                    alert('ระบบอยู่ระหว่างปิดปรับปรุงชั่วคราว เปิดให้บริการอีกครั้งวันที่ 11 พ.ย. เวลา 11:11 น.');
+                                    location.reload();
+                                    return;
+                                }
+                            } catch (e) {
+                                console.error("Maintenance check error:", e);
+                                return;
+                            }
+                        }
+
                         document.querySelectorAll('.google-btn-wrapper').forEach(bw => bw.style.display = 'none');
                         const hintHtml = '<div class="spinner"></div><span>กำลังตรวจสอบข้อมูล...</span>';
                         const h1 = document.getElementById('loadingHintKuromi');

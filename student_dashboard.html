@@ -4290,7 +4290,7 @@
 
 <!-- Supabase SDK & App Config -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js?v=99"></script>
+<script src="config.js?v=101"></script>
 <script src="supabase_wrapper.js?v=99"></script>
 
 <script>
@@ -4306,6 +4306,15 @@
 
   // ─── INITIALIZATION ───
   document.addEventListener('DOMContentLoaded', () => {
+    if (window.MAINTENANCE_CONFIG && window.MAINTENANCE_CONFIG.enabled) {
+      const rawUser = sessionStorage.getItem('loggedInUser');
+      const userObj = rawUser ? JSON.parse(rawUser) : null;
+      if (!userObj || userObj.role !== 'Admin') {
+        location.href = 'index.html';
+        return;
+      }
+    }
+
     const raw = sessionStorage.getItem('loggedInUser');
     if (!raw) { location.href = 'index.html'; return; }
     currentUser = JSON.parse(raw);
