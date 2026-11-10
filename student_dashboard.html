@@ -3890,6 +3890,62 @@
       border-color: transparent;
       box-shadow: 0 3px 10px rgba(124, 58, 237, 0.25);
     }
+
+    /* ─── TOAST NOTIFICATION STYLING (THEMED) ─── */
+    #appToast {
+      position: fixed;
+      bottom: 2.2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      padding: 0.75rem 1.4rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      z-index: 99999;
+      opacity: 0;
+      transition: opacity 220ms ease, transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      font-family: inherit;
+      white-space: nowrap;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* Kuromi Theme Toast */
+    [data-theme="kuromi"] #appToast,
+    #appToast.theme-kuromi {
+      background: linear-gradient(135deg, #1e112a, #2a163d);
+      color: #ffffff;
+      border: 1px solid rgba(244, 114, 182, 0.45);
+      box-shadow: 0 10px 25px rgba(30, 17, 42, 0.45);
+    }
+
+    /* Vintage Theme Toast */
+    [data-theme="vintage"] #appToast,
+    #appToast.theme-vintage {
+      background: linear-gradient(135deg, #432818, #2a180e);
+      color: #fdf6ec;
+      border: 1px solid rgba(212, 175, 115, 0.55);
+      box-shadow: 0 10px 25px rgba(42, 24, 14, 0.45);
+    }
+
+    /* Minecraft Theme Toast */
+    [data-theme="minecraft"] #appToast,
+    #appToast.theme-minecraft {
+      background: linear-gradient(135deg, #1b381e, #0f2411);
+      color: #f0fdf4;
+      border: 1.5px solid #4ade80;
+      box-shadow: 0 10px 25px rgba(15, 36, 17, 0.45);
+    }
+
+    /* Classic Black Theme Toast */
+    [data-theme="black"] #appToast,
+    #appToast.theme-black {
+      background: linear-gradient(135deg, #18181b, #09090b);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.85);
+    }
   </style>
 </head>
 <body>
@@ -4936,19 +4992,58 @@
     }
   }
 
-  // Toast helper
-  function showToast(msg) {
+  // Toast helper with instant theme color adaptation
+  function showToast(msg, targetTheme = null) {
     let t = document.getElementById('appToast');
     if (!t) {
       t = document.createElement('div');
       t.id = 'appToast';
-      t.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:linear-gradient(135deg, #1e112a, #2a163d);color:#fff;padding:0.75rem 1.35rem;border-radius:9999px;font-size:0.8rem;font-weight:700;z-index:999;box-shadow:0 10px 25px rgba(30,17,42,0.35);border:1px solid rgba(244,114,182,0.3);opacity:0;transition:all 200ms ease;pointer-events:none;font-family:inherit;';
       document.body.appendChild(t);
     }
+
+    const activeTheme = targetTheme || document.documentElement.getAttribute('data-theme') || (currentUser && currentUser.theme) || 'kuromi';
+
+    // Theme style mapping for instant visual update
+    const themeStyles = {
+      kuromi: {
+        bg: 'linear-gradient(135deg, #1e112a, #2a163d)',
+        color: '#ffffff',
+        border: '1px solid rgba(244, 114, 182, 0.45)',
+        shadow: '0 10px 25px rgba(30, 17, 42, 0.45)'
+      },
+      vintage: {
+        bg: 'linear-gradient(135deg, #432818, #2a180e)',
+        color: '#fdf6ec',
+        border: '1px solid rgba(212, 175, 115, 0.55)',
+        shadow: '0 10px 25px rgba(42, 24, 14, 0.45)'
+      },
+      minecraft: {
+        bg: 'linear-gradient(135deg, #1b381e, #0f2411)',
+        color: '#f0fdf4',
+        border: '1.5px solid #4ade80',
+        shadow: '0 10px 25px rgba(15, 36, 17, 0.45)'
+      },
+      black: {
+        bg: 'linear-gradient(135deg, #18181b, #09090b)',
+        color: '#ffffff',
+        border: '1px solid rgba(255, 255, 255, 0.28)',
+        shadow: '0 10px 28px rgba(0, 0, 0, 0.85)'
+      }
+    };
+
+    const s = themeStyles[activeTheme] || themeStyles.kuromi;
+    t.className = `theme-${activeTheme}`;
+    t.style.background = s.bg;
+    t.style.color = s.color;
+    t.style.border = s.border;
+    t.style.boxShadow = s.shadow;
+
     t.textContent = msg;
     t.style.opacity = '1';
     t.style.transform = 'translateX(-50%) translateY(0)';
-    setTimeout(() => {
+
+    if (t.toastTimer) clearTimeout(t.toastTimer);
+    t.toastTimer = setTimeout(() => {
       t.style.opacity = '0';
       t.style.transform = 'translateX(-50%) translateY(20px)';
     }, 2400);
@@ -5102,7 +5197,7 @@
       if (theme === 'kuromi') name = 'คุโรมิ';
       else if (theme === 'vintage') name = 'หนังสือพิมพ์วินเทจ';
       else if (theme === 'minecraft') name = 'มายคราฟ';
-      showToast(`เปลี่ยนเป็นธีม ${name} เรียบร้อยแล้ว`);
+      showToast(`เปลี่ยนเป็นธีม ${name} เรียบร้อยแล้ว`, theme);
     }
   }
 
