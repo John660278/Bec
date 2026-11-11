@@ -604,6 +604,7 @@
     document.body.style.overflow = '';
     currentPayment = null;
     resetUploadDropzone();
+    closeSlipLightbox(null, true);
   }
 
   function resetUploadDropzone() {
@@ -612,9 +613,13 @@
     const dropzone = document.getElementById('uploadArea');
     const filename = document.getElementById('uploadFilename');
     const input = document.getElementById('slipInput');
+    const thumb = document.getElementById('slipThumbPreview');
+    const lbImg = document.getElementById('slipLightboxImg');
     
     if (input) input.value = '';
     if (filename) filename.textContent = '';
+    if (thumb) thumb.src = '';
+    if (lbImg) lbImg.src = '';
     if (prompt) prompt.style.display = 'block';
     if (attached) attached.style.display = 'none';
     if (dropzone) dropzone.classList.remove('has-file');
@@ -626,17 +631,46 @@
     const attached = document.getElementById('uploadAttached');
     const dropzone = document.getElementById('uploadArea');
     const filename = document.getElementById('uploadFilename');
+    const thumb = document.getElementById('slipThumbPreview');
+    const lbImg = document.getElementById('slipLightboxImg');
 
     if (file) {
       if (filename) filename.textContent = file.name;
+      const previewUrl = URL.createObjectURL(file);
+      if (thumb) thumb.src = previewUrl;
+      if (lbImg) lbImg.src = previewUrl;
+
       if (prompt) prompt.style.display = 'none';
-      if (attached) attached.style.display = 'flex';
+      if (attached) attached.style.display = 'block';
       if (dropzone) dropzone.classList.add('has-file');
     } else {
       resetUploadDropzone();
     }
     setTimeout(updateVintageNewspaperAlignment, 30);
   }
+
+  window.openSlipLightbox = function(e) {
+    if (e) e.stopPropagation();
+    const lb = document.getElementById('slipLightbox');
+    if (lb) lb.classList.add('active');
+  };
+
+  window.closeSlipLightbox = function(e, force = false) {
+    if (!force && e && e.target && e.target.tagName === 'IMG') return;
+    const lb = document.getElementById('slipLightbox');
+    if (lb) lb.classList.remove('active');
+  };
+
+  window.reselectSlipFile = function(e) {
+    if (e) e.stopPropagation();
+    const input = document.getElementById('slipInput');
+    if (input) input.click();
+  };
+
+  window.removeSelectedSlip = function(e) {
+    if (e) e.stopPropagation();
+    resetUploadDropzone();
+  };
 
   // ─── SUBMIT SLIP ───
   async function submitSlip() {
