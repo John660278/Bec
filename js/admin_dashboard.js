@@ -809,7 +809,6 @@
     const prompt = document.getElementById(prefix + 'UploadPrompt');
     const attached = document.getElementById(prefix + 'UploadAttached');
     const filename = document.getElementById(prefix + 'FileName');
-    const previewWrapper = document.getElementById(prefix + 'PreviewWrapper');
     const previewImg = document.getElementById(prefix + 'Preview');
 
     if (!file) {
@@ -826,9 +825,7 @@
     reader.onload = e => {
       if (previewImg) {
         previewImg.src = e.target.result;
-        previewImg.style.display = 'block';
       }
-      if (previewWrapper) previewWrapper.style.display = 'block';
     };
     reader.readAsDataURL(file);
   }
@@ -839,7 +836,6 @@
     const prompt = document.getElementById(prefix + 'UploadPrompt');
     const attached = document.getElementById(prefix + 'UploadAttached');
     const filename = document.getElementById(prefix + 'FileName');
-    const previewWrapper = document.getElementById(prefix + 'PreviewWrapper');
     const previewImg = document.getElementById(prefix + 'Preview');
 
     if (input) input.value = '';
@@ -849,10 +845,21 @@
     if (dropzone) dropzone.classList.remove('has-file');
     if (previewImg) {
       previewImg.src = '';
-      previewImg.style.display = 'none';
     }
-    if (previewWrapper) previewWrapper.style.display = 'none';
   }
+
+  window.openAdminLightbox = function(prefix, e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    const previewImg = document.getElementById(prefix + 'Preview');
+    const filename = document.getElementById(prefix + 'FileName')?.textContent || 'หลักฐานที่แนบ';
+    const label = prefix === 'exp' ? 'ใบเสร็จรายจ่าย' : 'หลักฐานรายรับ';
+    if (previewImg && previewImg.src) {
+      openSlipModal(previewImg.src, `${label} (${filename})`, '');
+    }
+  };
 
   function fileToBlob(file) {
     return new Promise((resolve, reject) => {

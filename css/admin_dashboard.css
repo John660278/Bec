@@ -1274,6 +1274,7 @@
       border-color: #10b981;
       border-style: solid;
       background: #f0fdf4;
+      padding: 1.15rem 1rem;
     }
 
     .slip-upload-dropzone input[type="file"] {
@@ -1313,8 +1314,53 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      pointer-events: none;
       animation: uploadPopIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .admin-thumb-wrapper {
+      position: relative;
+      z-index: 10;
+      width: 105px;
+      height: 140px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1.5px solid #10b981;
+      background: #000000;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
+      cursor: pointer;
+      pointer-events: auto;
+      margin-bottom: 0.35rem;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .admin-thumb-wrapper:hover {
+      transform: scale(1.04);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+    }
+
+    .admin-thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .admin-thumb-overlay-hint {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0) 100%);
+      color: #ffffff;
+      padding: 1.25rem 4px 4px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      pointer-events: none;
+      letter-spacing: -0.01em;
     }
 
     @keyframes uploadPopIn {

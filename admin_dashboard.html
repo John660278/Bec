@@ -355,6 +355,14 @@
 
               <!-- Attached State (visible only when file selected) -->
               <div class="upload-attached" id="expUploadAttached" style="display: none;">
+                <div class="admin-thumb-wrapper" onclick="openAdminLightbox('exp', event)" title="แตะเพื่อดูรูปภาพขนาดเต็ม">
+                  <img id="expPreview" src="" alt="ตัวอย่างใบเสร็จ" class="admin-thumb-img" />
+                  <div class="admin-thumb-overlay-hint">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    <span>แตะดูรูปเต็ม</span>
+                  </div>
+                </div>
+
                 <div class="upload-attached-pill">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                   <span>แนบรูปใบเสร็จแล้ว</span>
@@ -362,12 +370,6 @@
                 <div class="upload-filename" id="expFileName"></div>
                 <div class="upload-change-hint">แตะเพื่อเปลี่ยนรูปใบเสร็จ</div>
               </div>
-            </div>
-
-            <!-- Preview Wrapper with remove button -->
-            <div id="expPreviewWrapper" style="display: none; margin-top: 0.75rem;">
-              <img id="expPreview" src="" alt="ตัวอย่างใบเสร็จ" style="max-width: 220px; max-height: 160px; border-radius: 8px; border: 1px solid var(--border); object-fit: cover; display: block;" />
-              <button type="button" class="btn btn-danger-ghost btn-sm" onclick="clearFile('exp')" style="margin-top: 6px; font-size: 0.75rem; padding: 2px 8px;">✕ นำรูปออก</button>
             </div>
           </div>
         </div>
@@ -406,6 +408,14 @@
 
               <!-- Attached State (visible only when file selected) -->
               <div class="upload-attached" id="incUploadAttached" style="display: none;">
+                <div class="admin-thumb-wrapper" onclick="openAdminLightbox('inc', event)" title="แตะเพื่อดูรูปภาพขนาดเต็ม">
+                  <img id="incPreview" src="" alt="ตัวอย่างหลักฐาน" class="admin-thumb-img" />
+                  <div class="admin-thumb-overlay-hint">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    <span>แตะดูรูปเต็ม</span>
+                  </div>
+                </div>
+
                 <div class="upload-attached-pill">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                   <span>แนบรูปหลักฐานแล้ว</span>
@@ -413,12 +423,6 @@
                 <div class="upload-filename" id="incFileName"></div>
                 <div class="upload-change-hint">แตะเพื่อเปลี่ยนรูปหลักฐาน</div>
               </div>
-            </div>
-
-            <!-- Preview Wrapper with remove button -->
-            <div id="incPreviewWrapper" style="display: none; margin-top: 0.75rem;">
-              <img id="incPreview" src="" alt="ตัวอย่างหลักฐาน" style="max-width: 220px; max-height: 160px; border-radius: 8px; border: 1px solid var(--border); object-fit: cover; display: block;" />
-              <button type="button" class="btn btn-danger-ghost btn-sm" onclick="clearFile('inc')" style="margin-top: 6px; font-size: 0.75rem; padding: 2px 8px;">✕ นำรูปออก</button>
             </div>
           </div>
         </div>
