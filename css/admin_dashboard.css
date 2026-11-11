@@ -710,6 +710,8 @@
       padding: 1.75rem;
       box-shadow: var(--shadow-subtle);
       margin-bottom: 2rem;
+      box-sizing: border-box;
+      max-width: 100%;
     }
 
     .form-card-title {
@@ -722,15 +724,22 @@
 
     .form-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 1.25rem;
       margin-bottom: 1.35rem;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
     }
 
     .form-group {
       display: flex;
       flex-direction: column;
       gap: 0.4rem;
+      min-width: 0;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
     }
 
     .form-group.full {
@@ -746,6 +755,7 @@
     }
 
     input, select, textarea {
+      box-sizing: border-box;
       background: #ffffff;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
@@ -756,6 +766,45 @@
       outline: none;
       transition: all 120ms ease;
       width: 100%;
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    /* Native Date input fixes for iPadOS & iOS Safari */
+    input[type="date"] {
+      -webkit-appearance: none;
+      appearance: none;
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      min-height: 42px;
+      height: 42px;
+      padding: 0.55rem 0.85rem;
+      line-height: normal;
+      background-color: #ffffff;
+      color: var(--text);
+      position: relative;
+      display: block;
+    }
+
+    input[type="date"]::-webkit-date-and-time-value {
+      text-align: left;
+      min-height: 1.3em;
+      margin: 0;
+      padding: 0;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+      opacity: 0.65;
+      padding: 2px;
+      margin-right: -2px;
+      transition: opacity 120ms ease;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator:hover {
+      opacity: 1;
     }
 
     input:focus, select:focus, textarea:focus {
@@ -1032,6 +1081,17 @@
       .btn-logout-sidebar {
         width: 28px;
         height: 28px;
+      }
+    }
+
+    /* ─── TABLET / IPAD PORTRAIT ADAPTATIONS (WIDTH <= 900PX) ─── */
+    @media (max-width: 900px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .form-card {
+        padding: 1.35rem 1.15rem;
       }
     }
 
