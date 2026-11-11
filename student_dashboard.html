@@ -603,7 +603,9 @@
 
       const payMap = {};
       (payData || []).forEach(d => {
-        payMap[d.event_id] = d;
+        if (!payMap[d.event_id] || d.status === 'Paid') {
+          payMap[d.event_id] = d;
+        }
       });
 
       const currentDate = new Date();

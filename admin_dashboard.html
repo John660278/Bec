@@ -702,7 +702,7 @@
   async function syncSystemStats() {
     try {
       const [paidRes, pendRes, incRes, expRes, evRes] = await Promise.all([
-        window.myAppDb.from('payments').select('paid_amount, amount').eq('status', 'Paid'),
+        window.myAppDb.from('payments').select('paid_amount').eq('status', 'Paid'),
         window.myAppDb.from('payments').select('id').eq('status', 'Pending'),
         window.myAppDb.from('incomes').select('amount'),
         window.myAppDb.from('expenses').select('amount'),
@@ -716,7 +716,7 @@
       const events = evRes.data || [];
 
       let totalPaidPayments = 0;
-      paidPayments.forEach(d => totalPaidPayments += (Number(d.paid_amount || d.amount) || 0));
+      paidPayments.forEach(d => totalPaidPayments += (Number(d.paid_amount) || 0));
 
       let totalIncome = 0;
       incomes.forEach(d => totalIncome += (Number(d.amount) || 0));
@@ -934,6 +934,7 @@
       showToast('ลบรอบเก็บเงินสำเร็จ');
       await fetchEventsData();
       await syncStudentMatrix();
+      loadOverview();
     } catch(e) {
       console.error(e);
       showToast('เกิดข้อผิดพลาดในการลบ');
@@ -967,11 +968,15 @@
           };
           events.forEach(ev => {
               const targetEvId = ev.eventId || ev.id;
-              const pay = payments.find(p => 
+              const userPays = payments.filter(p => 
                   ((p.email && stu.email && p.email.trim().toLowerCase() === stu.email.trim().toLowerCase()) ||
                    (p.studentId && stu.studentId && String(p.studentId).trim() === String(stu.studentId).trim())) &&
                   (p.eventId === targetEvId || p.eventId === ev.id)
               );
+              const paidPay = userPays.find(p => p.status === 'Paid');
+              const pendingPay = userPays.find(p => p.status === 'Pending');
+              const pay = paidPay || pendingPay || userPays[0];
+
               if (pay) {
                   if (pay.status === 'Paid') {
                       row[ev.title] = pay.paidAmount || pay.totalAmount || ev.baseAmount;
@@ -1050,6 +1055,7 @@
       document.getElementById('evDueDate').value = '';
       await syncStudentMatrix();
       fetchEventsData();
+      loadOverview();
     } catch(e) {
       console.error(e);
       showToast('เชื่อมต่อล้มเหลว: ' + e.message);
@@ -1132,6 +1138,7 @@
       showToast('ลบรายการสำเร็จ');
       await fetchPaymentsData();
       await syncStudentMatrix();
+      loadOverview();
     } catch(e) {
       console.error(e);
       showToast('เกิดข้อผิดพลาดในการลบ');
