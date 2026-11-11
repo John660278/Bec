@@ -1054,19 +1054,6 @@
           });
         if (payErr) throw payErr;
 
-        try {
-          const { data: currentStats } = await window.myAppDb
-            .from('system_stats')
-            .select('pending_count')
-            .eq('id', 'overview')
-            .maybeSingle();
-          const newPending = (currentStats ? Number(currentStats.pending_count) || 0 : 0) + 1;
-          await window.myAppDb
-            .from('system_stats')
-            .update({ pending_count: newPending })
-            .eq('id', 'overview');
-        } catch(e) { console.error('Stats error:', e); }
-
       } catch (dbError) {
         console.error("Supabase Error:", dbError);
         throw new Error('บันทึกข้อมูลฐานข้อมูลไม่สำเร็จ: ' + dbError.message);
