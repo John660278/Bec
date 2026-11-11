@@ -1,7 +1,137 @@
   let currentUser = null;
   let allPayments = [];
   let paymentsCache = {};
+  let eventsCache = {};
+  let financesCache = {};
   let matrixFetched = false;
+  let confirmModalResolver = null;
+
+  function showActionConfirmModal({
+    type = 'danger',
+    title = 'ยืนยันการทำรายการ',
+    desc = 'โปรดตรวจสอบรายละเอียดก่อนดำเนินการ',
+    items = [],
+    warning = '',
+    info = '',
+    confirmText = 'ยืนยัน',
+    confirmBtnClass = 'btn-danger'
+  }) {
+    return new Promise((resolve) => {
+      confirmModalResolver = resolve;
+      const modal = document.getElementById('actionConfirmModal');
+      if (!modal) {
+        const detailsText = items.map(i => `${i.label}: ${i.value}`).join('\n');
+        const alertMsg = `${title}\n\n${detailsText}\n\n${warning || info || ''}`;
+        resolve(window.confirm(alertMsg));
+        return;
+      }
+
+      const iconBox = document.getElementById('confirmModalIconBox');
+      const titleEl = document.getElementById('confirmModalTitle');
+      const descEl = document.getElementById('confirmModalDesc');
+      const detailsEl = document.getElementById('confirmModalDetails');
+      const noteEl = document.getElementById('confirmModalNote');
+      const btnOk = document.getElementById('confirmModalBtnOk');
+      const btnCancel = document.getElementById('confirmModalBtnCancel');
+
+      if (iconBox) {
+        iconBox.className = `confirm-icon-box ${type}`;
+        if (type === 'danger') {
+          iconBox.innerHTML = `
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              <line x1="10" y1="11" x2="10" y2="17"></line>
+              <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>`;
+        } else {
+          iconBox.innerHTML = `
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>`;
+        }
+      }
+
+      if (titleEl) titleEl.textContent = title;
+      if (descEl) descEl.textContent = desc;
+
+      if (detailsEl) {
+        if (items && items.length > 0) {
+          detailsEl.style.display = 'flex';
+          detailsEl.innerHTML = items.map(item => `
+            <div class="confirm-detail-row">
+              <span class="confirm-detail-label">${item.label}</span>
+              <span class="confirm-detail-value ${item.highlight ? 'highlight' : ''}">${item.value}</span>
+            </div>
+          `).join('');
+        } else {
+          detailsEl.style.display = 'none';
+        }
+      }
+
+      if (noteEl) {
+        if (warning) {
+          noteEl.style.display = 'flex';
+          noteEl.className = 'confirm-note-box warning';
+          noteEl.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="flex-shrink:0;margin-top:2px;">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <span>${warning}</span>`;
+        } else if (info) {
+          noteEl.style.display = 'flex';
+          noteEl.className = 'confirm-note-box info';
+          noteEl.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="flex-shrink:0;margin-top:2px;">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <span>${info}</span>`;
+        } else {
+          noteEl.style.display = 'none';
+        }
+      }
+
+      if (btnOk) {
+        btnOk.textContent = confirmText;
+        btnOk.className = `btn ${confirmBtnClass || 'btn-danger'}`;
+      }
+
+      modal.classList.add('open');
+      if (btnCancel) btnCancel.focus();
+    });
+  }
+
+  function resolveActionConfirm(result) {
+    const modal = document.getElementById('actionConfirmModal');
+    if (modal) modal.classList.remove('open');
+    if (typeof confirmModalResolver === 'function') {
+      const fn = confirmModalResolver;
+      confirmModalResolver = null;
+      fn(result);
+    }
+  }
+
+  function closeActionConfirmModal(e) {
+    if (e) e.stopPropagation();
+    resolveActionConfirm(false);
+  }
+
+  window.resolveActionConfirm = resolveActionConfirm;
+  window.closeActionConfirmModal = closeActionConfirmModal;
+
+  document.addEventListener('keydown', (e) => {
+    const modal = document.getElementById('actionConfirmModal');
+    if (modal && modal.classList.contains('open')) {
+      if (e.key === 'Escape') {
+        resolveActionConfirm(false);
+      }
+    }
+  });
 
   function normalizeDoc(item, table) {
     if (!item) return item;
@@ -37,7 +167,36 @@
 
   async function deleteFinanceRecord(type, id) {
     const typeLabel = type === 'incomes' ? 'รายรับ' : 'รายจ่าย';
-    if (!confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบรายการ${typeLabel}นี้?`)) return;
+    let item = financesCache[type + '_' + id];
+    if (!item) {
+      try {
+        const { data: fetchedDoc } = await window.myAppDb.from(type).select('*').eq('id', id).maybeSingle();
+        if (fetchedDoc) item = normalizeDoc(fetchedDoc, type);
+      } catch (_) {}
+    }
+    item = item || {};
+
+    const itemTitle = item.title || item.source || `รายการ${typeLabel}`;
+    const amountNum = Number(item.amount || 0);
+    const amountStr = `฿${amountNum.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    const itemDate = item.date ? new Date(item.date).toLocaleDateString('th-TH') : '';
+
+    const confirmed = await showActionConfirmModal({
+      type: 'danger',
+      title: `ยืนยันการลบรายการ${typeLabel}`,
+      desc: `คุณต้องการลบรายการ${typeLabel}นี้ออกจากระบบบัญชีสาขาใช่หรือไม่?`,
+      items: [
+        { label: `ชื่อรายการ`, value: itemTitle, highlight: true },
+        { label: 'ประเภท', value: type === 'incomes' ? 'รายรับสาขา' : 'รายจ่ายสาขา' },
+        { label: 'จำนวนเงิน', value: amountStr },
+        itemDate ? { label: 'วันที่ทำรายการ', value: itemDate } : null
+      ].filter(Boolean),
+      warning: `ข้อมูลรายการและรูปถ่ายหลักฐานจะถูกลบอย่างถาวร ยอดสรุปเงินสาขาจะถูกคำนวณใหม่ทันที`,
+      confirmText: `ยืนยันลบ${typeLabel}`,
+      confirmBtnClass: 'btn-danger'
+    });
+
+    if (!confirmed) return;
     
     try {
       const { data: tData } = await window.myAppDb.from(type).select('*').eq('id', id).maybeSingle();
@@ -50,7 +209,7 @@
       }
 
       await window.myAppDb.from(type).delete().eq('id', id);
-      showToast('ลบข้อมูลเรียบร้อยแล้ว');
+      showToast(`ลบรายการ${typeLabel} "${itemTitle}" เรียบร้อยแล้ว`);
       loadOverview();
     } catch (e) {
       console.error(e);
@@ -415,6 +574,9 @@
   function renderAdminPublicBoard(data) {
     const fmt = (n) => Number(n).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+    (data.incomes || []).forEach(e => { financesCache['incomes_' + e.id] = { ...e, financeType: 'incomes' }; });
+    (data.expenses || []).forEach(e => { financesCache['expenses_' + e.id] = { ...e, financeType: 'expenses' }; });
+
     const incomeRows = (data.incomes && data.incomes.length > 0)
       ? data.incomes.map(e => {
           const safeTitle = (e.source || 'รายรับ').replace(/'/g, "\\'");
@@ -495,7 +657,12 @@
     try {
       const { data, error } = await window.myAppDb.from('events').select('*').order('created_at', { ascending: false });
       if (error) throw error;
-      const list = (data || []).map(d => normalizeDoc(d, 'events'));
+      eventsCache = {};
+      const list = (data || []).map(d => {
+        const ev = normalizeDoc(d, 'events');
+        eventsCache[ev.id] = ev;
+        return ev;
+      });
 
       if (list.length > 0) {
         tbody.innerHTML = list.map(ev => {
@@ -521,10 +688,37 @@
   }
 
   async function deleteEvent(eventId) {
-    if (!confirm('คุณแน่ใจหรือไม่ว่าต้องการ "ลบ" รอบเก็บเงินนี้?\n\n(หากลบแล้ว คอลัมน์นี้จะหายไปจากตารางของทุกคนทันที)')) return;
+    let ev = eventsCache[eventId];
+    if (!ev) {
+      try {
+        const { data: d } = await window.myAppDb.from('events').select('*').eq('id', eventId).maybeSingle();
+        if (d) ev = normalizeDoc(d, 'events');
+      } catch (_) {}
+    }
+    ev = ev || {};
+    const evTitle = ev.title || 'รอบเก็บเงิน';
+    const evAmount = ev.baseAmount != null ? `฿${Number(ev.baseAmount).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '';
+    const evDueDate = ev.dueDate ? formatDate(ev.dueDate) : '';
+
+    const confirmed = await showActionConfirmModal({
+      type: 'danger',
+      title: 'ยืนยันการลบรอบเก็บเงิน',
+      desc: 'คุณต้องการลบรอบเก็บเงินนี้ออกจากระบบใช่หรือไม่?',
+      items: [
+        { label: 'ชื่อรอบเก็บเงิน', value: evTitle, highlight: true },
+        evAmount ? { label: 'จำนวนเงิน', value: evAmount } : null,
+        evDueDate ? { label: 'วันครบกำหนด', value: evDueDate } : null,
+      ].filter(Boolean),
+      warning: 'หากลบรอบเก็บเงินนี้ คอลัมน์รอบนี้จะถูกลบออกจากตารางเช็คเงินของทุกคนทันที',
+      confirmText: 'ยืนยันลบรอบเก็บเงิน',
+      confirmBtnClass: 'btn-danger'
+    });
+
+    if (!confirmed) return;
+
     try {
       await window.myAppDb.from('events').delete().eq('id', eventId);
-      showToast('ลบรอบเก็บเงินสำเร็จ');
+      showToast(`ลบรอบเก็บเงิน "${evTitle}" สำเร็จ`);
       await fetchEventsData();
       await syncStudentMatrix();
       loadOverview();
@@ -660,7 +854,40 @@
   }
 
   async function deletePayment(paymentId) {
-    if (!confirm('คุณแน่ใจหรือไม่ว่าต้องการ "ลบ" รายการนี้?\n\n(หากลบแล้ว สถานะของนิสิตคนนี้ในตารางจะกลับไปเป็น "ค้างชำระ" ทันที)')) return;
+    let p = paymentsCache[paymentId] 
+         || allPayments.find(x => (x.paymentId === paymentId || x.id === paymentId));
+
+    if (!p) {
+      try {
+        const { data: d } = await window.myAppDb.from('payments').select('*').eq('id', paymentId).maybeSingle();
+        if (d) p = normalizeDoc(d, 'payments');
+      } catch (_) {}
+    }
+    p = p || {};
+
+    const studentName = p.name || 'ไม่ระบุชื่อ';
+    const roundTitle = p.eventTitle || p.eventId || 'ไม่ระบุรอบ';
+    const amountVal = Number(p.paidAmount || 0);
+    const penaltyVal = Number(p.penalty || 0);
+    const amountStr = `฿${amountVal.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    const statusStr = p.status === 'Paid' ? 'ชำระแล้ว' : 'รอตรวจสอบ';
+
+    const confirmed = await showActionConfirmModal({
+      type: 'danger',
+      title: 'ยืนยันการลบรายการชำระเงิน',
+      desc: 'คุณต้องการลบข้อมูลการชำระเงินของนิสิตคนนี้ใช่หรือไม่?',
+      items: [
+        { label: 'ชื่อ-นามสกุล', value: studentName, highlight: true },
+        { label: 'รอบการชำระ', value: roundTitle },
+        { label: 'ยอดชำระ', value: penaltyVal > 0 ? `${amountStr} (รวมค่าปรับ ฿${penaltyVal.toLocaleString('th-TH', { minimumFractionDigits: 2 })})` : amountStr },
+        { label: 'สถานะปัจจุบัน', value: statusStr }
+      ],
+      warning: 'หากลบแล้ว สถานะของนิสิตจะกลับไปเป็น "ค้างชำระ" ทันที และไฟล์สลิปหลักฐานจะถูกลบออกจากระบบ',
+      confirmText: 'ยืนยันลบรายการ',
+      confirmBtnClass: 'btn-danger'
+    });
+
+    if (!confirmed) return;
     
     try {
       const { data: tData } = await window.myAppDb.from('payments').select('*').eq('id', paymentId).maybeSingle();
@@ -673,7 +900,7 @@
       }
       
       await window.myAppDb.from('payments').delete().eq('id', paymentId);
-      showToast('ลบรายการสำเร็จ');
+      showToast(`ลบรายการของ "${studentName}" สำเร็จ`);
       await fetchPaymentsData();
       await syncStudentMatrix();
       loadOverview();
@@ -751,7 +978,31 @@
   }
 
   async function approve(paymentId, eventTitle, email, totalAmount) {
-    if (!confirm('ยืนยันการอนุมัติยอดเงินนี้?')) return;
+    const p = paymentsCache[paymentId] 
+           || allPayments.find(x => (x.paymentId === paymentId || x.id === paymentId)) 
+           || {};
+    const studentName = p.name || 'นิสิต';
+    const roundTitle = eventTitle || p.eventTitle || p.eventId || 'รอบการชำระ';
+    const amountVal = Number(totalAmount != null ? totalAmount : (p.paidAmount || 0));
+    const amountStr = `฿${amountVal.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+    const confirmed = await showActionConfirmModal({
+      type: 'success',
+      title: 'ยืนยันการอนุมัติสลิปโอนเงิน',
+      desc: 'โปรดตรวจสอบความถูกต้องของสลิปและยอดเงินก่อนกดยืนยัน',
+      items: [
+        { label: 'ชื่อ-นามสกุล', value: studentName, highlight: true },
+        { label: 'รอบการชำระ', value: roundTitle },
+        { label: 'ยอดเงินที่อนุมัติ', value: amountStr },
+        (p.email || email) ? { label: 'อีเมลนิสิต', value: (p.email || email) } : null
+      ].filter(Boolean),
+      info: 'เมื่ออนุมัติแล้ว สถานะจะเปลี่ยนเป็น "ชำระแล้ว" ทันที และยอดเงินจะถูกบันทึกเข้าระบบ',
+      confirmText: 'ยืนยันอนุมัติสลิป',
+      confirmBtnClass: 'btn-primary'
+    });
+
+    if (!confirmed) return;
+
     try {
       const { error: payErr } = await window.myAppDb.from('payments').update({ status: 'Paid' }).eq('id', paymentId);
       if (payErr) throw payErr;
@@ -776,7 +1027,7 @@
         console.error("Stats error:", e);
       }
 
-      showToast('อนุมัติเรียบร้อย');
+      showToast(`อนุมัติสลิปของ "${studentName}" สำเร็จ`);
       
       try {
         await syncStudentMatrix();

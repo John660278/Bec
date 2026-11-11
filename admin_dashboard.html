@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/admin_dashboard.css?v=105" />
+  <link rel="stylesheet" href="css/admin_dashboard.css?v=106" />
 </head>
 <body>
 
@@ -101,7 +101,6 @@
       <div class="page-title-bar">
         <div class="page-title-group">
           <h1>ภาพรวมการเงินสาขา</h1>
-          <p>สรุปยอดกองทุน ธุรกรรม และการตรวจสอบสลิปประจำรุ่น</p>
         </div>
       </div>
 
@@ -475,6 +474,21 @@
   </div>
 </div>
 
+<!-- ─── ACTION CONFIRMATION MODAL ─── -->
+<div class="confirm-modal" id="actionConfirmModal" onclick="closeActionConfirmModal(event)">
+  <div class="confirm-dialog" onclick="event.stopPropagation()">
+    <div class="confirm-icon-box" id="confirmModalIconBox"></div>
+    <div class="confirm-title" id="confirmModalTitle">ยืนยันการทำรายการ</div>
+    <div class="confirm-desc" id="confirmModalDesc">โปรดตรวจสอบรายละเอียดก่อนดำเนินการ</div>
+    <div class="confirm-detail-card" id="confirmModalDetails"></div>
+    <div class="confirm-note-box" id="confirmModalNote"></div>
+    <div class="confirm-actions">
+      <button type="button" class="btn btn-cancel" id="confirmModalBtnCancel" onclick="resolveActionConfirm(false)">ยกเลิก</button>
+      <button type="button" class="btn btn-danger" id="confirmModalBtnOk" onclick="resolveActionConfirm(true)">ยืนยัน</button>
+    </div>
+  </div>
+</div>
+
 
 
 <!-- ─── TOAST NOTIFICATION ─── -->
@@ -482,13 +496,13 @@
 
 <!-- Supabase SDK & App Config -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/config.js?v=105"></script>
+<script src="js/config.js?v=106"></script>
 <script src="js/xlsx.bundle.js?v=1"></script>
 <script>
   if (!window.XLSX) {
     document.write('<script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"><\/script>');
   }
 </script>
-<script src="js/admin_dashboard.js?v=105"></script>
+<script src="js/admin_dashboard.js?v=106"></script>
 </body>
 </html>
