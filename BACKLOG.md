@@ -9,12 +9,12 @@
   - ถอดสคริปต์ Google Firebase v8 ที่ค้างอยู่ใน `<head>` ออกทั้งหมด ลดขนาดหน้าเว็บลง ~400 KB
 - [x] **อันดับ 2: จัดการความปลอดภัย & Row Level Security (RLS)** (เสร็จสิ้น - Commit `b225a1e`)
   - เปิดใช้ RLS บน Supabase ครบทั้ง 7 ตาราง พร้อมสร้างฟังก์ชัน `is_admin()` ล็อกสิทธิ์การลบ/แก้ไขข้อมูลเงิน
-- [ ] **อันดับ 3: ผ่าตัดแยกไฟล์ Monolith (Single-File Hell)** ⏳ (กำลังดำเนินการ)
-  - แยก Inline CSS 3,900+ บรรทัดใน `student_dashboard.html` และ 1,200+ บรรทัดใน `admin_dashboard.html` ออกเป็นไฟล์ CSS แยก
+- [x] **อันดับ 3: ผ่าตัดแยกไฟล์ Monolith (Single-File Hell)** (เสร็จสิ้น - Commit `281a107`)
+  - แยก Inline CSS 3,940 บรรทัดใน `student_dashboard.html`, 1,194 บรรทัดใน `admin_dashboard.html`, และ 1,135 บรรทัดใน `index.html` ออกเป็นไฟล์ CSS แยก (`student_dashboard.css`, `admin_dashboard.css`, `index.css`)
   - ช่วยให้เบราว์เซอร์ Cache ไฟล์สไตล์ได้ และลดขนาดไฟล์ HTML ลงกว่า 70%
-- [ ] **อันดับ 4: ปลดระวาง Shim Wrapper (`supabase_wrapper.js`) สู่ Supabase Native**
-  - เปลี่ยนคำสั่ง NoSQL `db.collection()` ให้กลายเป็น Supabase PostgREST queries แท้ 100%
-  - โยนตัว Mock และ Wrapper ทิ้งทั้งหมด
+- [x] **อันดับ 4: ปลดระวาง Shim Wrapper (`supabase_wrapper.js`) สู่ Supabase Native** (เสร็จสิ้น)
+  - เปลี่ยนคำสั่ง NoSQL `db.collection()` ให้กลายเป็น Supabase PostgREST queries แท้ 100% ทั้งใน `student_dashboard.html` และ `admin_dashboard.html`
+  - ปลดระวางและลบไฟล์ `supabase_wrapper.js` ออกจากโปรเจกต์โดยสมบูรณ์
 
 ---
 

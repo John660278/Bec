@@ -354,11 +354,8 @@
 <!-- Supabase SDK & App Config -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js?v=101"></script>
-<script src="supabase_wrapper.js?v=99"></script>
 
 <script>
-  const db = window.db;
-
   const PROMPTPAY_ID  = "004999246368459"; // พร้อมเพย์
   const BANK_ACCOUNT  = "235-1-83876-3";   // เลขบัญชี KBANK
 
@@ -590,26 +587,29 @@
     }
   }
 
-  // ─── FETCH PAYMENTS (Firebase) ───
+  // ─── FETCH PAYMENTS (Supabase Native) ───
   async function fetchPayments() {
     try {
-      const evSnap = await db.collection('events').get();
-      const events = [];
-      evSnap.forEach(doc => events.push(doc.data()));
+      const { data: eventsData, error: evErr } = await window.myAppDb
+        .from('events')
+        .select('*');
+      if (evErr) throw evErr;
 
-      const paySnap = await db.collection('payments')
-        .where('email', '==', currentUser.email)
-        .get();
+      const { data: payData, error: payErr } = await window.myAppDb
+        .from('payments')
+        .select('*')
+        .eq('student_email', currentUser.email);
+      if (payErr) throw payErr;
+
       const payMap = {};
-      paySnap.forEach(doc => {
-        const d = doc.data();
-        payMap[d.eventId] = d;
+      (payData || []).forEach(d => {
+        payMap[d.event_id] = d;
       });
 
       const currentDate = new Date();
-      allEvents = events.map(ev => {
-        const payRecord = payMap[ev.eventId];
-        const dueDate = new Date(ev.dueDate);
+      allEvents = (eventsData || []).map(ev => {
+        const payRecord = payMap[ev.id];
+        const dueDate = new Date(ev.due_date);
         let status = 'Unpaid';
         if (payRecord) status = payRecord.status;
 
@@ -625,13 +625,13 @@
         }
 
         return {
-          eventId: ev.eventId,
+          eventId: ev.id,
           title: ev.title,
-          baseAmount: Number(ev.baseAmount),
-          dueDate: ev.dueDate,
+          baseAmount: Number(ev.base_amount),
+          dueDate: ev.due_date,
           status,
           penalty,
-          totalAmount: Number(ev.baseAmount) + penalty
+          totalAmount: Number(ev.base_amount) + penalty
         };
       }).sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate));
 
@@ -659,30 +659,36 @@
     }
   }
 
-  // ─── FETCH PUBLIC BOARD (Firebase) ───
+  // ─── FETCH PUBLIC BOARD (Supabase Native) ───
   async function fetchPublicBoard() {
     try {
-      const [statsDoc, incSnap, expSnap, matrixSnap] = await Promise.all([
-        db.collection('system_stats').doc('overview').get(),
-        db.collection('incomes').orderBy('timestamp', 'desc').limit(20).get().catch(() => db.collection('incomes').limit(20).get()),
-        db.collection('expenses').orderBy('timestamp', 'desc').limit(20).get().catch(() => db.collection('expenses').limit(20).get()),
-        db.collection('student_matrix').doc('current').get()
+      const [statsRes, incRes, expRes, matrixRes] = await Promise.all([
+        window.myAppDb.from('system_stats').select('*').eq('id', 'overview').maybeSingle(),
+        window.myAppDb.from('incomes').select('*').order('created_at', { ascending: false }).limit(20),
+        window.myAppDb.from('expenses').select('*').order('created_at', { ascending: false }).limit(20),
+        window.myAppDb.from('student_matrix').select('*').eq('id', 'current').maybeSingle()
       ]);
 
-      const stats = statsDoc.exists ? statsDoc.data() : {};
-      const totalBalance = stats.totalBalance != null ? stats.totalBalance : 0;
-      const totalIncome  = stats.totalIncome != null ? (stats.totalIncome + (stats.totalPaidPayments || 0)) : 0;
-      const totalExpense = stats.totalExpense != null ? stats.totalExpense : 0;
+      const stats = statsRes.data || {};
+      const totalBalance = stats.total_balance != null ? Number(stats.total_balance) : 0;
+      const totalIncome  = stats.total_income != null ? (Number(stats.total_income) + (Number(stats.total_paid_payments) || 0)) : 0;
+      const totalExpense = stats.total_expense != null ? Number(stats.total_expense) : 0;
 
-      const incomes = [];
-      incSnap.forEach(doc => incomes.push(doc.data()));
-      const expenses = [];
-      expSnap.forEach(doc => expenses.push(doc.data()));
+      const incomes = (incRes.data || []).map(d => ({
+        ...d,
+        receiptUrl: d.receipt_url,
+        timestamp: d.timestamp || d.created_at
+      }));
+      const expenses = (expRes.data || []).map(d => ({
+        ...d,
+        receiptUrl: d.receipt_url,
+        timestamp: d.timestamp || d.created_at
+      }));
 
       let matrixHeaders = [];
       let matrixRows = [];
-      if (matrixSnap.exists) {
-        const mx = matrixSnap.data();
+      if (matrixRes.data && (matrixRes.data.matrix || matrixRes.data.headers)) {
+        const mx = matrixRes.data.matrix || matrixRes.data;
         matrixHeaders = mx.headers || [];
         matrixRows = mx.rows || [];
         const exclude = (h) => h === 'Email' || h.includes('ยอดเงินรวม') || h.includes('รวมที่เก็บได้');
@@ -1014,39 +1020,53 @@
         console.warn('User upsert check:', userUpsertErr);
       }
 
-      // 3. Write to Payments table
+      // 3. Write to Payments table (Supabase Native)
       try {
         let realName = currentUser.name || '';
         try {
-          const uSnap = await db.collection('users').where('email', '==', currentUser.email).limit(1).get();
-          if (!uSnap.empty && uSnap.docs[0].data().name) {
-            realName = uSnap.docs[0].data().name;
+          const { data: uData } = await window.myAppDb
+            .from('users')
+            .select('name')
+            .eq('email', currentUser.email)
+            .maybeSingle();
+          if (uData && uData.name) {
+            realName = uData.name;
             currentUser.name = realName;
             sessionStorage.setItem('loggedInUser', JSON.stringify(currentUser));
           }
         } catch(e) { console.error(e); }
 
-        await db.collection('payments').doc(paymentId).set({
-          paymentId,
-          eventId:    currentPayment.eventId,
-          eventTitle: currentPayment.title,
-          email:      currentUser.email,
-          name:       realName,
-          paidAmount: currentPayment.totalAmount,
-          penalty:    currentPayment.penalty,
-          status:     'Pending',
-          slipUrl:    slipUrl,
-          paidAt:     new Date().toISOString()
-        });
+        const { error: payErr } = await window.myAppDb
+          .from('payments')
+          .upsert({
+            id: paymentId,
+            event_id: currentPayment.eventId,
+            event_title: currentPayment.title,
+            student_email: currentUser.email,
+            student_name: realName,
+            paid_amount: currentPayment.totalAmount,
+            penalty: currentPayment.penalty,
+            status: 'Pending',
+            slip_url: slipUrl,
+            paid_at: new Date().toISOString()
+          });
+        if (payErr) throw payErr;
 
         try {
-          await db.collection('system_stats').doc('overview').set({
-            pendingCount: firebase.firestore.FieldValue.increment(1)
-          }, { merge: true });
+          const { data: currentStats } = await window.myAppDb
+            .from('system_stats')
+            .select('pending_count')
+            .eq('id', 'overview')
+            .maybeSingle();
+          const newPending = (currentStats ? Number(currentStats.pending_count) || 0 : 0) + 1;
+          await window.myAppDb
+            .from('system_stats')
+            .update({ pending_count: newPending })
+            .eq('id', 'overview');
         } catch(e) { console.error('Stats error:', e); }
 
       } catch (dbError) {
-        console.error("Firestore Error:", dbError);
+        console.error("Supabase Error:", dbError);
         throw new Error('บันทึกข้อมูลฐานข้อมูลไม่สำเร็จ: ' + dbError.message);
       }
 

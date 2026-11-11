@@ -431,7 +431,6 @@
 <!-- Supabase SDK & App Config -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js?v=101"></script>
-<script src="supabase_wrapper.js?v=99"></script>
 <script src="xlsx.bundle.js?v=1"></script>
 <script>
   if (!window.XLSX) {
@@ -445,22 +444,53 @@
   let paymentsCache = {};
   let matrixFetched = false;
 
+  function normalizeDoc(item, table) {
+    if (!item) return item;
+    const res = { ...item };
+    if (table === 'payments') {
+      res.paymentId = res.id;
+      res.name = res.student_name || res.name;
+      res.email = res.student_email || res.email;
+      res.studentId = res.student_id || res.studentId;
+      res.paidAmount = res.paid_amount != null ? res.paid_amount : res.paidAmount;
+      res.eventTitle = res.event_title || res.eventTitle;
+      res.eventId = res.event_id || res.eventId;
+      res.slipUrl = res.slip_url || res.slipUrl;
+      res.paidAt = res.paid_at || res.paidAt;
+    }
+    if (table === 'events') {
+      res.eventId = res.id;
+      res.baseAmount = res.base_amount != null ? res.base_amount : res.baseAmount;
+      res.dueDate = res.due_date || res.dueDate;
+      res.createdAt = res.created_at || res.createdAt;
+    }
+    if (table === 'incomes' || table === 'expenses') {
+      res.receiptUrl = res.receipt_url || res.receiptUrl;
+      res.source = res.title || res.source;
+      res.date = res.created_at ? res.created_at.split('T')[0] : (res.date || '');
+      res.timestamp = res.created_at || res.timestamp;
+    }
+    if (table === 'users') {
+      res.studentId = res.student_id || res.studentId;
+    }
+    return res;
+  }
+
   async function deleteFinanceRecord(type, id) {
     const typeLabel = type === 'incomes' ? 'รายรับ' : 'รายจ่าย';
     if (!confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบรายการ${typeLabel}นี้?`)) return;
     
     try {
-      const targetSnap = await db.collection(type).doc(id).get();
-      if (targetSnap.exists) {
-        const tData = targetSnap.data();
-        const rUrl = tData.receiptUrl;
+      const { data: tData } = await window.myAppDb.from(type).select('*').eq('id', id).maybeSingle();
+      if (tData) {
+        const rUrl = tData.receipt_url || tData.receiptUrl;
         if (rUrl && rUrl.includes('supabase.co')) {
           const fileName = rUrl.split('/public/slips/')[1].split('?')[0];
           await window.myAppDb.storage.from('slips').remove([fileName]);
         }
       }
 
-      await db.collection(type).doc(id).delete();
+      await window.myAppDb.from(type).delete().eq('id', id);
       showToast('ลบข้อมูลเรียบร้อยแล้ว');
       loadOverview();
     } catch (e) {
@@ -495,15 +525,12 @@
     if (expDateInput && !expDateInput.value) expDateInput.value = todayStr;
     if (incDateInput && !incDateInput.value) incDateInput.value = todayStr;
 
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user || (currentUser && currentUser.name && currentUser.name.includes('ตัวอย่าง'))) {
-        loadOverview();
-      } else {
-        console.warn('Firebase Auth state not found. Redirecting to login...');
-        sessionStorage.removeItem('loggedInUser');
-        location.href = 'index.html';
-      }
-    });
+    if (currentUser && currentUser.email) {
+      loadOverview();
+    } else {
+      sessionStorage.removeItem('loggedInUser');
+      location.href = 'index.html';
+    }
 
     window.addEventListener('resize', updateEmptyStateAlignment);
     window.addEventListener('orientationchange', () => setTimeout(updateEmptyStateAlignment, 120));
@@ -630,9 +657,9 @@
     tBody.innerHTML = `<tr><td><div class="skeleton"></div></td></tr>`;
 
     try {
-      const snap = await db.collection('student_matrix').doc('current').get();
-      if (snap.exists) {
-        const mx = snap.data();
+      const { data: snap } = await window.myAppDb.from('student_matrix').select('*').eq('id', 'current').maybeSingle();
+      if (snap && (snap.matrix || snap.headers)) {
+        const mx = snap.matrix || snap;
         let headers = mx.headers || [];
         let rows    = mx.rows    || [];
 
@@ -671,44 +698,60 @@
     }
   }
 
-  // ─── OVERVIEW ───
+  // ─── OVERVIEW (Supabase Native) ───
   async function syncSystemStats() {
     try {
-      const [paidSnap, pendSnap, incSnap, expSnap, evSnap] = await Promise.all([
-        db.collection('payments').where('status', '==', 'Paid').get(),
-        db.collection('payments').where('status', '==', 'Pending').get(),
-        db.collection('incomes').get(),
-        db.collection('expenses').get(),
-        db.collection('events').get()
+      const [paidRes, pendRes, incRes, expRes, evRes] = await Promise.all([
+        window.myAppDb.from('payments').select('paid_amount, amount').eq('status', 'Paid'),
+        window.myAppDb.from('payments').select('id').eq('status', 'Pending'),
+        window.myAppDb.from('incomes').select('amount'),
+        window.myAppDb.from('expenses').select('amount'),
+        window.myAppDb.from('events').select('id')
       ]);
 
+      const paidPayments = paidRes.data || [];
+      const pendingPayments = pendRes.data || [];
+      const incomes = incRes.data || [];
+      const expenses = expRes.data || [];
+      const events = evRes.data || [];
+
       let totalPaidPayments = 0;
-      paidSnap.forEach(d => totalPaidPayments += (Number(d.data().paidAmount) || 0));
+      paidPayments.forEach(d => totalPaidPayments += (Number(d.paid_amount || d.amount) || 0));
 
       let totalIncome = 0;
-      incSnap.forEach(d => totalIncome += (Number(d.data().amount) || 0));
+      incomes.forEach(d => totalIncome += (Number(d.amount) || 0));
 
       let totalExpense = 0;
-      expSnap.forEach(d => totalExpense += (Number(d.data().amount) || 0));
+      expenses.forEach(d => totalExpense += (Number(d.amount) || 0));
 
       const totalBalance = totalPaidPayments + totalIncome - totalExpense;
 
       const newStats = {
-        paidCount: paidSnap.size || 0,
-        pendingCount: pendSnap.size || 0,
-        eventsCount: evSnap.size || 0,
-        totalPaidPayments: totalPaidPayments,
-        totalIncome: totalIncome,
-        totalExpense: totalExpense,
-        totalBalance: totalBalance
+        id: 'overview',
+        paid_count: paidPayments.length,
+        pending_count: pendingPayments.length,
+        events_count: events.length,
+        total_paid_payments: totalPaidPayments,
+        total_income: totalIncome,
+        total_expense: totalExpense,
+        total_balance: totalBalance,
+        updated_at: new Date().toISOString()
       };
 
       try {
-        await db.collection('system_stats').doc('overview').set(newStats, { merge: true });
+        await window.myAppDb.from('system_stats').upsert(newStats);
       } catch (errSet) {
         console.warn("Could not save stats to DB, but returning calculated stats:", errSet);
       }
-      return newStats;
+      return {
+        paidCount: newStats.paid_count,
+        pendingCount: newStats.pending_count,
+        eventsCount: newStats.events_count,
+        totalPaidPayments: newStats.total_paid_payments,
+        totalIncome: newStats.total_income,
+        totalExpense: newStats.total_expense,
+        totalBalance: newStats.total_balance
+      };
     } catch(e) {
       console.error("Sync stats error:", e);
       return {};
@@ -717,11 +760,11 @@
 
   async function loadOverview() {
     try {
-      const [stats, paySnap, expSnap, incSnap] = await Promise.all([
+      const [stats, payRes, expRes, incRes] = await Promise.all([
         syncSystemStats(),
-        db.collection('payments').where('status', '==', 'Pending').limit(5).get(),
-        db.collection('expenses').orderBy('timestamp', 'desc').limit(20).get().catch(() => db.collection('expenses').limit(20).get()),
-        db.collection('incomes').orderBy('timestamp', 'desc').limit(20).get().catch(() => db.collection('incomes').limit(20).get())
+        window.myAppDb.from('payments').select('*').eq('status', 'Pending').limit(5),
+        window.myAppDb.from('expenses').select('*').order('created_at', { ascending: false }).limit(20),
+        window.myAppDb.from('incomes').select('*').order('created_at', { ascending: false }).limit(20)
       ]);
 
       document.getElementById('statTotalEvents').textContent = stats.eventsCount != null ? stats.eventsCount : '—';
@@ -734,7 +777,9 @@
       const tbody = document.getElementById('overviewPendingBody');
       const table = tbody ? tbody.closest('table') : null;
       const scrollWrap = tbody ? tbody.closest('.table-scroll') : null;
-      if (paySnap.empty) {
+      const pendingList = (payRes.data || []).map(d => normalizeDoc(d, 'payments'));
+
+      if (pendingList.length === 0) {
         if (table) table.classList.add('is-empty');
         if (scrollWrap) {
           scrollWrap.classList.add('is-empty');
@@ -745,9 +790,8 @@
       } else {
         if (table) table.classList.remove('is-empty');
         if (scrollWrap) scrollWrap.classList.remove('is-empty');
-        tbody.innerHTML = paySnap.docs.map(doc => {
-          const p = doc.data();
-          const pId = p.paymentId || p.id || doc.id;
+        tbody.innerHTML = pendingList.map(p => {
+          const pId = p.paymentId || p.id;
           paymentsCache[pId] = p;
           const slipBtn = p.slipUrl
             ? `<button class="btn btn-ghost btn-sm" onclick="viewPaymentSlip('${pId}')">ดูสลิป</button>`
@@ -766,8 +810,8 @@
         }).join('');
       }
 
-      const expenses = expSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-      const incomes  = incSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const expenses = (expRes.data || []).map(d => normalizeDoc(d, 'expenses'));
+      const incomes  = (incRes.data || []).map(d => normalizeDoc(d, 'incomes'));
 
       renderAdminPublicBoard({ expenses, incomes, matrixHeaders: [], matrixRows: [] });
     } catch (e) {
@@ -851,22 +895,24 @@
     if (pbContainer) pbContainer.innerHTML = html;
   }
 
-  // ─── EVENTS ───
+  // ─── EVENTS (Supabase Native) ───
   async function fetchEventsData() {
     const tbody = document.getElementById('eventsTableBody');
     tbody.innerHTML = `<tr><td colspan="5"><div class="skeleton"></div></td></tr>`;
     try {
-      const snap = await db.collection('events').orderBy('createdAt', 'desc').get();
-      if (!snap.empty) {
-        tbody.innerHTML = snap.docs.map(doc => {
-          const ev = doc.data();
+      const { data, error } = await window.myAppDb.from('events').select('*').order('created_at', { ascending: false });
+      if (error) throw error;
+      const list = (data || []).map(d => normalizeDoc(d, 'events'));
+
+      if (list.length > 0) {
+        tbody.innerHTML = list.map(ev => {
           return `
           <tr>
             <td style="font-weight:700">${ev.title}</td>
             <td style="font-weight:700">${Number(ev.baseAmount).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
             <td>${formatDate(ev.dueDate)}</td>
             <td style="color:var(--muted);font-size:0.75rem">${formatDate(ev.createdAt)}</td>
-            <td><button class="btn btn-danger-ghost btn-sm" onclick="deleteEvent('${doc.id}')">ลบ</button></td>
+            <td><button class="btn btn-danger-ghost btn-sm" onclick="deleteEvent('${ev.id}')">ลบ</button></td>
           </tr>`;
         }).join('');
         updateEmptyStateAlignment();
@@ -884,7 +930,7 @@
   async function deleteEvent(eventId) {
     if (!confirm('คุณแน่ใจหรือไม่ว่าต้องการ "ลบ" รอบเก็บเงินนี้?\n\n(หากลบแล้ว คอลัมน์นี้จะหายไปจากตารางของทุกคนทันที)')) return;
     try {
-      await db.collection('events').doc(eventId).delete();
+      await window.myAppDb.from('events').delete().eq('id', eventId);
       showToast('ลบรอบเก็บเงินสำเร็จ');
       await fetchEventsData();
       await syncStudentMatrix();
@@ -898,15 +944,15 @@
     const btn = document.getElementById('btnSyncMatrix');
     if (isManual && btn) { btn.disabled = true; btn.textContent = 'กำลังคำนวณ...'; }
     try {
-      const [usersSnap, evSnap, paySnap] = await Promise.all([
-        db.collection('users').where('role', '==', 'Student').get(),
-        db.collection('events').get(),
-        db.collection('payments').get()
+      const [usersRes, evRes, payRes] = await Promise.all([
+        window.myAppDb.from('users').select('*').eq('role', 'Student'),
+        window.myAppDb.from('events').select('*'),
+        window.myAppDb.from('payments').select('*')
       ]);
       
-      let students = usersSnap.docs.map(d => d.data());
-      let events = evSnap.docs.map(d => d.data());
-      let payments = paySnap.docs.map(d => d.data());
+      let students = (usersRes.data || []).map(d => normalizeDoc(d, 'users'));
+      let events = (evRes.data || []).map(d => normalizeDoc(d, 'events'));
+      let payments = (payRes.data || []).map(d => normalizeDoc(d, 'payments'));
       
       events.sort((a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0));
       
@@ -920,7 +966,12 @@
               'Email': stu.email || '-'
           };
           events.forEach(ev => {
-              const pay = payments.find(p => p.email === stu.email && p.eventId === ev.eventId);
+              const targetEvId = ev.eventId || ev.id;
+              const pay = payments.find(p => 
+                  ((p.email && stu.email && p.email.trim().toLowerCase() === stu.email.trim().toLowerCase()) ||
+                   (p.studentId && stu.studentId && String(p.studentId).trim() === String(stu.studentId).trim())) &&
+                  (p.eventId === targetEvId || p.eventId === ev.id)
+              );
               if (pay) {
                   if (pay.status === 'Paid') {
                       row[ev.title] = pay.paidAmount || pay.totalAmount || ev.baseAmount;
@@ -936,10 +987,13 @@
           return row;
       });
       
-      await db.collection('student_matrix').doc('current').set({
-          headers, rows,
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      const { error: upsertErr } = await window.myAppDb.from('student_matrix').upsert({
+          id: 'current',
+          headers,
+          rows,
+          updated_at: new Date().toISOString()
       });
+      if (upsertErr) throw upsertErr;
       
       if (isManual) {
         showToast('คำนวณตารางใหม่สำเร็จ');
@@ -970,17 +1024,25 @@
       const createdAt = new Date().toISOString();
       const dueDateISO = new Date(dueDate).toISOString();
 
-      await db.collection('events').doc(eventId).set({
-        eventId,
+      const { error: evErr } = await window.myAppDb.from('events').insert({
+        id: eventId,
         title,
-        baseAmount: Number(amount),
-        dueDate: dueDateISO,
-        createdAt
+        base_amount: Number(amount),
+        due_date: dueDateISO,
+        created_at: createdAt
       });
+      if (evErr) throw evErr;
 
-      await db.collection('system_stats').doc('overview').set({
-        eventsCount: firebase.firestore.FieldValue.increment(1)
-      }, { merge: true });
+      try {
+        const { data: st } = await window.myAppDb.from('system_stats').select('events_count').eq('id', 'overview').maybeSingle();
+        const curEvCount = st && st.events_count != null ? Number(st.events_count) : 0;
+        await window.myAppDb.from('system_stats').update({
+          events_count: curEvCount + 1,
+          updated_at: new Date().toISOString()
+        }).eq('id', 'overview');
+      } catch (errStats) {
+        console.warn('System stats update error:', errStats);
+      }
 
       showToast('สร้างรอบเก็บเงินเรียบร้อย');
       document.getElementById('evTitle').value = '';
@@ -996,15 +1058,16 @@
     }
   }
 
-  // ─── PAYMENTS ───
+  // ─── PAYMENTS (Supabase Native) ───
   async function fetchPaymentsData() {
     const tbody = document.getElementById('paymentsTableBody');
     tbody.innerHTML = `<tr><td colspan="8"><div class="skeleton"></div></td></tr>`;
     try {
-      const snap = await db.collection('payments').orderBy('paidAt', 'desc').get();
-      allPayments = snap.docs.map(d => {
-        const item = d.data();
-        const pId = item.paymentId || item.id || d.id;
+      const { data, error } = await window.myAppDb.from('payments').select('*').order('paid_at', { ascending: false });
+      if (error) throw error;
+      allPayments = (data || []).map(d => {
+        const item = normalizeDoc(d, 'payments');
+        const pId = item.paymentId || item.id;
         paymentsCache[pId] = item;
         return item;
       });
@@ -1056,16 +1119,16 @@
     if (!confirm('คุณแน่ใจหรือไม่ว่าต้องการ "ลบ" รายการนี้?\n\n(หากลบแล้ว สถานะของนิสิตคนนี้ในตารางจะกลับไปเป็น "ค้างชำระ" ทันที)')) return;
     
     try {
-      const targetSnap = await db.collection('payments').doc(paymentId).get();
-      if (targetSnap.exists) {
-        const tData = targetSnap.data();
-        if (tData.slipUrl && tData.slipUrl.includes('supabase.co')) {
-          const fileName = tData.slipUrl.split('/public/slips/')[1].split('?')[0];
+      const { data: tData } = await window.myAppDb.from('payments').select('*').eq('id', paymentId).maybeSingle();
+      if (tData) {
+        const slip = tData.slip_url || tData.slipUrl;
+        if (slip && slip.includes('supabase.co')) {
+          const fileName = slip.split('/public/slips/')[1].split('?')[0];
           await window.myAppDb.storage.from('slips').remove([fileName]);
         }
       }
       
-      await db.collection('payments').doc(paymentId).delete();
+      await window.myAppDb.from('payments').delete().eq('id', paymentId);
       showToast('ลบรายการสำเร็จ');
       await fetchPaymentsData();
       await syncStudentMatrix();
@@ -1104,16 +1167,25 @@
   async function approve(paymentId, eventTitle, email, totalAmount) {
     if (!confirm('ยืนยันการอนุมัติยอดเงินนี้?')) return;
     try {
-      await db.collection('payments').doc(paymentId).update({ status: 'Paid' });
+      const { error: payErr } = await window.myAppDb.from('payments').update({ status: 'Paid' }).eq('id', paymentId);
+      if (payErr) throw payErr;
 
       const amountNum = Number(totalAmount) || 0;
       try {
-        await db.collection('system_stats').doc('overview').set({
-          paidCount: firebase.firestore.FieldValue.increment(1),
-          pendingCount: firebase.firestore.FieldValue.increment(-1),
-          totalPaidPayments: firebase.firestore.FieldValue.increment(amountNum),
-          totalBalance: firebase.firestore.FieldValue.increment(amountNum)
-        }, { merge: true });
+        const { data: st } = await window.myAppDb.from('system_stats').select('*').eq('id', 'overview').maybeSingle();
+        if (st) {
+          const curPaid = Number(st.paid_count) || 0;
+          const curPending = Number(st.pending_count) || 0;
+          const curTotalPaid = Number(st.total_paid_payments) || 0;
+          const curBalance = Number(st.total_balance) || 0;
+          await window.myAppDb.from('system_stats').update({
+            paid_count: curPaid + 1,
+            pending_count: Math.max(0, curPending - 1),
+            total_paid_payments: curTotalPaid + amountNum,
+            total_balance: curBalance + amountNum,
+            updated_at: new Date().toISOString()
+          }).eq('id', 'overview');
+        }
       } catch (e) {
         console.error("Stats error:", e);
       }
@@ -1201,19 +1273,27 @@
         receiptUrl = publicUrl;
       }
 
-      await db.collection('expenses').add({
+      const expId = crypto.randomUUID();
+      const { error: insErr } = await window.myAppDb.from('expenses').insert({
+        id: expId,
         title: title,
         amount: Number(amount),
-        date: date,
-        receiptUrl: receiptUrl,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        receipt_url: receiptUrl,
+        created_at: new Date(date).toISOString()
       });
+      if (insErr) throw insErr;
 
       const expAmountNum = Number(amount) || 0;
-      await db.collection('system_stats').doc('overview').set({
-        totalExpense: firebase.firestore.FieldValue.increment(expAmountNum),
-        totalBalance: firebase.firestore.FieldValue.increment(-expAmountNum)
-      }, { merge: true });
+      try {
+        const { data: st } = await window.myAppDb.from('system_stats').select('*').eq('id', 'overview').maybeSingle();
+        if (st) {
+          await window.myAppDb.from('system_stats').update({
+            total_expense: (Number(st.total_expense) || 0) + expAmountNum,
+            total_balance: (Number(st.total_balance) || 0) - expAmountNum,
+            updated_at: new Date().toISOString()
+          }).eq('id', 'overview');
+        }
+      } catch (stErr) { console.warn(stErr); }
 
       showToast('บันทึกรายจ่ายเรียบร้อยแล้ว');
       document.getElementById('expTitle').value  = '';
@@ -1250,19 +1330,27 @@
         receiptUrl = publicUrl;
       }
 
-      await db.collection('incomes').add({
-        source: source,
+      const incId = crypto.randomUUID();
+      const { error: insErr } = await window.myAppDb.from('incomes').insert({
+        id: incId,
+        title: source,
         amount: Number(amount),
-        date: date,
-        receiptUrl: receiptUrl,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        receipt_url: receiptUrl,
+        created_at: new Date(date).toISOString()
       });
+      if (insErr) throw insErr;
 
       const incAmountNum = Number(amount) || 0;
-      await db.collection('system_stats').doc('overview').set({
-        totalIncome: firebase.firestore.FieldValue.increment(incAmountNum),
-        totalBalance: firebase.firestore.FieldValue.increment(incAmountNum)
-      }, { merge: true });
+      try {
+        const { data: st } = await window.myAppDb.from('system_stats').select('*').eq('id', 'overview').maybeSingle();
+        if (st) {
+          await window.myAppDb.from('system_stats').update({
+            total_income: (Number(st.total_income) || 0) + incAmountNum,
+            total_balance: (Number(st.total_balance) || 0) + incAmountNum,
+            updated_at: new Date().toISOString()
+          }).eq('id', 'overview');
+        }
+      } catch (stErr) { console.warn(stErr); }
 
       showToast('บันทึกรายรับเรียบร้อยแล้ว');
       document.getElementById('incSource').value = '';
@@ -1320,19 +1408,19 @@
   async function exportStudentExcel() {
     showToast('กำลังเตรียมไฟล์ Excel รวมตารางเช็คยอดและรายการใช้จ่าย...');
     try {
-      const [usersSnap, evSnap, paySnap, incSnap, expSnap] = await Promise.all([
-        db.collection('users').where('role', '==', 'Student').get(),
-        db.collection('events').get(),
-        db.collection('payments').get(),
-        db.collection('incomes').get(),
-        db.collection('expenses').get()
+      const [usersRes, evRes, payRes, incRes, expRes] = await Promise.all([
+        window.myAppDb.from('users').select('*').eq('role', 'Student'),
+        window.myAppDb.from('events').select('*'),
+        window.myAppDb.from('payments').select('*'),
+        window.myAppDb.from('incomes').select('*'),
+        window.myAppDb.from('expenses').select('*')
       ]);
 
-      const students = usersSnap.docs.map(d => ({ ...d.data(), docId: d.id }));
-      const events = evSnap.docs.map(d => ({ ...d.data(), docId: d.id, eventId: d.data().eventId || d.id }));
-      const payments = paySnap.docs.map(d => ({ ...d.data(), docId: d.id }));
-      const incomes = incSnap.docs.map(d => ({ ...d.data(), docId: d.id }));
-      const expenses = expSnap.docs.map(d => ({ ...d.data(), docId: d.id }));
+      const students = (usersRes.data || []).map(d => ({ ...normalizeDoc(d, 'users'), docId: d.id }));
+      const events = (evRes.data || []).map(d => ({ ...normalizeDoc(d, 'events'), docId: d.id, eventId: d.id }));
+      const payments = (payRes.data || []).map(d => ({ ...normalizeDoc(d, 'payments'), docId: d.id }));
+      const incomes = (incRes.data || []).map(d => ({ ...normalizeDoc(d, 'incomes'), docId: d.id }));
+      const expenses = (expRes.data || []).map(d => ({ ...normalizeDoc(d, 'expenses'), docId: d.id }));
 
       // เรียงลำดับรอบเก็บเงินตามวันเวลาที่สร้าง จากเก่าสุดไปใหม่สุด (ล่าสุด)
       events.sort((a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0));
@@ -1583,17 +1671,14 @@
     if (!confirm("คำเตือน: คุณแน่ใจหรือไม่ที่จะล้างข้อมูลทั้งหมด?")) return;
     showToast("กำลังล้างข้อมูล... โปรดรอสักครู่");
     async function deleteCol(colName) {
-      const snap = await db.collection(colName).get();
-      const batch = db.batch();
-      snap.docs.forEach(d => batch.delete(d.ref));
-      if (snap.size > 0) await batch.commit();
+      await window.myAppDb.from(colName).delete().neq('id', '___non_existent___');
     }
     try {
       await deleteCol('events');
       await deleteCol('payments');
       await deleteCol('expenses');
       await deleteCol('incomes');
-      await deleteCol('student_matrix');
+      await window.myAppDb.from('student_matrix').delete().eq('id', 'current');
       alert("ล้างฐานข้อมูลสำเร็จเรียบร้อยแล้ว");
       window.location.reload();
     } catch(e) {
