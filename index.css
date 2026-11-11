@@ -1,0 +1,1135 @@
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            /* Vintage Theme Variables */
+            --sepia-bg:          #e5d7c3;
+            --sepia-paper:       #f5ede1;
+            --sepia-paper-dark:  #d9c8af;
+            --sepia-ink:         #291c13;
+            --sepia-ink-muted:   #5c4533;
+            --sepia-border:      #826349;
+            --sepia-border-light:#bda387;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
+            transition: background-color 300ms ease, color 300ms ease;
+        }
+
+        /* ─── THEME 4: BLACK BASE (PRIMARY DEFAULT) ─── */
+        html[data-theme="black"], html[data-theme="black"] body {
+            background-color: #060608;
+            color: #f4f4f5;
+            overflow-y: auto;
+        }
+
+        /* ─── THEME 1: KUROMI BASE ─── */
+        html[data-theme="kuromi"], html[data-theme="kuromi"] body {
+            background: #09070c;
+            color: #f1e8f8;
+            overflow: hidden;
+        }
+
+        /* ─── THEME 2: VINTAGE BASE ─── */
+        html[data-theme="vintage"], html[data-theme="vintage"] body {
+            background-color: var(--sepia-bg);
+            color: var(--sepia-ink);
+            overflow-y: auto;
+        }
+
+        /* ─── THEME 3: MINECRAFT BASE ─── */
+        html[data-theme="minecraft"], html[data-theme="minecraft"] body {
+            background-color: #121a12;
+            color: #f1f8f1;
+            overflow-y: auto;
+        }
+
+        /* ─── LAYER DISPLAY LOGIC (4-WAY THEMES) ─── */
+        html[data-theme="kuromi"] .vintage-only,
+        html[data-theme="kuromi"] .minecraft-only,
+        html[data-theme="kuromi"] .black-only { display: none !important; }
+
+        html[data-theme="vintage"] .kuromi-only,
+        html[data-theme="vintage"] .minecraft-only,
+        html[data-theme="vintage"] .black-only { display: none !important; }
+
+        html[data-theme="minecraft"] .kuromi-only,
+        html[data-theme="minecraft"] .vintage-only,
+        html[data-theme="minecraft"] .black-only { display: none !important; }
+
+        html[data-theme="black"] .kuromi-only,
+        html[data-theme="black"] .vintage-only,
+        html[data-theme="black"] .minecraft-only { display: none !important; }
+
+        /* ═══════════════════════════════════════════════════════════
+           KUROMI STYLES
+           ═══════════════════════════════════════════════════════════ */
+        #silkCanvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .gradient-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: radial-gradient(circle at 85% 15%, rgba(140, 85, 135, 0.28) 0%, transparent 55%),
+                        radial-gradient(circle at 15% 85%, rgba(120, 75, 140, 0.25) 0%, transparent 50%),
+                        linear-gradient(to bottom, rgba(9,7,12,0.4) 0%, transparent 50%, rgba(9,7,12,0.7) 100%);
+            pointer-events: none;
+        }
+
+        .texture-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background-image: radial-gradient(rgba(240, 205, 245, 0.05) 1px, transparent 1px);
+            background-size: 7px 7px;
+            mask-image: radial-gradient(circle at 50% 45%, black 45%, transparent 95%);
+            -webkit-mask-image: radial-gradient(circle at 50% 45%, black 45%, transparent 95%);
+            pointer-events: none;
+        }
+
+        .kuromi-title {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(2rem);
+            animation: fadeInUp 1s ease-out 0.2s forwards;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .brand-logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0.65rem;
+        }
+
+        .brand-planet-logo {
+            width: clamp(100px, 15vw, 155px);
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 0 16px rgba(230, 180, 240, 0.8))
+                    drop-shadow(0 0 32px rgba(210, 150, 230, 0.5));
+            transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), filter 300ms ease;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .brand-planet-logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 24px rgba(245, 195, 255, 0.95))
+                    drop-shadow(0 0 45px rgba(225, 165, 245, 0.65));
+        }
+
+        .kuromi-title h1 {
+            font-family: 'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
+            font-size: clamp(3.2rem, 13vw, 8.5rem);
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1;
+            color: #f7e2f5;
+            text-shadow: 
+                0 0 12px rgba(235, 185, 245, 0.95),
+                0 0 26px rgba(215, 160, 235, 0.75),
+                0 0 50px rgba(185, 120, 215, 0.5),
+                0 0 80px rgba(145, 75, 185, 0.3);
+        }
+
+        .kuromi-title .brand-num {
+            font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            font-variant-numeric: lining-nums;
+            letter-spacing: 0.02em;
+        }
+
+        .kuromi-title .subtitle {
+            margin-top: 0.85rem;
+            font-family: 'Plus Jakarta Sans', 'Prompt', sans-serif;
+            font-size: clamp(0.7rem, 2.2vw, 0.88rem);
+            font-weight: 700;
+            letter-spacing: 0.38em;
+            text-transform: uppercase;
+            color: #d6bde0;
+            text-shadow: 0 0 12px rgba(225, 175, 235, 0.75), 0 0 25px rgba(205, 145, 225, 0.4);
+        }
+
+        .kuromi-card {
+            opacity: 0;
+            transform: translateY(1.5rem);
+            animation: fadeInUp 1s ease-out 0.6s forwards;
+
+            background: rgba(24, 18, 34, 0.68);
+            border: 1.5px solid rgba(225, 185, 235, 0.45);
+            border-radius: 28px;
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                        inset 0 0 20px rgba(180, 100, 200, 0.12);
+            padding: 2.25rem 2rem;
+            width: min(390px, 92vw);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .kuromi-card .card-title {
+            font-family: 'Playfair Display', 'Prompt', Georgia, serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #f7e2f5;
+            letter-spacing: 0.02em;
+            margin-bottom: 0.35rem;
+            text-shadow: 0 0 14px rgba(220, 160, 235, 0.65);
+        }
+
+        .kuromi-card .card-subtitle {
+            font-size: 0.82rem;
+            color: #ab92b5;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            margin-bottom: 1.75rem;
+        }
+
+        .kuromi-google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 12px 24px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(220, 160, 235, 0.35);
+            color: #fdf6fe;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+            text-decoration: none;
+        }
+
+        .kuromi-google-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(240, 195, 255, 0.65);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(180, 100, 210, 0.35),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+        }
+
+        .kuromi-google-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           VINTAGE NEWSPAPER STYLES
+           ═══════════════════════════════════════════════════════════ */
+        .newspaper-container {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            padding: 1.5rem 1.8rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            opacity: 0.85;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .news-masthead {
+            border-top: 3px double var(--sepia-border);
+            border-bottom: 2px solid var(--sepia-border);
+            padding: 0.4rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Special Elite', monospace;
+            font-size: clamp(0.6rem, 1.4vw, 0.75rem);
+            color: var(--sepia-ink-muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .news-masthead-title {
+            text-align: center;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(1.8rem, 5vw, 3.4rem);
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            color: var(--sepia-ink);
+            line-height: 1.05;
+            margin: 0.3rem 0;
+            border-bottom: 1px solid var(--sepia-border-light);
+            padding-bottom: 0.3rem;
+        }
+
+        .news-columns-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        @media (max-width: 900px) {
+            .news-columns-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .news-column {
+            font-family: 'Special Elite', monospace;
+            font-size: 0.72rem;
+            line-height: 1.6;
+            color: var(--sepia-ink-muted);
+            text-align: justify;
+            border-right: 1px dashed var(--sepia-border-light);
+            padding-right: 1.2rem;
+        }
+
+        .news-column:last-child { border-right: none; }
+
+        .news-headline {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--sepia-ink);
+            line-height: 1.2;
+            margin-bottom: 0.45rem;
+            text-transform: uppercase;
+        }
+
+        .vintage-vignette-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(245, 237, 225, 0.4) 0%, rgba(225, 207, 185, 0.7) 50%, rgba(65, 42, 24, 0.88) 100%),
+                linear-gradient(to bottom, rgba(45, 28, 16, 0.35) 0%, transparent 20%, transparent 80%, rgba(45, 28, 16, 0.5) 100%);
+            pointer-events: none;
+        }
+
+        .paper-grain-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 6;
+            background-image: radial-gradient(rgba(80, 50, 25, 0.07) 1px, transparent 1px);
+            background-size: 5px 5px;
+            pointer-events: none;
+        }
+
+        .vintage-title {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(1.5rem);
+            animation: fadeInUp 0.9s ease-out 0.15s forwards;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .vintage-title h1 {
+            font-family: 'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
+            font-size: clamp(3.2rem, 12vw, 7.5rem);
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            line-height: 1;
+            color: #26160d;
+            text-shadow: 
+                0 1px 0 rgba(255, 255, 255, 0.85),
+                0 3px 12px rgba(45, 25, 12, 0.3);
+        }
+
+        .vintage-title .brand-num {
+            font-family: 'Cinzel', 'Playfair Display', serif;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            color: #8c532b;
+            text-shadow: 
+                0 1px 0 rgba(255, 255, 255, 0.85),
+                0 3px 14px rgba(140, 83, 43, 0.38);
+        }
+
+        .vintage-title .subtitle {
+            margin-top: 0.5rem;
+            font-family: 'Plus Jakarta Sans', 'Prompt', sans-serif;
+            font-size: clamp(0.72rem, 2.2vw, 0.95rem);
+            font-weight: 700;
+            letter-spacing: 0.38em;
+            text-transform: uppercase;
+            color: #5c3e25;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+        }
+
+        .vintage-card {
+            opacity: 0;
+            transform: translateY(1.5rem);
+            animation: fadeInUp 0.9s ease-out 0.4s forwards;
+
+            position: relative;
+            width: min(440px, 94vw);
+            aspect-ratio: 816 / 648;
+            background: url('assets/login_frame.png') no-repeat center center;
+            background-size: 100% 100%;
+            padding: clamp(54px, 12vw, 76px) clamp(44px, 11vw, 68px) clamp(48px, 12vw, 70px) clamp(44px, 11vw, 68px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            filter: drop-shadow(0 16px 36px rgba(25, 14, 7, 0.5));
+            border: none;
+            box-shadow: none;
+        }
+
+        .vintage-card .card-title {
+            font-family: 'Playfair Display', 'Prompt', Georgia, serif;
+            font-size: clamp(1.35rem, 3.8vw, 1.65rem);
+            font-weight: 800;
+            color: #24160e;
+            letter-spacing: 0.01em;
+            margin-bottom: 0.2rem;
+            line-height: 1.25;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.45);
+        }
+
+        .vintage-card .card-subtitle {
+            font-family: 'Prompt', -apple-system, sans-serif;
+            font-size: clamp(0.74rem, 2.2vw, 0.85rem);
+            font-weight: 600;
+            color: #553a23;
+            margin-bottom: 1.05rem;
+        }
+
+        .vintage-google-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: min(230px, 86%);
+            padding: 9px 18px;
+            border-radius: 9999px;
+            background: linear-gradient(180deg, #2a1b11 0%, #1e130a 100%);
+            border: 1.5px solid #8e6843;
+            color: #faf3e8;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(35, 20, 10, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+            text-decoration: none;
+        }
+
+        .vintage-google-btn:hover {
+            background: linear-gradient(180deg, #372417 0%, #26180e 100%);
+            border-color: #b5895c;
+            transform: translateY(-1.5px);
+            box-shadow: 0 7px 20px rgba(35, 20, 10, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           THEME 3: MINECRAFT STYLES (SUNSET MEADOW & BEES)
+           ═══════════════════════════════════════════════════════════ */
+        .minecraft-bg-ambient {
+            position: fixed;
+            inset: 0;
+            background: url('assets/minecraft/mc_meadow_sunset.jpg') center center / cover no-repeat;
+            filter: blur(24px) brightness(0.7) saturate(1.1);
+            transform: scale(1.08);
+            z-index: 0;
+        }
+
+        .minecraft-bg-scene {
+            position: fixed;
+            inset: 0;
+            background: url('assets/minecraft/mc_meadow_sunset.jpg') center center / cover no-repeat;
+            z-index: 1;
+        }
+
+        @media (max-aspect-ratio: 1/1), (max-width: 768px) {
+            .minecraft-bg-scene {
+                background-size: cover;
+                background-position: 45% center;
+            }
+        }
+
+        .minecraft-lighting-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            background: 
+                radial-gradient(ellipse at 42% 38%, rgba(255, 240, 200, 0.16) 0%, transparent 55%),
+                linear-gradient(to bottom, rgba(15, 20, 28, 0.2) 0%, rgba(12, 18, 14, 0.35) 60%, rgba(8, 14, 10, 0.72) 100%);
+            pointer-events: none;
+        }
+
+        .minecraft-title {
+            opacity: 0;
+            transform: translateY(1.5rem);
+            animation: fadeInUp 0.9s ease-out 0.2s forwards;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.25rem;
+            position: relative;
+            margin-bottom: clamp(0.85rem, 2.2vh, 1.4rem);
+        }
+
+        .minecraft-title-img {
+            width: clamp(340px, 60vw, 560px);
+            height: auto;
+            max-width: 94vw;
+            object-fit: contain;
+            image-rendering: pixelated;
+            filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.9));
+        }
+
+        .minecraft-title .subtitle {
+            display: none; /* Dialog box already contains 'Welcome to financial system ...' */
+        }
+
+        .minecraft-card {
+            opacity: 0;
+            transform: translateY(1.5rem);
+            animation: fadeInUp 0.9s ease-out 0.4s forwards;
+            position: relative;
+            width: clamp(320px, 52vw, 540px);
+            max-width: 94vw;
+            aspect-ratio: 956 / 477;
+            background: url('assets/minecraft/mc_dialog_box.png') no-repeat center center;
+            background-size: 100% 100%;
+            image-rendering: pixelated;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0;
+            border: none;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65);
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        .minecraft-card .minecraft-slot-area {
+            position: absolute;
+            top: 30%;
+            bottom: 18%;
+            left: 5%;
+            right: 5%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .minecraft-card .google-btn-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .minecraft-google-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            background: transparent !important;
+            border: none !important;
+            border-radius: 0;
+            box-shadow: none !important;
+            outline: none !important;
+            cursor: pointer;
+            user-select: none;
+            text-decoration: none;
+            transition: transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1), filter 140ms ease;
+        }
+
+        .minecraft-google-btn:hover {
+            background: transparent !important;
+            transform: scale(1.04);
+            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 6px rgba(74, 222, 128, 0.5));
+        }
+
+        .minecraft-google-btn:active {
+            transform: scale(0.96);
+            filter: brightness(0.92);
+        }
+
+        .minecraft-google-btn-img {
+            display: block;
+            width: clamp(170px, 48%, 245px);
+            height: auto;
+            max-height: 85%;
+            object-fit: contain;
+            image-rendering: pixelated;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.75));
+        }
+
+        .minecraft-card #errorMessageMinecraft {
+            font-family: 'Prompt', sans-serif;
+            font-size: clamp(0.72rem, 2vw, 0.82rem);
+            color: #f87171;
+            text-shadow: 1px 1px 0 #000;
+            margin: 0;
+            padding: 4px 8px;
+        }
+
+        .minecraft-card #loadingHintMinecraft {
+            color: #a7f3d0;
+            font-family: 'Prompt', 'Silkscreen', sans-serif;
+            font-size: clamp(0.78rem, 2.2vw, 0.9rem);
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           THEME 4: CLASSIC BLACK STYLES (UNIVERSAL BLACK HOLE BACKGROUND)
+           ═══════════════════════════════════════════════════════════ */
+        .black-bg-poster {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #060608;
+            background-image: url('assets/bg_black_poster.jpg?v=9');
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: 0;
+            pointer-events: none !important;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            touch-action: none !important;
+            filter: brightness(0.82) contrast(1.08);
+        }
+
+        .black-bg-video {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            object-position: center center;
+            z-index: 1;
+            pointer-events: none !important;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            touch-action: none !important;
+            filter: brightness(0.82) contrast(1.08);
+            background-color: transparent;
+            transition: opacity 500ms ease;
+        }
+
+        /* ซ่อนปุ่ม Play / Controls ของ WebKit / Safari / Android ทุกชนิด ให้เป็นพื้นหลัง 100% ไร้ปุ่มกด */
+        .black-bg-video::-webkit-media-controls,
+        .black-bg-video::-webkit-media-controls-enclosure,
+        .black-bg-video::-webkit-media-controls-panel,
+        .black-bg-video::-webkit-media-controls-play-button,
+        .black-bg-video::-webkit-media-controls-start-playback-button,
+        .black-bg-video::-webkit-media-controls-overlay-play-button,
+        .black-bg-video::-webkit-media-controls-current-time-display,
+        .black-bg-video::-webkit-media-controls-time-remaining-display,
+        .black-bg-video::-webkit-media-controls-timeline,
+        .black-bg-video::-webkit-media-controls-volume-slider,
+        .black-bg-video::-webkit-media-controls-fullscreen-button {
+            display: none !important;
+            -webkit-appearance: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        /* ปรับจุดโฟกัสบนหน้าจอคอมพิวเตอร์/โน้ตบุ๊ก/ไอแพด ให้เห็นแกนหลุมดำและดาวเคราะห์สวยพอดี */
+        @media (min-width: 768px) and (orientation: landscape) {
+            .black-bg-poster {
+                background-position: center 36%;
+            }
+            .black-bg-video {
+                object-position: center 36%;
+            }
+        }
+
+        #blackholeCanvas {
+            display: none !important;
+        }
+
+        .black-vignette-overlay {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(6, 6, 8, 0.18) 0%, rgba(6, 6, 8, 0.65) 65%, rgba(6, 6, 8, 0.9) 100%),
+                        linear-gradient(to bottom, rgba(6, 6, 8, 0.45) 0%, transparent 40%, rgba(6, 6, 8, 0.82) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .black-title {
+            opacity: 0;
+            transform: translateY(1.5rem);
+            animation: fadeInUp 0.9s ease-out 0.2s forwards;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.35rem;
+            position: relative;
+            margin-bottom: clamp(0.5rem, 1.5vh, 1rem);
+        }
+
+        .black-title h1 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+        }
+
+        .black-title .brand-num {
+            background: linear-gradient(135deg, #ffffff 30%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .black-title .subtitle {
+            font-family: 'Space Mono', monospace, sans-serif;
+            font-size: clamp(0.68rem, 1.6vw, 0.8rem);
+            color: #a1a1aa;
+            letter-spacing: 0.24em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .black-card {
+            opacity: 0;
+            transform: translateY(1.5rem);
+            animation: fadeInUp 0.9s ease-out 0.4s forwards;
+            position: relative;
+            width: min(390px, 92vw);
+            background: transparent;
+            border: 1.5px solid rgba(255, 255, 255, 0.22);
+            border-radius: 24px;
+            padding: clamp(1.6rem, 4vh, 2.2rem) clamp(1.4rem, 4vw, 2rem);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(0, 0, 0, 0.75);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .black-card .card-title {
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .black-card .card-subtitle {
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.82rem;
+            color: #e4e4e7;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.95);
+        }
+
+        .black-google-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 12px 18px;
+            background: #ffffff;
+            border: 1px solid #ffffff;
+            border-radius: 9999px;
+            color: #09090b;
+            font-family: 'Prompt', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            user-select: none;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45), 0 0 1px rgba(255, 255, 255, 0.8);
+            transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .black-google-btn:hover {
+            background: #f4f4f5;
+            transform: translateY(-1.5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 0 12px rgba(255, 255, 255, 0.35);
+        }
+
+        .black-google-btn:active {
+            transform: translateY(0);
+        }
+
+        .black-card #errorMessageBlack {
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.76rem;
+            color: #f87171;
+            margin-top: 0.85rem;
+            padding: 6px 12px;
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+        }
+
+        .black-card #loadingHintBlack {
+            color: #e4e4e7;
+        }
+
+        /* ─── SHARED COMMON ELEMENTS ─── */
+        .content-wrapper {
+            position: relative;
+            z-index: 20;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem 1rem;
+            gap: clamp(1rem, 2.5vh, 1.4rem);
+        }
+
+        .google-btn-wrapper {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .google-icon-box {
+            width: 22px;
+            height: 22px;
+            background: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .google-btn-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            line-height: 1.2;
+        }
+
+        .google-btn-primary {
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+        }
+
+        .google-btn-secondary {
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.65rem;
+            color: #d1b899;
+            font-weight: 400;
+        }
+
+        .spinner-wrap {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 0.85rem;
+            font-size: 0.78rem;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(130, 90, 60, 0.25);
+            border-top-color: #543b25;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        html[data-theme="kuromi"] .spinner {
+            border: 2px solid rgba(220, 160, 235, 0.25);
+            border-top-color: #f7e2f5;
+        }
+
+        html[data-theme="minecraft"] .spinner {
+            border: 2px solid rgba(134, 239, 172, 0.25);
+            border-top-color: #86efac;
+        }
+
+        html[data-theme="black"] .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #ffffff;
+        }
+
+        html[data-theme="kuromi"] .spinner-wrap { color: #d6bde0; }
+        html[data-theme="vintage"] .spinner-wrap { color: #634b37; }
+        html[data-theme="minecraft"] .spinner-wrap { color: #a7f3d0; }
+        html[data-theme="black"] .spinner-wrap { color: #e4e4e7; }
+
+        #errorMessage {
+            display: none;
+            margin-top: 0.85rem;
+            padding: 6px 12px;
+            background: #fde8e8;
+            border: 1px solid #f8b4b4;
+            border-radius: 6px;
+            color: #9b1c1c;
+            font-size: 0.76rem;
+            font-weight: 500;
+            font-family: 'Prompt', sans-serif;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(1.5rem); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ─── MAINTENANCE MODE STYLES ─── */
+        body.in-maintenance .google-btn-wrapper {
+            display: none !important;
+        }
+
+        .maintenance-box {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            text-align: center;
+            gap: 0.65rem;
+            animation: fadeInUp 0.4s ease forwards;
+        }
+
+        body.in-maintenance .maintenance-box {
+            display: flex !important;
+        }
+
+        body.admin-unlocked .google-btn-wrapper {
+            display: flex !important;
+        }
+
+        body.admin-unlocked .maintenance-box {
+            display: none !important;
+        }
+
+        .maintenance-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 4px 14px;
+            border-radius: 9999px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulseDot 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.35; transform: scale(0.75); }
+        }
+
+        .maintenance-title {
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .maintenance-time-card {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.82rem;
+            line-height: 1.35;
+            width: 100%;
+            max-width: 320px;
+            box-sizing: border-box;
+        }
+
+        .maintenance-time-card strong {
+            font-weight: 700;
+        }
+
+        .btn-admin-bypass {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.72rem;
+            text-decoration: underline;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+            margin-top: 4px;
+            padding: 4px 8px;
+        }
+
+        .btn-admin-bypass:hover {
+            opacity: 0.9;
+        }
+
+        /* THEME 4: BLACK MAINTENANCE */
+        .black-card .maintenance-pill {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.35);
+        }
+        .black-card .pulse-dot {
+            background: #f59e0b;
+            box-shadow: 0 0 8px #f59e0b;
+        }
+        .black-card .maintenance-title {
+            color: #e4e4e7;
+        }
+        .black-card .maintenance-time-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #d4d4d8;
+        }
+        .black-card .maintenance-time-card strong {
+            color: #fbbf24;
+        }
+        .black-card .btn-admin-bypass {
+            color: #a1a1aa;
+        }
+
+        /* THEME 1: KUROMI MAINTENANCE */
+        .kuromi-card .maintenance-pill {
+            background: rgba(236, 72, 153, 0.2);
+            color: #f472b6;
+            border: 1px solid rgba(236, 72, 153, 0.4);
+        }
+        .kuromi-card .pulse-dot {
+            background: #ec4899;
+            box-shadow: 0 0 8px #ec4899;
+        }
+        .kuromi-card .maintenance-title {
+            color: #fce7f3;
+        }
+        .kuromi-card .maintenance-time-card {
+            background: rgba(42, 22, 61, 0.6);
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            color: #fdf2f8;
+        }
+        .kuromi-card .maintenance-time-card strong {
+            color: #f472b6;
+        }
+        .kuromi-card .btn-admin-bypass {
+            color: #f472b6;
+        }
+
+        /* THEME 2: VINTAGE MAINTENANCE */
+        .vintage-card .maintenance-pill {
+            background: rgba(120, 53, 15, 0.15);
+            color: #78350f;
+            border: 1px solid rgba(120, 53, 15, 0.35);
+            font-family: 'Special Elite', 'Prompt', serif;
+        }
+        .vintage-card .pulse-dot {
+            background: #b45309;
+        }
+        .vintage-card .maintenance-title {
+            color: #292524;
+            font-family: 'Playfair Display', 'Prompt', serif;
+            font-weight: 700;
+        }
+        .vintage-card .maintenance-time-card {
+            background: rgba(245, 240, 230, 0.7);
+            border: 1px dashed #78350f;
+            color: #44403c;
+        }
+        .vintage-card .maintenance-time-card strong {
+            color: #78350f;
+        }
+        .vintage-card .btn-admin-bypass {
+            color: #78350f;
+        }
+
+        /* THEME 3: MINECRAFT MAINTENANCE */
+        .minecraft-card .maintenance-box {
+            gap: 4px;
+            padding: 4px;
+        }
+        .minecraft-card .maintenance-pill {
+            background: #2b1d0c;
+            color: #facc15;
+            border: 2px solid #5c3c10;
+            font-family: 'Silkscreen', 'VT323', monospace;
+            font-size: 0.7rem;
+            padding: 2px 10px;
+        }
+        .minecraft-card .pulse-dot {
+            background: #ef4444;
+            border-radius: 0;
+        }
+        .minecraft-card .maintenance-title {
+            color: #ffffff;
+            font-family: 'Silkscreen', 'Prompt', monospace;
+            font-size: 0.75rem;
+            text-shadow: 2px 2px 0 #000;
+        }
+        .minecraft-card .maintenance-time-card {
+            background: #18140f;
+            border: 2px solid #3d2d1d;
+            color: #e2e8f0;
+            font-family: 'Silkscreen', 'Prompt', monospace;
+            font-size: 0.68rem;
+            padding: 4px 8px;
+        }
+        .minecraft-card .maintenance-time-card strong {
+            color: #facc15;
+        }
+        .minecraft-card .btn-admin-bypass {
+            color: #94a3b8;
+            font-family: 'Silkscreen', monospace;
+            font-size: 0.65rem;
+        }
