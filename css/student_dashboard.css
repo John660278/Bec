@@ -2517,12 +2517,30 @@
       color: #a1a1aa;
     }
 
-    [data-theme="black"] .bank-account-num {
-      color: #ffffff;
+    [data-theme="black"] .bank-account-num,
+    [data-theme="black"] .bank-account-num a,
+    [data-theme="black"] #bankAccountDisplay,
+    [data-theme="black"] #bankAccountDisplay a,
+    [data-theme="black"] a[href^="tel"] {
+      color: #ffffff !important;
+      -webkit-text-fill-color: #ffffff !important;
+      text-decoration: none !important;
     }
 
     [data-theme="black"] .bank-beneficiary-sub {
       color: #a1a1aa;
+    }
+
+    [data-theme="black"] .btn-remove-slip {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #f87171;
+    }
+
+    [data-theme="black"] .btn-remove-slip:hover {
+      background: rgba(239, 68, 68, 0.22);
+      border-color: #f87171;
+      color: #fca5a5;
     }
 
     /* Public Board & Treasury in Black Theme */
@@ -3684,13 +3702,17 @@
       width: 100%;
       padding: 0.2rem 0;
       animation: uploadPopIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-align: center;
     }
 
     .slip-preview-card {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 0.95rem;
-      width: 100%;
+      justify-content: center;
+      gap: 1.15rem;
+      width: auto;
+      max-width: 100%;
+      margin: 0 auto;
       text-align: left;
     }
 
@@ -3750,7 +3772,7 @@
     .slip-preview-actions {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       margin-top: 4px;
       flex-wrap: wrap;
     }
@@ -3779,12 +3801,13 @@
     .btn-remove-slip {
       display: inline-flex;
       align-items: center;
-      padding: 5px 8px;
+      gap: 4px;
+      padding: 5px 10px;
       font-size: 0.72rem;
       font-weight: 700;
       color: #dc2626;
-      background: transparent;
-      border: 1px solid transparent;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
       border-radius: 8px;
       cursor: pointer;
       font-family: inherit;
@@ -3792,8 +3815,8 @@
     }
 
     .btn-remove-slip:hover {
-      background: #fef2f2;
-      border-color: #fecaca;
+      background: #fee2e2;
+      border-color: #f87171;
     }
 
     @keyframes uploadPopIn {
