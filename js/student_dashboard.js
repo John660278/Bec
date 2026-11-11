@@ -42,7 +42,7 @@
     // Header profile pill (Cute Kuromi avatar)
     const navAv = document.getElementById('navAvatar');
     if (navAv) {
-      navAv.innerHTML = `<img src="assets/kuromi_avatar.png?v=3" alt="Kuromi">`;
+      navAv.innerHTML = `<img src="assets/kuromi/kuromi_avatar.png?v=3" alt="Kuromi">`;
     }
     const navName = document.getElementById('navName');
     if (navName) navName.textContent = currentUser.name || 'นิสิต';
@@ -415,7 +415,7 @@
     if (!items.length) {
       container.innerHTML = `
         <div class="empty-state">
-          <img src="assets/kuromi_avatar.png" class="empty-state-avatar" alt="Kuromi" />
+          <img src="assets/kuromi/kuromi_avatar.png" class="empty-state-avatar" alt="Kuromi" />
           <p>ไม่มีรายการในหมวดนี้</p>
           <small>เมื่อมีรอบเก็บเงินใหม่ รายการจะปรากฏขึ้นที่นี่โดยอัตโนมัติ</small>
         </div>`;

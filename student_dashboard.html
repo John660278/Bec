@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&family=Silkscreen:wght@400;700&family=Space+Mono:wght@700&family=VT323&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-  <link rel="stylesheet" href="css/student_dashboard.css?v=106" />
+  <link rel="stylesheet" href="css/student_dashboard.css?v=107" />
 </head>
 <body>
 
@@ -217,7 +217,7 @@
         </div>
 
         <div class="qr-code-wrapper">
-          <img src="assets/kuromi_qr_peek.png" class="kuromi-qr-peek" alt="Kuromi Mascot" />
+          <img src="assets/kuromi/kuromi_qr_peek.png" class="kuromi-qr-peek" alt="Kuromi Mascot" />
           <div id="qrcode"></div>
         </div>
 
@@ -288,7 +288,7 @@
     <!-- Success View -->
     <div class="success-sheet-view" id="successState">
       <div class="success-kuromi-wrapper">
-        <img src="assets/kuromi_success.png" class="success-kuromi-img" alt="Kuromi Success" />
+        <img src="assets/kuromi/kuromi_success.png" class="success-kuromi-img" alt="Kuromi Success" />
       </div>
       <div class="success-main-title">ส่งสลิปเรียบร้อยแล้ว</div>
       <div class="success-desc">ระบบได้บันทึกการส่งสลิปแล้ว เดี๋ยวเหรัญญิกสุดสวยรีบตรวจให้น้า</div>
@@ -326,7 +326,7 @@
       <!-- Option 2: Kuromi Theme -->
       <div class="theme-option-card" id="themeOptKuromi" onclick="selectTheme('kuromi')">
         <div class="theme-preview-box kuromi-preview-box">
-          <img src="assets/theme_icon_kuromi.png" alt="Kuromi Skull" style="width:28px; height:28px; object-fit:contain; filter:drop-shadow(0 2px 5px rgba(0,0,0,0.4));">
+          <img src="assets/kuromi/theme_icon_kuromi.png" alt="Kuromi Skull" style="width:28px; height:28px; object-fit:contain; filter:drop-shadow(0 2px 5px rgba(0,0,0,0.4));">
         </div>
         <div style="flex:1;">
           <div style="font-size:0.92rem; font-weight:700; color:var(--text);">คุโรมิ (Kuromi Edition)</div>
@@ -359,7 +359,7 @@
       <!-- Option 4: Minecraft Theme -->
       <div class="theme-option-card" id="themeOptMinecraft" onclick="selectTheme('minecraft')">
         <div class="theme-preview-box minecraft-preview-box" style="padding:0; overflow:hidden;">
-          <img src="assets/theme_icon_minecraft.png" alt="Minecraft Creeper" style="width:100%; height:100%; object-fit:cover; display:block;">
+          <img src="assets/minecraft/theme_icon_minecraft.png" alt="Minecraft Creeper" style="width:100%; height:100%; object-fit:cover; display:block;">
         </div>
         <div style="flex:1;">
           <div style="font-size:0.92rem; font-weight:700; color:var(--text);">มายคราฟ (Minecraft Edition)</div>
@@ -384,7 +384,7 @@
 
 <!-- Supabase SDK & App Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/config.js?v=106"></script>
-<script src="js/student_dashboard.js?v=106"></script>
+<script src="js/config.js?v=107"></script>
+<script src="js/student_dashboard.js?v=107"></script>
 </body>
 </html>
