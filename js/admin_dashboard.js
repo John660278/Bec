@@ -1300,7 +1300,7 @@
       await deleteCol('payments');
       await deleteCol('expenses');
       await deleteCol('incomes');
-      await window.myAppDb.from('student_matrix').delete().eq('id', 'current');
+      try { await window.myAppDb.from('student_matrix').delete().eq('id', 'current'); } catch (_) {}
       alert("ล้างฐานข้อมูลสำเร็จเรียบร้อยแล้ว");
       window.location.reload();
     } catch(e) {
