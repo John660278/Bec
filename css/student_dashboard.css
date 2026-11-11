@@ -500,7 +500,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      background: #181126 url('assets/card_bg_kuromi.png?v=69') center center / cover no-repeat;
+      background: #181126 url('../assets/card_bg_kuromi.png?v=69') center center / cover no-repeat;
       border: 1.5px solid rgba(244, 114, 182, 0.45);
       box-shadow: 0 16px 36px -8px rgba(24, 10, 38, 0.5), 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.25);
       isolation: isolate;
@@ -817,7 +817,7 @@
 
     /* Vintage Hero Card (Faithful to classic espresso brown & kraft parchment aesthetic) */
     [data-theme="vintage"] .hero-bank-card {
-      background: #ede1ce url('assets/card_bg_vintage.png?v=70') center center / cover no-repeat !important;
+      background: #ede1ce url('../assets/card_bg_vintage.png?v=70') center center / cover no-repeat !important;
       border: 1.5px solid rgba(138, 102, 70, 0.45) !important;
       box-shadow: 0 16px 36px -8px rgba(35, 18, 8, 0.42), 0 4px 12px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.6) !important;
       color: #1f1208 !important;
@@ -1041,7 +1041,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: url('assets/vintage_newspaper_bg.jpg') center top / 100% auto no-repeat;
+      background: url('../assets/vintage_newspaper_bg.jpg') center top / 100% auto no-repeat;
       opacity: 0.20;
       filter: sepia(0.3) contrast(1.1) brightness(0.98);
       pointer-events: none;
@@ -1095,7 +1095,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background-image: url('assets/vintage_newspaper_bg.jpg');
+      background-image: url('../assets/vintage_newspaper_bg.jpg');
       background-position: center var(--newspaper-offset, -700px);
       background-size: var(--newspaper-width, 100%) auto;
       background-repeat: no-repeat;
@@ -1298,7 +1298,7 @@
       width: 72px;
       height: 107px;
       margin: 0 auto 0.85rem auto;
-      background: url('assets/vintage_paper_bundle.png') no-repeat center center / contain;
+      background: url('../assets/vintage_paper_bundle.png') no-repeat center center / contain;
       filter: drop-shadow(0 8px 18px rgba(45, 25, 12, 0.22));
     }
 
@@ -1323,7 +1323,7 @@
       display: block;
       width: 130px;
       height: 223px;
-      background: url('assets/vintage_monkey_success.png') no-repeat center center / contain;
+      background: url('../assets/vintage_monkey_success.png') no-repeat center center / contain;
       filter: drop-shadow(0 10px 24px rgba(45, 25, 12, 0.28));
       border: none;
       box-shadow: none;
@@ -1468,7 +1468,7 @@
 
     /* Minecraft Hero Card (Uses exact same typography, chip & components as Kuromi) */
     [data-theme="minecraft"] .hero-bank-card {
-      background: #1e281b url('assets/card_bg_minecraft.png?v=69') center center / cover no-repeat !important;
+      background: #1e281b url('../assets/card_bg_minecraft.png?v=69') center center / cover no-repeat !important;
       border: 1.5px solid rgba(80, 110, 60, 0.45) !important;
       box-shadow: 0 16px 36px -8px rgba(20, 30, 15, 0.45), 0 4px 12px rgba(0, 0, 0, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.5) !important;
       color: #ffffff !important;
@@ -1676,7 +1676,7 @@
 
     /* Minecraft Item Frame for Payment QR */
     [data-theme="minecraft"] .qr-code-wrapper {
-      background: url('assets/minecraft/mc_item_frame.png') no-repeat center center / 100% 100%;
+      background: url('../assets/minecraft/mc_item_frame.png') no-repeat center center / 100% 100%;
       image-rendering: pixelated;
       width: 240px;
       height: 240px;
@@ -1898,7 +1898,7 @@
       width: 96px;
       height: 84px;
       margin: 0 auto 0.75rem auto;
-      background: url('assets/minecraft/mc_cat_bed.png') no-repeat center center / contain;
+      background: url('../assets/minecraft/mc_cat_bed.png') no-repeat center center / contain;
       filter: drop-shadow(0 6px 14px rgba(45, 30, 15, 0.16));
     }
 
@@ -1923,7 +1923,7 @@
       display: block;
       width: 140px;
       height: 199px;
-      background: url('assets/minecraft/mc_cat_flower.png') no-repeat center center / contain;
+      background: url('../assets/minecraft/mc_cat_flower.png') no-repeat center center / contain;
       filter: drop-shadow(0 10px 24px rgba(25, 40, 20, 0.22));
       border: none;
       box-shadow: none;
@@ -2091,7 +2091,7 @@
 
     /* Virtual Student Card: "Black Card" (Matte Black Titanium) */
     [data-theme="black"] .hero-bank-card {
-      background: #09090c url('assets/card_bg_black.png?v=69') center center / cover no-repeat !important;
+      background: #09090c url('../assets/card_bg_black.png?v=69') center center / cover no-repeat !important;
       border: 1.5px solid rgba(255, 255, 255, 0.18) !important;
       box-shadow: 
         0 24px 56px -10px rgba(0, 0, 0, 0.98),

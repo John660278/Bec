@@ -387,7 +387,7 @@
             position: relative;
             width: min(440px, 94vw);
             aspect-ratio: 816 / 648;
-            background: url('assets/login_frame.png') no-repeat center center;
+            background: url('../assets/login_frame.png') no-repeat center center;
             background-size: 100% 100%;
             padding: clamp(54px, 12vw, 76px) clamp(44px, 11vw, 68px) clamp(48px, 12vw, 70px) clamp(44px, 11vw, 68px);
             display: flex;
@@ -451,7 +451,7 @@
         .minecraft-bg-ambient {
             position: fixed;
             inset: 0;
-            background: url('assets/minecraft/mc_meadow_sunset.jpg') center center / cover no-repeat;
+            background: url('../assets/minecraft/mc_meadow_sunset.jpg') center center / cover no-repeat;
             filter: blur(24px) brightness(0.7) saturate(1.1);
             transform: scale(1.08);
             z-index: 0;
@@ -460,7 +460,7 @@
         .minecraft-bg-scene {
             position: fixed;
             inset: 0;
-            background: url('assets/minecraft/mc_meadow_sunset.jpg') center center / cover no-repeat;
+            background: url('../assets/minecraft/mc_meadow_sunset.jpg') center center / cover no-repeat;
             z-index: 1;
         }
 
@@ -515,7 +515,7 @@
             width: clamp(320px, 52vw, 540px);
             max-width: 94vw;
             aspect-ratio: 956 / 477;
-            background: url('assets/minecraft/mc_dialog_box.png') no-repeat center center;
+            background: url('../assets/minecraft/mc_dialog_box.png') no-repeat center center;
             background-size: 100% 100%;
             image-rendering: pixelated;
             display: flex;
@@ -612,7 +612,7 @@
             width: 100vw;
             height: 100vh;
             background-color: #060608;
-            background-image: url('assets/bg_black_poster.jpg?v=9');
+            background-image: url('../assets/bg_black_poster.jpg?v=9');
             background-position: center center;
             background-size: cover;
             background-repeat: no-repeat;
