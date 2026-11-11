@@ -90,6 +90,7 @@
     const vPublic = document.getElementById('view-public-board');
     if (vPayments) vPayments.style.display = view === 'my-payments' ? 'block' : 'none';
     if (vPublic) vPublic.style.display = view === 'public-board' ? 'block' : 'none';
+    if (view === 'public-board') fetchPublicBoard();
   }
 
   // ─── RENDER PUBLIC BOARD ───
@@ -303,14 +304,16 @@
     }
   }
 
-  // ─── FETCH PUBLIC BOARD (Supabase Native) ───
+  // ─── FETCH PUBLIC BOARD (Dynamic Live On-the-fly Calculation) ───
   async function fetchPublicBoard() {
     try {
-      const [statsRes, incRes, expRes, matrixRes] = await Promise.all([
+      const [statsRes, incRes, expRes, usersRes, evRes, payRes] = await Promise.all([
         window.myAppDb.from('system_stats').select('*').eq('id', 'overview').maybeSingle(),
         window.myAppDb.from('incomes').select('*').order('created_at', { ascending: false }).limit(20),
         window.myAppDb.from('expenses').select('*').order('created_at', { ascending: false }).limit(20),
-        window.myAppDb.from('student_matrix').select('*').eq('id', 'current').maybeSingle()
+        window.myAppDb.from('users').select('*').eq('role', 'Student'),
+        window.myAppDb.from('events').select('*'),
+        window.myAppDb.from('payments').select('*')
       ]);
 
       const stats = statsRes.data || {};
@@ -329,25 +332,73 @@
         timestamp: d.timestamp || d.created_at
       }));
 
-      let matrixHeaders = [];
-      let matrixRows = [];
-      if (matrixRes.data && (matrixRes.data.matrix || matrixRes.data.headers)) {
-        const mx = matrixRes.data.matrix || matrixRes.data;
-        matrixHeaders = mx.headers || [];
-        matrixRows = mx.rows || [];
-        const exclude = (h) => h === 'Email' || h.includes('ยอดเงินรวม') || h.includes('รวมที่เก็บได้');
-        matrixHeaders = matrixHeaders.filter(h => !exclude(h));
-        matrixRows = matrixRows.map(row => {
-          const newRow = {};
-          for (let k in row) { if (!exclude(k)) newRow[k] = row[k]; }
-          return newRow;
+      // Dynamic On-the-fly Matrix Calculation
+      const students = (usersRes.data || []).map(d => ({
+        studentId: d.student_id || d.studentId,
+        name: d.name,
+        email: d.email
+      }));
+      const events = (evRes.data || []).map(d => ({
+        id: d.id,
+        eventId: d.id,
+        title: d.title,
+        baseAmount: d.base_amount != null ? d.base_amount : d.baseAmount,
+        dueDate: d.due_date || d.dueDate,
+        createdAt: d.created_at || d.createdAt
+      }));
+      const payments = (payRes.data || []).map(d => ({
+        paymentId: d.id,
+        name: d.student_name || d.name,
+        email: d.student_email || d.email,
+        studentId: d.student_id || d.studentId,
+        paidAmount: d.paid_amount != null ? d.paid_amount : d.paidAmount,
+        totalAmount: d.total_amount != null ? d.total_amount : d.totalAmount,
+        eventTitle: d.event_title || d.eventTitle,
+        eventId: d.event_id || d.eventId,
+        status: d.status
+      }));
+
+      events.sort((a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0));
+      students.sort((a, b) => (a.studentId || '').localeCompare(b.studentId || '', undefined, { numeric: true }));
+
+      let matrixHeaders = ['รหัสนิสิต', 'ชื่อ-สกุล'];
+      events.forEach(ev => matrixHeaders.push(ev.title || 'รอบเก็บเงิน'));
+
+      let matrixRows = students.map(stu => {
+        let row = {
+          'รหัสนิสิต': stu.studentId || '-',
+          'ชื่อ-สกุล': stu.name || '-'
+        };
+        events.forEach(ev => {
+          const targetEvId = ev.eventId || ev.id;
+          const userPays = payments.filter(p => 
+            ((p.email && stu.email && p.email.trim().toLowerCase() === stu.email.trim().toLowerCase()) ||
+             (p.studentId && stu.studentId && String(p.studentId).trim() === String(stu.studentId).trim())) &&
+            (p.eventId === targetEvId || p.eventId === ev.id)
+          );
+          const paidPay = userPays.find(p => p.status === 'Paid');
+          const pendingPay = userPays.find(p => p.status === 'Pending');
+          const pay = paidPay || pendingPay || userPays[0];
+
+          if (pay) {
+            if (pay.status === 'Paid') {
+              row[ev.title] = pay.paidAmount != null ? pay.paidAmount : (pay.totalAmount != null ? pay.totalAmount : ev.baseAmount);
+            } else if (pay.status === 'Pending') {
+              row[ev.title] = 'รอตรวจสอบ';
+            } else {
+              row[ev.title] = 'ค้างชำระ';
+            }
+          } else {
+            row[ev.title] = 'ค้างชำระ';
+          }
         });
-      }
+        return row;
+      });
 
       publicDataFetched = true;
       renderPublicBoard({ incomes, expenses, totalIncome, totalExpense, totalBalance, matrixHeaders, matrixRows });
     } catch (e) {
-      console.error(e);
+      console.error('fetchPublicBoard Error:', e);
       const pbEl = document.getElementById('publicBoardContent');
       if (pbEl) {
         pbEl.innerHTML = `<div class="empty-state"><p style="color:var(--danger)">เชื่อมต่อล้มเหลว</p></div>`;
@@ -703,6 +754,7 @@
       document.getElementById('modalContent').style.display = 'none';
       document.getElementById('successState').style.display = 'block';
       fetchPayments();
+      fetchPublicBoard();
     } catch (e) {
       console.error(e);
       alert('อัปโหลดไม่สำเร็จ: ' + e.message);

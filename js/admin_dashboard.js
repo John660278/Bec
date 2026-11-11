@@ -129,7 +129,7 @@
     if (viewId === 'overview') loadOverview();
     if (viewId === 'events') fetchEventsData();
     if (viewId === 'payments') fetchPaymentsData();
-    if (viewId === 'matrix' && !matrixFetched) fetchMatrixData();
+    if (viewId === 'matrix') fetchMatrixData();
 
     setTimeout(updateEmptyStateAlignment, 60);
   }
@@ -208,50 +208,84 @@
     if (m) m.classList.remove('open');
   }
 
-  // ─── MATRIX ───
+  // ─── MATRIX (Dynamic Live On-the-fly Calculation) ───
   async function fetchMatrixData() {
     matrixFetched = true;
     const tBody = document.getElementById('matrixBody');
     const tHead = document.getElementById('matrixHeaders');
+    if (!tBody || !tHead) return;
     tBody.innerHTML = `<tr><td><div class="skeleton"></div></td></tr>`;
 
     try {
-      const { data: snap } = await window.myAppDb.from('student_matrix').select('*').eq('id', 'current').maybeSingle();
-      if (snap && (snap.matrix || snap.headers)) {
-        const mx = snap.matrix || snap;
-        let headers = mx.headers || [];
-        let rows    = mx.rows    || [];
+      const [usersRes, evRes, payRes] = await Promise.all([
+        window.myAppDb.from('users').select('*').eq('role', 'Student'),
+        window.myAppDb.from('events').select('*'),
+        window.myAppDb.from('payments').select('*')
+      ]);
 
-        const hide = h => h === 'Email' || h.includes('ยอดเงินรวม') || h.includes('รวมที่เก็บได้');
-        headers = headers.filter(h => !hide(h));
-        rows    = rows.map(row => { const r={}; for(let k in row){ if(!hide(k)) r[k]=row[k]; } return r; });
+      const students = (usersRes.data || []).map(d => ({ ...normalizeDoc(d, 'users'), docId: d.id }));
+      const events = (evRes.data || []).map(d => ({ ...normalizeDoc(d, 'events'), docId: d.id, eventId: d.id }));
+      const payments = (payRes.data || []).map(d => ({ ...normalizeDoc(d, 'payments'), docId: d.id }));
 
-        tHead.innerHTML = headers.map((h, i) =>
-          `<th style="text-align:${i > 1 ? 'center' : 'left'}">${h}</th>`).join('');
+      events.sort((a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0));
+      students.sort((a, b) => (a.studentId || '').localeCompare(b.studentId || '', undefined, { numeric: true }));
 
-        if (rows.length === 0) {
-          tBody.innerHTML = `<tr><td colspan="${headers.length}" class="empty-state-cell"><div class="empty-state"><p>ยังไม่มีข้อมูลนิสิต</p></div></td></tr>`;
-          updateEmptyStateAlignment();
-        } else {
-          tBody.innerHTML = rows.map(row => `
-            <tr>
-              ${headers.map((h, i) => {
-                let val = row[h] || '-';
-                if (i > 1) {
-                  if (val === 'Pending' || val === 'รอตรวจสอบ') return `<td style="color:#b45309;font-weight:700;text-align:center">รอตรวจสอบ</td>`;
-                  if (val === '-' || val === '' || val === 'ค้างชำระ') return `<td style="color:#dc2626;font-weight:700;text-align:center">ค้างชำระ</td>`;
-                  if (!isNaN(val)) return `<td style="color:#15803d;font-weight:700;text-align:center">฿${Number(val).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>`;
-                }
-                return `<td>${val}</td>`;
-              }).join('')}
-            </tr>`).join('');
-        }
-      } else {
-        tBody.innerHTML = `<tr><td colspan="100" class="empty-state-cell"><div class="empty-state"><p>ไม่พบข้อมูล</p></div></td></tr>`;
+      let headers = ['รหัสนิสิต', 'ชื่อ-สกุล'];
+      events.forEach(ev => headers.push(ev.title || 'รอบเก็บเงิน'));
+
+      let rows = students.map(stu => {
+        let row = {
+          'รหัสนิสิต': stu.studentId || '-',
+          'ชื่อ-สกุล': stu.name || '-'
+        };
+        events.forEach(ev => {
+          const targetEvId = ev.eventId || ev.id;
+          const userPays = payments.filter(p => 
+            ((p.email && stu.email && p.email.trim().toLowerCase() === stu.email.trim().toLowerCase()) ||
+             (p.studentId && stu.studentId && String(p.studentId).trim() === String(stu.studentId).trim())) &&
+            (p.eventId === targetEvId || p.eventId === ev.id)
+          );
+          const paidPay = userPays.find(p => p.status === 'Paid');
+          const pendingPay = userPays.find(p => p.status === 'Pending');
+          const pay = paidPay || pendingPay || userPays[0];
+
+          if (pay) {
+            if (pay.status === 'Paid') {
+              row[ev.title] = pay.paidAmount != null ? pay.paidAmount : (pay.totalAmount != null ? pay.totalAmount : ev.baseAmount);
+            } else if (pay.status === 'Pending') {
+              row[ev.title] = 'รอตรวจสอบ';
+            } else {
+              row[ev.title] = 'ค้างชำระ';
+            }
+          } else {
+            row[ev.title] = 'ค้างชำระ';
+          }
+        });
+        return row;
+      });
+
+      tHead.innerHTML = headers.map((h, i) =>
+        `<th style="text-align:${i > 1 ? 'center' : 'left'}">${h}</th>`).join('');
+
+      if (rows.length === 0) {
+        tBody.innerHTML = `<tr><td colspan="${headers.length}" class="empty-state-cell"><div class="empty-state"><p>ยังไม่มีข้อมูลนิสิต</p></div></td></tr>`;
         updateEmptyStateAlignment();
+      } else {
+        tBody.innerHTML = rows.map(row => `
+          <tr>
+            ${headers.map((h, i) => {
+              let val = row[h] || '-';
+              if (i > 1) {
+                if (val === 'Pending' || val === 'รอตรวจสอบ') return `<td style="color:#b45309;font-weight:700;text-align:center">รอตรวจสอบ</td>`;
+                if (val === '-' || val === '' || val === 'ค้างชำระ') return `<td style="color:#dc2626;font-weight:700;text-align:center">ค้างชำระ</td>`;
+                if (!isNaN(val)) return `<td style="color:#15803d;font-weight:700;text-align:center">฿${Number(val).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>`;
+              }
+              return `<td>${val}</td>`;
+            }).join('')}
+          </tr>`).join('');
       }
     } catch (e) {
-      console.error(e);
+      console.error('fetchMatrixData Error:', e);
       tBody.innerHTML = `<tr><td colspan="100" class="empty-state-cell"><div class="empty-state"><p style="color:var(--danger)">เชื่อมต่อล้มเหลว</p></div></td></tr>`;
       updateEmptyStateAlignment();
     }
@@ -502,74 +536,19 @@
 
   async function syncStudentMatrix(isManual = false) {
     const btn = document.getElementById('btnSyncMatrix');
-    if (isManual && btn) { btn.disabled = true; btn.textContent = 'กำลังคำนวณ...'; }
+    if (isManual && btn) { btn.disabled = true; btn.textContent = 'กำลังโหลด...'; }
     try {
-      const [usersRes, evRes, payRes] = await Promise.all([
-        window.myAppDb.from('users').select('*').eq('role', 'Student'),
-        window.myAppDb.from('events').select('*'),
-        window.myAppDb.from('payments').select('*')
-      ]);
-      
-      let students = (usersRes.data || []).map(d => normalizeDoc(d, 'users'));
-      let events = (evRes.data || []).map(d => normalizeDoc(d, 'events'));
-      let payments = (payRes.data || []).map(d => normalizeDoc(d, 'payments'));
-      
-      events.sort((a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0));
-      
-      let headers = ['รหัสนิสิต', 'ชื่อ-สกุล', 'Email'];
-      events.forEach(ev => headers.push(ev.title));
-      
-      let rows = students.map(stu => {
-          let row = {
-              'รหัสนิสิต': stu.studentId || '-',
-              'ชื่อ-สกุล': stu.name || '-',
-              'Email': stu.email || '-'
-          };
-          events.forEach(ev => {
-              const targetEvId = ev.eventId || ev.id;
-              const userPays = payments.filter(p => 
-                  ((p.email && stu.email && p.email.trim().toLowerCase() === stu.email.trim().toLowerCase()) ||
-                   (p.studentId && stu.studentId && String(p.studentId).trim() === String(stu.studentId).trim())) &&
-                  (p.eventId === targetEvId || p.eventId === ev.id)
-              );
-              const paidPay = userPays.find(p => p.status === 'Paid');
-              const pendingPay = userPays.find(p => p.status === 'Pending');
-              const pay = paidPay || pendingPay || userPays[0];
-
-              if (pay) {
-                  if (pay.status === 'Paid') {
-                      row[ev.title] = pay.paidAmount || pay.totalAmount || ev.baseAmount;
-                  } else if (pay.status === 'Pending') {
-                      row[ev.title] = 'รอตรวจสอบ';
-                  } else {
-                      row[ev.title] = 'ค้างชำระ';
-                  }
-              } else {
-                  row[ev.title] = 'ค้างชำระ';
-              }
-          });
-          return row;
-      });
-      
-      const { error: upsertErr } = await window.myAppDb.from('student_matrix').upsert({
-          id: 'current',
-          headers,
-          rows,
-          updated_at: new Date().toISOString()
-      });
-      if (upsertErr) throw upsertErr;
-      
+      await fetchMatrixData();
       if (isManual) {
-        showToast('คำนวณตารางใหม่สำเร็จ');
-        fetchMatrixData();
+        showToast('อัปเดตข้อมูลตารางล่าสุดแล้ว');
       }
     } catch (e) {
       console.error('syncStudentMatrix Error:', e);
-      if (isManual) showToast('เกิดข้อผิดพลาด');
+      if (isManual) showToast('เกิดข้อผิดพลาดในการโหลดข้อมูล');
     } finally {
       if (isManual && btn) {
         btn.disabled = false;
-        btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg> รีเฟรชและคำนวณใหม่`;
+        btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg> รีเฟรชตาราง`;
       }
     }
   }
