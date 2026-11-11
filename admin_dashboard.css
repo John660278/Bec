@@ -1192,3 +1192,98 @@
       .mobile-nav { display: none !important; }
       .mobile-topbar { display: none !important; }
     }
+
+    /* ─── UPLOAD DROPZONE STYLES ─── */
+    .slip-upload-dropzone {
+      border: 1.5px dashed var(--border-dark);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      background: #fafbfc;
+      transition: all 0.2s ease;
+    }
+
+    .slip-upload-dropzone:hover {
+      border-color: var(--primary-blue, #2563eb);
+      background: #f4f7fb;
+    }
+
+    .slip-upload-dropzone.has-file {
+      border-color: #10b981;
+      border-style: solid;
+      background: #f0fdf4;
+    }
+
+    .slip-upload-dropzone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+    }
+
+    .upload-prompt {
+      pointer-events: none;
+    }
+
+    .upload-icon {
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .upload-main-text {
+      font-size: 0.82rem;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .upload-sub-text {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .upload-attached {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      pointer-events: none;
+      animation: uploadPopIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes uploadPopIn {
+      0% { transform: scale(0.94); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .upload-attached-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #059669;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      padding: 4px 12px;
+      border-radius: 9999px;
+    }
+
+    .upload-filename {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+      word-break: break-all;
+      max-width: 90%;
+    }
+
+    .upload-change-hint {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }

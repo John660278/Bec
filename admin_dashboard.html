@@ -332,15 +332,34 @@
           </div>
           <div class="form-group full">
             <label>ใบเสร็จ / หลักฐานการจ่ายเงิน (รูปภาพ)</label>
-            <div style="border: 1.5px dashed var(--border-dark); border-radius: var(--radius-md); padding: 1.25rem 1rem; text-align: center; cursor: pointer; position: relative; background: #fafbfc;" id="expUploadArea">
-              <input type="file" id="expReceiptFile" accept="image/*" style="position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; z-index: 5;" onchange="previewFile(this, 'expPreview', 'expFileName')" />
-              <div style="pointer-events: none;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color: var(--muted); margin-bottom: 4px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                <div style="font-size: 0.8rem; color: var(--text); font-weight: 700;">แตะเพื่อแนบรูปใบเสร็จ (ไม่บังคับ)</div>
-                <div id="expFileName" style="font-size: 0.72rem; color: var(--primary-blue); margin-top: 4px; font-weight: 700;"></div>
+            <div class="slip-upload-dropzone" id="expUploadArea">
+              <input type="file" id="expReceiptFile" accept="image/*" onchange="previewFile(this, 'exp')" />
+              
+              <!-- Prompt State (default) -->
+              <div class="upload-prompt" id="expUploadPrompt">
+                <div class="upload-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <div class="upload-main-text">แตะเพื่อแนบรูปใบเสร็จ (ไม่บังคับ)</div>
+                <div class="upload-sub-text">รองรับรูปถ่ายใบเสร็จ หรือสลิปโอนเงิน (JPG, PNG)</div>
+              </div>
+
+              <!-- Attached State (visible only when file selected) -->
+              <div class="upload-attached" id="expUploadAttached" style="display: none;">
+                <div class="upload-attached-pill">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>แนบรูปใบเสร็จแล้ว</span>
+                </div>
+                <div class="upload-filename" id="expFileName"></div>
+                <div class="upload-change-hint">แตะเพื่อเปลี่ยนรูปใบเสร็จ</div>
               </div>
             </div>
-            <img id="expPreview" src="" alt="" style="display: none; max-width: 220px; max-height: 160px; border-radius: 8px; margin-top: 0.65rem; border: 1px solid var(--border);" />
+
+            <!-- Preview Wrapper with remove button -->
+            <div id="expPreviewWrapper" style="display: none; margin-top: 0.75rem;">
+              <img id="expPreview" src="" alt="ตัวอย่างใบเสร็จ" style="max-width: 220px; max-height: 160px; border-radius: 8px; border: 1px solid var(--border); object-fit: cover; display: block;" />
+              <button type="button" class="btn btn-danger-ghost btn-sm" onclick="clearFile('exp')" style="margin-top: 6px; font-size: 0.75rem; padding: 2px 8px;">✕ นำรูปออก</button>
+            </div>
           </div>
         </div>
         <button class="btn btn-primary" id="expSubmitBtn" onclick="handleAddExpense(this)">บันทึกรายจ่าย</button>
@@ -364,15 +383,34 @@
           </div>
           <div class="form-group full">
             <label>หลักฐานการรับเงิน (รูปภาพ)</label>
-            <div style="border: 1.5px dashed var(--border-dark); border-radius: var(--radius-md); padding: 1.25rem 1rem; text-align: center; cursor: pointer; position: relative; background: #fafbfc;" id="incUploadArea">
-              <input type="file" id="incReceiptFile" accept="image/*" style="position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; z-index: 5;" onchange="previewFile(this, 'incPreview', 'incFileName')" />
-              <div style="pointer-events: none;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color: var(--muted); margin-bottom: 4px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                <div style="font-size: 0.8rem; color: var(--text); font-weight: 700;">แตะเพื่อแนบรูปหลักฐาน (ไม่บังคับ)</div>
-                <div id="incFileName" style="font-size: 0.72rem; color: var(--primary-blue); margin-top: 4px; font-weight: 700;"></div>
+            <div class="slip-upload-dropzone" id="incUploadArea">
+              <input type="file" id="incReceiptFile" accept="image/*" onchange="previewFile(this, 'inc')" />
+              
+              <!-- Prompt State (default) -->
+              <div class="upload-prompt" id="incUploadPrompt">
+                <div class="upload-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <div class="upload-main-text">แตะเพื่อแนบรูปหลักฐาน (ไม่บังคับ)</div>
+                <div class="upload-sub-text">รองรับสลิปโอนเข้า หรือหลักฐานรับเงิน (JPG, PNG)</div>
+              </div>
+
+              <!-- Attached State (visible only when file selected) -->
+              <div class="upload-attached" id="incUploadAttached" style="display: none;">
+                <div class="upload-attached-pill">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>แนบรูปหลักฐานแล้ว</span>
+                </div>
+                <div class="upload-filename" id="incFileName"></div>
+                <div class="upload-change-hint">แตะเพื่อเปลี่ยนรูปหลักฐาน</div>
               </div>
             </div>
-            <img id="incPreview" src="" alt="" style="display: none; max-width: 220px; max-height: 160px; border-radius: 8px; margin-top: 0.65rem; border: 1px solid var(--border);" />
+
+            <!-- Preview Wrapper with remove button -->
+            <div id="incPreviewWrapper" style="display: none; margin-top: 0.75rem;">
+              <img id="incPreview" src="" alt="ตัวอย่างหลักฐาน" style="max-width: 220px; max-height: 160px; border-radius: 8px; border: 1px solid var(--border); object-fit: cover; display: block;" />
+              <button type="button" class="btn btn-danger-ghost btn-sm" onclick="clearFile('inc')" style="margin-top: 6px; font-size: 0.75rem; padding: 2px 8px;">✕ นำรูปออก</button>
+            </div>
           </div>
         </div>
         <button class="btn btn-primary" id="incSubmitBtn" onclick="handleAddIncome(this)">บันทึกรายรับ</button>
@@ -1222,17 +1260,57 @@
     if (el) el.classList.add('active');
   }
 
-  function previewFile(input, imgId, nameId) {
-    const file = input.files[0];
-    if (!file) return;
-    document.getElementById(nameId).textContent = file.name;
+  function previewFile(input, type, legacyNameId) {
+    const file = input.files && input.files[0];
+    const prefix = (type === 'expPreview' || type === 'exp') ? 'exp' : ((type === 'incPreview' || type === 'inc') ? 'inc' : type);
+    
+    const dropzone = document.getElementById(prefix + 'UploadArea');
+    const prompt = document.getElementById(prefix + 'UploadPrompt');
+    const attached = document.getElementById(prefix + 'UploadAttached');
+    const filename = document.getElementById(prefix + 'FileName');
+    const previewWrapper = document.getElementById(prefix + 'PreviewWrapper');
+    const previewImg = document.getElementById(prefix + 'Preview');
+
+    if (!file) {
+      clearFile(prefix);
+      return;
+    }
+
+    if (filename) filename.textContent = file.name;
+    if (prompt) prompt.style.display = 'none';
+    if (attached) attached.style.display = 'flex';
+    if (dropzone) dropzone.classList.add('has-file');
+
     const reader = new FileReader();
     reader.onload = e => {
-      const img = document.getElementById(imgId);
-      img.src = e.target.result;
-      img.style.display = 'block';
+      if (previewImg) {
+        previewImg.src = e.target.result;
+        previewImg.style.display = 'block';
+      }
+      if (previewWrapper) previewWrapper.style.display = 'block';
     };
     reader.readAsDataURL(file);
+  }
+
+  function clearFile(prefix) {
+    const input = document.getElementById(prefix === 'exp' ? 'expReceiptFile' : 'incReceiptFile');
+    const dropzone = document.getElementById(prefix + 'UploadArea');
+    const prompt = document.getElementById(prefix + 'UploadPrompt');
+    const attached = document.getElementById(prefix + 'UploadAttached');
+    const filename = document.getElementById(prefix + 'FileName');
+    const previewWrapper = document.getElementById(prefix + 'PreviewWrapper');
+    const previewImg = document.getElementById(prefix + 'Preview');
+
+    if (input) input.value = '';
+    if (filename) filename.textContent = '';
+    if (prompt) prompt.style.display = 'block';
+    if (attached) attached.style.display = 'none';
+    if (dropzone) dropzone.classList.remove('has-file');
+    if (previewImg) {
+      previewImg.src = '';
+      previewImg.style.display = 'none';
+    }
+    if (previewWrapper) previewWrapper.style.display = 'none';
   }
 
   function fileToBlob(file) {
@@ -1306,9 +1384,7 @@
       document.getElementById('expTitle').value  = '';
       document.getElementById('expAmount').value = '';
       document.getElementById('expDate').value   = new Date().toISOString().split('T')[0];
-      if (fileInput) fileInput.value = '';
-      document.getElementById('expFileName').textContent = '';
-      document.getElementById('expPreview').style.display = 'none';
+      clearFile('exp');
       loadOverview();
     } catch(e) {
       console.error(e);
@@ -1363,9 +1439,7 @@
       document.getElementById('incSource').value = '';
       document.getElementById('incAmount').value = '';
       document.getElementById('incDate').value   = new Date().toISOString().split('T')[0];
-      if (fileInput) fileInput.value = '';
-      document.getElementById('incFileName').textContent = '';
-      document.getElementById('incPreview').style.display = 'none';
+      clearFile('inc');
       loadOverview();
     } catch(e) {
       console.error(e);
