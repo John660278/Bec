@@ -1158,6 +1158,15 @@
       background: #f5ece0;
       border-color: #8e6843;
     }
+    [data-theme="vintage"] .btn-remove-slip {
+      background: #fdf5f5;
+      color: #b91c1c;
+      border: 1px solid #eecaca;
+    }
+    [data-theme="vintage"] .btn-remove-slip:hover {
+      background: #fae8e8;
+      border-color: #dc2626;
+    }
     [data-theme="vintage"] .slip-thumb-wrapper {
       border-color: #d8c5ab;
     }
@@ -1759,6 +1768,15 @@
     [data-theme="minecraft"] .btn-change-slip:hover {
       background: #f1f8f2;
       border-color: #2e7d32;
+    }
+    [data-theme="minecraft"] .btn-remove-slip {
+      background: #fdf4f4;
+      color: #dc2626;
+      border: 1px solid #fca5a5;
+    }
+    [data-theme="minecraft"] .btn-remove-slip:hover {
+      background: #fee2e2;
+      border-color: #ef4444;
     }
     [data-theme="minecraft"] .slip-thumb-wrapper {
       border-color: #c4b69d;
@@ -2518,9 +2536,9 @@
     }
 
     [data-theme="black"] .bank-account-num,
-    [data-theme="black"] .bank-account-num a,
+    [data-theme="black"] .bank-account-num *,
     [data-theme="black"] #bankAccountDisplay,
-    [data-theme="black"] #bankAccountDisplay a,
+    [data-theme="black"] #bankAccountDisplay *,
     [data-theme="black"] a[href^="tel"] {
       color: #ffffff !important;
       -webkit-text-fill-color: #ffffff !important;
@@ -3586,6 +3604,14 @@
       font-variant-numeric: tabular-nums;
     }
 
+    .bank-account-num a,
+    #bankAccountDisplay a,
+    a[href^="tel"] {
+      color: inherit;
+      text-decoration: none;
+      -webkit-text-fill-color: currentColor;
+    }
+
     .btn-copy-account {
       background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
       color: #ffffff;
@@ -3703,6 +3729,8 @@
       padding: 0.2rem 0;
       animation: uploadPopIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       text-align: center;
+      justify-content: center;
+      align-items: center;
     }
 
     .slip-preview-card {

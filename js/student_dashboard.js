@@ -641,7 +641,7 @@
       if (lbImg) lbImg.src = previewUrl;
 
       if (prompt) prompt.style.display = 'none';
-      if (attached) attached.style.display = 'block';
+      if (attached) attached.style.display = 'flex';
       if (dropzone) dropzone.classList.add('has-file');
     } else {
       resetUploadDropzone();
