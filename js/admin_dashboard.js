@@ -894,10 +894,14 @@
           <td style="font-size:0.75rem;color:var(--muted)">${formatDate(p.paidAt)}</td>
           <td>${slipBtn}</td>
           <td>
-            <div style="display:flex;gap:4px;flex-wrap:wrap">
-              ${p.status === 'Pending' ? `<button class="btn btn-primary btn-sm" onclick="approve('${pId}','${safeTitle}','${p.email}',${p.paidAmount})">อนุมัติ</button>` : ''}
+            ${p.status === 'Pending' ? `
+              <div style="display:flex;flex-direction:column;gap:5px;min-width:68px;">
+                <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center;padding:4px 8px;font-size:0.75rem;" onclick="approve('${pId}','${safeTitle}','${p.email}',${p.paidAmount})">อนุมัติ</button>
+                <button class="btn btn-danger-ghost btn-sm" style="width:100%;justify-content:center;padding:4px 8px;font-size:0.75rem;" onclick="deletePayment('${pId}')">ลบ</button>
+              </div>
+            ` : `
               <button class="btn btn-danger-ghost btn-sm" onclick="deletePayment('${pId}')">ลบ</button>
-            </div>
+            `}
           </td>
         </tr>
       `;
