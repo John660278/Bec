@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/admin_dashboard.css?v=111" />
+  <link rel="stylesheet" href="css/admin_dashboard.css?v=112" />
 </head>
 <body>
 
@@ -164,9 +164,6 @@
           </table>
         </div>
       </div>
-
-      <!-- Public Board Feed inside Admin -->
-      <div id="overviewPublicBoard"></div>
     </section>
 
     <!-- ── VIEW 2: EVENTS ── -->
@@ -428,6 +425,9 @@
         </div>
         <button class="btn btn-primary" id="incSubmitBtn" onclick="handleAddIncome(this)">บันทึกรายรับ</button>
       </div>
+
+      <!-- รายการใช้จ่ายเงินสาขา (รายรับ / รายจ่าย) -->
+      <div id="overviewPublicBoard"></div>
     </section>
 
   </main>
@@ -496,13 +496,13 @@
 
 <!-- Supabase SDK & App Config -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/config.js?v=111"></script>
+<script src="js/config.js?v=112"></script>
 <script src="js/xlsx.bundle.js?v=1"></script>
 <script>
   if (!window.XLSX) {
     document.write('<script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"><\/script>');
   }
 </script>
-<script src="js/admin_dashboard.js?v=111"></script>
+<script src="js/admin_dashboard.js?v=112"></script>
 </body>
 </html>
