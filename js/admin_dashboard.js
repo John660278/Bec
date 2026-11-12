@@ -893,15 +893,11 @@
           <td><span class="badge badge-${p.status === 'Paid' ? 'paid' : 'pending'}">${p.status === 'Paid' ? 'ชำระแล้ว' : 'รอตรวจสอบ'}</span></td>
           <td style="font-size:0.75rem;color:var(--muted)">${formatDate(p.paidAt)}</td>
           <td>${slipBtn}</td>
-          <td>
-            ${p.status === 'Pending' ? `
-              <div style="display:flex;flex-direction:column;gap:5px;min-width:68px;">
-                <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center;padding:4px 8px;font-size:0.75rem;" onclick="approve('${pId}','${safeTitle}','${p.email}',${p.paidAmount})">อนุมัติ</button>
-                <button class="btn btn-danger-ghost btn-sm" style="width:100%;justify-content:center;padding:4px 8px;font-size:0.75rem;" onclick="deletePayment('${pId}')">ลบ</button>
-              </div>
-            ` : `
+          <td style="white-space:nowrap;min-width:135px;">
+            <div style="display:inline-flex;align-items:center;gap:6px;flex-wrap:nowrap;">
+              ${p.status === 'Pending' ? `<button class="btn btn-primary btn-sm" onclick="approve('${pId}','${safeTitle}','${p.email}',${p.paidAmount})">อนุมัติ</button>` : ''}
               <button class="btn btn-danger-ghost btn-sm" onclick="deletePayment('${pId}')">ลบ</button>
-            `}
+            </div>
           </td>
         </tr>
       `;
