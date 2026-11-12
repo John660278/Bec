@@ -259,7 +259,14 @@
   window.updateDateDisplay = function(inputId, displayId) {
     const input = document.getElementById(inputId);
     const display = document.getElementById(displayId);
-    if (!input || !display) return;
+    if (!input) return;
+
+    // เมื่อจิ้มเลือกวันเสร็จ ให้หลุด focus ทันที เพื่อให้ปฏิทินบน iPad / มือถือ หุบเก็บอัตโนมัติ
+    setTimeout(() => {
+      try { input.blur(); } catch (_) {}
+    }, 80);
+
+    if (!display) return;
     if (!input.value) {
       display.textContent = 'ยังไม่ได้เลือกวันที่';
       display.className = 'date-selected-hint empty';
@@ -280,6 +287,9 @@
       'evDueDate': 'evDueDateDisplay'
     };
     if (map[inputId]) window.updateDateDisplay(inputId, map[inputId]);
+    setTimeout(() => {
+      try { input.blur(); } catch (_) {}
+    }, 80);
   };
 
   function initAllDateInputs() {
@@ -316,6 +326,15 @@
     if (mobEmailEl) mobEmailEl.textContent = currentUser.email || currentUser.name || 'Admin';
 
     initAllDateInputs();
+
+    // Auto-blur date pickers when changed to close popover on iPad / mobile
+    document.querySelectorAll('input[type="date"]').forEach(inp => {
+      inp.addEventListener('change', () => {
+        setTimeout(() => {
+          try { inp.blur(); } catch (_) {}
+        }, 80);
+      });
+    });
 
     if (currentUser && currentUser.email) {
       loadOverview();
