@@ -213,8 +213,10 @@
       if (tData) {
         const rUrl = tData.receipt_url || tData.receiptUrl;
         if (rUrl && rUrl.includes('supabase.co')) {
-          const fileName = rUrl.split('/public/slips/')[1].split('?')[0];
-          await window.myAppDb.storage.from('slips').remove([fileName]);
+          const rawName = rUrl.split('/public/slips/')[1].split('?')[0];
+          const fileName = decodeURIComponent(rawName);
+          const { error: sErr } = await window.myAppDb.storage.from('slips').remove([fileName]);
+          if (sErr) console.warn('Storage receipt remove error:', sErr);
         }
       }
 
@@ -727,9 +729,26 @@
     if (!confirmed) return;
 
     try {
+      // 1. ค้นหาและลบรูปภาพสลิปทั้งหมดในคลัง (Storage) ที่ผูกกับรอบเก็บเงินนี้
+      try {
+        const { data: files } = await window.myAppDb.storage.from('slips').list(eventId);
+        if (files && files.length > 0) {
+          const filePaths = files.map(f => `${eventId}/${f.name}`);
+          const { error: sErr } = await window.myAppDb.storage.from('slips').remove(filePaths);
+          if (sErr) console.warn('Storage event files remove error:', sErr);
+        }
+      } catch (errStorage) {
+        console.warn('Storage cleanup for event error:', errStorage);
+      }
+
+      // 2. ลบข้อมูลการชำระเงินทั้งหมดที่ผูกกับรอบนี้
+      await window.myAppDb.from('payments').delete().eq('event_id', eventId);
+
+      // 3. ลบรอบเก็บเงินออกจากฐานข้อมูล
       await window.myAppDb.from('events').delete().eq('id', eventId);
       showToast(`ลบรอบเก็บเงิน "${evTitle}" สำเร็จ`);
       await fetchEventsData();
+      await fetchPaymentsData();
       await syncStudentMatrix();
       loadOverview();
     } catch(e) {
@@ -904,8 +923,10 @@
       if (tData) {
         const slip = tData.slip_url || tData.slipUrl;
         if (slip && slip.includes('supabase.co')) {
-          const fileName = slip.split('/public/slips/')[1].split('?')[0];
-          await window.myAppDb.storage.from('slips').remove([fileName]);
+          const rawName = slip.split('/public/slips/')[1].split('?')[0];
+          const fileName = decodeURIComponent(rawName);
+          const { error: sErr } = await window.myAppDb.storage.from('slips').remove([fileName]);
+          if (sErr) console.warn('Storage slip remove error:', sErr);
         }
       }
       
