@@ -61,8 +61,8 @@
           detailsEl.style.display = 'flex';
           detailsEl.innerHTML = items.map(item => `
             <div class="confirm-detail-row">
-              <span class="confirm-detail-label">${item.label}</span>
-              <span class="confirm-detail-value ${item.highlight ? 'highlight' : ''}">${item.value}</span>
+              <span class="confirm-detail-label">${escapeHtml(item.label)}</span>
+              <span class="confirm-detail-value ${item.highlight ? 'highlight' : ''}">${escapeHtml(item.value)}</span>
             </div>
           `).join('');
         } else {
@@ -163,6 +163,16 @@
       res.studentId = res.student_id || res.studentId;
     }
     return res;
+  }
+
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   async function deleteFinanceRecord(type, id) {
@@ -424,7 +434,7 @@
       });
 
       tHead.innerHTML = headers.map((h, i) =>
-        `<th style="text-align:${i > 1 ? 'center' : 'left'}">${h}</th>`).join('');
+        `<th style="text-align:${i > 1 ? 'center' : 'left'}">${escapeHtml(h)}</th>`).join('');
 
       if (rows.length === 0) {
         tBody.innerHTML = `<tr><td colspan="${headers.length}" class="empty-state-cell"><div class="empty-state"><p>ยังไม่มีข้อมูลนิสิต</p></div></td></tr>`;
@@ -439,7 +449,7 @@
                 if (val === '-' || val === '' || val === 'ค้างชำระ') return `<td style="color:#dc2626;font-weight:700;text-align:center">ค้างชำระ</td>`;
                 if (!isNaN(val)) return `<td style="color:#15803d;font-weight:700;text-align:center">฿${Number(val).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>`;
               }
-              return `<td>${val}</td>`;
+              return `<td>${escapeHtml(val)}</td>`;
             }).join('')}
           </tr>`).join('');
       }
@@ -551,8 +561,8 @@
           return `
             <tr>
               <td>${formatDate(p.paidAt)}</td>
-              <td style="font-weight:700">${p.name || '—'}</td>
-              <td>${p.eventTitle || p.eventId || '—'}</td>
+              <td style="font-weight:700">${escapeHtml(p.name || '—')}</td>
+              <td>${escapeHtml(p.eventTitle || p.eventId || '—')}</td>
               <td style="font-weight:700">${Number(p.paidAmount||0).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
               <td>${Number(p.penalty||0).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
               <td><span class="badge badge-pending">รอตรวจสอบ</span></td>
@@ -583,7 +593,7 @@
           return `
           <div class="finance-item-row">
             <div class="finance-item-info">
-              <div class="finance-item-title">${e.source}</div>
+              <div class="finance-item-title">${escapeHtml(e.source)}</div>
               <div class="finance-item-date">${new Date(e.date).toLocaleDateString('th-TH')}</div>
             </div>
             <div class="finance-item-right">
@@ -610,7 +620,7 @@
           return `
           <div class="finance-item-row">
             <div class="finance-item-info">
-              <div class="finance-item-title">${e.title}</div>
+              <div class="finance-item-title">${escapeHtml(e.title)}</div>
               <div class="finance-item-date">${new Date(e.date).toLocaleDateString('th-TH')}</div>
             </div>
             <div class="finance-item-right">
@@ -668,7 +678,7 @@
         tbody.innerHTML = list.map(ev => {
           return `
           <tr>
-            <td style="font-weight:700">${ev.title}</td>
+            <td style="font-weight:700">${escapeHtml(ev.title)}</td>
             <td style="font-weight:700">${Number(ev.baseAmount).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
             <td>${formatDate(ev.dueDate)}</td>
             <td style="color:var(--muted);font-size:0.75rem">${formatDate(ev.createdAt)}</td>
@@ -834,8 +844,8 @@
 
       return `
         <tr>
-          <td style="font-weight:700">${p.name || '—'}</td>
-          <td>${p.eventTitle || p.eventId || '—'}</td>
+          <td style="font-weight:700">${escapeHtml(p.name || '—')}</td>
+          <td>${escapeHtml(p.eventTitle || p.eventId || '—')}</td>
           <td style="font-weight:700">${Number(p.paidAmount).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
           <td>${Number(p.penalty||0).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
           <td><span class="badge badge-${p.status === 'Paid' ? 'paid' : 'pending'}">${p.status === 'Paid' ? 'ชำระแล้ว' : 'รอตรวจสอบ'}</span></td>

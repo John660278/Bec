@@ -6,6 +6,16 @@
   let currentPayment = null;
   let publicDataFetched = false;
 
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   // ─── INITIALIZATION ───
   document.addEventListener('DOMContentLoaded', () => {
     if (window.MAINTENANCE_CONFIG && window.MAINTENANCE_CONFIG.enabled) {
@@ -102,7 +112,7 @@
       ? data.incomes.map(e => `
           <div style="display:flex;justify-content:space-between;align-items:center;padding:0.85rem 1rem;border-bottom:1px solid var(--border);font-size:0.82rem">
             <div>
-              <div style="color:var(--text);font-weight:700">${e.source}</div>
+              <div style="color:var(--text);font-weight:700">${escapeHtml(e.source)}</div>
               <div style="color:var(--muted);font-size:0.72rem;margin-top:2px">
                 ${new Date(e.date).toLocaleDateString('th-TH')}
               </div>
@@ -121,7 +131,7 @@
       ? data.expenses.map(e => `
           <div style="display:flex;justify-content:space-between;align-items:center;padding:0.85rem 1rem;border-bottom:1px solid var(--border);font-size:0.82rem">
             <div>
-              <div style="color:var(--text);font-weight:700">${e.title}</div>
+              <div style="color:var(--text);font-weight:700">${escapeHtml(e.title)}</div>
               <div style="color:var(--muted);font-size:0.72rem;margin-top:2px">
                 ${new Date(e.date).toLocaleDateString('th-TH')}
               </div>
@@ -141,7 +151,7 @@
         <table class="matrix-table">
           <thead>
             <tr>
-              ${data.matrixHeaders.map((h, i) => `<th style="text-align:${i > 1 ? 'center' : 'left'}">${h}</th>`).join('')}
+              ${data.matrixHeaders.map((h, i) => `<th style="text-align:${i > 1 ? 'center' : 'left'}">${escapeHtml(h)}</th>`).join('')}
             </tr>
           </thead>
           <tbody>
@@ -154,7 +164,7 @@
                     if (val === '-' || val === '' || val === 'ค้างชำระ') return `<td style="color:#dc2626;font-weight:700;text-align:center">ค้างชำระ</td>`;
                     if (!isNaN(val)) return `<td style="color:#15803d;font-weight:700;text-align:center;font-variant-numeric:tabular-nums">฿${fmt(val)}</td>`;
                   }
-                  return `<td style="color:var(--text);">${val}</td>`;
+                  return `<td style="color:var(--text);">${escapeHtml(val)}</td>`;
                 }).join('')}
               </tr>`).join('')}
           </tbody>
@@ -435,7 +445,7 @@
         <div class="statement-card">
           <div class="statement-row-top">
             <div class="statement-info">
-              <div class="statement-title">${ev.title}</div>
+              <div class="statement-title">${escapeHtml(ev.title)}</div>
               <div class="statement-meta">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 <span>ครบกำหนด ${dueStr}</span>
