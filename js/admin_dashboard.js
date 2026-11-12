@@ -1246,7 +1246,7 @@
       const incId = crypto.randomUUID();
       const { error: insErr } = await window.myAppDb.from('incomes').insert({
         id: incId,
-        title: source,
+        source: source,
         amount: Number(amount),
         receipt_url: receiptUrl,
         created_at: new Date(date).toISOString()
