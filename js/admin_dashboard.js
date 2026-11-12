@@ -229,6 +229,72 @@
     }
   }
   
+  function getLocalDateStr(d = new Date()) {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  function formatThaiDateDisplay(dateStr) {
+    if (!dateStr) return '';
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return '';
+    const y = Number(parts[0]);
+    const m = Number(parts[1]);
+    const d = Number(parts[2]);
+    const targetDate = new Date(y, m - 1, d);
+    const todayStr = getLocalDateStr();
+    const isToday = dateStr === todayStr;
+    
+    const formatted = targetDate.toLocaleDateString('th-TH', { 
+      day: 'numeric', 
+      month: 'short', 
+      year: '2-digit' 
+    });
+    
+    return isToday ? `✓ วันที่เลือก: ${formatted} (วันนี้)` : `✓ วันที่เลือก: ${formatted}`;
+  }
+
+  window.updateDateDisplay = function(inputId, displayId) {
+    const input = document.getElementById(inputId);
+    const display = document.getElementById(displayId);
+    if (!input || !display) return;
+    if (!input.value) {
+      display.textContent = 'ยังไม่ได้เลือกวันที่';
+      display.className = 'date-selected-hint empty';
+      return;
+    }
+    display.textContent = formatThaiDateDisplay(input.value);
+    const isToday = input.value === getLocalDateStr();
+    display.className = `date-selected-hint ${isToday ? 'is-today' : 'custom'}`;
+  };
+
+  window.setTodayDate = function(inputId) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    input.value = getLocalDateStr();
+    const map = {
+      'expDate': 'expDateDisplay',
+      'incDate': 'incDateDisplay',
+      'evDueDate': 'evDueDateDisplay'
+    };
+    if (map[inputId]) window.updateDateDisplay(inputId, map[inputId]);
+  };
+
+  function initAllDateInputs() {
+    const today = getLocalDateStr();
+    ['expDate', 'incDate', 'evDueDate'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && !el.value) {
+        el.value = today;
+      }
+    });
+    window.updateDateDisplay('expDate', 'expDateDisplay');
+    window.updateDateDisplay('incDate', 'incDateDisplay');
+    window.updateDateDisplay('evDueDate', 'evDueDateDisplay');
+  }
+
   // ─── INIT ───
   document.addEventListener('DOMContentLoaded', () => {
     const raw = sessionStorage.getItem('loggedInUser');
@@ -249,11 +315,7 @@
     const mobEmailEl = document.getElementById('mobileUserEmail');
     if (mobEmailEl) mobEmailEl.textContent = currentUser.email || currentUser.name || 'Admin';
 
-    const todayStr = new Date().toISOString().split('T')[0];
-    const expDateInput = document.getElementById('expDate');
-    const incDateInput = document.getElementById('incDate');
-    if (expDateInput && !expDateInput.value) expDateInput.value = todayStr;
-    if (incDateInput && !incDateInput.value) incDateInput.value = todayStr;
+    initAllDateInputs();
 
     if (currentUser && currentUser.email) {
       loadOverview();
@@ -301,6 +363,7 @@
     if (viewId === 'events') fetchEventsData();
     if (viewId === 'payments') fetchPaymentsData();
     if (viewId === 'matrix') fetchMatrixData();
+    if (viewId === 'finance' || viewId === 'events') initAllDateInputs();
 
     setTimeout(updateEmptyStateAlignment, 60);
   }
@@ -813,7 +876,7 @@
       showToast('สร้างรอบเก็บเงินเรียบร้อย');
       document.getElementById('evTitle').value = '';
       document.getElementById('evAmount').value = '';
-      document.getElementById('evDueDate').value = '';
+      setTodayDate('evDueDate');
       await syncStudentMatrix();
       fetchEventsData();
       loadOverview();
@@ -1081,6 +1144,7 @@
     document.getElementById('incomeForm').style.display  = isExp ? 'none'  : 'block';
     document.querySelectorAll('#view-finance .filter-tab').forEach(t => t.classList.remove('active'));
     if (el) el.classList.add('active');
+    initAllDateInputs();
   }
 
   function previewFile(input, type, legacyNameId) {
@@ -1213,7 +1277,7 @@
       showToast('บันทึกรายจ่ายเรียบร้อยแล้ว');
       document.getElementById('expTitle').value  = '';
       document.getElementById('expAmount').value = '';
-      document.getElementById('expDate').value   = new Date().toISOString().split('T')[0];
+      setTodayDate('expDate');
       clearFile('exp');
       loadOverview();
     } catch(e) {
@@ -1268,7 +1332,7 @@
       showToast('บันทึกรายรับเรียบร้อยแล้ว');
       document.getElementById('incSource').value = '';
       document.getElementById('incAmount').value = '';
-      document.getElementById('incDate').value   = new Date().toISOString().split('T')[0];
+      setTodayDate('incDate');
       clearFile('inc');
       loadOverview();
     } catch(e) {
